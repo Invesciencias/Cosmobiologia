@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmobiología — Invesciencias | Captura y Análisis de Eventos</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="data.js"></script>
+<script src="features.js"></script>
+<style>
+  :root{
+    --bg:#0f1226; --panel:#1a1e3a; --panel2:#232a52; --ink:#e8ecff;
+    --muted:#9aa3d0; --accent:#7c5cff; --accent2:#2dd4bf;
+    --excess:#ff5d73; --deficit:#4aa3ff; --line:#33396b; --ok:#3ddc97;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+  header{padding:18px 28px;background:linear-gradient(90deg,#1a1e3a,#2a1e52);border-bottom:1px solid var(--line)}
+  header h1{margin:0;font-size:20px;letter-spacing:.3px}
+  header p{margin:4px 0 0;color:var(--muted);font-size:13px}
+  nav{display:flex;gap:6px;padding:0 28px;background:var(--panel);border-bottom:1px solid var(--line)}
+  nav button{background:none;border:none;color:var(--muted);padding:14px 18px;cursor:pointer;font-size:14px;border-bottom:2px solid transparent}
+  nav button.active{color:var(--ink);border-bottom-color:var(--accent)}
+  main{padding:24px 28px;max-width:1200px;margin:0 auto}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+  input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 11px;font-size:14px}
+  textarea{min-height:120px;font-family:ui-monospace,monospace;font-size:12px}
+  button.act{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:11px 18px;font-size:14px;cursor:pointer;font-weight:600}
+  button.ghost{background:var(--panel2);border:1px solid var(--line);color:var(--ink)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);cursor:pointer;user-select:none}
+  tr:hover td{background:var(--panel2)}
+  .sig{color:var(--ok);font-weight:600}
+  .muted{color:var(--muted)} .small{font-size:12px}
+  .tag-ex{color:var(--excess)} .tag-de{color:var(--deficit)}
+  h2{font-size:16px;margin:0 0 14px} h3{font-size:14px;color:var(--muted);margin:18px 0 8px}
+  .hint{background:#2a1e52;border-left:3px solid var(--accent);padding:10px 14px;border-radius:6px;font-size:13px;color:var(--ink);margin:12px 0}
+  /* ── Tooltips de glosario ── */
+  .glos{border-bottom:1px dashed var(--accent2);cursor:help;color:var(--accent2);font-weight:500}
+  #glosBox{display:none;position:fixed;z-index:9999;max-width:340px;background:#1a1e3a;border:1px solid var(--accent2);border-radius:12px;padding:16px 18px;box-shadow:0 8px 32px #0008;font-size:13px;line-height:1.6}
+  #glosBox h4{margin:0 0 8px;color:var(--accent2);font-size:14px}
+  #glosBox p{margin:0;color:var(--ink)}
+  #glosBox .close-btn{position:absolute;top:10px;right:14px;cursor:pointer;color:var(--muted);font-size:16px;line-height:1}
+  .stat{display:flex;gap:24px;flex-wrap:wrap}
+  .stat div b{font-size:22px;display:block}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌌 Cosmobiología — Fundación Invesciencias</h1>
+  <p>Captura generalizada de eventos fechados y análisis estadístico falseable por modelo nulo · Fase 1: Sismos</p>
+</header>
+<nav>
+  <button class="active" data-tab="captura">📝 Captura de eventos</button>
+  <button data-tab="tablero">📊 Tablero estadístico</button>
+  <button data-tab="mapa">🗺 Mapa y grilla</button>
+  <button data-tab="hipotesis">🔭 Hipótesis y expansión</button>
+  <button data-tab="fuentes">🌍 Fuentes de datos</button>
+  <button data-tab="ayuda">📖 Metodología</button>
+</nav>
+<main>
+
+<!-- ===================== CAPTURA ===================== -->
+<section id="captura">
+  <div class="card">
+    <h2>Registrar un evento</h2>
+    <div class="hint">Las longitudes planetarias dependen del <b>instante UTC</b>; las casas, del instante <b>y</b> el lugar. Ingresa fecha/hora en la zona que indiques y se guarda normalizado.</div>
+    <div class="grid">
+      <div><label>ID del evento</label><input id="f_id" placeholder="auto si vacío"></div>
+      <div><label>Dominio</label><select id="f_domain">
+        <option>sismo</option><option>inundacion</option><option>erupcion</option>
+        <option>infarto</option><option>otro</option></select></div>
+      <div><label>Subtipo</label><input id="f_subtype" placeholder="tectonico"></div>
+      <div><label>Fecha</label><input id="f_date" type="date"></div>
+      <div><label>Hora</label><input id="f_time" type="time" step="1"></div>
+      <div><label>Zona horaria</label><select id="f_tz">
+        <option value="UTC">UTC</option></select></div>
+      <div><label>Latitud (°)</label><input id="f_lat" type="number" step="any" placeholder="-5.2697"></div>
+      <div><label>Longitud (°)</label><input id="f_lon" type="number" step="any" placeholder="125.595"></div>
+      <div><label>Lugar</label><input id="f_place" placeholder="Banda Sea"></div>
+      <div><label>Valor (magnitud/severidad)</label><input id="f_value" type="number" step="any" placeholder="6.0"></div>
+      <div><label>Tipo de valor</label><input id="f_vkind" placeholder="mag_mww"></div>
+      <div><label>Fuente</label><input id="f_source" placeholder="USGS"></div>
+    </div>
+    <div class="row">
+      <button class="act" onclick="addEvent()">＋ Agregar evento</button>
+      <span class="pill" id="count">0 eventos en memoria</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Carga masiva (pegar CSV)</h2>
+    <p class="small muted">Encabezados: <code>event_id,domain,subtype,datetime_utc,latitude,longitude,place,value,value_kind,source</code>. <code>datetime_utc</code> en ISO-8601 (ej. <code>2023-04-22T08:23:42Z</code>).</p>
+    <textarea id="bulk" placeholder="event_id,domain,...&#10;us6000k6ai,sismo,earthquake,2023-04-22T08:23:42Z,-5.2697,125.595,Banda Sea,6.0,mag_mww,USGS"></textarea>
+    <div class="row">
+      <button class="act" onclick="importBulk()">Importar pegado</button>
+      <label class="ghost act" style="display:inline-block">Subir archivo CSV<input type="file" id="file" accept=".csv" style="display:none" onchange="importFile(event)"></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>☁ Nube compartida (Supabase)</h2>
+    <p class="small muted">Para que varios investigadores de Invesciencias aporten al mismo banco de eventos. Crea un proyecto gratis en supabase.com y la tabla <code>eventos</code> (SQL en README). Pega aquí tu URL y la clave <code>anon</code>.</p>
+    <div class="grid">
+      <div><label>URL del proyecto</label><input id="sb_url" placeholder="https://xxxx.supabase.co"></div>
+      <div><label>Clave anon (public)</label><input id="sb_key" placeholder="eyJ..."></div>
+    </div>
+    <div class="row">
+      <button class="act" onclick="cloudTest()">🔌 Probar conexión</button>
+      <button class="ghost act" onclick="cloudPush()">⬆ Subir eventos a la nube</button>
+      <button class="ghost act" onclick="cloudPull()">⬇ Traer eventos de la nube</button>
+      <button class="ghost act" onclick="saveCloudCfg()">💾 Guardar config</button>
+      <span class="pill" id="cloudStatus">sin conectar</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Eventos almacenados</h2>
+    <div class="row">
+      <button class="ghost act" onclick="exportCSV()">⬇ Exportar eventos.csv</button>
+      <button class="ghost act" onclick="clearEvents()">🗑 Vaciar (empezar de cero)</button>
+      <button class="ghost act" onclick="reloadDemo()">↻ Recargar sismos de ejemplo</button>
+      <span class="pill" id="demoPill"></span>
+    </div>
+    <div style="overflow:auto;max-height:340px;margin-top:14px">
+      <table id="evtable"><thead><tr><th>ID</th><th>Dominio</th><th>UTC</th><th>Lat</th><th>Lon</th><th>Lugar</th><th>Valor</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TABLERO ===================== -->
+<section id="tablero" style="display:none">
+  <div class="card">
+    <h2>Resultados del modelo nulo</h2>
+    <p class="small muted">Carga el archivo <code>resultados_estadisticos.csv</code> generado por <code>nullmodel.py</code>.</p>
+    <div class="row">
+      <label class="ghost act" style="display:inline-block">Cargar resultados_estadisticos.csv<input type="file" id="resfile" accept=".csv" style="display:none" onchange="loadResults(event)"></label>
+      <button class="ghost act" onclick="tryAutoLoad()">Intentar carga automática</button>
+    </div>
+    <div class="stat" id="summary" style="margin-top:16px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Volcano plot — efecto vs. significancia</h2>
+    <div class="hint">Cada punto es una configuración astrológica. <b>Eje X</b>: tamaño de efecto (log₂ del riesgo relativo; derecha = exceso sobre el azar, izquierda = déficit). <b>Eje Y</b>: significancia (−log₁₀ p). Lo <span class="sig">verde</span> sobrevive la corrección por comparaciones múltiples (FDR&lt;0.05): ahí está la ciencia.</div>
+    <div class="row">
+      <select id="filterType" onchange="renderCharts()">
+        <option value="all">Todos los rasgos</option>
+        <option value="aspect">Solo aspectos</option>
+        <option value="house">Solo planeta en casa</option>
+      </select>
+    </div>
+    <div id="volcano" style="height:480px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Ranking de configuraciones</h2>
+    <div id="bar" style="height:520px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Tabla completa (clic en encabezado para ordenar)</h2>
+    <div style="overflow:auto;max-height:420px">
+      <table id="restable"><thead></thead><tbody></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MAPA Y GRILLA ===================== -->
+<section id="mapa" style="display:none">
+  <div class="card">
+    <h2>🗺 Distribución mundial de eventos</h2>
+    <div class="hint">Mapa de los eventos cargados (los <span class="tag-ex">rojos</span> son de mayor valor/magnitud). Abajo, una <b>grilla</b> de celdas lat/lon: haz clic en una celda para ver <b>cuándo</b> ocurrieron sus eventos en el tiempo.</div>
+    <div class="row">
+      <div><label>Tamaño de celda de la grilla</label>
+        <select id="grid_size" onchange="renderMap()">
+          <option value="5">5° × 5°</option>
+          <option value="10" selected>10° × 10°</option>
+          <option value="20">20° × 20°</option>
+          <option value="30">30° × 30°</option>
+        </select></div>
+      <div><label>Color de la grilla</label>
+        <select id="grid_metric" onchange="renderMap()">
+          <option value="count">Cantidad de eventos</option>
+          <option value="mag">Valor/magnitud media</option>
+          <option value="year">Año medio</option>
+        </select></div>
+      <div><label>Año desde</label><input id="year_min" type="number" onchange="renderMap()"></div>
+      <div><label>Año hasta</label><input id="year_max" type="number" onchange="renderMap()"></div>
+      <span class="pill" id="map_summary"></span>
+    </div>
+    <div id="geomap" style="height:430px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Grilla espacial — similitudes por zona</h2>
+    <div id="grid" style="height:460px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Distribución temporal <span id="time_scope" class="small muted">(todos los eventos)</span></h2>
+    <div class="row"><button class="ghost act" onclick="clearCell()">Ver todos los eventos</button></div>
+    <div id="timehist" style="height:320px"></div>
+  </div>
+
+  <div class="card">
+    <h2>🪐 Astrología de la selección — zona vs. resto del mundo</h2>
+    <div class="hint">Selecciona una <b>celda</b> en la grilla de arriba (y opcionalmente un rango de años). Aquí se comparan las configuraciones astrológicas de esa zona contra el <b>resto</b> de los eventos, con prueba z de proporciones y corrección FDR. Lo <span class="sig">verde</span> es significativo. <b>Exploratorio</b>: las diferencias entre zonas también pueden reflejar cuándo se registró cada zona, así que esto <i>genera</i> hipótesis para confirmar después con el modelo nulo emparejado.</div>
+    <div class="row">
+      <select id="astro_filter" onchange="renderAstro()">
+        <option value="all">Todos los rasgos</option>
+        <option value="aspect">Solo aspectos</option>
+        <option value="house">Solo planeta en casa</option>
+      </select>
+      <span class="pill" id="astro_summary">selecciona una celda en la grilla</span>
+    </div>
+    <div id="astrobar" style="height:520px"></div>
+    <div style="overflow:auto;max-height:360px;margin-top:10px">
+      <table id="astrotable"><thead></thead><tbody></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HIPÓTESIS Y EXPANSIÓN ===================== -->
+<section id="hipotesis" style="display:none">
+  <div class="card">
+    <h2>🔭 Constructor de hipótesis falseables</h2>
+    <div class="hint">Una hipótesis sirve para la ciencia solo si se puede <b>rechazar</b>. Arma la tuya con los menús: el enunciado queda en formato listo para <b>pre-registrar</b> (OSF) antes de mirar los datos. Pre-registrar evita el autoengaño y es lo que hace publicable el trabajo.</div>
+    <div class="grid">
+      <div><label>Dominio de eventos</label><select id="h_domain">
+        <option>sismo</option><option>inundacion</option><option>erupcion</option>
+        <option>infarto</option><option>nacimiento</option><option>otro</option></select></div>
+      <div><label>Tipo de rasgo</label><select id="h_kind" onchange="hKindChange()">
+        <option value="aspect">Aspecto entre dos puntos</option>
+        <option value="house">Planeta en una casa</option></select></div>
+      <div id="h_p1box"><label>Punto 1</label><select id="h_p1"></select></div>
+      <div id="h_aspbox"><label>Aspecto</label><select id="h_asp">
+        <option value="conjunción|0">conjunción (0°)</option>
+        <option value="sextil|60">sextil (60°)</option>
+        <option value="cuadratura|90">cuadratura (90°)</option>
+        <option value="trígono|120">trígono (120°)</option>
+        <option value="oposición|180">oposición (180°)</option></select></div>
+      <div id="h_p2box"><label>Punto 2</label><select id="h_p2"></select></div>
+      <div id="h_housebox" style="display:none"><label>Casa (1–12)</label><select id="h_house"></select></div>
+      <div><label>Orbe (°)</label><input id="h_orb" type="number" value="7" step="0.5"></div>
+      <div><label>Dirección esperada</label><select id="h_dir">
+        <option value="mayor">mayor que el azar (exceso)</option>
+        <option value="menor">menor que el azar (déficit)</option></select></div>
+      <div><label>Filtro (opcional)</label><input id="h_filter" placeholder="ej. magnitud ≥ 6"></div>
+      <div><label>Autor / equipo</label><input id="h_author" placeholder="tu nombre"></div>
+    </div>
+    <div class="card" style="background:var(--panel2);margin-top:14px">
+      <span class="small muted">Enunciado generado:</span>
+      <p id="h_preview" style="margin:8px 0 0;font-size:15px;line-height:1.5"></p>
+    </div>
+    <div class="row">
+      <button class="act" onclick="addHypothesis()">＋ Registrar hipótesis</button>
+      <button class="ghost act" onclick="exportHypotheses()">⬇ Exportar hipótesis.csv</button>
+      <span class="pill" id="h_count">0 hipótesis</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Banco de hipótesis del equipo</h2>
+    <p class="small muted">Se guardan en este navegador. Lleva las prometedoras a OSF y, tras correr el análisis, marca si se confirmaron.</p>
+    <div style="overflow:auto;max-height:340px">
+      <table id="htable"><thead><tr><th>Dominio</th><th>Hipótesis</th><th>Dir.</th><th>Autor</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌍 ¿Qué eventos podemos sumar? Ciencias y fuentes de datos</h2>
+    <div class="hint">Cualquier evento con <b>fecha, hora y lugar</b> puede entrar a la plataforma. Estos dominios biológicos y naturales son los más prometedores para la cosmobiología; todos tienen fuentes públicas abiertas, igual que USGS para sismos.</div>
+    <div style="overflow:auto">
+      <table id="srctable"><thead><tr><th>Ciencia / dominio</th><th>Evento</th><th>Por qué es interesante</th><th>Fuente pública</th></tr></thead><tbody></tbody></table>
+    </div>
+    <p class="small muted" style="margin-top:12px">⚠ Datos de personas (nacimientos, infartos): usar solo fuentes anonimizadas o con consentimiento; respetar ética y privacidad. La hora exacta es clave para las casas.</p>
+  </div>
+</section>
+
+<!-- ===================== FUENTES ===================== -->
+<section id="fuentes" style="display:none">
+  <div class="card">
+    <h2>🌋 Volcanes — Smithsonian Global Volcanism Program (GVP)</h2>
+    <p class="small muted">Más de 10,000 erupciones volcánicas con fecha, VEI y coordenadas. Datos del Smithsonian Institution — dominio público.</p>
+    <div class="hint">
+      <b>Descarga directa (gratis, sin registro):</b><br>
+      1. Ve a <a href="https://volcano.si.edu/search_eruption.cfm" target="_blank" style="color:var(--accent2)">volcano.si.edu/search_eruption.cfm</a><br>
+      2. Deja todos los filtros vacíos → clic en <b>Search</b><br>
+      3. En la tabla de resultados → <b>Download Results (CSV)</b><br>
+      4. Guarda el archivo como <code>GVP_Eruption_Results.csv</code> en la carpeta del proyecto<br>
+      5. Ejecuta en terminal: <code>python descargar_volcanes.py --local GVP_Eruption_Results.csv</code><br>
+      6. Importa el <code>eventos_volcanes.csv</code> generado con el botón de abajo.
+    </div>
+    <div class="row">
+      <label class="act" style="display:inline-block;cursor:pointer">
+        📂 Cargar GVP CSV convertido
+        <input type="file" accept=".csv" style="display:none" onchange="importFuenteFile(event,'erupcion')">
+      </label>
+      <button class="ghost act" onclick="fetchGVPDirect()">⬇ Intentar descarga directa</button>
+      <span class="pill" id="gvpStatus"></span>
+    </div>
+    <div class="hint" style="margin-top:12px;border-left-color:var(--accent2)">
+      <b>Script Python:</b> <code>python descargar_volcanes.py --local GVP_Eruption_Results.csv</code><br>
+      Produce: <code>eventos_volcanes.csv</code> · Columna clave: <b>VEI</b> (Índice de Explosividad Volcánica 0–8)
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌀 Huracanes y ciclones — NOAA HURDAT2</h2>
+    <p class="small muted">~1,800 tormentas Atlántico (1851–2023) + ~700 Pacífico Este (1949–2023). Cada evento = momento de máxima intensidad del ciclón. NOAA — dominio público.</p>
+    <div class="hint">
+      <b>Descarga directa (botón):</b> el script Python descarga y convierte automáticamente desde NOAA.<br>
+      <b>Manual:</b> descarga los archivos .txt de los enlaces de abajo y usa <code>--local</code>.
+    </div>
+    <div class="row">
+      <button class="act" onclick="fetchHurdat2()">⬇ Descargar HURDAT2 (Atlántico + Pacífico)</button>
+      <span class="pill" id="hurStatus"></span>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+      <a href="https://www.nhc.noaa.gov/data/hurdat/hurdat2-1851-2023-051124.txt" target="_blank" class="ghost act" style="text-decoration:none;padding:8px 14px;font-size:13px">📄 Atlántico .txt</a>
+      <a href="https://www.nhc.noaa.gov/data/hurdat/hurdat2-nepac-1949-2023-042624.txt" target="_blank" class="ghost act" style="text-decoration:none;padding:8px 14px;font-size:13px">📄 Pacífico Este .txt</a>
+    </div>
+    <div class="hint" style="margin-top:12px;border-left-color:var(--accent2)">
+      <b>Script Python:</b> <code>python descargar_huracanes.py</code><br>
+      Produce: <code>eventos_huracanes.csv</code> · Columna clave: <b>wind_kt</b> (viento máximo en nudos)
+    </div>
+    <div class="row" style="margin-top:8px">
+      <label class="ghost act" style="display:inline-block;cursor:pointer">
+        📂 Cargar CSV convertido de huracanes
+        <input type="file" accept=".csv" style="display:none" onchange="importFuenteFile(event,'huracan')">
+      </label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌊 Inundaciones — Dartmouth Flood Observatory</h2>
+    <p class="small muted">Registro de inundaciones significativas desde 1985 con fecha, área afectada y víctimas. Universidad de Colorado — acceso abierto.</p>
+    <div class="hint">
+      1. Ve a <a href="http://floodobservatory.colorado.edu/Archives/index.html" target="_blank" style="color:var(--accent2)">floodobservatory.colorado.edu/Archives</a><br>
+      2. Descarga la hoja Excel o CSV de eventos globales<br>
+      3. Mapea con el conversor genérico de abajo (ajusta columnas de fecha y lat/lon)
+    </div>
+    <p class="small muted">Limitación: muchos registros tienen solo fecha (no hora). La hora es imprescindible para el Ascendente y las casas. Útil para aspectos planetarios, no para casas.</p>
+  </div>
+
+  <div class="card">
+    <h2>🌞 Clima espacial — NOAA SWPC</h2>
+    <p class="small muted">Fulguraciones solares clase M y X, tormentas geomagnéticas (índice Kp). Con hora exacta, datos desde 1975.</p>
+    <div class="hint">
+      <b>Fulguraciones solares:</b> <a href="https://www.ngdc.noaa.gov/stp/space-weather/solar-data/solar-features/solar-flares/x-rays/goes/xrs/" target="_blank" style="color:var(--accent2)">ngdc.noaa.gov — GOES X-ray flares</a><br>
+      <b>Tormentas geomagnéticas:</b> <a href="https://www.swpc.noaa.gov/products/planetary-k-index" target="_blank" style="color:var(--accent2)">swpc.noaa.gov — Kp index</a><br>
+      Script de conversión: próximamente (<code>descargar_solar.py</code>)
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔄 Conversor genérico de CSV externo</h2>
+    <p class="small muted">Si tienes un CSV de otra fuente, mapea aquí sus columnas al esquema unificado.</p>
+    <div class="grid">
+      <div><label>Columna → event_id</label><input id="map_id" placeholder="id"></div>
+      <div><label>Columna → datetime_utc</label><input id="map_dt" placeholder="time" value="time"></div>
+      <div><label>Columna → latitude</label><input id="map_lat" placeholder="latitude" value="latitude"></div>
+      <div><label>Columna → longitude</label><input id="map_lon" placeholder="longitude" value="longitude"></div>
+      <div><label>Columna → place</label><input id="map_place" placeholder="place"></div>
+      <div><label>Columna → value</label><input id="map_val" placeholder="mag"></div>
+      <div><label>Nombre del dominio</label><input id="map_domain" placeholder="sismo" value="sismo"></div>
+      <div><label>Fuente</label><input id="map_source" placeholder="USGS"></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <label class="act" style="display:inline-block;cursor:pointer">
+        📂 Seleccionar CSV a convertir
+        <input type="file" accept=".csv" style="display:none" onchange="importGenerico(event)">
+      </label>
+      <span class="pill" id="genStatus"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Próximas fuentes planificadas</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px">
+      <div style="background:var(--panel2);border-radius:10px;padding:14px">
+        <b>🧬 Natalidad (Gauquelin)</b><br>
+        <span class="muted small">AstroDatabank AA, LERRCP · Requiere hora exacta · Script: <code>convertir_natalidad.py</code></span>
+      </div>
+      <div style="background:var(--panel2);border-radius:10px;padding:14px">
+        <b>🌪 Tornados NOAA</b><br>
+        <span class="muted small">Storm Events Database · ncdc.noaa.gov/stormevents · Script: <code>descargar_tornados.py</code></span>
+      </div>
+      <div style="background:var(--panel2);border-radius:10px;padding:14px">
+        <b>✈ Accidentes aéreos</b><br>
+        <span class="muted small">Aviation Safety Network · NTSB · Con hora exacta y coordenadas</span>
+      </div>
+      <div style="background:var(--panel2);border-radius:10px;padding:14px">
+        <b>🫀 Eventos médicos</b><br>
+        <span class="muted small">PhysioNet MIMIC-IV · Requiere acreditación ética · Solo datos anonimizados</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AYUDA ===================== -->
+<section id="ayuda" style="display:none">
+
+  <div class="hint" style="margin-bottom:16px">
+    💡 <b>Haz clic en cualquier término subrayado</b> para ver su definición completa.
+    Los términos en <span class="glos">color verde</span> abren una explicación detallada.
+  </div>
+
+  <div class="card">
+    <h2>¿Por qué un <span class="glos" data-glos="modelo nulo">modelo nulo</span>?</h2>
+    <p>Contar los <span class="glos" data-glos="aspecto">aspectos</span> más frecuentes en sismos <b>no es evidencia</b>: planetas lentos como Neptuno y Plutón están en sextil durante décadas, para cualquier evento — sismos, bodas, partidos de fútbol. Sin un punto de comparación, cualquier conteo parece significativo.</p>
+    <p>Para cada evento real generamos <b>K controles ficticios</b> en fechas cercanas (±30 días, mismo lugar), calculamos la misma carta y comparamos frecuencias. El resultado es la diferencia entre lo real y lo aleatorio, medida con un <span class="glos" data-glos="z-score">z-score</span> y un <span class="glos" data-glos="p-valor">p-valor</span>.</p>
+    <div class="hint">
+      <b>Artefacto clásico sin modelo nulo:</b> el catálogo USGS tiene muchos más sismos en décadas recientes (mejor instrumentación). Como Neptuno y Plutón marcan "qué época es", sus configuraciones correlacionan con los años de mayor cobertura. Un nulo uniforme produce ~24 falsos positivos. El nulo emparejado ±30 días los elimina.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>)</h2>
+    <p>Probamos 522 características astrológicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
+    <p>FDR ajusta cada p-valor teniendo en cuenta cuántas pruebas hicimos. Solo declaramos significativo lo que supera ese umbral más estricto. Resultado: en lugar de 26 falsos positivos, esperamos que máximo el 5% de los que declaramos significativos sean falsos.</p>
+    <p class="small muted">El método BH es más permisivo que Bonferroni (que es demasiado conservador) y más estricto que no corregir. Es el estándar en genómica y estudios de múltiples hipótesis.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="glos" data-glos="split validation">Validación exploratoria + confirmatoria</span> (anti <span class="glos" data-glos="p-hacking">p-hacking</span>)</h2>
+    <p>El <span class="glos" data-glos="p-hacking">p-hacking</span> ocurre cuando buscamos en los datos con suficiente creatividad hasta encontrar algo, y reportamos solo eso. La solución es dividir los datos antes de empezar:</p>
+    <ol>
+      <li><b>Exploración (50%):</b> buscamos candidatos con FDR&lt;0.05. Pueden ser muchos o pocos.</li>
+      <li><b>Confirmación (50%):</b> testeamos SOLO esos candidatos. Si replican en la misma dirección, hay evidencia real.</li>
+    </ol>
+    <p>Un candidato que no replica en confirmación era ruido, aunque tuviera p&lt;0.001 en exploración. Esto es el estándar de oro que exigen revistas como <i>Nature</i> y <i>PLOS ONE</i>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Sistema de casas — <span class="glos" data-glos="whole sign">Whole Sign</span></h2>
+    <p>Las casas astrológicas dividen el cielo en 12 sectores según el punto del horizonte donde sale el sol (Ascendente). El sistema <span class="glos" data-glos="whole sign">Whole Sign</span> asigna cada casa a un signo zodiacal completo (30°).</p>
+    <p><b>¿Por qué no Placidus?</b> Placidus (el más popular en astrología occidental) se degenera matemáticamente en latitudes &gt;66°N/S — exactamente donde ocurren muchos sismos importantes (Alaska, Kamchatka, norte de Japón). Whole Sign es estable en todo el globo.</p>
+  </div>
+
+  <div class="card">
+    <h2>Ideas de <span class="glos" data-glos="estratificación">estratificación</span> para encontrar resultados positivos</h2>
+    <p>Un análisis de <i>todos los sismos mezclados</i> puede dar negativo aunque haya señal en un subgrupo específico. La estratificación divide los eventos en grupos con características físicas similares:</p>
+
+    <h3>Por magnitud</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:8px 0">
+      <div style="background:var(--panel2);border-radius:8px;padding:10px;text-align:center">
+        <b style="color:var(--accent2)">M 4–5</b><br><span class="small muted">~180,000 eventos</span><br><span class="small">Alta potencia estadística</span>
+      </div>
+      <div style="background:var(--panel2);border-radius:8px;padding:10px;text-align:center">
+        <b style="color:var(--accent2)">M 5–6</b><br><span class="small muted">~18,000 eventos</span><br><span class="small">Balance potencia/especificidad</span>
+      </div>
+      <div style="background:var(--panel2);border-radius:8px;padding:10px;text-align:center">
+        <b style="color:var(--accent2)">M 6–7</b><br><span class="small muted">~1,800 eventos</span><br><span class="small">Eventos bien registrados</span>
+      </div>
+      <div style="background:var(--panel2);border-radius:8px;padding:10px;text-align:center">
+        <b style="color:var(--accent2)">M ≥ 7</b><br><span class="small muted">~180 eventos</span><br><span class="small">Los más extremos</span>
+      </div>
+    </div>
+
+    <h3>Por profundidad focal</h3>
+    <p class="small">Los sismos <b>superficiales (&lt;70 km)</b> son los más destructivos y tienen mecanismo físico diferente a los intermedios (70–300 km) y profundos (&gt;300 km, interior del manto). Si hay influencia de marea, debería ser diferente según profundidad.</p>
+
+    <h3>Por región / contexto tectónico</h3>
+    <p class="small">El Mapa y Grilla ya permite esto: selecciona una celda y compara la estadística astrológica de esa zona vs. el resto del mundo. Zonas interesantes: Anillo de Fuego, Himalaya, Dorsal Medio-Atlántica, Mediterráneo.</p>
+
+    <h3>Por fase lunar</h3>
+    <p class="small">La marea lunar es 2.2× más fuerte en luna llena y nueva. Si hay relación, debe aparecer comparando sismos en luna llena/nueva vs. cuartos. Este análisis tiene literatura previa con resultados mixtos — ideal para comparar.</p>
+
+    <h3>Por hora local del sismo</h3>
+    <p class="small">Los efectos de marea solar son máximos al mediodía y medianoche locales. Estratificar por hora local (no UTC) puede revelar si el momento del día importa.</p>
+
+    <h3>Por estación del año</h3>
+    <p class="small">La distancia Tierra-Sol varía ~3.3% entre enero (perihelio) y julio (afelio). La marea solar cambia en consecuencia. Los 4 estratos estacionales (DJF, MAM, JJA, SON) permiten probar esta hipótesis.</p>
+
+    <div class="hint" style="margin-top:14px;border-left-color:var(--ok)">
+      <b>Hipótesis específica y pre-registrable (ejemplo):</b><br>
+      «Sismos M≥7, profundidad &lt;70 km, en zonas de subducción del Anillo de Fuego (2000–2023, n≈120): la cuadratura Marte–Luna dentro de 8° de <span class="glos" data-glos="orbe">orbe</span> ocurre con mayor frecuencia que en los controles del <span class="glos" data-glos="modelo nulo">modelo nulo</span> emparejado, con <span class="glos" data-glos="p-valor">p</span>&lt;0.05 corregido por <span class="glos" data-glos="fdr">FDR</span>.»<br><br>
+      Esta hipótesis es específica, tiene justificación física y si sale positiva en <span class="glos" data-glos="split validation">validación cruzada</span> es muy difícil de atribuir a azar.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Flujo de trabajo completo</h2>
+    <ol>
+      <li>Captura/carga eventos → exporta <code>eventos.csv</code></li>
+      <li><b>Pre-registra</b> la hipótesis en <a href="https://osf.io" target="_blank" style="color:var(--accent2)">osf.io</a> antes de mirar resultados</li>
+      <li><code>python nullmodel.py eventos.csv 1000</code> → <code>resultados_estadisticos.csv</code></li>
+      <li>Cárgalo en el Tablero → explora el volcano plot y las barras</li>
+      <li><code>python nullmodel.py eventos.csv 500 --split</code> → validación cruzada</li>
+      <li>Solo los candidatos que replican en confirmación van al paper</li>
+    </ol>
+    <p class="small muted">Para más de 50,000 eventos: <code>python descargar_sismos_masivo.py</code> · Ver <code>README_METODOLOGIA.md</code> para todas las decisiones técnicas.</p>
+  </div>
+
+  <div class="card">
+    <h2>Glosario completo — haz clic para definición</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
+      <span class="glos" data-glos="modelo nulo" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Modelo nulo</span>
+      <span class="glos" data-glos="fdr" style="padding:6px 14px;background:var(--panel2);border-radius:20px">FDR</span>
+      <span class="glos" data-glos="benjamini-hochberg" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Benjamini-Hochberg</span>
+      <span class="glos" data-glos="p-valor" style="padding:6px 14px;background:var(--panel2);border-radius:20px">p-valor</span>
+      <span class="glos" data-glos="z-score" style="padding:6px 14px;background:var(--panel2);border-radius:20px">z-score</span>
+      <span class="glos" data-glos="split validation" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Split validation</span>
+      <span class="glos" data-glos="p-hacking" style="padding:6px 14px;background:var(--panel2);border-radius:20px">P-hacking</span>
+      <span class="glos" data-glos="whole sign" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Whole Sign</span>
+      <span class="glos" data-glos="aspecto" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Aspecto planetario</span>
+      <span class="glos" data-glos="orbe" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Orbe</span>
+      <span class="glos" data-glos="estratificación" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Estratificación</span>
+      <span class="glos" data-glos="estudio negativo" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Estudio positivo / negativo</span>
+      <span class="glos" data-glos="skyfield" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Skyfield</span>
+      <span class="glos" data-glos="supabase" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Supabase</span>
+    </div>
+  </div>
+
+</section>
+
+</main>
+
+<!-- Tooltip flotante del glosario -->
+<div id="glosBox">
+  <span class="close-btn" onclick="document.getElementById('glosBox').style.display='none'">✕</span>
+  <h4 id="glosTitle"></h4>
+  <p id="glosBody"></p>
+</div>
+
+<script>
+// ---------- Glosario interactivo ----------
+const GLOSARIO = {
+  "modelo nulo": {
+    title: "Modelo nulo — ¿qué esperaríamos por puro azar?",
+    body: "Para cada evento real generamos K eventos ficticios en fechas cercanas (±30 días) y el mismo lugar. Luego preguntamos: ¿los eventos reales tienen algún patrón astrológico que NO tienen los ficticios? Sin esto, cualquier análisis daría resultados engañosos porque los planetas lentos (Neptuno, Plutón) están en la misma posición durante décadas enteras."
+  },
+  "fdr": {
+    title: "FDR — Tasa de Falsos Descubrimientos",
+    body: "Cuando hacemos 522 pruebas estadísticas a la vez, esperamos que ~26 salgan 'significativas' solo por azar. FDR (método Benjamini-Hochberg) ajusta cada resultado teniendo en cuenta que estamos probando muchas cosas simultáneamente. Es el estándar internacional para estudios de este tipo."
+  },
+  "benjamini-hochberg": {
+    title: "Benjamini-Hochberg — corrección por comparaciones múltiples",
+    body: "Método matemático que ordena los p-valores de menor a mayor y ajusta el umbral de significancia para cada uno según su posición en la lista. Garantiza que la proporción esperada de falsos positivos entre todos los resultados significativos sea menor al 5%."
+  },
+  "p-valor": {
+    title: "p-valor — probabilidad de que sea azar",
+    body: "La probabilidad de observar un resultado tan extremo como el obtenido si NO hubiera ninguna relación real. p=0.05 = 5% de probabilidad de que sea ruido. p=0.001 = 0.1%. NO es la probabilidad de que la hipótesis sea verdadera. Usamos p<0.05 después de corrección FDR."
+  },
+  "z-score": {
+    title: "z-score — tamaño del efecto",
+    body: "Mide qué tan grande es la diferencia entre eventos reales y controles, expresada en unidades de desviación estándar. z>2 es marginalmente significativo. z>3 es fuerte. Un z grande con p pequeño indica algo real. z=2.1 con p=0.04 puede ser ruido que pasó el umbral por azar."
+  },
+  "split validation": {
+    title: "Split validation — validación cruzada exploratoria + confirmatoria",
+    body: "Los datos se dividen en dos mitades. En la primera (exploración) buscamos qué aspectos parecen significativos. Solo esos se testean en la segunda (confirmación). Un resultado es sólido únicamente si replica en confirmación con la misma dirección. Estándar de oro contra el p-hacking."
+  },
+  "p-hacking": {
+    title: "P-hacking — el error a evitar",
+    body: "Hacer muchas pruebas distintas hasta que alguna salga positiva, y reportar solo esa. Es involuntario la mayoría de veces pero invalida el resultado. Se evita pre-registrando la hipótesis en OSF antes de correr el análisis. Si el resultado es negativo después del pre-registro, también se reporta."
+  },
+  "whole sign": {
+    title: "Whole Sign — sistema de casas astrológicas",
+    body: "Sistema en el que cada casa ocupa exactamente un signo zodiacal (30°). Es estable en todas las latitudes, incluidas las polares donde ocurren muchos sismos importantes. El sistema Placidus (el más popular) se degenera matemáticamente cerca de los polos y no se puede usar con un catálogo global."
+  },
+  "aspecto": {
+    title: "Aspecto planetario",
+    body: "Ángulo significativo entre dos planetas. Los 5 mayores: conjunción (0°), oposición (180°), cuadratura (90°), trígono (120°), sextil (60°). El 'orbe' es la tolerancia: un aspecto dentro de orbe significa que el ángulo real está cerca del ángulo exacto (ej. conjunción dentro de 8° = entre -8° y +8°)."
+  },
+  "orbe": {
+    title: "Orbe — tolerancia de un aspecto",
+    body: "Diferencia máxima en grados entre el ángulo real entre dos planetas y el ángulo exacto del aspecto. Por ejemplo, orbe de 8° para conjunción significa que si dos planetas están a 5° entre sí, se considera que están en conjunción. Orbes más grandes detectan más aspectos pero reducen la especificidad."
+  },
+  "estratificación": {
+    title: "Estratificación — dividir para encontrar señal",
+    body: "Analizar subgrupos de eventos con características similares (p.ej., solo sismos M≥7, solo superficiales, solo en el Anillo de Fuego). Si una relación existe, puede ser más fuerte en cierto tipo que en todos mezclados. Es la principal estrategia para pasar de un resultado negativo global a uno positivo específico."
+  },
+  "estudio negativo": {
+    title: "Estudio negativo vs. positivo",
+    body: "Negativo = los datos NO muestran patrón más allá del azar con esta muestra y estas hipótesis. Positivo = SÍ muestran patrón que supera el modelo nulo y la validación. Un negativo riguroso es científicamente valioso: es honestidad intelectual y muy difícil de fabricar. Pero el objetivo es encontrar positivos reales si existen."
+  },
+  "skyfield": {
+    title: "Skyfield — motor de efemérides astronómicas",
+    body: "Biblioteca Python que calcula posiciones planetarias precisas usando las efemérides JPL DE421 de la NASA. Es el mismo estándar que usan astrónomos profesionales. Citable en publicaciones científicas. Reemplaza a la efemériedes suiza (Swiss Ephemeris) que requería compilación y tenía problemas en Windows."
+  },
+  "supabase": {
+    title: "Supabase — base de datos compartida en la nube",
+    body: "Plataforma gratuita (hasta 500 MB) de base de datos Postgres con API REST. Permite que múltiples investigadores suban y consulten eventos sin conflictos. Usa upsert por event_id único: si dos investigadores suben el mismo evento, no se duplica. Alternativa a Google Sheets que escala a millones de eventos."
+  }
+};
+
+function showGlos(key){
+  const g=GLOSARIO[key];
+  if(!g)return;
+  document.getElementById('glosTitle').textContent=g.title;
+  document.getElementById('glosBody').textContent=g.body;
+  const box=document.getElementById('glosBox');
+  box.style.display='block';
+  // Posición: esquina inferior derecha segura
+  box.style.bottom='24px';
+  box.style.right='24px';
+  box.style.top='auto';
+  box.style.left='auto';
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-glos]');
+  if(b){showGlos(b.dataset.glos);return;}
+  if(!e.target.closest('#glosBox'))document.getElementById('glosBox').style.display='none';
+});
+
+// ---------- navegación ----------
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  ['captura','tablero','mapa','hipotesis','fuentes','ayuda'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
+  if(b.dataset.tab==='tablero'&&results.length){renderCharts();renderTable();
+    setTimeout(()=>{try{Plotly.Plots.resize('volcano');Plotly.Plots.resize('bar');}catch(e){}},60);}
+  if(b.dataset.tab==='mapa'){renderMap();
+    setTimeout(()=>{try{Plotly.Plots.resize('geomap');Plotly.Plots.resize('grid');Plotly.Plots.resize('timehist');}catch(e){}},60);}
+});
+
+// ---------- zonas horarias ----------
+(function(){
+  const tzs=(Intl.supportedValuesOf?Intl.supportedValuesOf('timeZone'):['UTC']);
+  const sel=document.getElementById('f_tz');
+  tzs.forEach(t=>{if(t!=='UTC'){const o=document.createElement('option');o.value=o.textContent=t;sel.appendChild(o);}});
+})();
+
+// ---------- almacenamiento de eventos ----------
+const FIELDS=['event_id','domain','subtype','datetime_utc','latitude','longitude','place','value','value_kind','source'];
+const DEMO=(window.DEFAULT_EVENTS||[]);
+// Si el usuario aún no ha empezado su propio conjunto, se muestran los datos de
+// ejemplo (sismos). Al vaciar o agregar, pasa a su propio conjunto persistido.
+let started=localStorage.getItem('inv_started')==='1';
+let events= started
+  ? JSON.parse(localStorage.getItem('inv_events')||'[]')
+  : DEMO.map(e=>({...e}));
+function save(){
+  started=true; localStorage.setItem('inv_started','1');
+  try{localStorage.setItem('inv_events',JSON.stringify(events));}
+  catch(e){/* cuota excedida: los datos quedan en memoria igual */}
+  renderEvents();
+}
+function reloadDemo(){
+  events=DEMO.map(e=>({...e}));
+  localStorage.removeItem('inv_started');localStorage.removeItem('inv_events');
+  started=false;renderEvents();
+}
+
+function toUTC(dateStr,timeStr,tz){
+  if(!dateStr) return '';
+  const t=timeStr||'00:00:00';
+  // interpreta fecha/hora local en tz y normaliza a UTC ISO
+  const local=new Date(`${dateStr}T${t}`);
+  // calcular offset de la zona elegida
+  try{
+    const f=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const parts=Object.fromEntries(f.formatToParts(local).map(p=>[p.type,p.value]));
+    const asUTC=Date.UTC(parts.year,parts.month-1,parts.day,parts.hour,parts.minute,parts.second);
+    const offset=asUTC-local.getTime();
+    return new Date(local.getTime()-offset).toISOString().replace('.000','').replace(/\.\d+Z$/,'Z');
+  }catch(e){return local.toISOString().replace(/\.\d+Z$/,'Z');}
+}
+
+function addEvent(){
+  const lat=parseFloat(document.getElementById('f_lat').value);
+  const lon=parseFloat(document.getElementById('f_lon').value);
+  const date=document.getElementById('f_date').value;
+  if(isNaN(lat)||isNaN(lon)||!date){alert('Faltan fecha, latitud o longitud.');return;}
+  const e={
+    event_id:document.getElementById('f_id').value||('ev'+Date.now()),
+    domain:document.getElementById('f_domain').value,
+    subtype:document.getElementById('f_subtype').value,
+    datetime_utc:toUTC(date,document.getElementById('f_time').value,document.getElementById('f_tz').value),
+    latitude:lat,longitude:lon,
+    place:document.getElementById('f_place').value,
+    value:document.getElementById('f_value').value,
+    value_kind:document.getElementById('f_vkind').value,
+    source:document.getElementById('f_source').value
+  };
+  events.push(e);save();
+  ['f_id','f_subtype','f_place','f_value'].forEach(i=>document.getElementById(i).value='');
+}
+
+function renderEvents(){
+  document.getElementById('count').textContent=events.length+' eventos en memoria';
+  const dp=document.getElementById('demoPill');
+  if(dp)dp.textContent=started?'tu conjunto (guardado en este navegador)':'mostrando datos de ejemplo (sismos USGS)';
+  const tb=document.querySelector('#evtable tbody');tb.innerHTML='';
+  events.slice(-200).reverse().forEach(e=>{
+    tb.insertAdjacentHTML('beforeend',`<tr><td>${e.event_id}</td><td>${e.domain}</td><td>${e.datetime_utc}</td><td>${e.latitude}</td><td>${e.longitude}</td><td>${e.place||''}</td><td>${e.value||''}</td></tr>`);
+  });
+}
+function clearEvents(){if(confirm('¿Vaciar todos los eventos para empezar de cero?')){events=[];save();}}
+
+function importBulk(){parseCSVText(document.getElementById('bulk').value);}
+function importFile(ev){const f=ev.target.files[0];if(f)Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>mergeRows(r.data)});}
+
+// ── Fuentes externas ──────────────────────────────────────────────────────────
+function importFuenteFile(ev, domainHint){
+  const f=ev.target.files[0];
+  if(!f)return;
+  Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>{
+    // Si ya viene en esquema unificado, importar directo
+    if(r.data[0]&&r.data[0].datetime_utc){
+      mergeRows(r.data);
+    } else {
+      alert('El archivo no está en el esquema unificado. Usa el conversor genérico o ejecuta el script Python primero.');
+    }
+  }});
+}
+
+async function fetchGVPDirect(){
+  const el=document.getElementById('gvpStatus');
+  el.textContent='Intentando...';
+  // El GVP no tiene CORS abierto; necesitamos el script Python.
+  // Este botón muestra instrucciones claras.
+  el.textContent='';
+  alert(
+    'El sitio del GVP no permite descarga directa desde el navegador (CORS bloqueado).\n\n'+
+    'Pasos rápidos (2 minutos):\n'+
+    '1. Abre: https://volcano.si.edu/search_eruption.cfm\n'+
+    '2. Clic en Search (sin filtros)\n'+
+    '3. Download Results (CSV) → guarda como GVP_Eruption_Results.csv\n'+
+    '4. En terminal: python descargar_volcanes.py --local GVP_Eruption_Results.csv\n'+
+    '5. Carga el eventos_volcanes.csv con el botón "Cargar GVP CSV convertido"'
+  );
+}
+
+async function fetchHurdat2(){
+  const el=document.getElementById('hurStatus');
+  el.textContent='Descargando...';
+  // NOAA no tiene CORS abierto para estos archivos .txt.
+  // Mostramos instrucción con el script Python.
+  el.textContent='';
+  alert(
+    'NOAA HURDAT2 no permite descarga directa desde el navegador (CORS bloqueado).\n\n'+
+    'Descarga automática con Python (1 comando):\n'+
+    '  python descargar_huracanes.py\n\n'+
+    'Descarga los archivos .txt de los enlaces y luego:\n'+
+    '  python descargar_huracanes.py --local hurdat2-1851-2023.txt --cuenca ATL\n\n'+
+    'Carga el eventos_huracanes.csv generado con el botón de abajo.'
+  );
+}
+
+function importGenerico(ev){
+  const f=ev.target.files[0];
+  if(!f)return;
+  const domain=document.getElementById('map_domain').value||'otro';
+  const source=document.getElementById('map_source').value||'';
+  const cols={
+    id:     document.getElementById('map_id').value||'id',
+    dt:     document.getElementById('map_dt').value||'time',
+    lat:    document.getElementById('map_lat').value||'latitude',
+    lon:    document.getElementById('map_lon').value||'longitude',
+    place:  document.getElementById('map_place').value||'',
+    val:    document.getElementById('map_val').value||'',
+  };
+  Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>{
+    const mapped=r.data.map((row,i)=>({
+      event_id:     row[cols.id]||('gen'+i+Math.random().toString(36).slice(2,6)),
+      domain:       domain,
+      subtype:      row.subtype||row.type||row.categoria||'',
+      datetime_utc: row[cols.dt]||'',
+      latitude:     parseFloat(row[cols.lat]||0),
+      longitude:    parseFloat(row[cols.lon]||0),
+      place:        cols.place?row[cols.place]||'':'',
+      value:        cols.val?parseFloat(row[cols.val]||0):'',
+      value_kind:   cols.val||'',
+      source:       source,
+    })).filter(e=>e.datetime_utc&&!isNaN(e.latitude));
+    mergeRows(mapped);
+    document.getElementById('genStatus').textContent=mapped.length+' eventos convertidos';
+  }});
+}
+function parseCSVText(txt){if(!txt.trim())return;const r=Papa.parse(txt.trim(),{header:true,skipEmptyLines:true});mergeRows(r.data);}
+function mergeRows(rows){
+  let added=0;
+  rows.forEach(r=>{
+    if(!r.datetime_utc||!r.latitude)return;
+    const e={};FIELDS.forEach(k=>e[k]=r[k]!==undefined?r[k]:'');
+    if(!e.event_id)e.event_id='ev'+Date.now()+Math.random().toString(36).slice(2,6);
+    e.latitude=parseFloat(e.latitude);e.longitude=parseFloat(e.longitude);
+    events.push(e);added++;
+  });
+  save();alert(added+' eventos importados.');
+}
+function exportCSV(){
+  if(!events.length){alert('No hay eventos.');return;}
+  const csv=Papa.unparse(events.map(e=>{const o={};FIELDS.forEach(k=>o[k]=e[k]);o.extra_json='';return o;}));
+  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='eventos.csv';a.click();
+}
+renderEvents();
+
+// ---------- nube Supabase ----------
+(function(){const c=JSON.parse(localStorage.getItem('inv_sb')||'{}');
+  if(c.url)document.getElementById('sb_url').value=c.url;
+  if(c.key)document.getElementById('sb_key').value=c.key;})();
+function saveCloudCfg(){
+  localStorage.setItem('inv_sb',JSON.stringify({url:document.getElementById('sb_url').value.trim(),key:document.getElementById('sb_key').value.trim()}));
+  document.getElementById('cloudStatus').textContent='config guardada';
+}
+function sbHeaders(key){return {'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json'};}
+async function cloudTest(){
+  const url=document.getElementById('sb_url').value.trim(),key=document.getElementById('sb_key').value.trim();
+  const st=document.getElementById('cloudStatus');
+  if(!url||!key){st.textContent='⚠ falta URL o clave';return;}
+  st.textContent='probando...';
+  try{
+    const r=await fetch(url+'/rest/v1/eventos?select=event_id',{headers:{...sbHeaders(key),'Prefer':'count=exact','Range':'0-0'}});
+    if(r.ok){const cr=r.headers.get('content-range');const total=cr?cr.split('/')[1]:'?';
+      st.textContent='✓ conectado · '+total+' eventos en la nube';saveCloudCfg();}
+    else if(r.status===404)st.textContent='✗ conectó, pero falta la tabla «eventos» (corre el SQL del setup)';
+    else st.textContent='✗ error '+r.status+': '+(await r.text()).slice(0,90);
+  }catch(e){st.textContent='✗ error de red (¿URL correcta?): '+e.message;}
+}
+async function cloudPush(){
+  const url=document.getElementById('sb_url').value.trim(),key=document.getElementById('sb_key').value.trim();
+  if(!url||!key){alert('Falta URL o clave.');return;}
+  if(!events.length){alert('No hay eventos para subir.');return;}
+  const st=document.getElementById('cloudStatus');st.textContent='subiendo...';
+  try{
+    const rows=events.map(e=>{const o={};FIELDS.forEach(k=>o[k]=e[k]===''?null:e[k]);return o;});
+    const r=await fetch(url+'/rest/v1/eventos?on_conflict=event_id',{method:'POST',
+      headers:{...sbHeaders(key),'Prefer':'resolution=merge-duplicates'},body:JSON.stringify(rows)});
+    st.textContent=r.ok?('✓ subidos '+rows.length):('error '+r.status+': '+(await r.text()).slice(0,80));
+  }catch(e){st.textContent='error red: '+e.message;}
+}
+async function cloudPull(){
+  const url=document.getElementById('sb_url').value.trim(),key=document.getElementById('sb_key').value.trim();
+  if(!url||!key){alert('Falta URL o clave.');return;}
+  const st=document.getElementById('cloudStatus');st.textContent='descargando...';
+  try{
+    const r=await fetch(url+'/rest/v1/eventos?select=*',{headers:sbHeaders(key)});
+    if(!r.ok){st.textContent='error '+r.status;return;}
+    const rows=await r.json();const have=new Set(events.map(e=>e.event_id));let add=0;
+    rows.forEach(r=>{if(!have.has(r.event_id)){const e={};FIELDS.forEach(k=>e[k]=r[k]??'');events.push(e);add++;}});
+    save();st.textContent='✓ traídos '+add+' nuevos ('+rows.length+' en la nube)';
+  }catch(e){st.textContent='error red: '+e.message;}
+}
+
+// ---------- tablero ----------
+let results=(window.DEFAULT_RESULTS||[]).filter(r=>r&&r.feature);
+function loadResults(ev){const f=ev.target.files[0];if(f)Papa.parse(f,{header:true,dynamicTyping:true,skipEmptyLines:true,complete:r=>{results=r.data;afterLoad();}});}
+function tryAutoLoad(){
+  fetch('resultados_estadisticos.csv').then(r=>r.ok?r.text():Promise.reject()).then(t=>{
+    results=Papa.parse(t,{header:true,dynamicTyping:true,skipEmptyLines:true}).data;afterLoad();
+  }).catch(()=>alert('No se pudo cargar automáticamente. Usa el botón de archivo (requiere servidor local).'));
+}
+function afterLoad(){
+  results=results.filter(r=>r.feature);
+  const sig=results.filter(r=>r.p_fdr<0.05).length;
+  const n=results[0]?results[0].n_events:'?';const k=results[0]?results[0].k_controls:'?';
+  document.getElementById('summary').innerHTML=
+    `<div><b>${results.length}</b><span class="muted">configuraciones probadas</span></div>
+     <div><b class="${sig?'sig':''}">${sig}</b><span class="muted">significativas (FDR&lt;0.05)</span></div>
+     <div><b>${n}</b><span class="muted">eventos</span></div>
+     <div><b>${k}</b><span class="muted">controles (K)</span></div>`;
+  renderCharts();renderTable();
+}
+function filtered(){
+  const f=document.getElementById('filterType').value;
+  return results.filter(r=>f==='all'||r.feature.startsWith(f));
+}
+function prettyName(f){
+  const p=f.split('|');
+  if(p[0]==='aspect')return `${p[3]} ${p[1]}–${p[2]}`;
+  if(p[0]==='house')return `${p[1]} en casa ${p[2]}`;
+  return f;
+}
+function renderCharts(){
+  if(!results.length)return;
+  const d=filtered();
+  const log2=v=>Math.log2(v>0?v:1e-6);
+  const nlp=p=>-Math.log10(Math.max(p,1e-300));
+  const sigMask=d.map(r=>r.p_fdr<0.05);
+  const colors=d.map((r,i)=>sigMask[i]?'#3ddc97':(r.direction==='exceso'?'#ff5d73':'#4aa3ff'));
+  Plotly.react('volcano',[{
+    x:d.map(r=>log2(r.rel_risk)),y:d.map(r=>nlp(r.p_value)),
+    text:d.map(r=>prettyName(r.feature)+`<br>RR=${(+r.rel_risk).toFixed(2)} · z=${(+r.z_score).toFixed(2)} · FDR=${(+r.p_fdr).toExponential(2)}`),
+    mode:'markers',type:'scatter',hoverinfo:'text',
+    marker:{size:9,color:colors,line:{width:.5,color:'#0f1226'}}
+  }],{
+    paper_bgcolor:'#1a1e3a',plot_bgcolor:'#1a1e3a',font:{color:'#e8ecff'},
+    xaxis:{title:'← déficit   log₂(riesgo relativo)   exceso →',gridcolor:'#33396b',zerolinecolor:'#7c5cff'},
+    yaxis:{title:'−log₁₀(p)',gridcolor:'#33396b'},
+    shapes:[{type:'line',x0:Math.min(...d.map(r=>log2(r.rel_risk))),x1:Math.max(...d.map(r=>log2(r.rel_risk))),y0:nlp(0.05),y1:nlp(0.05),line:{dash:'dot',color:'#9aa3d0'}}],
+    margin:{t:10}
+  },{displayModeBar:false});
+
+  const top=[...d].sort((a,b)=>Math.abs(b.z_score)-Math.abs(a.z_score)).slice(0,25).reverse();
+  Plotly.react('bar',[{
+    x:top.map(r=>r.z_score),y:top.map(r=>prettyName(r.feature)),type:'bar',orientation:'h',
+    marker:{color:top.map(r=>r.p_fdr<0.05?'#3ddc97':(r.direction==='exceso'?'#ff5d73':'#4aa3ff'))},
+    text:top.map(r=>(+r.z_score).toFixed(1)),textposition:'auto'
+  }],{
+    paper_bgcolor:'#1a1e3a',plot_bgcolor:'#1a1e3a',font:{color:'#e8ecff'},
+    xaxis:{title:'z-score (desviaciones respecto al azar)',gridcolor:'#33396b',zerolinecolor:'#7c5cff'},
+    yaxis:{automargin:true},margin:{t:10,l:10}
+  },{displayModeBar:false});
+}
+let sortKey='p_fdr',sortAsc=true;
+function renderTable(){
+  const cols=['feature','obs_freq','null_mean','rel_risk','z_score','p_value','p_fdr','direction'];
+  const labels={feature:'Configuración',obs_freq:'Obs',null_mean:'Nulo',rel_risk:'RR',z_score:'z',p_value:'p',p_fdr:'p(FDR)',direction:'Dir.'};
+  const th=document.querySelector('#restable thead');
+  th.innerHTML='<tr>'+cols.map(c=>`<th onclick="sortBy('${c}')">${labels[c]}</th>`).join('')+'</tr>';
+  const data=[...filtered()].sort((a,b)=>{const v=(a[sortKey]>b[sortKey]?1:-1)*(sortAsc?1:-1);return v;});
+  const tb=document.querySelector('#restable tbody');tb.innerHTML='';
+  data.slice(0,400).forEach(r=>{
+    const sig=r.p_fdr<0.05;
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td>${prettyName(r.feature)}</td>
+      <td>${(+r.obs_freq).toFixed(3)}</td><td>${(+r.null_mean).toFixed(3)}</td>
+      <td>${(+r.rel_risk).toFixed(2)}</td><td>${(+r.z_score).toFixed(2)}</td>
+      <td>${(+r.p_value).toExponential(1)}</td>
+      <td class="${sig?'sig':''}">${(+r.p_fdr).toExponential(1)}</td>
+      <td class="${r.direction==='exceso'?'tag-ex':'tag-de'}">${r.direction}</td></tr>`);
+  });
+}
+function sortBy(k){sortAsc=(sortKey===k)?!sortAsc:true;sortKey=k;renderTable();}
+
+// ---------- mapa y grilla ----------
+let selectedCell=null, gridBound=false, yearBounds=null;
+function eventNums(){
+  const lat=[],lon=[],mag=[],yr=[],txt=[],idx=[];
+  events.forEach((e,i)=>{
+    const la=parseFloat(e.latitude),lo=parseFloat(e.longitude);
+    if(isNaN(la)||isNaN(lo))return;
+    lat.push(la);lon.push(lo);idx.push(i);
+    mag.push(parseFloat(e.value));
+    yr.push(parseInt(String(e.datetime_utc).slice(0,4)));
+    txt.push((e.place||e.event_id||'')+'<br>'+String(e.datetime_utc).slice(0,10)+(e.value?(' · '+e.value):''));
+  });
+  return {lat,lon,mag,yr,txt,idx};
+}
+function yearRange(){
+  const d=eventNums();const ys=d.yr.filter(y=>!isNaN(y));
+  if(!yearBounds)yearBounds=[Math.min(...ys),Math.max(...ys)];
+  const mn=parseInt(document.getElementById('year_min').value)||yearBounds[0];
+  const mx=parseInt(document.getElementById('year_max').value)||yearBounds[1];
+  return [mn,mx];
+}
+const PLOTBG={paper_bgcolor:'#1a1e3a',plot_bgcolor:'#1a1e3a',font:{color:'#e8ecff'}};
+function renderMap(){
+  const all=eventNums();
+  // inicializar inputs de año con los límites reales del dataset
+  const yb=(function(){const ys=all.yr.filter(y=>!isNaN(y));return [Math.min(...ys),Math.max(...ys)];})();
+  yearBounds=yb;
+  const ymi=document.getElementById('year_min'),yma=document.getElementById('year_max');
+  if(!ymi.value)ymi.placeholder=yb[0];
+  if(!yma.value)yma.placeholder=yb[1];
+  const [yMin,yMax]=yearRange();
+  // filtrar por rango de años
+  const d={lat:[],lon:[],mag:[],yr:[],txt:[],idx:[]};
+  for(let i=0;i<all.lat.length;i++){
+    if(all.yr[i]<yMin||all.yr[i]>yMax)continue;
+    d.lat.push(all.lat[i]);d.lon.push(all.lon[i]);d.mag.push(all.mag[i]);
+    d.yr.push(all.yr[i]);d.txt.push(all.txt[i]);d.idx.push(all.idx[i]);
+  }
+  document.getElementById('map_summary').textContent=d.lat.length+` eventos (${yMin}–${yMax})`;
+  // --- mapa geográfico ---
+  const magClean=d.mag.map(m=>isNaN(m)?null:m);
+  Plotly.react('geomap',[{
+    type:'scattergeo',lon:d.lon,lat:d.lat,text:d.txt,hoverinfo:'text',mode:'markers',
+    marker:{size:4,color:magClean,colorscale:'YlOrRd',cmin:Math.min(...magClean.filter(x=>x!=null)),
+      cmax:Math.max(...magClean.filter(x=>x!=null)),opacity:.7,colorbar:{title:'valor',thickness:10}}
+  }],{...PLOTBG,margin:{t:0,b:0,l:0,r:0},
+    geo:{showland:true,landcolor:'#232a52',showocean:true,oceancolor:'#141831',
+      showcountries:true,countrycolor:'#3a4078',coastlinecolor:'#3a4078',
+      bgcolor:'#1a1e3a',projection:{type:'natural earth'}}},{displayModeBar:false});
+
+  // --- grilla espacial ---
+  const sz=parseInt(document.getElementById('grid_size').value);
+  const metric=document.getElementById('grid_metric').value;
+  const nLon=Math.round(360/sz), nLat=Math.round(180/sz);
+  const cnt=Array.from({length:nLat},()=>new Array(nLon).fill(0));
+  const sumM=Array.from({length:nLat},()=>new Array(nLon).fill(0));
+  const sumY=Array.from({length:nLat},()=>new Array(nLon).fill(0));
+  for(let i=0;i<d.lat.length;i++){
+    let li=Math.floor((d.lat[i]+90)/sz); let oi=Math.floor((d.lon[i]+180)/sz);
+    li=Math.max(0,Math.min(nLat-1,li)); oi=Math.max(0,Math.min(nLon-1,oi));
+    cnt[li][oi]++; if(!isNaN(d.mag[i]))sumM[li][oi]+=d.mag[i]; if(!isNaN(d.yr[i]))sumY[li][oi]+=d.yr[i];
+  }
+  const z=cnt.map((row,li)=>row.map((c,oi)=>{
+    if(c===0)return null;
+    if(metric==='count')return c;
+    if(metric==='mag')return sumM[li][oi]/c;
+    return sumY[li][oi]/c;
+  }));
+  const xC=Array.from({length:nLon},(_,o)=>-180+sz*(o+0.5));
+  const yC=Array.from({length:nLat},(_,l)=>-90+sz*(l+0.5));
+  const label={count:'eventos',mag:'valor medio',year:'año medio'}[metric];
+  Plotly.react('grid',[{
+    type:'heatmap',x:xC,y:yC,z:z,colorscale:metric==='count'?'Hot':'Viridis',
+    hoverongaps:false,colorbar:{title:label,thickness:12},
+    hovertemplate:'lon %{x}°, lat %{y}°<br>'+label+': %{z:.1f}<extra></extra>'
+  }],{...PLOTBG,margin:{t:6,b:40,l:40,r:10},
+    xaxis:{title:'Longitud',range:[-180,180],gridcolor:'#33396b',zeroline:false},
+    yaxis:{title:'Latitud',range:[-90,90],gridcolor:'#33396b',zeroline:false}},{displayModeBar:false});
+
+  if(!gridBound){
+    const gd=document.getElementById('grid');
+    gd.on('plotly_click',ev=>{
+      const p=ev.points[0]; const cx=p.x, cy=p.y; const s=parseInt(document.getElementById('grid_size').value);
+      selectedCell={lonMin:cx-s/2,lonMax:cx+s/2,latMin:cy-s/2,latMax:cy+s/2,sz:s};
+      renderTime();renderAstro();
+    });
+    gridBound=true;
+  }
+  renderTime();renderAstro();
+}
+// índices (originales) de eventos que pasan año + (opcional) celda
+function subsetIndices(useCell){
+  const all=eventNums();const [yMin,yMax]=yearRange();const out=[];
+  for(let i=0;i<all.lat.length;i++){
+    if(all.yr[i]<yMin||all.yr[i]>yMax)continue;
+    if(useCell&&selectedCell){const c=selectedCell;
+      if(all.lat[i]<c.latMin||all.lat[i]>=c.latMax||all.lon[i]<c.lonMin||all.lon[i]>=c.lonMax)continue;}
+    out.push(all.idx[i]);
+  }
+  return out;
+}
+function renderTime(){
+  const idx=subsetIndices(true);
+  const years=idx.map(i=>parseInt(String(events[i].datetime_utc).slice(0,4))).filter(y=>!isNaN(y));
+  const scope=document.getElementById('time_scope');
+  if(selectedCell){const c=selectedCell;
+    scope.textContent=`(celda lon ${c.lonMin}…${c.lonMax}°, lat ${c.latMin}…${c.latMax}° · ${years.length} eventos)`;
+  }else scope.textContent=`(todos los eventos · ${years.length})`;
+  Plotly.react('timehist',[{
+    x:years,type:'histogram',xbins:{size:1},marker:{color:'#7c5cff'}
+  }],{...PLOTBG,margin:{t:6,b:40,l:50,r:10},bargap:.05,
+    xaxis:{title:'Año',gridcolor:'#33396b'},yaxis:{title:'Nº de eventos',gridcolor:'#33396b'}},{displayModeBar:false});
+}
+function clearCell(){selectedCell=null;renderTime();renderAstro();}
+
+// estadística en el navegador
+function erfc(x){ // aproximación Abramowitz-Stegun 7.1.26
+  const z=Math.abs(x),t=1/(1+0.3275911*z);
+  const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z);
+  return x>=0?1-y:1+y;
+}
+const pFromZ=z=>erfc(Math.abs(z)/Math.SQRT2);
+function bh(ps){ // Benjamini-Hochberg
+  const n=ps.length,idx=ps.map((p,i)=>[p,i]).sort((a,b)=>a[0]-b[0]);
+  const out=new Array(n);let prev=1;
+  for(let k=n-1;k>=0;k--){const v=Math.min(prev,idx[k][0]*n/(k+1));prev=v;out[idx[k][1]]=Math.min(1,v);}
+  return out;
+}
+function renderAstro(){
+  const FN=window.FEATURE_NAMES,EF=window.EVENT_FEATURES;
+  const sum=document.getElementById('astro_summary');
+  if(!FN||!EF){sum.textContent='features.js no cargado';return;}
+  if(!selectedCell){sum.textContent='selecciona una celda en la grilla';
+    Plotly.react('astrobar',[],{...PLOTBG});document.querySelector('#astrotable thead').innerHTML='';document.querySelector('#astrotable tbody').innerHTML='';return;}
+  const S=subsetIndices(true);          // zona seleccionada
+  const allYear=new Set(subsetIndices(false));
+  const Sset=new Set(S);
+  const R=[...allYear].filter(i=>!Sset.has(i)); // resto del mundo (mismo rango de años)
+  const nS=S.length,nR=R.length;
+  if(nS<20||nR<20){sum.textContent=`muestra insuficiente (zona ${nS}, resto ${nR}; se requieren ≥20)`;
+    Plotly.react('astrobar',[],{...PLOTBG});return;}
+  const cntS=new Array(FN.length).fill(0),cntR=new Array(FN.length).fill(0);
+  S.forEach(i=>EF[i].forEach(fi=>cntS[fi]++));
+  R.forEach(i=>EF[i].forEach(fi=>cntR[fi]++));
+  const filt=document.getElementById('astro_filter').value;
+  let rows=[];
+  for(let f=0;f<FN.length;f++){
+    if(filt!=='all'&&!FN[f].startsWith(filt))continue;
+    const a=cntS[f],c=cntR[f];const pS=a/nS,pR=c/nR,pp=(a+c)/(nS+nR);
+    const se=Math.sqrt(pp*(1-pp)*(1/nS+1/nR));
+    const z=se>0?(pS-pR)/se:0;const p=pFromZ(z);
+    rows.push({f:FN[f],pS,pR,rr:pR>0?pS/pR:NaN,z,p});
+  }
+  const fdr=bh(rows.map(r=>r.p));rows.forEach((r,i)=>r.fdr=fdr[i]);
+  rows.sort((x,y)=>Math.abs(y.z)-Math.abs(x.z));
+  const nsig=rows.filter(r=>r.fdr<0.05).length;
+  sum.textContent=`zona ${nS} vs resto ${nR} · ${nsig} significativas (FDR<0.05)`;
+  const top=rows.slice(0,25).reverse();
+  Plotly.react('astrobar',[{
+    x:top.map(r=>r.z),y:top.map(r=>prettyName(r.f)),type:'bar',orientation:'h',
+    marker:{color:top.map(r=>r.fdr<0.05?'#3ddc97':(r.z>=0?'#ff5d73':'#4aa3ff'))},
+    text:top.map(r=>r.z.toFixed(1)),textposition:'auto'
+  }],{...PLOTBG,margin:{t:6,l:10,b:40,r:10},
+    xaxis:{title:'z (zona vs resto) — derecha: más frecuente en la zona',gridcolor:'#33396b',zerolinecolor:'#7c5cff'},
+    yaxis:{automargin:true}},{displayModeBar:false});
+  // tabla
+  const th=document.querySelector('#astrotable thead');
+  th.innerHTML='<tr><th>Configuración</th><th>Zona</th><th>Resto</th><th>RR</th><th>z</th><th>p(FDR)</th></tr>';
+  const tb=document.querySelector('#astrotable tbody');tb.innerHTML='';
+  rows.slice(0,200).forEach(r=>{tb.insertAdjacentHTML('beforeend',`<tr>
+    <td>${prettyName(r.f)}</td><td>${r.pS.toFixed(3)}</td><td>${r.pR.toFixed(3)}</td>
+    <td>${isNaN(r.rr)?'—':r.rr.toFixed(2)}</td><td>${r.z.toFixed(2)}</td>
+    <td class="${r.fdr<0.05?'sig':''}">${r.fdr.toExponential(1)}</td></tr>`);});
+}
+
+// ---------- hipótesis y expansión ----------
+const POINTS=['Sol','Luna','Mercurio','Venus','Marte','Júpiter','Saturno','Urano','Neptuno','Plutón','Nodo lunar','Ascendente','Medio Cielo'];
+let hyps=JSON.parse(localStorage.getItem('inv_hyps')||'[]');
+(function(){
+  ['h_p1','h_p2'].forEach(id=>{const s=document.getElementById(id);POINTS.forEach(p=>{const o=document.createElement('option');o.textContent=p;s.appendChild(o);});});
+  document.getElementById('h_p2').selectedIndex=4;
+  const hs=document.getElementById('h_house');for(let i=1;i<=12;i++){const o=document.createElement('option');o.value=o.textContent=i;hs.appendChild(o);}
+  ['h_domain','h_kind','h_p1','h_asp','h_p2','h_house','h_orb','h_dir','h_filter'].forEach(id=>{
+    const el=document.getElementById(id);el.addEventListener('input',hPreview);el.addEventListener('change',hPreview);});
+  hPreview();renderHyp();
+})();
+function hKindChange(){
+  const asp=document.getElementById('h_kind').value==='aspect';
+  document.getElementById('h_aspbox').style.display=asp?'':'none';
+  document.getElementById('h_p2box').style.display=asp?'':'none';
+  document.getElementById('h_housebox').style.display=asp?'none':'';
+  hPreview();
+}
+function hStatement(){
+  const dom=document.getElementById('h_domain').value;
+  const dir=document.getElementById('h_dir').value;
+  const orb=document.getElementById('h_orb').value;
+  const filt=document.getElementById('h_filter').value.trim();
+  const fstr=filt?` (${filt})`:'';
+  let rasgo;
+  if(document.getElementById('h_kind').value==='aspect'){
+    const asp=document.getElementById('h_asp').value.split('|')[0];
+    rasgo=`${asp} ${document.getElementById('h_p1').value}–${document.getElementById('h_p2').value} (orbe ${orb}°)`;
+  }else{
+    rasgo=`${document.getElementById('h_p1').value} en la casa ${document.getElementById('h_house').value}`;
+  }
+  return `En eventos de tipo «${dom}»${fstr}, la frecuencia de ${rasgo} en el instante del evento es ${dir} que la esperada bajo el modelo nulo emparejado temporalmente, con p<0.05 corregido por FDR.`;
+}
+function hPreview(){document.getElementById('h_preview').textContent=hStatement();}
+function addHypothesis(){
+  hyps.push({domain:document.getElementById('h_domain').value,text:hStatement(),
+    dir:document.getElementById('h_dir').value,author:document.getElementById('h_author').value||'anónimo',
+    status:'propuesta',date:new Date().toISOString().slice(0,10)});
+  localStorage.setItem('inv_hyps',JSON.stringify(hyps));renderHyp();
+}
+function cycleStatus(i){
+  const order=['propuesta','pre-registrada','confirmada','rechazada'];
+  hyps[i].status=order[(order.indexOf(hyps[i].status)+1)%order.length];
+  localStorage.setItem('inv_hyps',JSON.stringify(hyps));renderHyp();
+}
+function delHyp(i){hyps.splice(i,1);localStorage.setItem('inv_hyps',JSON.stringify(hyps));renderHyp();}
+function renderHyp(){
+  document.getElementById('h_count').textContent=hyps.length+' hipótesis';
+  const col={'propuesta':'var(--muted)','pre-registrada':'#ffd166','confirmada':'var(--ok)','rechazada':'var(--excess)'};
+  const tb=document.querySelector('#htable tbody');tb.innerHTML='';
+  hyps.forEach((h,i)=>{tb.insertAdjacentHTML('beforeend',`<tr>
+    <td>${h.domain}</td><td class="small">${h.text}</td>
+    <td class="${h.dir==='mayor'?'tag-ex':'tag-de'}">${h.dir}</td>
+    <td>${h.author}</td>
+    <td><span style="cursor:pointer;color:${col[h.status]}" onclick="cycleStatus(${i})">${h.status} ↻</span></td>
+    <td><span style="cursor:pointer;color:var(--excess)" onclick="delHyp(${i})">✕</span></td></tr>`);});
+}
+function exportHypotheses(){
+  if(!hyps.length){alert('No hay hipótesis.');return;}
+  const csv=Papa.unparse(hyps);const b=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='hipotesis.csv';a.click();
+}
+
+// catálogo de fuentes de datos por ciencia
+const SOURCES=[
+  ['Sismología','Terremotos','Catálogos globales con fecha/hora UTC, lat/lon, magnitud y profundidad. (Ya cargado)','USGS Earthquake Catalog · ISC · EMSC'],
+  ['Vulcanología','Erupciones','Inicio de erupciones con fecha y coordenadas del volcán.','Smithsonian Global Volcanism Program'],
+  ['Hidrología / clima','Inundaciones','Eventos con inicio fechado y ubicación; severidad.','Dartmouth Flood Observatory · EM-DAT · Copernicus EMS'],
+  ['Meteorología','Huracanes / tornados','Génesis con fecha/hora y trayectoria.','NOAA HURDAT2 · NOAA Storm Events'],
+  ['Clima espacial','Tormentas geomagnéticas / fulguraciones','Inicio preciso (afecta biología y tecnología).','NOAA SWPC · NASA SDO'],
+  ['Cardiología','Infartos agudos','Hora de inicio de síntomas + lugar. Clásico en cronobiología.','MIMIC-IV · PhysioNet · registros hospitalarios (anonimizados)'],
+  ['Neurología','Crisis epilépticas / ACV','Marca temporal del evento; literatura de efecto lunar.','PhysioNet · CHB-MIT · estudios clínicos'],
+  ['Psiquiatría','Ingresos / urgencias','Fecha/hora de admisión; hipótesis lunares falseables.','Datos hospitalarios abiertos · CDC WONDER'],
+  ['Demografía / natalidad','Nacimientos','Requiere hora exacta (casas). Base histórica de la astro-estadística (Gauquelin).','AstroDatabank (Astrodienst) · registros civiles'],
+  ['Mortalidad','Defunciones','Fecha (a veces hora) y lugar; grandes volúmenes.','CDC WONDER · OMS Mortality DB'],
+  ['Aeronáutica','Accidentes aéreos','Fecha/hora y coordenadas precisas.','NTSB · Aviation Safety Network'],
+  ['Ciencias sociales','Conflictos / atentados','Fecha y lugar geolocalizado; muestras enormes.','GTD · ACLED'],
+  ['Economía','Crashes de mercado','Marca temporal exacta; lugar = bolsa.','Yahoo Finance · FRED'],
+];
+(function(){const tb=document.querySelector('#srctable tbody');
+  SOURCES.forEach(r=>tb.insertAdjacentHTML('beforeend',`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td class="small muted">${r[2]}</td><td class="small">${r[3]}</td></tr>`));
+})();
+
+// ---------- inicialización: mostrar estadística de ejemplo por defecto ----------
+if(results.length){afterLoad();}
+</script>
+</body>
+</html>
