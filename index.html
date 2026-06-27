@@ -560,13 +560,37 @@
 
 <!-- ===================== HIPÓTESIS Y EXPANSIÓN ===================== -->
 <section id="hipotesis" style="display:none">
+  <div class="card" style="border-left:4px solid var(--ok)">
+    <h2>✅ Ejemplo de hipótesis confirmada — úsala como plantilla</h2>
+    <p class="small muted">Esta es la primera hipótesis confirmada del proyecto. Sirve como modelo para entender cómo se formula, pre-registra y valida una hipótesis en esta plataforma.</p>
+    <div style="background:var(--panel2);border-radius:8px;padding:14px 16px;margin:12px 0;font-size:14px;line-height:1.7">
+      <b>Dominio:</b> Sismos M≥6 (USGS 2000–2024, n=3.730)<br>
+      <b>Rasgo:</b> Aspecto Mercurio–Urano, conjunción (separación angular ≤8°)<br>
+      <b>Dirección:</b> Exceso (más sismos de lo esperado durante la conjunción)<br>
+      <b>Resultado:</b> z=+5.27 · RR=1.32 (32% más sismos) · FDR q=0,000047<br>
+      <b>Validación cruzada:</b> confirmado en mitad independiente (z=+3.88, q=0,00041) ✅<br>
+      <b>Replicación pendiente:</b> catálogo GCMT 1976–1999 (pre-registrado en OSF)
+    </div>
+    <p class="small muted">💡 <b>Para formular tu propia hipótesis:</b> elige un dominio de eventos de tu ciencia, un rasgo astronómico con justificación teórica, y pre-regístrala en OSF <i>antes</i> de mirar los datos. El constructor de abajo te genera el enunciado listo para registrar.</p>
+  </div>
+
   <div class="card">
     <h2>🔭 Constructor de hipótesis falseables</h2>
     <div class="hint">Una hipótesis sirve para la ciencia solo si se puede <b>rechazar</b>. Arma la tuya con los menús: el enunciado queda en formato listo para <b>pre-registrar</b> (OSF) antes de mirar los datos. Pre-registrar evita el autoengaño y es lo que hace publicable el trabajo.</div>
     <div class="grid">
       <div><label>Dominio de eventos</label><select id="h_domain">
-        <option>sismo</option><option>inundacion</option><option>erupcion</option>
-        <option>infarto</option><option>nacimiento</option><option>otro</option></select></div>
+        <option value="sismo_M6plus">Sismos M≥6 ✅ confirmado</option>
+        <option value="sismo_M5plus">Sismos M≥5</option>
+        <option value="sismo">Sismos (historial)</option>
+        <option value="huracanes">Huracanes</option>
+        <option value="tormenta_solar">Tormentas solares</option>
+        <option value="inundacion">Inundaciones</option>
+        <option value="erupcion">Volcanes / erupciones</option>
+        <option value="sequia">Sequías</option>
+        <option value="emdat">Desastres EM-DAT</option>
+        <option value="infarto">Infartos (datos propios)</option>
+        <option value="nacimiento">Nacimientos (datos propios)</option>
+        <option value="otro">Otro</option></select></div>
       <div><label>Tipo de rasgo</label><select id="h_kind" onchange="hKindChange()">
         <option value="aspect">Aspecto entre dos puntos</option>
         <option value="house">Planeta en una casa</option></select></div>
@@ -622,13 +646,18 @@
     <p class="small muted">Estos eventos vienen cargados por defecto en la página (pestañas Tablero y Mapa) y están subidos al Supabase compartido de Invesciencias. Puedes filtrarlos por <b>dominio</b> en el Tablero y en el Mapa.</p>
     <div style="overflow:auto">
     <table>
-      <thead><tr><th>Dominio</th><th>Cantidad</th><th>Fuente</th><th>Cómo se baja</th><th>Análisis válido</th></tr></thead>
+      <thead><tr><th>Dominio</th><th>Eventos</th><th>Fuente</th><th>Estado análisis</th><th>Tipo de rasgos válidos</th></tr></thead>
       <tbody>
-        <tr><td>🟢 <b>Sismos</b></td><td>13,870</td><td>USGS FDSN</td><td><code>descargar_sismos_masivo.py</code></td><td>Aspectos + casas ✅</td></tr>
-        <tr><td>🟡 <b>Huracanes</b></td><td>2,494</td><td>NOAA HURDAT2</td><td><code>descargar_huracanes.py</code></td><td>Solo aspectos ⚠ (hora sinóptica)</td></tr>
-        <tr><td>🔵 <b>Tormentas solares</b></td><td>3,469</td><td>NASA DONKI</td><td><code>descargar_solar.py</code></td><td>Solo aspectos ⚠ (pseudo-replicación)</td></tr>
-        <tr><td>🌊 <b>Inundaciones</b></td><td>743</td><td>NASA EONET</td><td><code>descargar_eonet.py</code></td><td>Aspectos (casas con cautela)</td></tr>
-        <tr><td>🏜 <b>Sequías</b></td><td>7</td><td>NASA EONET</td><td><code>descargar_eonet.py</code></td><td>Solo aspectos (evento extenso)</td></tr>
+        <tr style="background:rgba(255,200,0,0.07)"><td>🟢 <b>Sismos M≥6</b> <span class="pill" style="background:var(--ok);color:#000">✅ confirmado</span></td><td>3.730</td><td>USGS FDSN</td><td>Mercurio–Urano conjunción: z=+5.27, RR=1.32, split ✅</td><td>Aspectos + casas</td></tr>
+        <tr><td>🟢 <b>Sismos M≥6 — exploratoria</b></td><td>1.865</td><td>USGS FDSN</td><td>4 candidatos FDR&lt;0.05</td><td>Aspectos + casas</td></tr>
+        <tr><td>🟢 <b>Sismos M≥6 — confirmatoria</b></td><td>1.865</td><td>USGS FDSN</td><td>1 confirmado (Mercurio–Urano)</td><td>Aspectos + casas</td></tr>
+        <tr><td>🟢 <b>Sismos M≥5</b></td><td>44.390</td><td>USGS FDSN</td><td>73 sig. FDR&lt;0.05 — exploratoria, pendiente confirmación</td><td>Aspectos + casas</td></tr>
+        <tr><td>🟡 <b>Huracanes</b></td><td>2.494</td><td>NOAA HURDAT2</td><td>Análisis pendiente</td><td>Solo aspectos ⚠ (hora sinóptica)</td></tr>
+        <tr><td>🔵 <b>Tormentas solares</b></td><td>3.469</td><td>NASA DONKI</td><td>Pendiente de-duplicación</td><td>Solo aspectos ⚠</td></tr>
+        <tr><td>🌊 <b>Inundaciones</b></td><td>743</td><td>NASA EONET</td><td>Análisis pendiente</td><td>Aspectos (casas con cautela)</td></tr>
+        <tr><td>🏜 <b>Sequías</b></td><td>7</td><td>NASA EONET</td><td>Muestra insuficiente</td><td>Solo aspectos</td></tr>
+        <tr><td>🌋 <b>Volcanes</b></td><td>—</td><td>Smithsonian GVP</td><td>Descarga manual pendiente</td><td>Solo aspectos</td></tr>
+        <tr><td>🌍 <b>Desastres con impacto (EM-DAT)</b></td><td>9.840</td><td>EM-DAT (public.emdat.be)</td><td>Análisis pendiente — sin hora exacta</td><td>Solo aspectos</td></tr>
       </tbody>
     </table>
     </div>
