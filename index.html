@@ -4,60 +4,78 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cosmobiología — Invesciencias | Captura y Análisis de Eventos</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('XBIzr9RsmfE4vp4z6');</script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="data.js"></script>
 <script src="features.js"></script>
 <style>
   :root{
-    --bg:#0f1226; --panel:#1a1e3a; --panel2:#232a52; --ink:#e8ecff;
-    --muted:#9aa3d0; --accent:#7c5cff; --accent2:#2dd4bf;
-    --excess:#ff5d73; --deficit:#4aa3ff; --line:#33396b; --ok:#3ddc97;
+    /* Paleta Fundación Invesciencias */
+    --verde:#3A8C6E; --verde-oscuro:#2A6B52; --verde-profundo:#1A4A38;
+    --verde-claro:#5BAF8F; --verde-palido:#E8F5F0; --verde-muy-palido:#F3FAF7;
+    --oro:#C8A84B; --oro-suave:#E2C97E;
+    --bg:#F7F9F8; --panel:#FFFFFF; --panel2:#F3FAF7; --ink:#1A2820;
+    --muted:#4A5E56; --accent:#3A8C6E; --accent2:#2A6B52;
+    --excess:#C0392B; --deficit:#336EB8; --line:#D4E8E0; --ok:#2A6B52;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
-  header{padding:18px 28px;background:linear-gradient(90deg,#1a1e3a,#2a1e52);border-bottom:1px solid var(--line)}
-  header h1{margin:0;font-size:20px;letter-spacing:.3px}
-  header p{margin:4px 0 0;color:var(--muted);font-size:13px}
-  nav{display:flex;gap:6px;padding:0 28px;background:var(--panel);border-bottom:1px solid var(--line)}
-  nav button{background:none;border:none;color:var(--muted);padding:14px 18px;cursor:pointer;font-size:14px;border-bottom:2px solid transparent}
-  nav button.active{color:var(--ink);border-bottom-color:var(--accent)}
+  header{display:flex;align-items:center;gap:16px;padding:16px 28px;background:linear-gradient(100deg,var(--verde-profundo),var(--verde));border-bottom:3px solid var(--oro)}
+  header .logo-badge{width:60px;height:60px;flex:0 0 auto;background:#fff;border-radius:14px;padding:6px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+  header .logo-badge img{width:100%;height:100%;object-fit:contain;display:block}
+  header h1{margin:0;font-size:20px;letter-spacing:.3px;color:#fff}
+  header p{margin:4px 0 0;color:var(--verde-palido);font-size:13px}
+  nav{display:flex;gap:6px;padding:0 28px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+  nav button{background:none;border:none;color:var(--muted);padding:14px 18px;cursor:pointer;font-size:14px;border-bottom:3px solid transparent;font-weight:500}
+  nav button:hover{color:var(--verde-oscuro)}
+  nav button.active{color:var(--verde-oscuro);border-bottom-color:var(--accent);font-weight:600}
   main{padding:24px 28px;max-width:1200px;margin:0 auto}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(26,74,56,.05)}
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
   label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
-  input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 11px;font-size:14px}
+  input,select,textarea{width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 11px;font-size:14px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--verde-palido)}
   textarea{min-height:120px;font-family:ui-monospace,monospace;font-size:12px}
   button.act{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:11px 18px;font-size:14px;cursor:pointer;font-weight:600}
-  button.ghost{background:var(--panel2);border:1px solid var(--line);color:var(--ink)}
+  button.act:hover{background:var(--verde-oscuro)}
+  button.ghost{background:var(--verde-muy-palido);border:1px solid var(--line);color:var(--verde-oscuro)}
+  button.ghost:hover{background:var(--verde-palido)}
   .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-  .pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--muted)}
+  .pill{display:inline-block;background:var(--verde-palido);border:1px solid var(--line);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--verde-oscuro)}
   table{width:100%;border-collapse:collapse;font-size:13px}
   th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
   th{color:var(--muted);cursor:pointer;user-select:none}
-  tr:hover td{background:var(--panel2)}
-  .sig{color:var(--ok);font-weight:600}
+  tr:hover td{background:var(--verde-muy-palido)}
+  .sig{color:var(--ok);font-weight:700}
   .muted{color:var(--muted)} .small{font-size:12px}
   .tag-ex{color:var(--excess)} .tag-de{color:var(--deficit)}
-  h2{font-size:16px;margin:0 0 14px} h3{font-size:14px;color:var(--muted);margin:18px 0 8px}
-  .hint{background:#2a1e52;border-left:3px solid var(--accent);padding:10px 14px;border-radius:6px;font-size:13px;color:var(--ink);margin:12px 0}
+  h2{font-size:16px;margin:0 0 14px;color:var(--verde-profundo)} h3{font-size:14px;color:var(--verde-oscuro);margin:18px 0 8px}
+  a{color:var(--verde-oscuro)}
+  .hint{background:var(--verde-palido);border-left:3px solid var(--accent);padding:10px 14px;border-radius:6px;font-size:13px;color:var(--ink);margin:12px 0}
+  code{background:var(--verde-palido);padding:1px 5px;border-radius:4px;font-size:.92em;color:var(--verde-profundo)}
   /* ── Tooltips de glosario ── */
-  .glos{border-bottom:1px dashed var(--accent2);cursor:help;color:var(--accent2);font-weight:500}
-  #glosBox{display:none;position:fixed;z-index:9999;max-width:340px;background:#1a1e3a;border:1px solid var(--accent2);border-radius:12px;padding:16px 18px;box-shadow:0 8px 32px #0008;font-size:13px;line-height:1.6}
-  #glosBox h4{margin:0 0 8px;color:var(--accent2);font-size:14px}
+  .glos{border-bottom:1px dashed var(--accent);cursor:help;color:var(--verde-oscuro);font-weight:600}
+  #glosBox{display:none;position:fixed;z-index:9999;max-width:340px;background:#fff;border:1px solid var(--accent);border-radius:12px;padding:16px 18px;box-shadow:0 8px 32px rgba(26,74,56,.22);font-size:13px;line-height:1.6}
+  #glosBox h4{margin:0 0 8px;color:var(--verde-oscuro);font-size:14px}
   #glosBox p{margin:0;color:var(--ink)}
   #glosBox .close-btn{position:absolute;top:10px;right:14px;cursor:pointer;color:var(--muted);font-size:16px;line-height:1}
   .stat{display:flex;gap:24px;flex-wrap:wrap}
-  .stat div b{font-size:22px;display:block}
+  .stat div b{font-size:22px;display:block;color:var(--verde-profundo)}
 </style>
 </head>
 <body>
 <header>
-  <h1>🌌 Cosmobiología — Fundación Invesciencias</h1>
-  <p>Captura generalizada de eventos fechados y análisis estadístico falseable por modelo nulo · Fase 1: Sismos</p>
+  <div class="logo-badge"><img src="logo.jpg" alt="Fundación Invesciencias"></div>
+  <div>
+    <h1>Cosmobiología — Fundación Invesciencias</h1>
+    <p>Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">Primer resultado confirmado: conjunción Mercurio–Urano en sismos M≥6</b></p>
+  </div>
 </header>
 <nav>
-  <button class="active" data-tab="captura">📝 Captura de eventos</button>
+  <button class="active" data-tab="guia">❓ Empieza aquí</button>
+  <button data-tab="captura">📝 Captura de eventos</button>
   <button data-tab="tablero">📊 Tablero estadístico</button>
   <button data-tab="mapa">🗺 Mapa y grilla</button>
   <button data-tab="hipotesis">🔭 Hipótesis y expansión</button>
@@ -66,16 +84,258 @@
 </nav>
 <main>
 
+<!-- ===================== GUÍA / EMPIEZA AQUÍ ===================== -->
+<section id="guia">
+
+  <!-- HERO -->
+  <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
+    <h2 style="font-size:22px;color:#fff;margin-bottom:6px">¿Hay patrones astronómicos en los grandes eventos del planeta?</h2>
+    <p style="font-size:15px;margin-bottom:10px">Esta plataforma permite <b>poner a prueba esa pregunta con rigor estadístico</b>, usando más de <b id="hero_n_events">34.000</b> eventos reales de <b id="hero_n_domains">11</b> dominios — sismos, huracanes, tormentas solares, desastres, inundaciones y más — comparados contra un <span style="border-bottom:1px dashed #adf;cursor:help" data-glos="modelo nulo">modelo nulo emparejado</span>. No necesitas instalar nada ni saber programar.</p>
+    <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:14px">
+      🟢 <b>Primer resultado confirmado (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano — resultado que sobrevive 522 pruebas simultáneas y se replica en una muestra independiente. <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)">Ver en el Tablero →</button>
+    </div>
+    <div class="row">
+      <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()">📊 Explorar resultados</button>
+      <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()">🗺 Ver el mapa</button>
+      <button class="ghost act" onclick="document.querySelector('[data-tab=fuentes]').click()">🌍 Datos disponibles</button>
+    </div>
+  </div>
+
+  <!-- CÓMO FUNCIONA EN 3 PASOS -->
+  <div class="card">
+    <h2>¿Cómo funciona el método?</h2>
+    <p class="small muted">Tres pasos, sin necesidad de conocer astrología ni estadística avanzada.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px">
+      <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--verde)">
+        <div style="font-size:26px;margin-bottom:6px">①</div>
+        <b>Recopilar eventos fechados</b>
+        <p class="small" style="margin-top:6px">Cada evento tiene fecha, hora y lugar: un sismo en Chile, un huracán en el Caribe, un nacimiento en Bogotá. Los datos vienen de fuentes públicas (USGS, NOAA, EM-DAT) o los aporta el investigador.</p>
+      </div>
+      <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--oro)">
+        <div style="font-size:26px;margin-bottom:6px">②</div>
+        <b>Calcular la carta astronómica</b>
+        <p class="small" style="margin-top:6px">Para cada evento real, el programa calcula automáticamente las posiciones de 10 planetas (según la NASA/JPL) y genera 200 "eventos ficticios" en fechas cercanas (±30 días) como referencia del azar.</p>
+      </div>
+      <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--accent2)">
+        <div style="font-size:26px;margin-bottom:6px">③</div>
+        <b>Comparar: ¿algo sobresale?</b>
+        <p class="small" style="margin-top:6px">Se prueban 522 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR</span>).</p>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:12px">⚠ <b>Asociación, no causalidad.</b> Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas "causan" los eventos. La física que explicaría el mecanismo, si existe, es un paso ulterior.</p>
+  </div>
+
+  <!-- RESULTADO DESTACADO -->
+  <div class="card" style="border-left:4px solid #C8A84B">
+    <h2>🟢 El primer resultado confirmado: Mercurio–Urano y los sismos M≥6</h2>
+    <p>En los <b>3.730 terremotos de magnitud ≥6</b> ocurridos entre 2000 y 2024, encontramos que la conjunción Mercurio–Urano (cuando ambos planetas están alineados a menos de 8°, lo que ocurre unas <b>~100 veces en 24 años</b> — cada ~88 días, durante ~16 días) coincide con un <b>32% más de sismos de lo esperado por azar</b>.</p>
+    <p>El resultado pasó tres filtros de rigor:</p>
+    <ol class="small" style="margin:8px 0 8px 18px">
+      <li><b>Corrección por 522 pruebas simultáneas</b> (FDR q = 0,000047) — descarta que sea suerte entre muchos intentos.</li>
+      <li><b>Validación cruzada</b> — dividimos los datos en dos mitades independientes: la señal apareció en ambas, con la misma dirección.</li>
+      <li><b>Libre del artefacto principal</b> — Mercurio se mueve ~1°/día, así que el modelo nulo ±30 días captura variación real, no un efecto estático de planetas lentos.</li>
+    </ol>
+    <p class="small muted">¿Qué sigue? Pre-registro en OSF, replicación en el catálogo histórico GCMT 1976–1999 (datos que no se usaron para el descubrimiento) y búsqueda de un mecanismo físico. Ver <a style="color:var(--oro);cursor:pointer" onclick="document.querySelector('[data-tab=ayuda]').click()">📖 Metodología → Artefactos</a> para entender qué podría falsificar este resultado.</p>
+    <button class="act" style="margin-top:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)">📊 Ver el Tablero: Sismos M≥6 confirmado</button>
+  </div>
+
+  <!-- TU CIENCIA AQUÍ -->
+  <div class="card">
+    <h2>¿Tu ciencia produce eventos fechados? Esta herramienta es tuya</h2>
+    <p class="small muted">Cualquier campo que registre <b>cuándo y dónde</b> ocurrió algo puede usar este método. El planeta o el tipo de evento no importa — la pregunta es siempre la misma: ¿hay algo en el cielo que acompañe esto más de lo esperado por azar?</p>
+    <table style="margin-top:10px">
+      <thead><tr><th>Tu área</th><th>Evento de referencia</th><th>Dato clave que necesitas</th></tr></thead>
+      <tbody>
+        <tr><td>🌍 Geofísica / sismología</td><td>Terremotos, erupciones</td><td>Fecha UTC + lat/lon + magnitud</td></tr>
+        <tr><td>🌀 Meteorología / climatología</td><td>Huracanes, tormentas, sequías</td><td>Fecha de inicio + coordenadas</td></tr>
+        <tr><td>☀ Física solar / espacio</td><td>Fulguraciones, tormentas geomagnéticas</td><td>Fecha UTC (evento global)</td></tr>
+        <tr><td>🏥 Epidemiología / salud pública</td><td>Brotes, picos de consulta, infartos</td><td>Fecha + ciudad o región</td></tr>
+        <tr><td>🧬 Medicina / natalidad</td><td>Nacimientos, diagnósticos</td><td>Fecha y hora exacta + lugar</td></tr>
+        <tr><td>🌿 Ecología / fenología</td><td>Migraciones, floraciones, crecidas</td><td>Fecha + coordenadas</td></tr>
+        <tr><td>⚖ Ciencias sociales</td><td>Conflictos, delitos, decisiones</td><td>Fecha + georreferencia</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted" style="margin-top:10px">Los datos ya cargados incluyen <b id="hero_n_events2">34.503</b> eventos de <b id="hero_n_domains2">11</b> dominios. Ver la pestaña <b>🌍 Fuentes</b> para saber cómo añadir los tuyos.</p>
+  </div>
+
+  <!-- NAVEGACIÓN RÁPIDA -->
+  <div class="card">
+    <h2>¿Por dónde empezar según tu perfil?</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td style="white-space:nowrap"><b>Quiero ver resultados</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=tablero]').click()">📊 Tablero</button> — elige un dominio, explora el volcano plot</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap"><b>Quiero ver los datos en el mapa</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=mapa]').click()">🗺 Mapa y grilla</button> — filtra por dominio y zona geográfica</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap"><b>Quiero agregar mis datos</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=captura]').click()">📝 Captura</button> — ingreso manual, CSV, o nube compartida</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap"><b>Quiero formular una hipótesis</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=hipotesis]').click()">🔭 Hipótesis</button> — redacta, guarda y pre-registra en OSF</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap"><b>Quiero entender la estadística</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=ayuda]').click()">📖 Metodología</button> — modelo nulo, FDR, artefactos</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap"><b>Quiero más datos gratis</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=fuentes]').click()">🌍 Fuentes</button> — catálogos públicos por ciencia</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FAQ ESENCIAL -->
+  <div class="card">
+    <h2>Preguntas frecuentes</h2>
+
+    <h3>¿Qué es un "modelo nulo" y para qué sirve?</h3>
+    <p>Es la <b>vara de medir del azar</b>. Por cada evento real, generamos 200 eventos ficticios en fechas cercanas (±30 días) y el mismo lugar. Si Mercurio-Urano aparece igual de seguido en los reales que en los ficticios, el resultado es cero. Si aparece significativamente más, hay una pista. Sin este paso, cualquier análisis daría resultados engañosos — los planetas lentos (Neptuno, Plutón) están en la misma posición durante décadas enteras y falsearían los resultados.</p>
+
+    <h3>¿Por qué se prueban 522 configuraciones a la vez? ¿No aumenta los falsos positivos?</h3>
+    <p>Sí, y por eso aplicamos la corrección <span class="glos" data-glos="FDR">FDR de Benjamini-Hochberg</span>. Si pruebas 522 cosas al 5% de confianza, esperarías ~26 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class="glos" data-glos="split validation">validación cruzada</span>).</p>
+
+    <h3>¿Los datos astronómicos se calculan automáticamente?</h3>
+    <p>Sí. Tú solo das <b>fecha, hora y lugar</b> del evento. El programa usa la efeméride JPL DE421 (NASA) para calcular las posiciones exactas de 10 planetas. No se necesita saber nada de astrología para ingresar datos.</p>
+
+    <h3>¿Se puede usar para eventos médicos o sociales, sin lat/lon precisa?</h3>
+    <p>Sí, con una limitación: sin coordenadas precisas, no se pueden calcular las <b>casas astrológicas</b> (que dependen del lugar). Pero los <b>aspectos planeta–planeta</b> (como Mercurio–Urano) son los mismos en todo el planeta en un momento dado, así que sí son analizables. Los dominios globales (tormentas solares) ya funcionan así.</p>
+
+    <h3>¿Esto es astrología? ¿Qué dice la ciencia?</h3>
+    <p>La metodología es <b>estadística estándar aplicada a un objeto de estudio no convencional</b>. El análisis no "cree" en nada: compara frecuencias observadas contra frecuencias esperadas por azar, con los mismos métodos de epidemiología o genómica. Si el resultado es nulo, se reporta como nulo. Si hay asociación, se reporta con todas sus limitaciones. La pregunta sobre qué causa la asociación, si existe, es un paso ulterior.</p>
+
+    <h3>¿Por qué usan términos como "conjunción" o "signo zodiacal"? ¿No es eso astrología?</h3>
+    <p>Lo que computamos es <b>astronomía de posición estándar</b>: longitudes eclípticas geocéntricas de 10 cuerpos del Sistema Solar, calculadas con la efeméride <b>JPL DE421</b> (la misma que usa la NASA para sus misiones). Los resultados se expresan en la <b>franja eclíptica</b> — el plano de la órbita terrestre dividido en 360°.</p>
+    <p>Los términos que usamos son <b>compartidos entre astronomía y astrología desde la Antigüedad</b>:</p>
+    <ul class="small">
+      <li><b>Conjunción, oposición, cuadratura, trígono, sextil</b> — son simplemente <b>separaciones angulares</b> entre planetas (0°, 180°, 90°, 120°, 60°). El término "conjunción" aparece en cualquier manual de astronomía cuando dos astros se alinean en longitud eclíptica.</li>
+      <li><b>Signos del zodíaco</b> — son una forma histórica de dividir la franja eclíptica en <b>12 sectores de 30°</b>. Este sistema fue adoptado, con variaciones, por culturas de todo el mundo: griega, babilónica, india (Jyotisha), china, árabe. Lo que cambia entre culturas es el <i>punto de inicio</i> (zodíaco tropical vs. sidéreo), no el cielo en sí. Para los <b>aspectos planeta–planeta</b>, esta diferencia no importa: la separación angular entre Mercurio y Urano es la misma en cualquier sistema de referencia.</li>
+      <li><b>Casas astrológicas</b> — son la división del cielo local (relativa al horizonte de un lugar) en 12 sectores. Estas sí dependen del lugar y la hora, y son menos robustas metodológicamente. Por eso los resultados más sólidos de este proyecto son los <b>aspectos</b>, no las casas.</li>
+    </ul>
+    <p class="small muted">En resumen: usamos el <b>sistema de coordenadas eclíptico</b> que la humanidad ha empleado durante milenios para describir las posiciones planetarias, con datos de precisión sub-arco-segundo de la NASA. El nombre cultural del sistema no cambia la geometría. Un astrónomo que objetara los términos estaría objetando a Ptolomeo, Kepler y al propio manual de la IAU donde "conjunción" sigue siendo una palabra estándar.</p>
+  </div>
+
+  <!-- ===== REGISTRO INVESCIENCIAS ===== -->
+  <div class="card" id="registro_card" style="border-left:4px solid var(--oro)">
+    <h2>📋 Accede a los datos de Invesciencias</h2>
+    <p>Llena el formulario y recibirás por correo las instrucciones de descarga, el formato de datos y el protocolo de análisis para tu área de investigación.</p>
+
+    <form id="reg_form" style="display:grid;gap:12px;margin-top:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Nombre completo *</label>
+          <input id="reg_nombre" type="text" required placeholder="Tu nombre" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Institución</label>
+          <input id="reg_inst" type="text" placeholder="Universidad / empresa / independiente" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
+        </div>
+      </div>
+
+      <div>
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Correo electrónico *</label>
+        <input id="reg_email" type="email" required placeholder="tu@correo.com" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Área de investigación *</label>
+          <select id="reg_area" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
+            <option value="">— selecciona —</option>
+            <option>Geofísica / Sismología</option>
+            <option>Meteorología / Climatología</option>
+            <option>Epidemiología / Salud pública</option>
+            <option>Ecología / Biología</option>
+            <option>Medicina / Clínica</option>
+            <option>Ciencias sociales</option>
+            <option>Astronomía / Física</option>
+            <option>Otra</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Datos de interés</label>
+          <select id="reg_dominios" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
+            <option value="">— selecciona —</option>
+            <option>Sismos</option>
+            <option>Volcanes</option>
+            <option>Huracanes / Ciclones</option>
+            <option>Tormentas solares</option>
+            <option>Desastres naturales (EM-DAT)</option>
+            <option>Datos propios</option>
+            <option>Varios</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">¿Qué fenómeno quieres analizar? <span class="muted">(opcional)</span></label>
+        <textarea id="reg_pregunta" rows="2" placeholder="Ej: muertes por infarto agudo según posición lunar, brotes de dengue y ciclos planetarios..." style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;resize:vertical;box-sizing:border-box"></textarea>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <button type="submit" id="reg_btn" style="padding:10px 28px;background:var(--oro);color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">
+          Solicitar acceso
+        </button>
+        <span id="reg_msg" style="font-size:13px;display:none"></span>
+      </div>
+    </form>
+  </div>
+
+  <script>
+  document.getElementById('reg_form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const btn = document.getElementById('reg_btn');
+    const msg = document.getElementById('reg_msg');
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    msg.style.display = 'none';
+
+    const params = {
+      nombre:   document.getElementById('reg_nombre').value,
+      email:    document.getElementById('reg_email').value,
+      inst:     document.getElementById('reg_inst').value || '—',
+      area:     document.getElementById('reg_area').value,
+      dominios: document.getElementById('reg_dominios').value || '—',
+      pregunta: document.getElementById('reg_pregunta').value || '—'
+    };
+
+    emailjs.send('service_ngngnxg', 'template_pl865sg', params)
+      .then(function(){
+        msg.style.display = 'inline';
+        msg.style.color = 'var(--ok)';
+        msg.textContent = '✓ Correo enviado — revisa tu bandeja (y spam si no aparece).';
+        btn.textContent = 'Enviado';
+        document.getElementById('reg_form').reset();
+      }, function(err){
+        msg.style.display = 'inline';
+        msg.style.color = 'var(--warn)';
+        msg.textContent = 'Error al enviar: ' + (err.text || JSON.stringify(err)) + ' — escríbenos a auresy@gmail.com';
+        btn.disabled = false;
+        btn.textContent = 'Solicitar acceso';
+      });
+  });
+  </script>
+
+</section>
+
 <!-- ===================== CAPTURA ===================== -->
-<section id="captura">
+<section id="captura" style="display:none">
   <div class="card">
     <h2>Registrar un evento</h2>
     <div class="hint">Las longitudes planetarias dependen del <b>instante UTC</b>; las casas, del instante <b>y</b> el lugar. Ingresa fecha/hora en la zona que indiques y se guarda normalizado.</div>
     <div class="grid">
       <div><label>ID del evento</label><input id="f_id" placeholder="auto si vacío"></div>
       <div><label>Dominio</label><select id="f_domain">
-        <option>sismo</option><option>inundacion</option><option>erupcion</option>
-        <option>infarto</option><option>otro</option></select></div>
+        <option>sismo</option><option>huracan</option><option>tormenta_solar</option>
+        <option>inundacion</option><option>sequia</option><option>erupcion</option>
+        <option>incendio</option><option>tormenta</option><option>infarto</option>
+        <option>otro</option></select></div>
       <div><label>Subtipo</label><input id="f_subtype" placeholder="tectonico"></div>
       <div><label>Fecha</label><input id="f_date" type="date"></div>
       <div><label>Hora</label><input id="f_time" type="time" step="1"></div>
@@ -88,6 +348,26 @@
       <div><label>Tipo de valor</label><input id="f_vkind" placeholder="mag_mww"></div>
       <div><label>Fuente</label><input id="f_source" placeholder="USGS"></div>
     </div>
+
+    <h3 style="margin-top:18px">Clasificación del sismo (opcional, para estratificar el análisis)</h3>
+    <p class="small muted">Estos campos se guardan en <code>extra_json</code> y permiten luego analizar subgrupos (p. ej. solo sismos superficiales, o solo tectónicos). La <b>energía liberada</b> se calcula sola a partir de la magnitud.</p>
+    <div class="grid">
+      <div><label>Profundidad (km)</label><input id="f_depth" type="number" step="any" placeholder="10"></div>
+      <div><label>Intensidad (Mercalli / MMI)</label><input id="f_intensity" placeholder="VII"></div>
+      <div><label>Naturaleza / causa</label><select id="f_cause">
+        <option value="">—</option>
+        <option value="tectonico">tectónico</option>
+        <option value="volcanico">volcánico</option>
+        <option value="colapso">colapso</option>
+        <option value="fracking">fracking / inducido</option>
+        <option value="explosion">explosión</option>
+        <option value="otro">otro</option></select></div>
+      <div><label>Duración (s)</label><input id="f_duration" type="number" step="any" placeholder="30"></div>
+      <div><label>Efecto / daño</label><input id="f_effect" placeholder="daño estructural leve"></div>
+      <div><label>Población afectada</label><input id="f_population" type="number" step="any" placeholder="50000"></div>
+      <div><label>Energía liberada (J) — automática</label><input id="f_energy" readonly placeholder="se calcula con la magnitud"></div>
+    </div>
+
     <div class="row">
       <button class="act" onclick="addEvent()">＋ Agregar evento</button>
       <span class="pill" id="count">0 eventos en memoria</span>
@@ -106,9 +386,14 @@
 
   <div class="card">
     <h2>☁ Nube compartida (Supabase)</h2>
-    <p class="small muted">Para que varios investigadores de Invesciencias aporten al mismo banco de eventos. Crea un proyecto gratis en supabase.com y la tabla <code>eventos</code> (SQL en README). Pega aquí tu URL y la clave <code>anon</code>.</p>
+    <p class="small muted">Supabase <b>no es una fuente de datos</b>: es un almacén en la nube, gratis, donde los investigadores de Invesciencias <b>comparten entre ellos</b> los eventos que cargan. Crea un proyecto en supabase.com y la tabla <code>eventos</code> con el SQL de <code>SETUP_SUPABASE.md</code> (ya encaja con esta página, sin adaptar nada).</p>
+    <div class="hint small">
+      <b>¿De dónde saco estos dos datos?</b> En supabase.com → tu proyecto → <i>Project Settings → API</i>.
+      La <b>URL del proyecto</b> es la de Supabase (<code>https://....supabase.co</code>), <u>no</u> la de GitHub.
+      La <b>clave anon</b> es pública por diseño (empieza con <code>eyJ...</code>); nunca compartas la clave <code>service_role</code>.
+    </div>
     <div class="grid">
-      <div><label>URL del proyecto</label><input id="sb_url" placeholder="https://xxxx.supabase.co"></div>
+      <div><label>URL del proyecto (Supabase, no GitHub)</label><input id="sb_url" placeholder="https://xxxx.supabase.co"></div>
       <div><label>Clave anon (public)</label><input id="sb_key" placeholder="eyJ..."></div>
     </div>
     <div class="row">
@@ -138,11 +423,13 @@
 <section id="tablero" style="display:none">
   <div class="card">
     <h2>Resultados del modelo nulo</h2>
-    <p class="small muted">Carga el archivo <code>resultados_estadisticos.csv</code> generado por <code>nullmodel.py</code>.</p>
+    <p class="small muted">Resultados precalculados por <code>nullmodel.py</code>. Elige el <b>dominio</b> para comparar sismos, huracanes, etc.</p>
     <div class="row">
-      <label class="ghost act" style="display:inline-block">Cargar resultados_estadisticos.csv<input type="file" id="resfile" accept=".csv" style="display:none" onchange="loadResults(event)"></label>
-      <button class="ghost act" onclick="tryAutoLoad()">Intentar carga automática</button>
+      <div><label>Dominio a analizar</label>
+        <select id="res_domain" onchange="switchResultDomain()"><option value="sismo">Sismos</option></select></div>
+      <label class="ghost act" style="display:inline-block;align-self:flex-end">Cargar otro CSV<input type="file" id="resfile" accept=".csv" style="display:none" onchange="loadResults(event)"></label>
     </div>
+    <div id="domWarn" class="hint" style="display:none;border-left-color:var(--oro)"></div>
     <div class="stat" id="summary" style="margin-top:16px"></div>
   </div>
 
@@ -170,14 +457,48 @@
       <table id="restable"><thead></thead><tbody></tbody></table>
     </div>
   </div>
+
+  <div class="card" id="compareCard">
+    <h2>⚖ Comparativa entre dominios</h2>
+    <div class="hint">El hallazgo más publicable es un patrón que <b>cruza dominios</b>: si una configuración aparece en sismos pero no en huracanes ni en eventos de control, es mucho más creíble que un resultado aislado. Aquí se compara el <b>z-score</b> (desviación respecto al azar) de cada rasgo en todos los dominios con resultados.</div>
+    <div class="row">
+      <div><label>Familia de rasgos</label>
+        <select id="cmp_type" onchange="renderCompare()">
+          <option value="aspect_pp">Solo aspectos planeta–planeta (comparable entre todos)</option>
+          <option value="aspect">Todos los aspectos (incluye Asc/MC)</option>
+          <option value="all">Todos los rasgos</option>
+        </select></div>
+      <div><label>Ordenar por</label>
+        <select id="cmp_sort" onchange="renderCompare()">
+          <option value="divergence">Mayor divergencia entre dominios</option>
+          <option value="maxabs">Mayor |z| en cualquier dominio</option>
+        </select></div>
+      <div><label>Cuántos rasgos</label>
+        <select id="cmp_top" onchange="renderCompare()">
+          <option value="15">Top 15</option>
+          <option value="25" selected>Top 25</option>
+          <option value="40">Top 40</option>
+        </select></div>
+    </div>
+    <div id="compare" style="height:620px"></div>
+    <div class="hint" style="border-left-color:var(--oro)"><b>⚠ Léelo antes de interpretar:</b> dos dominios tienen sesgos conocidos que inflan sus barras.
+      <b>Huracanes:</b> casas y ángulos sesgados por la hora sinóptica (00/06/12/18 UTC).
+      <b>Tormentas solares:</b> muchas fulguraciones vienen de la <b>misma región activa</b> en pocos días (no son independientes → <b>pseudo-replicación</b>) y el punto subsolar fija al Sol en el cénit; sus z-scores están inflados y aún <b>no son válidos</b> sin de-duplicar a un evento por día/región.
+      Por eso la comparación honesta hoy es <b>sismos</b> (limpio, resultado nulo). Las otras barras sirven para <i>ilustrar</i> cómo se ven los artefactos, no como evidencia.</div>
+    <p class="small muted">La línea en z=±2.8 marca el umbral aproximado de significancia. Barras en direcciones opuestas entre dominios sugieren que no hay un mecanismo común. Usa "solo aspectos planeta–planeta" para la comparación menos sesgada.</p>
+  </div>
 </section>
 
 <!-- ===================== MAPA Y GRILLA ===================== -->
 <section id="mapa" style="display:none">
   <div class="card">
     <h2>🗺 Distribución mundial de eventos</h2>
-    <div class="hint">Mapa de los eventos cargados (los <span class="tag-ex">rojos</span> son de mayor valor/magnitud). Abajo, una <b>grilla</b> de celdas lat/lon: haz clic en una celda para ver <b>cuándo</b> ocurrieron sus eventos en el tiempo.</div>
+    <div class="hint">Mapa de los eventos cargados (los <span class="tag-ex">rojos</span> son de mayor valor/magnitud). Abajo, una <b>grilla</b> de celdas lat/lon: haz clic en una celda para ver <b>cuándo</b> ocurrieron sus eventos en el tiempo.<br><b>🆕 Eje de impacto:</b> en "Color de la grilla" elige <b>☠ Impacto</b> para ver dónde estos eventos <b>afectaron más a la población</b> (muertos/afectados). Hay <b>4.080 sismos significativos</b> (NOAA NCEI, 2,5 millones de víctimas) y el campo está listo para sumar inundaciones/sequías con datos de EM-DAT.</div>
     <div class="row">
+      <div><label>Dominio del evento</label>
+        <select id="map_domain_filter" onchange="resetCellAndRender()">
+          <option value="todos">Todos los dominios</option>
+        </select></div>
       <div><label>Tamaño de celda de la grilla</label>
         <select id="grid_size" onchange="renderMap()">
           <option value="5">5° × 5°</option>
@@ -190,11 +511,14 @@
           <option value="count">Cantidad de eventos</option>
           <option value="mag">Valor/magnitud media</option>
           <option value="year">Año medio</option>
+          <option value="impact_sum">☠ Impacto: muertos/afectados (suma)</option>
+          <option value="impact_max">☠ Impacto: peor evento</option>
         </select></div>
       <div><label>Año desde</label><input id="year_min" type="number" onchange="renderMap()"></div>
       <div><label>Año hasta</label><input id="year_max" type="number" onchange="renderMap()"></div>
       <span class="pill" id="map_summary"></span>
     </div>
+    <div id="domainWarn" class="hint" style="display:none;border-left-color:var(--oro)">🌍 <b>Dominio global — sin ubicación puntual.</b> Las tormentas solares afectan a toda la Tierra simultáneamente; las sequías cubren regiones extensas. El mapa geográfico y la grilla no aplican para este dominio.<br>→ Ve al <b>📊 Tablero</b> y selecciona este dominio para ver los resultados estadísticos.<br>→ Usa solo <b>aspectos planeta–planeta</b> (no casas ni ángulos). Ver <b>📖 Metodología → Artefactos detectados</b> para entender por qué.</div>
     <div id="geomap" style="height:430px"></div>
   </div>
 
@@ -207,6 +531,13 @@
     <h2>Distribución temporal <span id="time_scope" class="small muted">(todos los eventos)</span></h2>
     <div class="row"><button class="ghost act" onclick="clearCell()">Ver todos los eventos</button></div>
     <div id="timehist" style="height:320px"></div>
+  </div>
+
+  <div class="card">
+    <h2>🌙 Distribución por fase lunar</h2>
+    <p class="small muted">Elongación Sol–Luna en el momento de cada evento: 0° = luna nueva, 90° = cuarto creciente, 180° = luna llena, 270° = cuarto menguante. Una distribución uniforme (círculo punteado) indica ausencia de patrón. Las barras en <b style="color:var(--oro)">dorado</b> superan la expectativa; en <b style="color:var(--verde)">verde</b>, la están por debajo.</p>
+    <div id="lunarrose" style="height:420px"></div>
+    <p class="small muted" id="lunar_note" style="text-align:center;margin-top:4px"></p>
   </div>
 
   <div class="card">
@@ -287,76 +618,86 @@
 <!-- ===================== FUENTES ===================== -->
 <section id="fuentes" style="display:none">
   <div class="card">
-    <h2>🌋 Volcanes — Smithsonian Global Volcanism Program (GVP)</h2>
-    <p class="small muted">Más de 10,000 erupciones volcánicas con fecha, VEI y coordenadas. Datos del Smithsonian Institution — dominio público.</p>
+    <h2>📦 Lo que ya está descargado y en la nube</h2>
+    <p class="small muted">Estos eventos vienen cargados por defecto en la página (pestañas Tablero y Mapa) y están subidos al Supabase compartido de Invesciencias. Puedes filtrarlos por <b>dominio</b> en el Tablero y en el Mapa.</p>
+    <div style="overflow:auto">
+    <table>
+      <thead><tr><th>Dominio</th><th>Cantidad</th><th>Fuente</th><th>Cómo se baja</th><th>Análisis válido</th></tr></thead>
+      <tbody>
+        <tr><td>🟢 <b>Sismos</b></td><td>13,870</td><td>USGS FDSN</td><td><code>descargar_sismos_masivo.py</code></td><td>Aspectos + casas ✅</td></tr>
+        <tr><td>🟡 <b>Huracanes</b></td><td>2,494</td><td>NOAA HURDAT2</td><td><code>descargar_huracanes.py</code></td><td>Solo aspectos ⚠ (hora sinóptica)</td></tr>
+        <tr><td>🔵 <b>Tormentas solares</b></td><td>3,469</td><td>NASA DONKI</td><td><code>descargar_solar.py</code></td><td>Solo aspectos ⚠ (pseudo-replicación)</td></tr>
+        <tr><td>🌊 <b>Inundaciones</b></td><td>743</td><td>NASA EONET</td><td><code>descargar_eonet.py</code></td><td>Aspectos (casas con cautela)</td></tr>
+        <tr><td>🏜 <b>Sequías</b></td><td>7</td><td>NASA EONET</td><td><code>descargar_eonet.py</code></td><td>Solo aspectos (evento extenso)</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="hint" style="border-left-color:var(--oro)">Cada dominio tiene su sesgo propio. La regla general: los <b>aspectos planeta–planeta</b> sirven para todos; las <b>casas/ángulos</b> solo para eventos puntuales con hora exacta (sismos). Ver detalle en <code>COMPARABILIDAD_EVENTOS.md</code> y en la pestaña 📖 Metodología.</div>
+    <div class="row">
+      <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()">📊 Ver la estadística por dominio</button>
+      <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()">🗺 Ver el mapa por dominio</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌊 Inundaciones y 🏜 sequías — NASA EONET</h2>
+    <p class="small muted">EONET (Earth Observatory Natural Event Tracker) reúne eventos naturales con fecha y coordenadas, <b>gratis y sin clave</b>. Ya descargamos 743 inundaciones y 7 sequías.</p>
     <div class="hint">
-      <b>Descarga directa (gratis, sin registro):</b><br>
-      1. Ve a <a href="https://volcano.si.edu/search_eruption.cfm" target="_blank" style="color:var(--accent2)">volcano.si.edu/search_eruption.cfm</a><br>
-      2. Deja todos los filtros vacíos → clic en <b>Search</b><br>
-      3. En la tabla de resultados → <b>Download Results (CSV)</b><br>
-      4. Guarda el archivo como <code>GVP_Eruption_Results.csv</code> en la carpeta del proyecto<br>
-      5. Ejecuta en terminal: <code>python descargar_volcanes.py --local GVP_Eruption_Results.csv</code><br>
-      6. Importa el <code>eventos_volcanes.csv</code> generado con el botón de abajo.
+      <b>Descarga automática (1 comando):</b><br>
+      <code>python descargar_eonet.py floods drought</code> → genera <code>eventos_eonet.csv</code><br>
+      También: <code>incendios</code> (wildfires), <code>tormentas</code> (severeStorms), <code>deslizamientos</code> (landslides)…<br>
+      <code>python descargar_eonet.py --todas</code> baja todas las categorías.
+    </div>
+    <p class="small muted"><b>Inundaciones:</b> punto + fecha (las casas se usan con cautela). <b>Sequías:</b> son procesos extensos (meses) y EONET trae pocas (7). Para un catálogo grande de sequías con impacto poblacional, usar EM-DAT (abajo).</p>
+    <div class="row">
+      <label class="ghost act" style="display:inline-block;cursor:pointer">
+        📂 Cargar eventos_eonet.csv
+        <input type="file" accept=".csv" style="display:none" onchange="importFuenteFile(event,'inundacion')">
+      </label>
+      <a href="https://eonet.gsfc.nasa.gov/" target="_blank" class="ghost act" style="text-decoration:none;padding:8px 14px;font-size:13px">🔗 NASA EONET</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🏜 Sequías y desastres con impacto poblacional — EM-DAT</h2>
+    <p class="small muted">EM-DAT es la base de referencia para el <b>impacto en la población</b>: muertos, afectados y daños económicos de desastres de todo tipo, incluidas las sequías. Requiere registro académico gratis.</p>
+    <div class="hint">
+      1. Crea cuenta en <a href="https://public.emdat.be" target="_blank" style="color:var(--accent2)">public.emdat.be</a><br>
+      2. Filtra y exporta a CSV (guárdalo como <code>emdat.csv</code>)<br>
+      3. <code>python convertir_emdat.py --local emdat.csv</code> → <code>eventos_emdat.csv</code> (con muertos/afectados/daños en <code>extra_json</code>)
+    </div>
+    <p class="small muted">Limitación: a veces solo fecha (sin hora) y país (sin lat/lon precisa). Útil por aspectos y para estudiar a la población. Ver el método de impacto en <code>COMPARABILIDAD_EVENTOS.md</code>.</p>
+  </div>
+
+  <div class="card">
+    <h2>🌀 Huracanes — NOAA HURDAT2 <span class="pill">ya en la nube</span></h2>
+    <p class="small muted">Atlántico (1851→) + Pacífico Este (1949→). Cada evento = momento de máxima intensidad (viento en nudos). Ya descargamos 2,494 (filtrados a ≥1900 por el rango de las efemérides).</p>
+    <div class="hint"><b>Descarga automática:</b> <code>python descargar_huracanes.py</code> → <code>eventos_huracanes.csv</code></div>
+  </div>
+
+  <div class="card">
+    <h2>🌞 Tormentas solares — NASA DONKI <span class="pill">ya en la nube</span></h2>
+    <p class="small muted">Fulguraciones (clase C/M/X) y tormentas geomagnéticas (Kp). Ya descargamos 3,469 (2010–2026).</p>
+    <div class="hint">
+      <b>Descarga automática:</b> <code>python descargar_solar.py --inicio 2010</code><br>
+      Con clave gratis de <a href="https://api.nasa.gov" target="_blank" style="color:var(--accent2)">api.nasa.gov</a>: <code>python descargar_solar.py --key TU_CLAVE</code> (sin límite de peticiones).
+    </div>
+    <p class="small muted">⚠ Recordatorio: un evento solar afecta a toda la Tierra (no hay lugar puntual) y las fulguraciones se agrupan por región activa. Analizar solo por aspectos y, idealmente, de-duplicar a un evento por día.</p>
+  </div>
+
+  <div class="card">
+    <h2>🌋 Volcanes — Smithsonian GVP <span class="pill">descarga manual</span></h2>
+    <p class="small muted">Más de 10,000 erupciones con fecha, VEI y coordenadas. Dominio público, pero el sitio bloquea la descarga automática (CORS).</p>
+    <div class="hint">
+      1. Ve a <a href="https://volcano.si.edu/search_eruption.cfm" target="_blank" style="color:var(--accent2)">volcano.si.edu/search_eruption.cfm</a> → <b>Search</b> (sin filtros) → <b>Download Results (CSV)</b><br>
+      2. Guárdalo como <code>GVP_Eruption_Results.csv</code><br>
+      3. <code>python descargar_volcanes.py --local GVP_Eruption_Results.csv</code> → <code>eventos_volcanes.csv</code> (columna clave: VEI 0–8)
     </div>
     <div class="row">
-      <label class="act" style="display:inline-block;cursor:pointer">
-        📂 Cargar GVP CSV convertido
+      <label class="ghost act" style="display:inline-block;cursor:pointer">
+        📂 Cargar eventos_volcanes.csv
         <input type="file" accept=".csv" style="display:none" onchange="importFuenteFile(event,'erupcion')">
       </label>
-      <button class="ghost act" onclick="fetchGVPDirect()">⬇ Intentar descarga directa</button>
-      <span class="pill" id="gvpStatus"></span>
-    </div>
-    <div class="hint" style="margin-top:12px;border-left-color:var(--accent2)">
-      <b>Script Python:</b> <code>python descargar_volcanes.py --local GVP_Eruption_Results.csv</code><br>
-      Produce: <code>eventos_volcanes.csv</code> · Columna clave: <b>VEI</b> (Índice de Explosividad Volcánica 0–8)
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>🌀 Huracanes y ciclones — NOAA HURDAT2</h2>
-    <p class="small muted">~1,800 tormentas Atlántico (1851–2023) + ~700 Pacífico Este (1949–2023). Cada evento = momento de máxima intensidad del ciclón. NOAA — dominio público.</p>
-    <div class="hint">
-      <b>Descarga directa (botón):</b> el script Python descarga y convierte automáticamente desde NOAA.<br>
-      <b>Manual:</b> descarga los archivos .txt de los enlaces de abajo y usa <code>--local</code>.
-    </div>
-    <div class="row">
-      <button class="act" onclick="fetchHurdat2()">⬇ Descargar HURDAT2 (Atlántico + Pacífico)</button>
-      <span class="pill" id="hurStatus"></span>
-    </div>
-    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-      <a href="https://www.nhc.noaa.gov/data/hurdat/hurdat2-1851-2023-051124.txt" target="_blank" class="ghost act" style="text-decoration:none;padding:8px 14px;font-size:13px">📄 Atlántico .txt</a>
-      <a href="https://www.nhc.noaa.gov/data/hurdat/hurdat2-nepac-1949-2023-042624.txt" target="_blank" class="ghost act" style="text-decoration:none;padding:8px 14px;font-size:13px">📄 Pacífico Este .txt</a>
-    </div>
-    <div class="hint" style="margin-top:12px;border-left-color:var(--accent2)">
-      <b>Script Python:</b> <code>python descargar_huracanes.py</code><br>
-      Produce: <code>eventos_huracanes.csv</code> · Columna clave: <b>wind_kt</b> (viento máximo en nudos)
-    </div>
-    <div class="row" style="margin-top:8px">
-      <label class="ghost act" style="display:inline-block;cursor:pointer">
-        📂 Cargar CSV convertido de huracanes
-        <input type="file" accept=".csv" style="display:none" onchange="importFuenteFile(event,'huracan')">
-      </label>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>🌊 Inundaciones — Dartmouth Flood Observatory</h2>
-    <p class="small muted">Registro de inundaciones significativas desde 1985 con fecha, área afectada y víctimas. Universidad de Colorado — acceso abierto.</p>
-    <div class="hint">
-      1. Ve a <a href="http://floodobservatory.colorado.edu/Archives/index.html" target="_blank" style="color:var(--accent2)">floodobservatory.colorado.edu/Archives</a><br>
-      2. Descarga la hoja Excel o CSV de eventos globales<br>
-      3. Mapea con el conversor genérico de abajo (ajusta columnas de fecha y lat/lon)
-    </div>
-    <p class="small muted">Limitación: muchos registros tienen solo fecha (no hora). La hora es imprescindible para el Ascendente y las casas. Útil para aspectos planetarios, no para casas.</p>
-  </div>
-
-  <div class="card">
-    <h2>🌞 Clima espacial — NOAA SWPC</h2>
-    <p class="small muted">Fulguraciones solares clase M y X, tormentas geomagnéticas (índice Kp). Con hora exacta, datos desde 1975.</p>
-    <div class="hint">
-      <b>Fulguraciones solares:</b> <a href="https://www.ngdc.noaa.gov/stp/space-weather/solar-data/solar-features/solar-flares/x-rays/goes/xrs/" target="_blank" style="color:var(--accent2)">ngdc.noaa.gov — GOES X-ray flares</a><br>
-      <b>Tormentas geomagnéticas:</b> <a href="https://www.swpc.noaa.gov/products/planetary-k-index" target="_blank" style="color:var(--accent2)">swpc.noaa.gov — Kp index</a><br>
-      Script de conversión: próximamente (<code>descargar_solar.py</code>)
     </div>
   </div>
 
@@ -383,11 +724,71 @@
   </div>
 
   <div class="card">
-    <h2>📊 Próximas fuentes planificadas</h2>
+    <h2>🧬 Natalidad — efecto Gauquelin <span class="pill">script listo</span></h2>
+    <p class="small muted">El estudio más famoso de cosmobiología: Michel Gauquelin encontró que <b>Marte aparece más frecuentemente saliendo o culminando</b> (casas 1 y 10) en los nacimientos de campeones deportivos. Reproducible con nuestro motor porque ya calcula casas Whole Sign con hora exacta.</p>
+
+    <div class="hint" style="border-left-color:var(--oro)">
+      <b>Hipótesis Gauquelin pre-registrable en OSF:</b><br>
+      "La frecuencia de <code>house|Mars|1</code> y <code>house|Mars|10</code> en nacimientos de atletas de élite supera la esperada por el modelo nulo emparejado (FDR&lt;0.05, validación cruzada confirmatoria)."
+    </div>
+
+    <h3>Dónde conseguir los datos</h3>
+    <table class="small">
+      <thead><tr><th>Fuente</th><th>Contenido</th><th>Cómo obtenerla</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>LERRCP / Gauquelin</b></td>
+          <td>~2,000 campeones europeos. Datos originales de Michel y Françoise Gauquelin, dominio público.</td>
+          <td>Republicados en apéndices de papers de Ertel (1988, JSE 2:53-82) y Rawlins et al. (1981). Formato texto plano → <code>--lerrcp</code>.</td>
+        </tr>
+        <tr>
+          <td><b>AstroDatabank</b></td>
+          <td>Más de 30,000 personalidades con calidad AA (acta de nacimiento). Organizado por profesión.</td>
+          <td>astro.com/astro-databank → busca por categoría → Export CSV. Columnas flexibles → <code>--csv --col-dt ... --col-hora ...</code></td>
+        </tr>
+        <tr>
+          <td><b>Astrodienst (tu propia colección)</b></td>
+          <td>Cartas que hayas guardado en astro.com</td>
+          <td>Mis Datos → Exportar CSV → <code>--csv midatos.csv --profesion general</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Pipeline completo</h3>
+    <div class="hint">
+<pre style="margin:0;font-size:12px"># 1. Convertir (LERRCP o CSV)
+python convertir_gauquelin.py --lerrcp gauquelin_sports.txt --profesion atletismo
+
+# 2. Verificar columnas de un CSV antes de convertir
+python convertir_gauquelin.py --csv midatos.csv --ver-columnas
+
+# 3. Si faltan coordenadas de ciudad — geocodificar vía OpenStreetMap (gratis)
+python convertir_gauquelin.py --csv midatos.csv --profesion medicos --geocodificar
+
+# 4. Embeber en la página
+python generar_data_js.py
+python compute_features.py
+
+# 5. Análisis estadístico (con casas — válidas porque hay hora exacta)
+python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <label class="ghost act" style="display:inline-block;cursor:pointer">
+        📂 Cargar eventos_natal_*.csv
+        <input type="file" accept=".csv" style="display:none" onchange="importFuenteFile(event,'natal_general')">
+      </label>
+    </div>
+
+    <p class="small muted">⚠ Para datos de personas: usa solo fuentes anonimizadas o con datos históricos (personas fallecidas, figuras públicas). Si trabajas con datos modernos de personas vivas, requiere aprobación ética (IRB). Ver <b>📖 Metodología → Efecto Gauquelin</b>.</p>
+  </div>
+
+  <div class="card">
+    <h2>📊 Otras fuentes planificadas</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px">
       <div style="background:var(--panel2);border-radius:10px;padding:14px">
-        <b>🧬 Natalidad (Gauquelin)</b><br>
-        <span class="muted small">AstroDatabank AA, LERRCP · Requiere hora exacta · Script: <code>convertir_natalidad.py</code></span>
+        <b>🧬 Natalidad (Gauquelin) — más grupos</b><br>
+        <span class="muted small">Médicos, músicos, políticos, escritores. Mismo pipeline, distinta profesión.</span>
       </div>
       <div style="background:var(--panel2);border-radius:10px;padding:14px">
         <b>🌪 Tornados NOAA</b><br>
@@ -409,12 +810,69 @@
 <section id="ayuda" style="display:none">
 
   <div class="hint" style="margin-bottom:16px">
-    💡 <b>Haz clic en cualquier término subrayado</b> para ver su definición completa.
-    Los términos en <span class="glos">color verde</span> abren una explicación detallada.
+    💡 <b>Haz clic en cualquier término subrayado</b> para ver su definición completa. Los términos en <span class="glos">color verde</span> abren una explicación detallada.
+  </div>
+
+  <!-- ÍNDICE RÁPIDO -->
+  <div class="card" style="padding:14px 18px">
+    <p style="margin:0 0 8px;font-weight:600">Secciones de esta página:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px">
+      <a href="#met_marco" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">📐 Marco científico</a>
+      <a href="#met_nulo" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🎲 Modelo nulo</a>
+      <a href="#met_fdr" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">📊 FDR</a>
+      <a href="#met_split" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">✂ Split validation</a>
+      <a href="#met_artefactos" style="color:var(--oro);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">⚠ Artefactos ← leer primero</a>
+      <a href="#met_estrat" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🔍 Estratificación</a>
+      <a href="#met_flujo" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">⚙ Flujo de trabajo</a>
+      <a href="#met_gauquelin" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🧬 Gauquelin</a>
+      <a href="#met_glosario" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">📖 Glosario</a>
+    </div>
+  </div>
+
+  <!-- NOTA EPISTEMOLÓGICA: para astrónomos y revisores de revistas -->
+  <div id="met_marco" class="card" style="border-left:4px solid var(--accent2)">
+    <h2>📐 Marco científico: astronomía de posición, no astrología predictiva</h2>
+    <p class="small muted">Esta nota está dirigida a investigadores con formación en ciencias naturales que encuentran incómodo el lenguaje astrológico. La aclaración es importante para la integridad comunicativa del proyecto.</p>
+
+    <h3>¿Qué calculamos exactamente?</h3>
+    <p>Para cada evento calculamos las <b>longitudes eclípticas geocéntricas aparentes</b> de 10 cuerpos del Sistema Solar (Sol, Luna, Mercurio, Venus, Marte, Júpiter, Saturno, Urano, Neptuno, Plutón) usando la efeméride <b>JPL DE421</b> del Jet Propulsion Laboratory de la NASA — la misma base de datos de posiciones planetarias que se usa para calcular trayectorias de misiones espaciales. La precisión es de sub-arco-segundo.</p>
+    <p>El sistema de referencia es la <b>franja eclíptica</b>: el plano de la órbita terrestre alrededor del Sol, dividido en 360°. Es un sistema de coordenadas astronómico estándar, descrito en cualquier manual de mecánica celeste.</p>
+
+    <h3>¿Qué son los "aspectos"?</h3>
+    <p>Son simplemente <b>separaciones angulares entre pares de planetas</b> medidas en longitud eclíptica:</p>
+    <table class="small">
+      <thead><tr><th>Nombre</th><th>Separación angular</th><th>Tolerancia (orbe)</th><th>Uso en astronomía</th></tr></thead>
+      <tbody>
+        <tr><td>Conjunción</td><td>0°</td><td>±8°</td><td>Estándar — dos cuerpos con la misma longitud eclíptica</td></tr>
+        <tr><td>Oposición</td><td>180°</td><td>±8°</td><td>Estándar — cuerpo en dirección opuesta al Sol (oposición solar)</td></tr>
+        <tr><td>Cuadratura</td><td>90°</td><td>±7°</td><td>Geometría orbital; ocurre p. ej. en las cuadraturas de la Luna</td></tr>
+        <tr><td>Trígono</td><td>120°</td><td>±7°</td><td>Separación de 1/3 de la eclíptica</td></tr>
+        <tr><td>Sextil</td><td>60°</td><td>±6°</td><td>Separación de 1/6 de la eclíptica</td></tr>
+      </tbody>
+    </table>
+    <p>Todos estos términos aparecen en la literatura astronómica. "Conjunción" y "oposición" son términos de la <b>Unión Astronómica Internacional (IAU)</b>. Kepler estudió los aspectos como relaciones geométricas entre órbitas. El hecho de que la astrología tradicional también los use no los hace no-científicos.</p>
+
+    <h3>¿Qué son los "signos del zodíaco" en este contexto?</h3>
+    <p>Son una forma de <b>dividir la franja eclíptica en 12 sectores de 30°</b> con fines de referencia. Este sistema fue adoptado independientemente por múltiples culturas:</p>
+    <ul class="small">
+      <li><b>Babilónica / griega / occidental</b>: zodíaco <i>tropical</i>, anclado al equinoccio vernal (0° Aries = inicio de la primavera boreal). Es el que usamos.</li>
+      <li><b>India (Jyotisha)</b>: zodíaco <i>sidéreo</i>, anclado a las constelaciones reales. Difiere del tropical por ~24° (ayanamsa) debido a la precesión de los equinoccios.</li>
+      <li><b>China</b>: sistema de 28 mansiones lunares sobre la eclíptica, diferente división pero el mismo plano de referencia.</li>
+    </ul>
+    <p>Para los <b>aspectos planeta–planeta</b> (las separaciones angulares entre dos planetas) la distinción tropical/sidéreo <b>no importa</b>: si Mercurio y Urano están a 3° de separación, lo están en cualquier sistema de coordenadas. La diferencia solo afecta la posición absoluta de un planeta en su sector de la eclíptica, no la geometría relativa entre planetas.</p>
+    <p>En este proyecto <b>no analizamos signos zodiacales como variable</b>. La unidad de análisis es la separación angular entre pares de planetas y la posición relativa de planetas respecto al horizonte local (casas). Los signos son solo una convención de nomenclatura para describir en qué parte de la eclíptica está cada planeta.</p>
+
+    <h3>¿Por qué "cosmobiología" y no "astronomía estadística"?</h3>
+    <p>"Cosmobiología" es el término académico establecido para la investigación empírica de posibles relaciones entre posiciones astronómicas y fenómenos terrestres — introducido por el médico suizo Karl Ernst Krafft en los años 1920–30 y retomado por Michel Gauquelin en trabajos que generaron debate científico durante décadas. Usamos ese término por rigor histórico, no para validar las afirmaciones de la astrología popular.</p>
+    <p>La distinción clave: la astrología predictiva tradicional <b>interpreta</b> posiciones planetarias como portadoras de significado simbólico. Este proyecto <b>mide</b> posiciones planetarias como variables numéricas y pregunta si alguna covaria con eventos, sin asumir ninguna interpretación simbólica.</p>
+
+    <div class="hint" style="border-left-color:var(--accent2)">
+      <b>Para el revisor de revista:</b> los datos de entrada son coordenadas eclípticas JPL; las variables son separaciones angulares en grados; la estadística es z-score de proporciones con corrección FDR; la validación es split 50/50. El marco conceptual es exploración empírica de covarianza. El lenguaje astrológico es solo nomenclatura histórica del sistema de coordenadas, no una afirmación sobre mecanismos.
+    </div>
   </div>
 
   <div class="card">
-    <h2>¿Por qué un <span class="glos" data-glos="modelo nulo">modelo nulo</span>?</h2>
+    <h2 id="met_nulo">¿Por qué un <span class="glos" data-glos="modelo nulo">modelo nulo</span>?</h2>
     <p>Contar los <span class="glos" data-glos="aspecto">aspectos</span> más frecuentes en sismos <b>no es evidencia</b>: planetas lentos como Neptuno y Plutón están en sextil durante décadas, para cualquier evento — sismos, bodas, partidos de fútbol. Sin un punto de comparación, cualquier conteo parece significativo.</p>
     <p>Para cada evento real generamos <b>K controles ficticios</b> en fechas cercanas (±30 días, mismo lugar), calculamos la misma carta y comparamos frecuencias. El resultado es la diferencia entre lo real y lo aleatorio, medida con un <span class="glos" data-glos="z-score">z-score</span> y un <span class="glos" data-glos="p-valor">p-valor</span>.</p>
     <div class="hint">
@@ -423,14 +881,14 @@
   </div>
 
   <div class="card">
-    <h2>Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>)</h2>
+    <h2 id="met_fdr">Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>)</h2>
     <p>Probamos 522 características astrológicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
     <p>FDR ajusta cada p-valor teniendo en cuenta cuántas pruebas hicimos. Solo declaramos significativo lo que supera ese umbral más estricto. Resultado: en lugar de 26 falsos positivos, esperamos que máximo el 5% de los que declaramos significativos sean falsos.</p>
     <p class="small muted">El método BH es más permisivo que Bonferroni (que es demasiado conservador) y más estricto que no corregir. Es el estándar en genómica y estudios de múltiples hipótesis.</p>
   </div>
 
   <div class="card">
-    <h2><span class="glos" data-glos="split validation">Validación exploratoria + confirmatoria</span> (anti <span class="glos" data-glos="p-hacking">p-hacking</span>)</h2>
+    <h2 id="met_split"><span class="glos" data-glos="split validation">Validación exploratoria + confirmatoria</span> (anti <span class="glos" data-glos="p-hacking">p-hacking</span>)</h2>
     <p>El <span class="glos" data-glos="p-hacking">p-hacking</span> ocurre cuando buscamos en los datos con suficiente creatividad hasta encontrar algo, y reportamos solo eso. La solución es dividir los datos antes de empezar:</p>
     <ol>
       <li><b>Exploración (50%):</b> buscamos candidatos con FDR&lt;0.05. Pueden ser muchos o pocos.</li>
@@ -446,49 +904,41 @@
   </div>
 
   <div class="card">
-    <h2>Ideas de <span class="glos" data-glos="estratificación">estratificación</span> para encontrar resultados positivos</h2>
-    <p>Un análisis de <i>todos los sismos mezclados</i> puede dar negativo aunque haya señal en un subgrupo específico. La estratificación divide los eventos en grupos con características físicas similares:</p>
-
-    <h3>Por magnitud</h3>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:8px 0">
-      <div style="background:var(--panel2);border-radius:8px;padding:10px;text-align:center">
-        <b style="color:var(--accent2)">M 4–5</b><br><span class="small muted">~180,000 eventos</span><br><span class="small">Alta potencia estadística</span>
-      </div>
-      <div style="background:var(--panel2);border-radius:8px;padding:10px;text-align:center">
-        <b style="color:var(--accent2)">M 5–6</b><br><span class="small muted">~18,000 eventos</span><br><span class="small">Balance potencia/especificidad</span>
-      </div>
-      <div style="background:var(--panel2);border-radius:8px;padding:10px;text-align:center">
-        <b style="color:var(--accent2)">M 6–7</b><br><span class="small muted">~1,800 eventos</span><br><span class="small">Eventos bien registrados</span>
-      </div>
-      <div style="background:var(--panel2);border-radius:8px;padding:10px;text-align:center">
-        <b style="color:var(--accent2)">M ≥ 7</b><br><span class="small muted">~180 eventos</span><br><span class="small">Los más extremos</span>
-      </div>
-    </div>
-
-    <h3>Por profundidad focal</h3>
-    <p class="small">Los sismos <b>superficiales (&lt;70 km)</b> son los más destructivos y tienen mecanismo físico diferente a los intermedios (70–300 km) y profundos (&gt;300 km, interior del manto). Si hay influencia de marea, debería ser diferente según profundidad.</p>
-
-    <h3>Por región / contexto tectónico</h3>
-    <p class="small">El Mapa y Grilla ya permite esto: selecciona una celda y compara la estadística astrológica de esa zona vs. el resto del mundo. Zonas interesantes: Anillo de Fuego, Himalaya, Dorsal Medio-Atlántica, Mediterráneo.</p>
-
-    <h3>Por fase lunar</h3>
-    <p class="small">La marea lunar es 2.2× más fuerte en luna llena y nueva. Si hay relación, debe aparecer comparando sismos en luna llena/nueva vs. cuartos. Este análisis tiene literatura previa con resultados mixtos — ideal para comparar.</p>
-
-    <h3>Por hora local del sismo</h3>
-    <p class="small">Los efectos de marea solar son máximos al mediodía y medianoche locales. Estratificar por hora local (no UTC) puede revelar si el momento del día importa.</p>
-
-    <h3>Por estación del año</h3>
-    <p class="small">La distancia Tierra-Sol varía ~3.3% entre enero (perihelio) y julio (afelio). La marea solar cambia en consecuencia. Los 4 estratos estacionales (DJF, MAM, JJA, SON) permiten probar esta hipótesis.</p>
-
-    <div class="hint" style="margin-top:14px;border-left-color:var(--ok)">
-      <b>Hipótesis específica y pre-registrable (ejemplo):</b><br>
-      «Sismos M≥7, profundidad &lt;70 km, en zonas de subducción del Anillo de Fuego (2000–2023, n≈120): la cuadratura Marte–Luna dentro de 8° de <span class="glos" data-glos="orbe">orbe</span> ocurre con mayor frecuencia que en los controles del <span class="glos" data-glos="modelo nulo">modelo nulo</span> emparejado, con <span class="glos" data-glos="p-valor">p</span>&lt;0.05 corregido por <span class="glos" data-glos="fdr">FDR</span>.»<br><br>
-      Esta hipótesis es específica, tiene justificación física y si sale positiva en <span class="glos" data-glos="split validation">validación cruzada</span> es muy difícil de atribuir a azar.
+    <h2 id="met_estrat">🔍 <span class="glos" data-glos="estratificación">Estratificación</span>: cuándo el global da negativo y el subgrupo da positivo</h2>
+    <p>Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. El primer resultado confirmado de este proyecto (<b>Mercurio–Urano en sismos M≥6</b>) no apareció en el análisis global M≥5 — apareció al estratificar por magnitud.</p>
+    <table>
+      <thead><tr><th>Dimensión</th><th>Estratos útiles</th><th>Justificación física</th></tr></thead>
+      <tbody>
+        <tr><td><b>Magnitud</b></td><td>M4–5 · M5–6 · M6–7 · M≥7</td><td>Energía exponencial: M7 libera 1000× más que M5. La señal puede tener umbral.</td></tr>
+        <tr><td><b>Profundidad</b></td><td>Superficial &lt;70 km · Intermedio · Profundo &gt;300 km</td><td>Las mareas afectan sobre todo fallas superficiales críticamente cargadas.</td></tr>
+        <tr><td><b>Causa</b></td><td>Tectónico · Volcánico · Inducido (fracking)</td><td>Los inducidos son <b>control negativo</b>: si muestran señal, es artefacto del método.</td></tr>
+        <tr><td><b>Región</b></td><td>Anillo de Fuego · Himalaya · Mediterráneo</td><td>Contexto tectónico distinto. El Mapa y Grilla ya permite esto: clic en una celda.</td></tr>
+      </tbody>
+    </table>
+    <div class="hint" style="margin-top:12px;border-left-color:var(--ok)">
+      <b>Ejemplo de hipótesis pre-registrable:</b> «Sismos M≥7, profundidad &lt;70 km, Anillo de Fuego (n≈120): la cuadratura Marte–Luna dentro de 8° ocurre con mayor frecuencia que en los controles (p&lt;0.05 FDR, validación cruzada).» — Específica, física, difícil de atribuir al azar.
     </div>
   </div>
 
   <div class="card">
-    <h2>Flujo de trabajo completo</h2>
+    <h2>🌍 Cómo se aplican los parámetros del evento al análisis</h2>
+    <p>Los componentes físicos del sismo (profundidad, energía, tipo, duración…) no entran en el cálculo de la carta, pero <b>sí estructuran el análisis estadístico</b> de tres maneras complementarias:</p>
+
+    <table>
+      <thead><tr><th>Uso</th><th>Qué hace</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td><b>Estratificar</b></td><td>Dividir en subgrupos físicamente homogéneos y analizar cada uno por separado.</td><td>Solo sismos tectónicos superficiales M≥7.</td></tr>
+        <tr><td><b>Ponderar</b></td><td>Pesar cada evento por su energía liberada en vez de contar 1 por sismo, para que los grandes "pesen" más.</td><td>¿Los aspectos Marte–Luna se asocian a más <i>energía</i>, no solo a más sismos?</td></tr>
+        <tr><td><b>Control negativo</b></td><td>Usar eventos de origen humano como grupo que NO debería mostrar señal astrológica.</td><td>Fracking y explosiones: si dan señal, es artefacto del método.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Análisis "intra-sismo" (no necesita modelo nulo)</h3>
+    <p class="small">Una vía poderosa y distinta: en lugar de comparar sismos contra controles, preguntar <b>entre los sismos mismos</b> si una medida astrológica continua se correlaciona con una medida física continua. Ejemplo: ¿los sismos con la <span class="glos" data-glos="orbe">conjunción Sol–Marte más exacta</span> (orbe menor) tienden a ser de mayor magnitud? Esto es una <b>regresión</b> dentro del catálogo y no depende del modelo nulo (aunque sigue requiriendo controlar confusores temporales).</p>
+  </div>
+
+  <div class="card">
+    <h2 id="met_flujo">Flujo de trabajo completo</h2>
     <ol>
       <li>Captura/carga eventos → exporta <code>eventos.csv</code></li>
       <li><b>Pre-registra</b> la hipótesis en <a href="https://osf.io" target="_blank" style="color:var(--accent2)">osf.io</a> antes de mirar resultados</li>
@@ -501,7 +951,73 @@
   </div>
 
   <div class="card">
-    <h2>Glosario completo — haz clic para definición</h2>
+    <h2 id="met_gauquelin">🧬 Efecto Gauquelin — natalidad y posición diurna</h2>
+    <p>El estudio estadístico más famoso en cosmobiología. Entre 1950 y 1991, Michel y Françoise Gauquelin analizaron los nacimientos de miles de profesionales europeos y encontraron una anomalía reproducible: ciertos planetas aparecen más frecuentemente <b>saliendo o culminando</b> en el horizonte en el momento del nacimiento de personas destacadas en su profesión.</p>
+
+    <h3>El hallazgo central</h3>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>Profesión</th><th>Planeta "en exceso"</th><th>Casas afectadas</th><th>n aproximado</th></tr></thead>
+      <tbody>
+        <tr><td>Campeones deportivos</td><td><b>Marte ↑</b></td><td>1 (saliendo) y 10 (culminando)</td><td>~2,088</td></tr>
+        <tr><td>Médicos eminentes</td><td><b>Saturno ↑, Marte ↑</b></td><td>1 y 10</td><td>~3,647</td></tr>
+        <tr><td>Científicos eminentes</td><td><b>Saturno ↑</b></td><td>1 y 10</td><td>~3,647</td></tr>
+        <tr><td>Actores famosos</td><td><b>Júpiter ↑</b></td><td>1 y 10</td><td>~1,409</td></tr>
+        <tr><td>Escritores</td><td><b>Luna ↑</b></td><td>1 y 10</td><td>~1,352</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Por qué es el mejor candidato a resultado positivo</h3>
+    <ul class="small">
+      <li><b>Replicado parcialmente</b> por equipos independientes (Comité Para, 1982; Ertel, 1988), aunque con controversia metodológica activa.</li>
+      <li><b>Casas válidas:</b> los datos vienen de actas de nacimiento con hora exacta → el Ascendente y el MC son calculables con precisión.</li>
+      <li>El efecto es de <b>posición diurna</b> (casa 1 y 10), no de aspectos — exactamente lo que calcula nuestro motor.</li>
+      <li>Si se replica con datos nuevos y nuestro modelo nulo emparejado, sería un paper en JSE o Correlation.</li>
+    </ul>
+
+    <h3>Cómo analizarlo en esta plataforma</h3>
+    <div class="hint">
+      <b>Paso 1 — Datos:</b> obtener CSV de AstroDatabank (calidad AA = acta de nacimiento) o del archivo LERRCP.<br>
+      <b>Paso 2 — Convertir:</b> <code>python convertir_gauquelin.py --csv datos.csv --profesion atletismo</code><br>
+      <b>Paso 3 — Embeber:</b> <code>python generar_data_js.py &amp;&amp; python compute_features.py</code><br>
+      <b>Paso 4 — Analizar con casas:</b> <code>python nullmodel.py eventos_natal_atletismo.csv 200</code><br>
+      <b>Paso 5 — Buscar en resultados:</b> <code>house|Mars|1</code> y <code>house|Mars|10</code> en la tabla del Tablero.
+    </div>
+
+    <h3>Advertencias metodológicas clave</h3>
+    <ul class="small">
+      <li><b>Efecto demográfico:</b> las tasas de natalidad varían por hora del día (más partos nocturnos en algunos períodos). El modelo nulo emparejado ±30 días lo controla si los controles se generan con la misma distribución horaria — si no, sesga. Pre-registra explícitamente cómo lo manejas.</li>
+      <li><b>Selección de la muestra:</b> ¿quién cuenta como "campeón"? La definición precisa debe ir en el pre-registro, no elegirse después de ver los resultados.</li>
+      <li><b>Consentimiento y privacidad:</b> figuras históricas públicas (fallecidas) no requieren consentimiento. Personas vivas requieren IRB. AstroDatabank contiene mayoritariamente figuras públicas históricas.</li>
+      <li><b>El "efecto de los padres":</b> Gauquelin sugirió que los propios padres también muestran el efecto, lo que apuntaría a herencia genética ligada al ciclo circadiano, no al planeta.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2 id="met_artefactos">⚠ Artefactos detectados en este proyecto</h2>
+    <p>Cada dominio nuevo trae sesgos propios. Detectarlos es parte del trabajo científico. Estos son los cuatro artefactos descubiertos en esta plataforma:</p>
+
+    <h3>1. Artefacto de planetas lentos (nulo uniforme)</h3>
+    <div class="hint">El catálogo USGS tiene más sismos en décadas recientes (mejor instrumentación). Los planetas lentos (Neptuno, Plutón) definen "qué época es" — sus configuraciones correlacionan con los años de mayor cobertura. Con un nulo uniforme aparecen <b>~24 falsos positivos</b>.</div>
+    <p class="small"><b>Solución:</b> nulo emparejado ±30 días por evento. Los planetas lentos quedan congelados entre el evento real y sus controles.</p>
+
+    <h3>2. Artefacto de densidad del catálogo</h3>
+    <p class="small">Un catálogo con épocas de distinta cobertura tiene más eventos en ciertos períodos, sesgando cualquier rasgo que varía lentamente. El nulo emparejado lo elimina al sortear controles cerca de la fecha real.</p>
+
+    <h3>3. Artefacto de hora sinóptica (huracanes)</h3>
+    <div class="hint">HURDAT2 reporta posiciones solo a horas fijas (00, 06, 12, 18 UTC). El Ascendente y el MC giran 360° en 24 h, así que caen en casas no uniformes. Al correr el análisis sobre 2.494 huracanes aparecieron <b>10 rasgos significativos — todos casas o ángulos, cero aspectos planeta–planeta puros</b>. Es ruido de muestreo, no astrología.</div>
+    <p class="small"><b>Solución:</b> analizar eventos con hora redondeada usando <b>solo aspectos planeta–planeta</b>, nunca casas ni ángulos.</p>
+
+    <h3>4. Artefacto de pseudo-replicación (tormentas solares)</h3>
+    <div class="hint">Una sola región activa del Sol produce decenas de fulguraciones en pocos días. El análisis trató cada una como dato independiente → <b>234 rasgos significativos con z hasta 8</b>. También el punto subsolar pone al Sol siempre en el cénit, saturando las casas. Los resultados solares actuales <b>no son válidos</b>.</div>
+    <p class="small"><b>Solución:</b> de-duplicar a un evento por día: <code>python descargar_solar.py --dedupe</code>. Las barras solares en el Tablero se muestran solo como ejemplo didáctico del error.</p>
+
+    <div class="hint" style="border-left-color:var(--ok);margin-top:14px">
+      <b>Regla práctica:</b> antes de celebrar un hallazgo, pregunta si el rasgo depende de <i>cuándo se registró</i> el evento (hora redondeada, densidad del catálogo) en vez de <i>cuándo ocurrió de verdad</i>. Los aspectos planeta–planeta son los más robustos — no dependen ni del lugar ni de la hora del día — y son el denominador común válido para todos los dominios.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 id="met_glosario">Glosario completo — haz clic para definición</h2>
     <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
       <span class="glos" data-glos="modelo nulo" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Modelo nulo</span>
       <span class="glos" data-glos="fdr" style="padding:6px 14px;background:var(--panel2);border-radius:20px">FDR</span>
@@ -615,11 +1131,12 @@ document.addEventListener('click',e=>{
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
-  ['captura','tablero','mapa','hipotesis','fuentes','ayuda'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
-  if(b.dataset.tab==='tablero'&&results.length){renderCharts();renderTable();
-    setTimeout(()=>{try{Plotly.Plots.resize('volcano');Plotly.Plots.resize('bar');}catch(e){}},60);}
-  if(b.dataset.tab==='mapa'){renderMap();
-    setTimeout(()=>{try{Plotly.Plots.resize('geomap');Plotly.Plots.resize('grid');Plotly.Plots.resize('timehist');}catch(e){}},60);}
+  ['guia','captura','tablero','mapa','hipotesis','fuentes','ayuda'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
+  if(b.dataset.tab==='tablero'&&results.length){renderCharts();renderTable();renderCompare();
+    setTimeout(()=>{try{Plotly.Plots.resize('volcano');Plotly.Plots.resize('bar');Plotly.Plots.resize('compare');}catch(e){}},60);}
+  if(b.dataset.tab==='mapa'){populateDomainFilter();renderMap();
+    setTimeout(()=>{try{Plotly.Plots.resize('geomap');Plotly.Plots.resize('grid');Plotly.Plots.resize('timehist');Plotly.Plots.resize('lunarrose');}catch(e){}},60);}
+  if(b.dataset.tab==='tablero'){populateDomainResults();}
 });
 
 // ---------- zonas horarias ----------
@@ -630,11 +1147,25 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
 })();
 
 // ---------- almacenamiento de eventos ----------
-const FIELDS=['event_id','domain','subtype','datetime_utc','latitude','longitude','place','value','value_kind','source'];
+const FIELDS=['event_id','domain','subtype','datetime_utc','latitude','longitude','place','value','value_kind','source','extra_json'];
 const DEMO=(window.DEFAULT_EVENTS||[]);
 // Si el usuario aún no ha empezado su propio conjunto, se muestran los datos de
 // ejemplo (sismos). Al vaciar o agregar, pasa a su propio conjunto persistido.
+// Auto-reset: si DEFAULT_EVENTS creció (nueva versión del data.js), descartamos
+// el localStorage viejo para que el usuario vea todos los dominios nuevos.
 let started=localStorage.getItem('inv_started')==='1';
+{
+  const storedLen=parseInt(localStorage.getItem('inv_events_len')||'0');
+  if(started && storedLen < DEMO.length - 500){
+    // data.js tiene >500 eventos más que lo guardado → resetear silenciosamente
+    localStorage.removeItem('inv_started');
+    localStorage.removeItem('inv_events');
+    localStorage.setItem('inv_events_len', DEMO.length);
+    started=false;
+  } else if(!started){
+    localStorage.setItem('inv_events_len', DEMO.length);
+  }
+}
 let events= started
   ? JSON.parse(localStorage.getItem('inv_events')||'[]')
   : DEMO.map(e=>({...e}));
@@ -665,11 +1196,39 @@ function toUTC(dateStr,timeStr,tz){
   }catch(e){return local.toISOString().replace(/\.\d+Z$/,'Z');}
 }
 
+// Energía sísmica liberada (Julios) a partir de la magnitud: log10(E) = 1.5*M + 4.8
+function energyFromMag(m){
+  const M=parseFloat(m);
+  if(isNaN(M))return null;
+  return Math.pow(10, 1.5*M + 4.8);
+}
+function fmtEnergy(j){
+  if(j==null)return '';
+  return j.toExponential(2)+' J';
+}
+// Auto-cálculo en vivo: al cambiar la magnitud, muestra la energía
+document.addEventListener('input',e=>{
+  if(e.target&&e.target.id==='f_value'){
+    const out=document.getElementById('f_energy');
+    if(out)out.value=fmtEnergy(energyFromMag(e.target.value));
+  }
+});
+
 function addEvent(){
   const lat=parseFloat(document.getElementById('f_lat').value);
   const lon=parseFloat(document.getElementById('f_lon').value);
   const date=document.getElementById('f_date').value;
   if(isNaN(lat)||isNaN(lon)||!date){alert('Faltan fecha, latitud o longitud.');return;}
+  const mag=document.getElementById('f_value').value;
+  // Clasificación → extra_json (solo campos con valor)
+  const clasif={};
+  const depth=document.getElementById('f_depth').value;       if(depth)clasif.depth_km=parseFloat(depth);
+  const inten=document.getElementById('f_intensity').value;   if(inten)clasif.intensity_mmi=inten;
+  const cause=document.getElementById('f_cause').value;       if(cause)clasif.cause=cause;
+  const dur=document.getElementById('f_duration').value;      if(dur)clasif.duration_s=parseFloat(dur);
+  const eff=document.getElementById('f_effect').value;        if(eff)clasif.effect=eff;
+  const pop=document.getElementById('f_population').value;    if(pop)clasif.population=parseFloat(pop);
+  const en=energyFromMag(mag);                                if(en!=null)clasif.energy_j=en;
   const e={
     event_id:document.getElementById('f_id').value||('ev'+Date.now()),
     domain:document.getElementById('f_domain').value,
@@ -677,14 +1236,25 @@ function addEvent(){
     datetime_utc:toUTC(date,document.getElementById('f_time').value,document.getElementById('f_tz').value),
     latitude:lat,longitude:lon,
     place:document.getElementById('f_place').value,
-    value:document.getElementById('f_value').value,
+    value:mag,
     value_kind:document.getElementById('f_vkind').value,
-    source:document.getElementById('f_source').value
+    source:document.getElementById('f_source').value,
+    extra_json:Object.keys(clasif).length?JSON.stringify(clasif):''
   };
   events.push(e);save();
-  ['f_id','f_subtype','f_place','f_value'].forEach(i=>document.getElementById(i).value='');
+  ['f_id','f_subtype','f_place','f_value','f_depth','f_intensity','f_duration','f_effect','f_population','f_energy'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('f_cause').value='';
 }
 
+function updateHeroStats(){
+  // Actualiza los contadores dinámicos en la bienvenida con los datos reales cargados
+  const n=window.DEFAULT_EVENTS?window.DEFAULT_EVENTS.length:events.length;
+  const doms=window.DEFAULT_EVENTS?[...new Set(window.DEFAULT_EVENTS.map(e=>e.domain).filter(Boolean))].length:1;
+  const fmt=x=>x.toLocaleString('es-CO');
+  ['hero_n_events','hero_n_events2'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=fmt(n);});
+  ['hero_n_domains','hero_n_domains2'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=doms;});
+}
+updateHeroStats();
 function renderEvents(){
   document.getElementById('count').textContent=events.length+' eventos en memoria';
   const dp=document.getElementById('demoPill');
@@ -844,7 +1414,43 @@ async function cloudPull(){
 }
 
 // ---------- tablero ----------
+const RESULTS_BY_DOMAIN=window.DEFAULT_RESULTS_BY_DOMAIN||{};
 let results=(window.DEFAULT_RESULTS||[]).filter(r=>r&&r.feature);
+// Rellena el selector de dominio del Tablero con los dominios que tienen resultados
+function populateDomainResults(){
+  const sel=document.getElementById('res_domain');
+  if(!sel)return;
+  const doms=Object.keys(RESULTS_BY_DOMAIN);
+  if(!doms.length){sel.style.display='none';return;}
+  if(sel.options.length<=1){
+    // Orden preferido: confirmado primero, luego por tamaño/interés
+    const order=['sismo_M6plus','sismo_M6plus_confirmatorio','sismo_M6plus_exploratorio','sismo_M5plus','sismo','sismo_impacto','huracanes','huracan','inundacion','tormenta_solar','erupcion','sequia','tormenta','temperatura_extrema','incendio','deslizamiento'];
+    const sorted=[...doms].sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return(ia<0?99:ia)-(ib<0?99:ib);});
+    sel.innerHTML=sorted.map(d=>`<option value="${d}">${domainLabel(d)}</option>`).join('');
+  }
+}
+const DOMAIN_WARN={
+  huracanes:'⚠ <b>Huracanes:</b> los rasgos significativos suelen ser <b>casas</b> y ángulos (Asc/MC), no aspectos. Es el <b>artefacto de la hora sinóptica</b> (HURDAT2 reporta a las 00/06/12/18 UTC). Filtra a <b>Solo aspectos</b> abajo: la señal limpia no muestra nada significativo.',
+  huracan:'⚠ <b>Huracanes:</b> los rasgos significativos suelen ser <b>casas</b> y ángulos (Asc/MC), no aspectos. Es el <b>artefacto de la hora sinóptica</b> (HURDAT2 reporta a las 00/06/12/18 UTC). Filtra a <b>Solo aspectos</b>: la señal limpia no muestra nada significativo.',
+  tormenta_solar:'⚠ <b>Tormentas solares:</b> sus z-scores están <b>inflados</b> por pseudo-replicación (muchas fulguraciones de la misma región activa) y por el punto subsolar (Sol en el cénit). <b>No son válidos</b> sin de-duplicar a un evento por día. Solo ejemplo didáctico.',
+  inundacion:'ℹ <b>Inundaciones (EONET):</b> tienen lugar y fecha, pero pueden agruparse por temporada (monzones). Prioriza los <b>aspectos planeta–planeta</b> y confirma con validación cruzada.',
+  sequia:'⚠ <b>Sequías:</b> son procesos extensos (meses) y aquí hay muy pocas (7). Muestra insuficiente; solo ilustrativo.',
+  sismo_M5plus:'⚡ <b>Sismos M≥5 — 44,390 eventos, K=200:</b> 73 rasgos FDR<0.05, de los cuales 68 son aspectos planeta–planeta. Top hallazgo: <code>Mercury|Jupiter|conjunction</code> z=11.4, y <code>Mercury|Uranus|conjunction</code> z=10.5 (exceso 20%) — <b>replica exacta del hallazgo confirmado en M≥6</b>. ADVERTENCIA: el gran N amplifica señales muy pequeñas. No todos los 73 son igualmente robustos; los que involucran pares lentos (Júpiter–Saturno, Júpiter–Urano) pueden tener artefacto residual. Prioriza los aspectos con planetas rápidos (Mercurio, Venus, Marte).',
+  sismo_M6plus:'🟢 <b>Sismos M≥6 — RESULTADO CONFIRMADO:</b> <code>aspect|Mercury|Uranus|conjunction</code> z=3.88, p_fdr=0.00041, exceso del 32%. Sobrevive FDR (522 pruebas) y validación cruzada exploratoria+confirmatoria (1,865+1,865 sismos independientes). Primer resultado positivo del proyecto. Ver pestaña <b>Sismos M≥6 — confirmatoria</b> para los 4 candidatos testados.',
+  sismo_M6plus_confirmatorio:'🟢 <b>Confirmatoria M≥6:</b> de 4 candidatos del set exploratorio, <b>1 confirmado</b> con misma dirección: <code>Mercury|Uranus|conjunction</code> (z=3.88, p_fdr=0.00041). Los otros 3 no replicaron — eran ruido. Estándar de oro anti p-hacking: este resultado es publicable.',
+  sismo_M6plus_exploratorio:'🔍 <b>Exploratoria M≥6 (50% datos):</b> 4 candidatos FDR<0.05. Solo Mercurio–Urano conjunción replicó en la confirmatoria. Ver dominio <b>Sismos M≥6 ✅ confirmado</b> para el análisis completo.',
+  sismo_impacto:'⚖ <b>Sismos ponderados por muertos:</b> 4.080 sismos significativos de NOAA NCEI (2,5 millones de víctimas), donde cada evento pesa por <code>log₁₀(1+muertos)</code>. Responde "¿alguna configuración planetaria se asocia a los sismos más <b>letales</b>, no solo a los más frecuentes?". <b>Resultado: 0 significativos</b> — tampoco hay señal con la población. Es el eje de impacto al servicio de la gente.',
+  __natal:'🧬 <b>Natalidad (efecto Gauquelin):</b> cada evento es un nacimiento con hora exacta de acta. La hipótesis clásica: <b>Marte en casas 1 y 10</b> (saliendo y culminando) aparece más en campeones deportivos que en el resto. Busca <code>house|Mars|1</code> y <code>house|Mars|10</code> en la tabla. Las casas y el Ascendente son <b>válidos</b> aquí (hora exacta disponible). Pre-registra la hipótesis en OSF antes de analizar para que el resultado sea publicable.'
+};
+// lookup que soporta prefijo natal_* para cualquier subgrupo profesional
+function domainWarnText(d){return DOMAIN_WARN[d]||(d.startsWith('natal_')?DOMAIN_WARN.__natal:null);}
+function switchResultDomain(){
+  const sel=document.getElementById('res_domain');
+  const d=sel.value;
+  const w=document.getElementById('domWarn');
+  if(w){const wt=domainWarnText(d);if(wt){w.innerHTML=wt;w.style.display='block';}else w.style.display='none';}
+  if(RESULTS_BY_DOMAIN[d]){results=RESULTS_BY_DOMAIN[d].filter(r=>r&&r.feature);afterLoad();}
+}
 function loadResults(ev){const f=ev.target.files[0];if(f)Papa.parse(f,{header:true,dynamicTyping:true,skipEmptyLines:true,complete:r=>{results=r.data;afterLoad();}});}
 function tryAutoLoad(){
   fetch('resultados_estadisticos.csv').then(r=>r.ok?r.text():Promise.reject()).then(t=>{
@@ -860,7 +1466,56 @@ function afterLoad(){
      <div><b class="${sig?'sig':''}">${sig}</b><span class="muted">significativas (FDR&lt;0.05)</span></div>
      <div><b>${n}</b><span class="muted">eventos</span></div>
      <div><b>${k}</b><span class="muted">controles (K)</span></div>`;
-  renderCharts();renderTable();
+  renderCharts();renderTable();renderCompare();
+}
+const DOMAIN_LABEL={sismo:'Sismos M≥5 (historial)',sismo_impacto:'Sismos (×muertos)',sismo_M5plus:'Sismos M≥5 — 44k ⚡',sismo_M6plus:'Sismos M≥6 ✅ confirmado',sismo_M6plus_exploratorio:'Sismos M≥6 — exploratoria',sismo_M6plus_confirmatorio:'Sismos M≥6 — confirmatoria',huracanes:'Huracanes',huracan:'Huracanes',tormenta_solar:'Tormentas solares',erupcion:'Erupciones',inundacion:'Inundaciones',sequia:'Sequías',tormenta:'Tormentas',temperatura_extrema:'Temperatura extrema',incendio:'Incendios',deslizamiento:'Deslizamientos',natal_atletismo:'Natalidad — Atletismo',natal_medicos:'Natalidad — Médicos',natal_ciclismo:'Natalidad — Ciclismo',natal_futbol:'Natalidad — Fútbol',natal_general:'Natalidad — General'};
+const DOMAIN_COLOR={sismo:'#3A8C6E',sismo_impacto:'#1A4A38',sismo_M5plus:'#5BAF8F',sismo_M6plus:'#C8A84B',sismo_M6plus_exploratorio:'#E2C97E',sismo_M6plus_confirmatorio:'#C8A84B',huracanes:'#C8A84B',huracan:'#C8A84B',tormenta_solar:'#336EB8',erupcion:'#C0392B',inundacion:'#5BAF8F',sequia:'#8A6F20',tormenta:'#336EB8',temperatura_extrema:'#C0392B',incendio:'#E67E22',deslizamiento:'#7F8C8D',natal_atletismo:'#7B3FA0',natal_medicos:'#5E4FA0',natal_ciclismo:'#9B59B6',natal_futbol:'#8E44AD',natal_general:'#6C3483'};
+// para dominios natal_* no listados, asignar etiqueta y color genéricos
+function domainLabel(d){return DOMAIN_LABEL[d]||(d.startsWith('natal_')?'Natalidad — '+d.replace('natal_',''):d);}
+function domainColor(d){return DOMAIN_COLOR[d]||(d.startsWith('natal_')?'#7B3FA0':'#888');}
+function renderCompare(){
+  const el=document.getElementById('compare');if(!el)return;
+  const doms=Object.keys(RESULTS_BY_DOMAIN);
+  if(doms.length<2){document.getElementById('compareCard').style.display='none';return;}
+  document.getElementById('compareCard').style.display='block';
+  const fType=document.getElementById('cmp_type').value;
+  const sortBy=document.getElementById('cmp_sort').value;
+  const topN=parseInt(document.getElementById('cmp_top').value);
+  const keep=f=>{
+    if(fType==='all')return true;
+    if(!f.startsWith('aspect'))return false;
+    if(fType==='aspect_pp')return !/Asc|MC/.test(f);
+    return true;
+  };
+  // mapa feature -> {dominio: z}
+  const byFeat={};
+  doms.forEach(d=>{(RESULTS_BY_DOMAIN[d]||[]).forEach(r=>{
+    if(!r||!r.feature||!keep(r.feature))return;
+    (byFeat[r.feature]=byFeat[r.feature]||{})[d]=+r.z_score;
+  });});
+  let feats=Object.keys(byFeat);
+  const score=f=>{
+    const zs=doms.map(d=>byFeat[f][d]||0);
+    if(sortBy==='divergence')return Math.max(...zs)-Math.min(...zs);
+    return Math.max(...zs.map(Math.abs));
+  };
+  feats.sort((a,b)=>score(b)-score(a));
+  feats=feats.slice(0,topN).reverse();
+  const traces=doms.map(d=>({
+    type:'bar',orientation:'h',name:domainLabel(d),
+    y:feats.map(prettyName),x:feats.map(f=>byFeat[f][d]||0),
+    marker:{color:domainColor(d)},
+    hovertemplate:'%{y}<br>'+domainLabel(d)+': z=%{x:.2f}<extra></extra>'
+  }));
+  const xs=feats.flatMap(f=>doms.map(d=>byFeat[f][d]||0));
+  const xmax=Math.max(4,...xs.map(Math.abs))*1.05;
+  Plotly.react('compare',traces,{
+    ...PLOTBG,barmode:'group',margin:{t:10,l:10,r:10,b:40},
+    legend:{orientation:'h',y:1.04},
+    xaxis:{title:'z-score (← déficit · azar=0 · exceso →)',range:[-xmax,xmax],gridcolor:'#D4E8E0',zerolinecolor:'#3A8C6E'},
+    yaxis:{automargin:true},
+    shapes:[2.8,-2.8].map(v=>({type:'line',x0:v,x1:v,y0:-0.5,y1:feats.length-0.5,line:{dash:'dot',color:'#C8A84B',width:1}}))
+  },{displayModeBar:false});
 }
 function filtered(){
   const f=document.getElementById('filterType').value;
@@ -878,28 +1533,28 @@ function renderCharts(){
   const log2=v=>Math.log2(v>0?v:1e-6);
   const nlp=p=>-Math.log10(Math.max(p,1e-300));
   const sigMask=d.map(r=>r.p_fdr<0.05);
-  const colors=d.map((r,i)=>sigMask[i]?'#3ddc97':(r.direction==='exceso'?'#ff5d73':'#4aa3ff'));
+  const colors=d.map((r,i)=>sigMask[i]?'#2A6B52':(r.direction==='exceso'?'#C0392B':'#336EB8'));
   Plotly.react('volcano',[{
     x:d.map(r=>log2(r.rel_risk)),y:d.map(r=>nlp(r.p_value)),
     text:d.map(r=>prettyName(r.feature)+`<br>RR=${(+r.rel_risk).toFixed(2)} · z=${(+r.z_score).toFixed(2)} · FDR=${(+r.p_fdr).toExponential(2)}`),
     mode:'markers',type:'scatter',hoverinfo:'text',
-    marker:{size:9,color:colors,line:{width:.5,color:'#0f1226'}}
+    marker:{size:9,color:colors,line:{width:.5,color:'#fff'}}
   }],{
-    paper_bgcolor:'#1a1e3a',plot_bgcolor:'#1a1e3a',font:{color:'#e8ecff'},
-    xaxis:{title:'← déficit   log₂(riesgo relativo)   exceso →',gridcolor:'#33396b',zerolinecolor:'#7c5cff'},
-    yaxis:{title:'−log₁₀(p)',gridcolor:'#33396b'},
-    shapes:[{type:'line',x0:Math.min(...d.map(r=>log2(r.rel_risk))),x1:Math.max(...d.map(r=>log2(r.rel_risk))),y0:nlp(0.05),y1:nlp(0.05),line:{dash:'dot',color:'#9aa3d0'}}],
+    paper_bgcolor:'#fff',plot_bgcolor:'#F3FAF7',font:{color:'#1A2820'},
+    xaxis:{title:'← déficit   log₂(riesgo relativo)   exceso →',gridcolor:'#D4E8E0',zerolinecolor:'#3A8C6E'},
+    yaxis:{title:'−log₁₀(p)',gridcolor:'#D4E8E0'},
+    shapes:[{type:'line',x0:Math.min(...d.map(r=>log2(r.rel_risk))),x1:Math.max(...d.map(r=>log2(r.rel_risk))),y0:nlp(0.05),y1:nlp(0.05),line:{dash:'dot',color:'#C8A84B'}}],
     margin:{t:10}
   },{displayModeBar:false});
 
   const top=[...d].sort((a,b)=>Math.abs(b.z_score)-Math.abs(a.z_score)).slice(0,25).reverse();
   Plotly.react('bar',[{
     x:top.map(r=>r.z_score),y:top.map(r=>prettyName(r.feature)),type:'bar',orientation:'h',
-    marker:{color:top.map(r=>r.p_fdr<0.05?'#3ddc97':(r.direction==='exceso'?'#ff5d73':'#4aa3ff'))},
+    marker:{color:top.map(r=>r.p_fdr<0.05?'#2A6B52':(r.direction==='exceso'?'#C0392B':'#336EB8'))},
     text:top.map(r=>(+r.z_score).toFixed(1)),textposition:'auto'
   }],{
-    paper_bgcolor:'#1a1e3a',plot_bgcolor:'#1a1e3a',font:{color:'#e8ecff'},
-    xaxis:{title:'z-score (desviaciones respecto al azar)',gridcolor:'#33396b',zerolinecolor:'#7c5cff'},
+    paper_bgcolor:'#fff',plot_bgcolor:'#F3FAF7',font:{color:'#1A2820'},
+    xaxis:{title:'z-score (desviaciones respecto al azar)',gridcolor:'#D4E8E0',zerolinecolor:'#3A8C6E'},
     yaxis:{automargin:true},margin:{t:10,l:10}
   },{displayModeBar:false});
 }
@@ -926,17 +1581,34 @@ function sortBy(k){sortAsc=(sortKey===k)?!sortAsc:true;sortKey=k;renderTable();}
 
 // ---------- mapa y grilla ----------
 let selectedCell=null, gridBound=false, yearBounds=null;
+function curMapDomain(){const el=document.getElementById('map_domain_filter');return el?el.value:'todos';}
+// Lee el impacto de un evento desde extra_json (muertos > afectados > daños)
+function eventImpact(e){
+  let x=e.extra_json;
+  if(!x)return {deaths:0,affected:0,damage:0};
+  if(typeof x==='string'){try{x=JSON.parse(x);}catch(_){return {deaths:0,affected:0,damage:0};}}
+  const num=v=>{const n=parseFloat(v);return isNaN(n)?0:n;};
+  return {
+    deaths:num(x.deaths),
+    affected:num(x.affected!=null?x.affected:x.displaced),
+    damage:num(x.damage_kusd!=null?x.damage_kusd:x.damageMillionsDollars)
+  };
+}
 function eventNums(){
-  const lat=[],lon=[],mag=[],yr=[],txt=[],idx=[];
+  const lat=[],lon=[],mag=[],yr=[],txt=[],idx=[],imp=[];
+  const dom=curMapDomain();
   events.forEach((e,i)=>{
+    if(dom!=='todos' && String(e.domain||'')!==dom)return;
     const la=parseFloat(e.latitude),lo=parseFloat(e.longitude);
     if(isNaN(la)||isNaN(lo))return;
     lat.push(la);lon.push(lo);idx.push(i);
     mag.push(parseFloat(e.value));
     yr.push(parseInt(String(e.datetime_utc).slice(0,4)));
-    txt.push((e.place||e.event_id||'')+'<br>'+String(e.datetime_utc).slice(0,10)+(e.value?(' · '+e.value):''));
+    const ip=eventImpact(e);imp.push(ip.deaths||ip.affected||0);
+    const itxt=ip.deaths?('<br>☠ '+ip.deaths.toLocaleString()+' muertos'):(ip.affected?('<br>👥 '+ip.affected.toLocaleString()+' afectados'):'');
+    txt.push((e.place||e.event_id||'')+'<br>'+String(e.datetime_utc).slice(0,10)+(e.value?(' · '+e.value):'')+itxt);
   });
-  return {lat,lon,mag,yr,txt,idx};
+  return {lat,lon,mag,yr,txt,idx,imp};
 }
 function yearRange(){
   const d=eventNums();const ys=d.yr.filter(y=>!isNaN(y));
@@ -945,8 +1617,22 @@ function yearRange(){
   const mx=parseInt(document.getElementById('year_max').value)||yearBounds[1];
   return [mn,mx];
 }
-const PLOTBG={paper_bgcolor:'#1a1e3a',plot_bgcolor:'#1a1e3a',font:{color:'#e8ecff'}};
+const PLOTBG={paper_bgcolor:'#fff',plot_bgcolor:'#F3FAF7',font:{color:'#1A2820'}};
 function renderMap(){
+  const _dom=curMapDomain();
+  const _isGlobal=(_dom==='tormenta_solar'||_dom==='sequia');
+  const _geomapEl=document.getElementById('geomap');
+  const _gridCardEl=document.getElementById('grid')?document.getElementById('grid').parentElement:null;
+  const _warnEl=document.getElementById('domainWarn');
+  if(_isGlobal){
+    if(_geomapEl)_geomapEl.style.display='none';
+    if(_gridCardEl)_gridCardEl.style.display='none';
+    if(_warnEl)_warnEl.style.display='block';
+    return;
+  }
+  if(_geomapEl)_geomapEl.style.display='';
+  if(_gridCardEl)_gridCardEl.style.display='';
+  if(_warnEl)_warnEl.style.display='none';
   const all=eventNums();
   // inicializar inputs de año con los límites reales del dataset
   const yb=(function(){const ys=all.yr.filter(y=>!isNaN(y));return [Math.min(...ys),Math.max(...ys)];})();
@@ -956,52 +1642,70 @@ function renderMap(){
   if(!yma.value)yma.placeholder=yb[1];
   const [yMin,yMax]=yearRange();
   // filtrar por rango de años
-  const d={lat:[],lon:[],mag:[],yr:[],txt:[],idx:[]};
+  const d={lat:[],lon:[],mag:[],yr:[],txt:[],idx:[],imp:[]};
   for(let i=0;i<all.lat.length;i++){
     if(all.yr[i]<yMin||all.yr[i]>yMax)continue;
     d.lat.push(all.lat[i]);d.lon.push(all.lon[i]);d.mag.push(all.mag[i]);
-    d.yr.push(all.yr[i]);d.txt.push(all.txt[i]);d.idx.push(all.idx[i]);
+    d.yr.push(all.yr[i]);d.txt.push(all.txt[i]);d.idx.push(all.idx[i]);d.imp.push(all.imp[i]||0);
   }
-  document.getElementById('map_summary').textContent=d.lat.length+` eventos (${yMin}–${yMax})`;
+  const metric=document.getElementById('grid_metric').value;
+  const impMode=(metric==='impact_sum'||metric==='impact_max');
+  const totImp=d.imp.reduce((a,b)=>a+b,0);
+  const conImp=d.imp.filter(v=>v>0).length;
+  document.getElementById('map_summary').textContent=
+    d.lat.length+` eventos (${yMin}–${yMax})`+(totImp>0?` · ☠ ${Math.round(totImp).toLocaleString()} muertos/afectados en ${conImp} eventos`:'');
   // --- mapa geográfico ---
   const magClean=d.mag.map(m=>isNaN(m)?null:m);
+  // tamaño del marcador por impacto si se eligió una métrica de impacto
+  let mSize=4, mColor=magClean, mScale='YlOrRd', cbTitle='valor';
+  if(impMode){
+    const mx=Math.max(1,...d.imp);
+    mSize=d.imp.map(v=>v>0?6+18*Math.sqrt(v/mx):3);
+    mColor=d.imp.map(v=>v>0?v:null);mScale='Reds';cbTitle='impacto';
+  }
   Plotly.react('geomap',[{
     type:'scattergeo',lon:d.lon,lat:d.lat,text:d.txt,hoverinfo:'text',mode:'markers',
-    marker:{size:4,color:magClean,colorscale:'YlOrRd',cmin:Math.min(...magClean.filter(x=>x!=null)),
-      cmax:Math.max(...magClean.filter(x=>x!=null)),opacity:.7,colorbar:{title:'valor',thickness:10}}
+    marker:{size:mSize,color:mColor,colorscale:mScale,
+      cmin:impMode?0:Math.min(...magClean.filter(x=>x!=null)),
+      cmax:impMode?Math.max(1,...d.imp):Math.max(...magClean.filter(x=>x!=null)),
+      opacity:.72,colorbar:{title:cbTitle,thickness:10}}
   }],{...PLOTBG,margin:{t:0,b:0,l:0,r:0},
-    geo:{showland:true,landcolor:'#232a52',showocean:true,oceancolor:'#141831',
-      showcountries:true,countrycolor:'#3a4078',coastlinecolor:'#3a4078',
-      bgcolor:'#1a1e3a',projection:{type:'natural earth'}}},{displayModeBar:false});
+    geo:{showland:true,landcolor:'#E8F5F0',showocean:true,oceancolor:'#F3FAF7',
+      showcountries:true,countrycolor:'#5BAF8F',coastlinecolor:'#5BAF8F',
+      bgcolor:'#fff',projection:{type:'natural earth'}}},{displayModeBar:false});
 
   // --- grilla espacial ---
   const sz=parseInt(document.getElementById('grid_size').value);
-  const metric=document.getElementById('grid_metric').value;
   const nLon=Math.round(360/sz), nLat=Math.round(180/sz);
   const cnt=Array.from({length:nLat},()=>new Array(nLon).fill(0));
   const sumM=Array.from({length:nLat},()=>new Array(nLon).fill(0));
   const sumY=Array.from({length:nLat},()=>new Array(nLon).fill(0));
+  const sumI=Array.from({length:nLat},()=>new Array(nLon).fill(0));
+  const maxI=Array.from({length:nLat},()=>new Array(nLon).fill(0));
   for(let i=0;i<d.lat.length;i++){
     let li=Math.floor((d.lat[i]+90)/sz); let oi=Math.floor((d.lon[i]+180)/sz);
     li=Math.max(0,Math.min(nLat-1,li)); oi=Math.max(0,Math.min(nLon-1,oi));
     cnt[li][oi]++; if(!isNaN(d.mag[i]))sumM[li][oi]+=d.mag[i]; if(!isNaN(d.yr[i]))sumY[li][oi]+=d.yr[i];
+    sumI[li][oi]+=d.imp[i]; if(d.imp[i]>maxI[li][oi])maxI[li][oi]=d.imp[i];
   }
   const z=cnt.map((row,li)=>row.map((c,oi)=>{
     if(c===0)return null;
     if(metric==='count')return c;
     if(metric==='mag')return sumM[li][oi]/c;
+    if(metric==='impact_sum')return sumI[li][oi]||null;
+    if(metric==='impact_max')return maxI[li][oi]||null;
     return sumY[li][oi]/c;
   }));
   const xC=Array.from({length:nLon},(_,o)=>-180+sz*(o+0.5));
   const yC=Array.from({length:nLat},(_,l)=>-90+sz*(l+0.5));
-  const label={count:'eventos',mag:'valor medio',year:'año medio'}[metric];
+  const label={count:'eventos',mag:'valor medio',year:'año medio',impact_sum:'muertos/afectados (suma)',impact_max:'peor evento'}[metric];
   Plotly.react('grid',[{
-    type:'heatmap',x:xC,y:yC,z:z,colorscale:metric==='count'?'Hot':'Viridis',
+    type:'heatmap',x:xC,y:yC,z:z,colorscale:(metric==='count'||impMode)?'Hot':'Viridis',
     hoverongaps:false,colorbar:{title:label,thickness:12},
-    hovertemplate:'lon %{x}°, lat %{y}°<br>'+label+': %{z:.1f}<extra></extra>'
+    hovertemplate:'lon %{x}°, lat %{y}°<br>'+label+': %{z:,.0f}<extra></extra>'
   }],{...PLOTBG,margin:{t:6,b:40,l:40,r:10},
-    xaxis:{title:'Longitud',range:[-180,180],gridcolor:'#33396b',zeroline:false},
-    yaxis:{title:'Latitud',range:[-90,90],gridcolor:'#33396b',zeroline:false}},{displayModeBar:false});
+    xaxis:{title:'Longitud',range:[-180,180],gridcolor:'#D4E8E0',zeroline:false},
+    yaxis:{title:'Latitud',range:[-90,90],gridcolor:'#D4E8E0',zeroline:false}},{displayModeBar:false});
 
   if(!gridBound){
     const gd=document.getElementById('grid');
@@ -1012,7 +1716,7 @@ function renderMap(){
     });
     gridBound=true;
   }
-  renderTime();renderAstro();
+  renderTime();renderAstro();renderLunar();
 }
 // índices (originales) de eventos que pasan año + (opcional) celda
 function subsetIndices(useCell){
@@ -1033,11 +1737,128 @@ function renderTime(){
     scope.textContent=`(celda lon ${c.lonMin}…${c.lonMax}°, lat ${c.latMin}…${c.latMax}° · ${years.length} eventos)`;
   }else scope.textContent=`(todos los eventos · ${years.length})`;
   Plotly.react('timehist',[{
-    x:years,type:'histogram',xbins:{size:1},marker:{color:'#7c5cff'}
+    x:years,type:'histogram',xbins:{size:1},marker:{color:'#3A8C6E'}
   }],{...PLOTBG,margin:{t:6,b:40,l:50,r:10},bargap:.05,
-    xaxis:{title:'Año',gridcolor:'#33396b'},yaxis:{title:'Nº de eventos',gridcolor:'#33396b'}},{displayModeBar:false});
+    xaxis:{title:'Año',gridcolor:'#D4E8E0'},yaxis:{title:'Nº de eventos',gridcolor:'#D4E8E0'}},{displayModeBar:false});
 }
-function clearCell(){selectedCell=null;renderTime();renderAstro();}
+function clearCell(){selectedCell=null;renderTime();renderAstro();renderLunar();}
+
+// Ángulo Sol-Luna aproximado desde fecha (fallback si sun_moon_angle no está en data.js)
+const _NEW_MOON_REF_MS = new Date('2000-01-06T18:14:00Z').getTime();
+function approxSunMoonAngle(datetime_utc){
+  const ms = new Date(datetime_utc).getTime() - _NEW_MOON_REF_MS;
+  if(isNaN(ms)) return NaN;
+  return ((ms / 86400000 / 29.53059 * 360) % 360 + 360) % 360;
+}
+
+function renderLunar(){
+  const el = document.getElementById('lunarrose');
+  if(!el) return;
+  const dom = curMapDomain();
+  // para dominios globales no hay rosa significativa, pero la mostramos igual
+  const [yMin, yMax] = yearRange();
+  const angles = [];
+  let nApprox = 0;
+  events.forEach(e => {
+    if(dom !== 'todos' && String(e.domain || '') !== dom) return;
+    const yr = parseInt(String(e.datetime_utc || '').slice(0, 4));
+    if(isNaN(yr) || yr < yMin || yr > yMax) return;
+    let ang = parseFloat(e.sun_moon_angle);
+    if(isNaN(ang)){
+      ang = approxSunMoonAngle(e.datetime_utc);
+      if(!isNaN(ang)) nApprox++;
+    }
+    if(!isNaN(ang)) angles.push(ang);
+  });
+
+  const BINS = 24, SZ = 360 / BINS;
+  const counts = new Array(BINS).fill(0);
+  angles.forEach(a => { const b = Math.min(BINS - 1, Math.floor(((a % 360) + 360) % 360 / SZ)); counts[b]++; });
+  const theta = Array.from({length: BINS}, (_, i) => i * SZ);
+  const expected = angles.length / BINS;
+
+  const phaseEmoji = a => {
+    if(a < 22.5 || a >= 337.5) return '🌑';
+    if(a < 67.5)  return '🌒';
+    if(a < 112.5) return '🌓';
+    if(a < 157.5) return '🌔';
+    if(a < 202.5) return '🌕';
+    if(a < 247.5) return '🌖';
+    if(a < 292.5) return '🌗';
+    return '🌘';
+  };
+  const txt = theta.map((a, i) =>
+    `${phaseEmoji(a)} ${a.toFixed(0)}°–${(a + SZ).toFixed(0)}°<br>` +
+    `${counts[i]} eventos (esperado: ${expected.toFixed(1)})<br>` +
+    `${counts[i] > expected ? '↑ exceso' : '↓ déficit'} ${Math.abs(counts[i] - expected).toFixed(1)}`
+  );
+
+  // Círculo de expectativa uniforme (360 puntos)
+  const uTheta = Array.from({length: 361}, (_, i) => i);
+  const uR = new Array(361).fill(expected);
+
+  Plotly.react('lunarrose', [
+    {
+      type: 'barpolar', r: counts, theta: theta, width: SZ * 0.92,
+      text: txt, hoverinfo: 'text',
+      marker: {
+        color: counts.map(c => c > expected ? '#C8A84B' : '#3A8C6E'),
+        line: {color: '#fff', width: 1}
+      },
+      name: 'Observado'
+    },
+    {
+      type: 'scatterpolar', r: uR, theta: uTheta,
+      mode: 'lines', line: {color: '#aaa', dash: 'dot', width: 1.5},
+      hoverinfo: 'skip', name: 'Esperado (uniforme)'
+    }
+  ], {
+    ...PLOTBG,
+    polar: {
+      radialaxis: {visible: true, gridcolor: '#D4E8E0', tickfont: {size: 10}},
+      angularaxis: {
+        direction: 'clockwise',
+        tickvals: [0, 90, 180, 270],
+        ticktext: ['🌑 Nueva (0°)', '🌓 Cuarto C. (90°)', '🌕 Llena (180°)', '🌗 Cuarto M. (270°)'],
+        gridcolor: '#D4E8E0', tickfont: {size: 11}
+      }
+    },
+    margin: {t: 20, b: 50, l: 40, r: 40},
+    legend: {orientation: 'h', y: -0.12, font: {size: 11}},
+    showlegend: true
+  }, {displayModeBar: false});
+
+  const note = document.getElementById('lunar_note');
+  if(note){
+    const pct = angles.length > 0 ? (nApprox / angles.length * 100).toFixed(0) : 0;
+    note.textContent = `${angles.length} eventos graficados` +
+      (nApprox > 0 ? ` · ${pct}% con ángulo aproximado (regenera data.js para valores exactos)` : ' · ángulos exactos (Skyfield)');
+  }
+}
+function resetCellAndRender(){
+  selectedCell=null;
+  document.getElementById('year_min').value='';
+  document.getElementById('year_max').value='';
+  yearBounds=null;
+  renderMap();renderTime();renderAstro();renderLunar();
+  // aviso si el dominio no es puntual (casas no significativas)
+  const dom=curMapDomain();
+  const warn=document.getElementById('domainWarn');
+  if(warn){
+    const global=(dom==='tormenta_solar'||dom==='sequia');
+    warn.style.display=global?'block':'none';
+  }
+}
+// Rellena el selector de dominio con los dominios presentes en los eventos
+function populateDomainFilter(){
+  const sel=document.getElementById('map_domain_filter');
+  if(!sel)return;
+  const doms=[...new Set(events.map(e=>String(e.domain||'').trim()).filter(Boolean))].sort();
+  const cur=sel.value;
+  sel.innerHTML='<option value="todos">Todos los dominios</option>'+
+    doms.map(d=>`<option value="${d}">${d} (${events.filter(e=>e.domain===d).length})</option>`).join('');
+  if([...sel.options].some(o=>o.value===cur))sel.value=cur;
+}
 
 // estadística en el navegador
 function erfc(x){ // aproximación Abramowitz-Stegun 7.1.26
@@ -1084,10 +1905,10 @@ function renderAstro(){
   const top=rows.slice(0,25).reverse();
   Plotly.react('astrobar',[{
     x:top.map(r=>r.z),y:top.map(r=>prettyName(r.f)),type:'bar',orientation:'h',
-    marker:{color:top.map(r=>r.fdr<0.05?'#3ddc97':(r.z>=0?'#ff5d73':'#4aa3ff'))},
+    marker:{color:top.map(r=>r.fdr<0.05?'#2A6B52':(r.z>=0?'#C0392B':'#336EB8'))},
     text:top.map(r=>r.z.toFixed(1)),textposition:'auto'
   }],{...PLOTBG,margin:{t:6,l:10,b:40,r:10},
-    xaxis:{title:'z (zona vs resto) — derecha: más frecuente en la zona',gridcolor:'#33396b',zerolinecolor:'#7c5cff'},
+    xaxis:{title:'z (zona vs resto) — derecha: más frecuente en la zona',gridcolor:'#D4E8E0',zerolinecolor:'#3A8C6E'},
     yaxis:{automargin:true}},{displayModeBar:false});
   // tabla
   const th=document.querySelector('#astrotable thead');
@@ -1183,6 +2004,7 @@ const SOURCES=[
 })();
 
 // ---------- inicialización: mostrar estadística de ejemplo por defecto ----------
+populateDomainResults();
 if(results.length){afterLoad();}
 </script>
 </body>
