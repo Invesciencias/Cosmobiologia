@@ -131,39 +131,88 @@
   <!-- CÓMO FUNCIONA EN 3 PASOS -->
   <div class="card">
     <h2 data-i18n="como_h2">¿Cómo funciona el método?</h2>
-    <p class="small muted" data-i18n="como_subtitle">Tres pasos, sin necesidad de conocer astrología ni estadística avanzada.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px">
+    <p class="small muted" data-i18n="como_subtitle">Cuatro pasos, sin necesidad de conocer astrología ni estadística avanzada.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:12px">
+
       <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--verde)">
         <div style="font-size:26px;margin-bottom:6px">①</div>
         <b data-i18n="como_step1_title">Recopilar eventos fechados</b>
         <p class="small" style="margin-top:6px" data-i18n="como_step1_p">Cada evento tiene fecha, hora y lugar: un sismo en Chile, un huracán en el Caribe, un nacimiento en Bogotá. Los datos vienen de fuentes públicas (USGS, NOAA, EM-DAT) o los aporta el investigador.</p>
       </div>
-      <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--oro)">
+
+      <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid #8bc34a">
         <div style="font-size:26px;margin-bottom:6px">②</div>
+        <b>Verificar independencia (Von Neumann)</b>
+        <p class="small" style="margin-top:6px">Antes de analizar, se comprueba que los eventos no están agrupados artificialmente en el tiempo — réplicas sísmicas, duración de un aspecto planetario, estacionalidad. Si los hay, se eliminan (<b>declusterización</b>). Método de <span class="glos" data-glos="von neumann">Von Neumann</span>, recomendado por <b>David Ferriz Olivares</b> en la <em>Teoría Científica de la Cosmobiología</em>.</p>
+      </div>
+
+      <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--oro)">
+        <div style="font-size:26px;margin-bottom:6px">③</div>
         <b data-i18n="como_step2_title">Calcular la carta astronómica</b>
         <p class="small" style="margin-top:6px" data-i18n="como_step2_p">Para cada evento real, el programa calcula automáticamente las posiciones de 10 planetas (según la NASA/JPL) y genera 200 "eventos ficticios" en fechas cercanas (±30 días) como referencia del azar.</p>
       </div>
+
       <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--accent2)">
-        <div style="font-size:26px;margin-bottom:6px">③</div>
+        <div style="font-size:26px;margin-bottom:6px">④</div>
         <b data-i18n="como_step3_title">Comparar: ¿algo sobresale?</b>
-        <p class="small" style="margin-top:6px" data-i18n-html="como_step3_p">Se prueban 522 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR</span>).</p>
+        <p class="small" style="margin-top:6px" data-i18n-html="como_step3_p">Se prueban 575 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR Benjamini-Hochberg</span>).</p>
       </div>
+
     </div>
-    <p class="small muted" style="margin-top:12px" data-i18n-html="como_warning">⚠ <b>Asociación, no causalidad.</b> Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas "causan" los eventos. La física que explicaría el mecanismo, si existe, es un paso ulterior.</p>
+    <p class="small muted" style="margin-top:12px" data-i18n-html="como_warning">⚠ <b>Asociación, no causalidad.</b> Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas "causan" los eventos. La física del mecanismo, explorada por la <b>Teoría Cicloidal</b> de Scipiòn Llona y retomada por David Ferriz Olivares, es un paso ulterior.</p>
   </div>
 
   <!-- RESULTADO DESTACADO -->
   <div class="card" style="border-left:4px solid #C8A84B">
-    <h2 data-i18n="confirmed_h2">🟢 El primer resultado confirmado: Mercurio–Urano y los sismos M≥6</h2>
-    <p data-i18n-html="confirmed_p1">En los <b>3.730 terremotos de magnitud ≥6</b> ocurridos entre 2000 y 2024, encontramos que la conjunción Mercurio–Urano (cuando ambos planetas están alineados a menos de 8°, lo que ocurre unas <b>~100 veces en 24 años</b> — cada ~88 días, durante ~16 días) coincide con un <b>32% más de sismos de lo esperado por azar</b>.</p>
-    <p data-i18n="confirmed_p2">El resultado pasó tres filtros de rigor:</p>
-    <ol class="small" style="margin:8px 0 8px 18px">
-      <li data-i18n-html="confirmed_li1"><b>Corrección por 522 pruebas simultáneas</b> (FDR q = 0,000047) — descarta que sea suerte entre muchos intentos.</li>
-      <li data-i18n-html="confirmed_li2"><b>Validación cruzada</b> — dividimos los datos en dos mitades independientes: la señal apareció en ambas, con la misma dirección.</li>
-      <li data-i18n-html="confirmed_li3"><b>Libre del artefacto principal</b> — Mercurio se mueve ~1°/día, así que el modelo nulo ±30 días captura variación real, no un efecto estático de planetas lentos.</li>
-    </ol>
-    <p class="small muted" data-i18n-html="confirmed_next">¿Qué sigue? Pre-registro en OSF, replicación en el catálogo histórico GCMT 1976–1999 (datos que no se usaron para el descubrimiento) y búsqueda de un mecanismo físico. Ver <a style="color:var(--oro);cursor:pointer" onclick="document.querySelector('[data-tab=ayuda]').click()">📖 Metodología → Artefactos</a> para entender qué podría falsificar este resultado.</p>
-    <button class="act" style="margin-top:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="confirmed_btn">📊 Ver el Tablero: Sismos M≥6 confirmado</button>
+    <h2>📄 Resultados del primer paper — Sismos M≥6 (Fundación Invesciencias)</h2>
+    <p class="small muted">Análisis sobre 3.730 terremotos M≥6 (USGS, 2000–2024) y 6.169 mainshocks GCMT (1976–2024, declustered Gardner-Knopoff). Metodología: modelo nulo emparejado ±30 días · Von Neumann · FDR Benjamini-Hochberg · validación split 50/50 · pre-registro OSF.</p>
+
+    <!-- CONFIRMADO -->
+    <div style="background:rgba(100,220,100,0.08);border-radius:10px;padding:14px;margin-top:14px;border-left:4px solid var(--verde)">
+      <b>🟢 CONFIRMADO — Conjunción Mercurio–Urano en sismos M≥6</b>
+      <p class="small" style="margin-top:6px">En los <b>3.730 terremotos M≥6</b> (2000–2024), la conjunción Mercurio–Urano (alineación a menos de 8°, ~100 veces en 24 años) coincide con un <b>32% más de sismos de lo esperado por azar</b> (z = +5.27, RR = 1.32, FDR q = 0.000047). Pasó tres filtros de rigor:</p>
+      <ol class="small" style="margin:6px 0 6px 18px">
+        <li><b>FDR por 522 pruebas simultáneas</b> (q = 0.000047) — descarta suerte entre muchos intentos.</li>
+        <li><b>Validación cruzada split 50/50</b> — la señal apareció en ambas mitades independientes con la misma dirección.</li>
+        <li><b>Libre del artefacto de planetas lentos</b> — Mercurio se mueve ~1°/día; el modelo nulo ±30 días captura variación real.</li>
+      </ol>
+      <span class="small muted">Pre-registrado en OSF · Replicado en GCMT 1976–1999 (datos no usados en el descubrimiento).</span>
+    </div>
+
+    <!-- PRE-REGISTRADOS FALLIDOS -->
+    <div style="background:rgba(220,80,80,0.07);border-radius:10px;padding:14px;margin-top:10px;border-left:4px solid #e05555">
+      <b>🔴 PRE-REGISTRADOS — No replicados (ciencia honesta)</b>
+      <p class="small" style="margin-top:6px">Dos hipótesis descubiertas en el análisis exploratorio USGS y pre-registradas en OSF <em>antes</em> de correr el catálogo GCMT independiente:</p>
+      <ul class="small" style="margin:4px 0 4px 18px">
+        <li><b>Sextil Venus–Júpiter</b> — descubierto en USGS (z=+3.1), GCMT mostró déficit. <b>No replicado.</b></li>
+        <li><b>Trígono Marte–Urano</b> — descubierto en USGS (z=+2.8), GCMT mostró déficit. <b>No replicado.</b></li>
+      </ul>
+      <span class="small muted">El fracaso en replicar es un resultado válido: demuestra que el protocolo pre-registro + split funciona como control de falsos positivos. Se reportan en el paper como tales.</span>
+    </div>
+
+    <!-- NUEVOS CANDIDATOS GCMT DECLUSTERED -->
+    <div style="background:rgba(100,160,255,0.07);border-radius:10px;padding:14px;margin-top:10px;border-left:4px solid var(--accent2)">
+      <b>🔵 CANDIDATOS — GCMT declustered (pendientes de pre-registro confirmatorio)</b>
+      <p class="small" style="margin-top:6px">Emergieron del análisis sobre 6.169 mainshocks GCMT tras eliminar el 58.9% de réplicas (Gardner-Knopoff) y verificar independencia temporal (Von Neumann p = 0.089):</p>
+      <div style="overflow-x:auto;margin-top:8px">
+        <table class="small">
+          <thead><tr><th>Rasgo</th><th>z</th><th>RR</th><th>p_fdr</th><th>Categoría</th></tr></thead>
+          <tbody>
+            <tr><td><b>Conjunción Venus–Júpiter</b></td><td>+5.86</td><td>1.41</td><td>&lt;0.001</td><td>Aspecto</td></tr>
+            <tr><td><b>Luna en ASC (topocéntrico)</b></td><td>+5.41</td><td>1.38</td><td>&lt;0.001</td><td>Angularidad</td></tr>
+            <tr><td><b>Luna en apogeo</b></td><td>+4.44</td><td>1.29</td><td>&lt;0.001</td><td>Distancia lunar</td></tr>
+            <tr><td>Luna en DSC (topocéntrico)</td><td>+3.13</td><td>1.22</td><td>0.010</td><td>Angularidad</td></tr>
+            <tr><td>Júpiter en DSC</td><td>+2.13</td><td>1.15</td><td>0.090</td><td>Angularidad</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="small muted">Próximo paso: pre-registro en OSF de Venus–Júpiter conjunción y Luna en apogeo antes de correr el catálogo de validación.</span>
+    </div>
+
+    <div class="row" style="margin-top:14px;gap:10px">
+      <button class="act" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)">📊 Ver Tablero: Sismos M≥6</button>
+      <button class="ghost act" onclick="document.querySelector('[data-tab=ayuda]').click()">📖 Metodología completa</button>
+    </div>
   </div>
 
   <!-- TU CIENCIA AQUÍ -->
@@ -681,6 +730,45 @@
     </div>
   </div>
 
+  <div class="card" style="border-left:4px solid var(--accent2)">
+    <h2>🔭 Hipótesis históricas — Raynaud de la Ferrière y Llona</h2>
+    <p class="small muted">Estas hipótesis fueron formuladas cualitativamente por los fundadores de la cosmobiología. Esta plataforma permite someterlas por primera vez a prueba cuantitativa rigurosa con datos globales y modelo nulo emparejado.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px">
+
+      <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-left:4px solid var(--accent2)">
+        <b>H1 · Plutón en configuración prominente → sismos / volcanes</b>
+        <p class="small" style="margin-top:6px">Raynaud de la Ferrière (<em>Grandes Mensajes</em>) afirmó que Plutón "está siempre en poderosa configuración celeste cuando ocurren violentos terremotos o erupciones volcánicas". Rasgo a probar: <code>aspecto|Pluton|*|conjuncion</code> o <code>angular|Pluton|ASC</code> en catálogos GCMT M≥7 y GVP volcanes.</p>
+        <div class="row" style="margin-top:10px;gap:8px">
+          <span class="pill" style="background:var(--panel2)">⚠ Exploratoria</span>
+          <span class="small muted">Pre-registrar antes de correr</span>
+        </div>
+      </div>
+
+      <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-left:4px solid var(--oro)">
+        <b>H2 · Posición lunar en el momento del sismo (Llona / Teoría Cicloidal)</b>
+        <p class="small" style="margin-top:6px">Llona (Teoría Cicloidal) señala que las fuerzas de marea lunar modulan la actividad geodinámica. Esta hipótesis tiene dos lecturas distintas:</p>
+        <ul class="small" style="margin:6px 0 0 16px">
+          <li><b>Periodicidad temporal</b> (más sismos cada ~29.5 días): <b>no confirmada</b> en GCMT declustered — correlación serial R<sub>h</sub>=−0.001, p=0.93. El catálogo limpio es compatible con un proceso de Poisson sin ritmo lunar.</li>
+          <li><b>Posición lunar al momento del sismo</b> (fase, distancia, angularidad): <b>señales preliminares</b> — <code>lunar_distance|apogeo</code> z=+4.44 y <code>angular|Moon|ASC</code> z=+5.41 sobreviven declustering. Esto es más fiel a Llona: no "más sismos cada mes", sino "más sismos cuando la Luna está en cierta posición".</li>
+        </ul>
+        <div class="row" style="margin-top:10px;gap:8px">
+          <span class="pill" style="background:var(--panel2)">⚠ Exploratoria</span>
+          <span class="small muted">La versión posicional es la candidata a pre-registro</span>
+        </div>
+      </div>
+
+      <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-left:4px solid var(--verde)">
+        <b>H3 · Luna en apogeo → mayor sismicidad (ya candidata)</b>
+        <p class="small" style="margin-top:6px">Emergió del análisis GCMT declustered con z=+4.44 (p_fdr &lt; 0.001). Consistente con Llona: en el apogeo la velocidad orbital de la Luna cambia de manera que la marea terrestre varía — posible ventana de menor "amortiguación" de esfuerzos corticales. <b>Candidata a pre-registro confirmatorio.</b></p>
+        <div class="row" style="margin-top:10px;gap:8px">
+          <span class="pill" style="background:rgba(100,220,100,0.15);color:var(--verde)">★ Candidata OSF</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <div class="card">
     <h2 data-i18n="hip_expansion_h2">🌍 ¿Qué eventos podemos sumar? Ciencias y fuentes de datos</h2>
     <div class="hint" data-i18n-html="hip_expansion_hint">Cualquier evento con <b>fecha, hora y lugar</b> puede entrar a la plataforma. Estos dominios biológicos y naturales son los más prometedores para la cosmobiología; todos tienen fuentes públicas abiertas, igual que USGS para sismos.</div>
@@ -900,7 +988,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
     <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px">
       <a href="#met_marco" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">📐 Marco científico</a>
       <a href="#met_nulo" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🎲 Modelo nulo</a>
-      <a href="#met_fdr" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">📊 FDR</a>
+      <a href="#met_fdr" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">📊 FDR + Von Neumann</a>
       <a href="#met_split" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">✂ Split validation</a>
       <a href="#met_artefactos" style="color:var(--oro);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">⚠ Artefactos ← leer primero</a>
       <a href="#met_estrat" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🔍 Estratificación</a>
@@ -948,6 +1036,33 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
     <p>"Cosmobiología" es el término académico establecido para la investigación empírica de posibles relaciones entre posiciones astronómicas y fenómenos terrestres — introducido por el médico suizo Karl Ernst Krafft en los años 1920–30 y retomado por Michel Gauquelin en trabajos que generaron debate científico durante décadas. Usamos ese término por rigor histórico, no para validar las afirmaciones de la astrología popular.</p>
     <p>La distinción clave: la astrología predictiva tradicional <b>interpreta</b> posiciones planetarias como portadoras de significado simbólico. Este proyecto <b>mide</b> posiciones planetarias como variables numéricas y pregunta si alguna covaria con eventos, sin asumir ninguna interpretación simbólica.</p>
 
+    <h3 id="met_linaje" style="margin-top:20px">🔬 Linaje científico: Raynaud de la Ferrière → Ferriz Olivares → esta plataforma</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:10px">
+
+      <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--accent2)">
+        <b>Dr. Serge Raynaud de la Ferrière</b><br>
+        <span class="small muted">Francia / Venezuela, 1910–1962</span>
+        <p class="small" style="margin-top:8px">Científico, filósofo y maestro espiritual franco-venezolano. Fundó la <em>Gran Fraternidad Universal</em> y desarrolló una cosmobiología integradora que relacionaba posiciones planetarias con fenómenos geofísicos y la salud humana. Observó que <b>Plutón aparece en configuración prominente en terremotos y erupciones volcánicas</b> — hipótesis cualitativa que esta plataforma somete a prueba cuantitativa. Sus cartas a Ferriz Olivares desde 1957 (Bogotá) transmitieron los fundamentos de la interrelación cosmobiológica. Referencia: <em>Grandes Mensajes</em> y correspondencia con Ferriz <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
+      </div>
+
+      <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--oro)">
+        <b>Scipiòn E. Llona</b><br>
+        <span class="small muted">Geofísico peruano, ~1940</span>
+        <p class="small" style="margin-top:8px">Propuso la <b>Teoría Cicloidal</b>: los sismos y fenómenos geodinámicos resultan de la combinación de movimientos astronómicos sobre la corteza terrestre — rotación, traslación, marea terrestre lunar y solar, y otros catorce movimientos de origen astronómico. Señaló que "con cinco horas de anticipación puede predecirse un movimiento sísmico" combinando posiciones de Sol, Luna y planetas con registros barométricos y electromagnéticos. Ferriz Olivares retoma esta teoría como el marco físico que explica <em>por qué</em> podría existir una relación entre configuraciones planetarias y sismicidad <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
+      </div>
+
+      <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--verde)">
+        <b>Dr. David Juan Ferriz Olivares</b><br>
+        <span class="small muted">Kobe, Japón, 12 jun 1921 — Caracas, Venezuela, 22 oct 1992</span>
+        <p class="small" style="margin-top:8px">Nació en la legación diplomática mexicana en Japón. Filósofo, científico, compositor y orador — más de 7.000 conferencias y 10.000 horas grabadas a lo largo de su vida. Doctor en Filosofía y Letras. El 3 de diciembre de 1953 conoció la obra del Dr. Serge Raynaud de la Ferrière, a quien dedicó el resto de su vida como discípulo predilecto, prologuista-traductor y coordinador de obra, siendo calificado como <em>Apóstol del Saber</em>. Mantuvieron una correspondencia de 2 cartas semanales durante 7 años. En <b>1975 fundó Invesciencias</b> (Instituto de Investigaciones y Aplicaciones Científicas y Tecnológicas) en Venezuela. Es autor de la <em>Teoría Científica de la Cosmobiología</em> (TCC, 1.064 pp.) — la sistematización estadística más extensa de la cosmobiología iberoamericana, con los métodos de Von Neumann, Wilcoxon y correlación serial que implementa esta plataforma. Su sinfonía "Oriente y Occidente" se estrenó en el Teatro Teresa Carreño de Caracas el 14 de octubre de 1990. "Soy sudamericano de cuna mexicana nacido en Japón."</p>
+      </div>
+
+    </div>
+
+    <div class="hint" style="border-left-color:var(--verde);margin-top:14px">
+      <b>Mecanismo físico propuesto (Llona / Raynaud de la Ferrière):</b> Las fuerzas de marea — tanto oceánicas como terrestres — son el mismo tipo de fuerza que determinan las mareas y los maremotos. La combinación de posiciones de Sol, Luna y planetas modula estas fuerzas de manera predecible. Esta plataforma <b>no asume</b> que este mecanismo sea correcto: mide la covarianza estadística y deja la interpretación física para un paso ulterior. El mecanismo es una hipótesis de trabajo, no una premisa.
+    </div>
+
     <div class="hint" style="border-left-color:var(--accent2)" data-i18n-html="met_reviewer_hint">
       <b>Para el revisor de revista:</b> los datos de entrada son coordenadas eclípticas JPL; las variables son separaciones angulares en grados; la estadística es z-score de proporciones con corrección FDR; la validación es split 50/50. El marco conceptual es exploración empírica de covarianza. El lenguaje astrológico es solo nomenclatura histórica del sistema de coordenadas, no una afirmación sobre mecanismos.
     </div>
@@ -963,10 +1078,36 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2 id="met_fdr" data-i18n="met_fdr_h2">Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>)</h2>
+    <h2 id="met_fdr" data-i18n="met_fdr_h2">Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>) + <span class="glos" data-glos="von neumann">Von Neumann</span></h2>
     <p>Probamos 522 características astrológicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
     <p>FDR ajusta cada p-valor teniendo en cuenta cuántas pruebas hicimos. Solo declaramos significativo lo que supera ese umbral más estricto. Resultado: en lugar de 26 falsos positivos, esperamos que máximo el 5% de los que declaramos significativos sean falsos.</p>
     <p class="small muted">El método BH es más permisivo que Bonferroni (que es demasiado conservador) y más estricto que no corregir. Es el estándar en genómica y estudios de múltiples hipótesis.</p>
+
+    <h3 id="met_vn" style="margin-top:18px">🔀 Paso previo: test de Von Neumann para detectar autocorrelación temporal</h3>
+    <p>La corrección FDR asume que los eventos son <b>independientes entre sí</b>. Antes de aplicarla, es necesario verificar esa independencia con el <span class="glos" data-glos="von neumann">test de Von Neumann de diferencias sucesivas</span> (1941). El estadístico es:</p>
+    <div style="background:var(--fondo-alt);border-radius:8px;padding:12px 18px;font-family:monospace;text-align:center;margin:10px 0">
+      δ² / s²  ≈  2  bajo H₀ (serie aleatoria)
+    </div>
+    <p>Un ratio significativamente menor a 2 indica <b>autocorrelación positiva</b>: los eventos se agrupan en el tiempo, lo cual infla artificialmente cualquier rasgo activo durante ese periodo. <b>David Ferriz Olivares</b>, fundador de Invesciencias y figura fundacional de la cosmobiología iberoamericana, lo incorpora en su <em>Teoría Científica de la Cosmobiología</em> (cap. 18) precisamente para "estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica" <a href="#ref_ferriz" style="color:var(--accent2)">[Ferriz, TCC cap. 18]</a>.</p>
+
+    <h4 style="margin-top:12px">¿Por qué surge autocorrelación en datos cosmobiológicos?</h4>
+    <ul class="small">
+      <li><b>Duración del aspecto:</b> un aspecto planetario puede durar días o semanas — todos los eventos en ese intervalo comparten el mismo rasgo astronómico, aunque sus causas físicas sean independientes.</li>
+      <li><b>Posición zodiacal duradera:</b> planetas lentos (Júpiter, Saturno, Neptuno) permanecen en un signo meses o años; un clúster de eventos en ese período infla ese signo de forma espuria.</li>
+      <li><b>Réplicas sísmicas (aftershocks):</b> un sismo M7 genera cientos de réplicas en pocos días. Si un aspecto era activo en ese momento, su frecuencia se multiplica sin relación real. La solución es la <b>declusterización</b> (Gardner-Knopoff 1974). En GCMT, el 58.9% de los eventos son réplicas; tras eliminarlas, las señales espurias desaparecen y sobreviven solo las robustas.</li>
+      <li><b>Estacionalidad no cosmobiológica:</b> algunas series (huracanes, sismos de subducción) tienen preferencias estacionales por razones físicas. Si un rasgo planetario se correlaciona con esas estaciones, emerge una señal falsa.</li>
+    </ul>
+
+    <div class="hint" style="border-left-color:var(--accent2);margin-top:12px">
+      <b>Flujo obligatorio en esta plataforma:</b>
+      <ol style="margin:6px 0 0 18px;padding:0">
+        <li>Test de Von Neumann sobre la densidad temporal del catálogo</li>
+        <li>Si p &lt; 0.05 → declusterizar (sismos) o estratificar temporalmente (otros dominios)</li>
+        <li>Repetir Von Neumann en el catálogo limpio hasta obtener p ≥ 0.05</li>
+        <li>Correr modelo nulo + corrección Benjamini-Hochberg sobre el catálogo independiente</li>
+      </ol>
+      <span class="small muted">VN garantiza la independencia que BH presupone — aplicar primero VN, luego BH.</span>
+    </div>
   </div>
 
   <div class="card">
@@ -1133,6 +1274,20 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
     </div>
   </div>
 
+  <div class="card" id="ref_ferriz" style="border-left:4px solid var(--oro)">
+    <h2>📚 Referencias clave</h2>
+    <ul class="small" style="line-height:1.9">
+      <li><b>Raynaud de la Ferrière, S.</b> (1950–1962). <em>Grandes Mensajes</em> y correspondencia científica. Gran Fraternidad Universal. — Observó la asociación de Plutón con terremotos y erupciones volcánicas; formuló la interrelación cosmobiológica entre personas. Predecesor directo de David Ferriz Olivares.</li>
+      <li><b>Llona, S. E.</b> (~1941). <em>Teoría Cicloidal</em> [manuscrito / publicaciones en La Prensa, Lima]. — Propone que los movimientos astronómicos (rotación, traslación, mareas terrestres) son la fuerza motriz de la sismicidad y los fenómenos geodinámicos. Citado extensamente en Ferriz Olivares, TCC cap. 36.</li>
+      <li><b>Ferriz Olivares, D.</b> (s.f.). <em>Teoría Científica de la Cosmobiología</em> (TCC), 1.064 pp. Fundación Invesciencias. — Cap. 18: Von Neumann, Wilcoxon, correlación serial; Cap. 36: sismología y Teoría Cicloidal. Integra el linaje Raynaud de la Ferrière → Llona en un marco estadístico riguroso.</li>
+      <li><b>Von Neumann, J., Kent, R. H., Bellinson, H. R., & Hart, B. I.</b> (1941). The mean square successive difference. <em>Annals of Mathematical Statistics</em>, 12(2), 153–162.</li>
+      <li><b>Gardner, J. K., & Knopoff, L.</b> (1974). Is the sequence of earthquakes in Southern California, with aftershocks removed, Poissonian? <em>Bulletin of the Seismological Society of America</em>, 64(5), 1363–1367.</li>
+      <li><b>Benjamini, Y., & Hochberg, Y.</b> (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society B</em>, 57(1), 289–300.</li>
+      <li><b>Gauquelin, M.</b> (1955). <em>L'influence des astres</em>. Le Dauphin, Paris.</li>
+      <li><b>Rhodes, B.</b> (2019). <em>Skyfield: High Precision Research-Grade Positions for Planets and Earth Satellites</em>. Astrophysics Source Code Library, ascl:1907.024. Efeméride JPL DE421 (Folkner et al., 2009), Jet Propulsion Laboratory.</li>
+    </ul>
+  </div>
+
   <div class="card">
     <h2 id="met_glosario" data-i18n="met_glosario_h2">Glosario completo — haz clic para definición</h2>
     <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
@@ -1144,6 +1299,8 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
       <span class="glos" data-glos="split validation" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Split validation</span>
       <span class="glos" data-glos="p-hacking" style="padding:6px 14px;background:var(--panel2);border-radius:20px">P-hacking</span>
       <span class="glos" data-glos="whole sign" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Whole Sign</span>
+      <span class="glos" data-glos="von neumann" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Von Neumann</span>
+      <span class="glos" data-glos="declusterizacion" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Declusterización</span>
       <span class="glos" data-glos="aspecto" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Aspecto planetario</span>
       <span class="glos" data-glos="orbe" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Orbe</span>
       <span class="glos" data-glos="estratificación" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Estratificación</span>
@@ -1178,6 +1335,14 @@ const GLOSARIO = {
   "benjamini-hochberg": {
     title: "Benjamini-Hochberg — corrección por comparaciones múltiples",
     body: "Método matemático que ordena los p-valores de menor a mayor y ajusta el umbral de significancia para cada uno según su posición en la lista. Garantiza que la proporción esperada de falsos positivos entre todos los resultados significativos sea menor al 5%."
+  },
+  "von neumann": {
+    title: "Test de Von Neumann — independencia temporal",
+    body: "Test de diferencias sucesivas (Von Neumann et al., 1941) que detecta autocorrelación en una serie ordenada temporalmente. El estadístico δ²/s² tiene valor esperado ≈2 bajo la hipótesis nula de aleatoriedad. Un valor significativamente menor a 2 indica que los eventos se agrupan en el tiempo (réplicas sísmicas, duración de un aspecto planetario, estacionalidad). Ferriz Papí lo recomienda en TCC cap. 18 para detectar 'influencias periódicas en la tendencia'. Es el paso previo obligatorio antes de aplicar la corrección FDR."
+  },
+  "declusterizacion": {
+    title: "Declusterización — eliminar réplicas sísmicas",
+    body: "Proceso que elimina réplicas (aftershocks) de un catálogo sísmico antes del análisis estadístico. El método estándar es Gardner-Knopoff (1974): para cada sismo principal, define ventanas espacio-temporales según su magnitud y marca como réplicas los eventos posteriores dentro de esas ventanas. Sin declusterizar, un sismo M7 con 500 réplicas puede inflar artificialmente cualquier rasgo astronómico activo en ese momento. En GCMT, el 58.9% de los eventos son réplicas; el test de Von Neumann confirma independencia solo después de eliminarlas."
   },
   "p-valor": {
     title: "p-valor — probabilidad de que sea azar",
