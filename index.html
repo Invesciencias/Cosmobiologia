@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="data.js"></script>
 <script src="features.js"></script>
+<script src="translations.js"></script>
 <style>
   :root{
     /* Paleta Fundación Invesciencias */
@@ -69,18 +70,44 @@
 <header>
   <div class="logo-badge"><img src="logo.jpg" alt="Fundación Invesciencias"></div>
   <div>
-    <h1>Cosmobiología — Fundación Invesciencias</h1>
-    <p>Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">Primer resultado confirmado: conjunción Mercurio–Urano en sismos M≥6</b></p>
+    <h1 data-i18n="header_h1">Cosmobiología — Fundación Invesciencias</h1>
+    <p data-i18n-html="header_subtitle">Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">Primer resultado confirmado: conjunción Mercurio–Urano en sismos M≥6</b></p>
   </div>
+  <button id="lang-toggle" onclick="toggleLang()" style="margin-left:auto;padding:7px 16px;border-radius:20px;border:1.5px solid var(--oro);background:transparent;color:var(--oro);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">🌐 English</button>
+
 </header>
+
+<!-- ===== ENGLISH SUMMARY BANNER ===== -->
+<div id="en-banner" style="display:none;background:linear-gradient(135deg,#1a3a2e,#2d6a4f);color:#fff;padding:18px 28px;font-size:14px;line-height:1.7;border-bottom:2px solid var(--oro)">
+  <div style="max-width:900px;margin:0 auto">
+    <h2 style="color:#a8d5b5;font-size:18px;margin:0 0 10px">Cosmobiology Statistical Platform — Fundación Invesciencias</h2>
+    <p style="margin:0 0 10px"><b>What this platform does:</b> Tests whether planetary configurations (aspects, lunar phases, tidal forces) are statistically associated with natural extreme events — earthquakes, hurricanes, volcanic eruptions, floods, and other disasters — using a rigorous matched null model and pre-registered hypotheses.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0">
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
+        <b style="color:var(--oro)">34,503 events</b><br>11 domains: earthquakes, hurricanes, floods, solar storms, disasters (EM-DAT), and more
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
+        <b style="color:var(--oro)">Matched null model</b><br>K=300 controls per event, ±30 days, same location — eliminates slow-planet artifacts
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
+        <b style="color:var(--oro)">Pre-registered at OSF</b><br>Hypotheses registered before analysis. Results reported transparently including failures.
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
+        <b style="color:var(--oro)">4 feature groups</b><br>Planet–planet aspects · Topocentric angularity (ASC/DSC/MC/IC) · Lunar phase (8 bins) · Tidal force
+      </div>
+    </div>
+    <p style="margin:8px 0 4px"><b>Connection to indigenous astronomical knowledge:</b> Many cultures (Salish, Babylonian, Maya, Chinese) developed calendrical systems correlating celestial cycles with seasonal water events, resource availability, and natural hazards. This platform provides the statistical framework to test whether those correlations are real — and to quantify their effect sizes across independent datasets.</p>
+    <p style="margin:4px 0 0"><b>Current status:</b> Mercury–Uranus conjunction in M≥6 earthquakes — pre-registered hypothesis did not replicate in GCMT 1976–1999 (z=−1.38, likely catalog artifact). Jupiter at Descendant (topocentric) shows strong signal in GCMT 1976–1999 (z=+9.16, RR=1.34, p=2.1×10⁻¹⁷) — pre-registration underway. Built with Skyfield + JPL DE421 · Python · Plotly · Fundación Invesciencias, Colombia.</p>
+  </div>
+</div>
 <nav>
-  <button class="active" data-tab="guia">❓ Empieza aquí</button>
-  <button data-tab="captura">📝 Captura de eventos</button>
-  <button data-tab="tablero">📊 Tablero estadístico</button>
-  <button data-tab="mapa">🗺 Mapa y grilla</button>
-  <button data-tab="hipotesis">🔭 Hipótesis y expansión</button>
-  <button data-tab="fuentes">🌍 Fuentes de datos</button>
-  <button data-tab="ayuda">📖 Metodología</button>
+  <button class="active" data-tab="guia" data-i18n="nav_guia">❓ Empieza aquí</button>
+  <button data-tab="captura" data-i18n="nav_captura">📝 Captura de eventos</button>
+  <button data-tab="tablero" data-i18n="nav_tablero">📊 Tablero estadístico</button>
+  <button data-tab="mapa" data-i18n="nav_mapa">🗺 Mapa y grilla</button>
+  <button data-tab="hipotesis" data-i18n="nav_hipotesis">🔭 Hipótesis y expansión</button>
+  <button data-tab="fuentes" data-i18n="nav_fuentes">🌍 Fuentes de datos</button>
+  <button data-tab="ayuda" data-i18n="nav_ayuda">📖 Metodología</button>
 </nav>
 <main>
 
@@ -89,62 +116,62 @@
 
   <!-- HERO -->
   <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
-    <h2 style="font-size:22px;color:#fff;margin-bottom:6px">¿Hay patrones astronómicos en los grandes eventos del planeta?</h2>
-    <p style="font-size:15px;margin-bottom:10px">Esta plataforma permite <b>poner a prueba esa pregunta con rigor estadístico</b>, usando más de <b id="hero_n_events">34.000</b> eventos reales de <b id="hero_n_domains">11</b> dominios — sismos, huracanes, tormentas solares, desastres, inundaciones y más — comparados contra un <span style="border-bottom:1px dashed #adf;cursor:help" data-glos="modelo nulo">modelo nulo emparejado</span>. No necesitas instalar nada ni saber programar.</p>
+    <h2 style="font-size:22px;color:#fff;margin-bottom:6px" data-i18n="hero_h2">¿Hay patrones astronómicos en los grandes eventos del planeta?</h2>
+    <p style="font-size:15px;margin-bottom:10px" data-i18n-html="hero_p">Esta plataforma permite <b>poner a prueba esa pregunta con rigor estadístico</b>, usando más de <b id="hero_n_events">34.000</b> eventos reales de <b id="hero_n_domains">11</b> dominios — sismos, huracanes, tormentas solares, desastres, inundaciones y más — comparados contra un <span style="border-bottom:1px dashed #adf;cursor:help" data-glos="modelo nulo">modelo nulo emparejado</span>. No necesitas instalar nada ni saber programar.</p>
     <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:14px">
-      🟢 <b>Primer resultado confirmado (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano — resultado que sobrevive 522 pruebas simultáneas y se replica en una muestra independiente. <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)">Ver en el Tablero →</button>
+      <span data-i18n-html="hero_confirmed">🟢 <b>Primer resultado confirmado (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano — resultado que sobrevive 522 pruebas simultáneas y se replica en una muestra independiente.</span> <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="hero_btn_ver">Ver en el Tablero →</button>
     </div>
     <div class="row">
-      <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()">📊 Explorar resultados</button>
-      <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()">🗺 Ver el mapa</button>
-      <button class="ghost act" onclick="document.querySelector('[data-tab=fuentes]').click()">🌍 Datos disponibles</button>
+      <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="hero_btn_tablero">📊 Explorar resultados</button>
+      <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()" data-i18n="hero_btn_mapa">🗺 Ver el mapa</button>
+      <button class="ghost act" onclick="document.querySelector('[data-tab=fuentes]').click()" data-i18n="hero_btn_fuentes">🌍 Datos disponibles</button>
     </div>
   </div>
 
   <!-- CÓMO FUNCIONA EN 3 PASOS -->
   <div class="card">
-    <h2>¿Cómo funciona el método?</h2>
-    <p class="small muted">Tres pasos, sin necesidad de conocer astrología ni estadística avanzada.</p>
+    <h2 data-i18n="como_h2">¿Cómo funciona el método?</h2>
+    <p class="small muted" data-i18n="como_subtitle">Tres pasos, sin necesidad de conocer astrología ni estadística avanzada.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px">
       <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--verde)">
         <div style="font-size:26px;margin-bottom:6px">①</div>
-        <b>Recopilar eventos fechados</b>
-        <p class="small" style="margin-top:6px">Cada evento tiene fecha, hora y lugar: un sismo en Chile, un huracán en el Caribe, un nacimiento en Bogotá. Los datos vienen de fuentes públicas (USGS, NOAA, EM-DAT) o los aporta el investigador.</p>
+        <b data-i18n="como_step1_title">Recopilar eventos fechados</b>
+        <p class="small" style="margin-top:6px" data-i18n="como_step1_p">Cada evento tiene fecha, hora y lugar: un sismo en Chile, un huracán en el Caribe, un nacimiento en Bogotá. Los datos vienen de fuentes públicas (USGS, NOAA, EM-DAT) o los aporta el investigador.</p>
       </div>
       <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--oro)">
         <div style="font-size:26px;margin-bottom:6px">②</div>
-        <b>Calcular la carta astronómica</b>
-        <p class="small" style="margin-top:6px">Para cada evento real, el programa calcula automáticamente las posiciones de 10 planetas (según la NASA/JPL) y genera 200 "eventos ficticios" en fechas cercanas (±30 días) como referencia del azar.</p>
+        <b data-i18n="como_step2_title">Calcular la carta astronómica</b>
+        <p class="small" style="margin-top:6px" data-i18n="como_step2_p">Para cada evento real, el programa calcula automáticamente las posiciones de 10 planetas (según la NASA/JPL) y genera 200 "eventos ficticios" en fechas cercanas (±30 días) como referencia del azar.</p>
       </div>
       <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--accent2)">
         <div style="font-size:26px;margin-bottom:6px">③</div>
-        <b>Comparar: ¿algo sobresale?</b>
-        <p class="small" style="margin-top:6px">Se prueban 522 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR</span>).</p>
+        <b data-i18n="como_step3_title">Comparar: ¿algo sobresale?</b>
+        <p class="small" style="margin-top:6px" data-i18n-html="como_step3_p">Se prueban 522 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR</span>).</p>
       </div>
     </div>
-    <p class="small muted" style="margin-top:12px">⚠ <b>Asociación, no causalidad.</b> Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas "causan" los eventos. La física que explicaría el mecanismo, si existe, es un paso ulterior.</p>
+    <p class="small muted" style="margin-top:12px" data-i18n-html="como_warning">⚠ <b>Asociación, no causalidad.</b> Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas "causan" los eventos. La física que explicaría el mecanismo, si existe, es un paso ulterior.</p>
   </div>
 
   <!-- RESULTADO DESTACADO -->
   <div class="card" style="border-left:4px solid #C8A84B">
-    <h2>🟢 El primer resultado confirmado: Mercurio–Urano y los sismos M≥6</h2>
-    <p>En los <b>3.730 terremotos de magnitud ≥6</b> ocurridos entre 2000 y 2024, encontramos que la conjunción Mercurio–Urano (cuando ambos planetas están alineados a menos de 8°, lo que ocurre unas <b>~100 veces en 24 años</b> — cada ~88 días, durante ~16 días) coincide con un <b>32% más de sismos de lo esperado por azar</b>.</p>
-    <p>El resultado pasó tres filtros de rigor:</p>
+    <h2 data-i18n="confirmed_h2">🟢 El primer resultado confirmado: Mercurio–Urano y los sismos M≥6</h2>
+    <p data-i18n-html="confirmed_p1">En los <b>3.730 terremotos de magnitud ≥6</b> ocurridos entre 2000 y 2024, encontramos que la conjunción Mercurio–Urano (cuando ambos planetas están alineados a menos de 8°, lo que ocurre unas <b>~100 veces en 24 años</b> — cada ~88 días, durante ~16 días) coincide con un <b>32% más de sismos de lo esperado por azar</b>.</p>
+    <p data-i18n="confirmed_p2">El resultado pasó tres filtros de rigor:</p>
     <ol class="small" style="margin:8px 0 8px 18px">
-      <li><b>Corrección por 522 pruebas simultáneas</b> (FDR q = 0,000047) — descarta que sea suerte entre muchos intentos.</li>
-      <li><b>Validación cruzada</b> — dividimos los datos en dos mitades independientes: la señal apareció en ambas, con la misma dirección.</li>
-      <li><b>Libre del artefacto principal</b> — Mercurio se mueve ~1°/día, así que el modelo nulo ±30 días captura variación real, no un efecto estático de planetas lentos.</li>
+      <li data-i18n-html="confirmed_li1"><b>Corrección por 522 pruebas simultáneas</b> (FDR q = 0,000047) — descarta que sea suerte entre muchos intentos.</li>
+      <li data-i18n-html="confirmed_li2"><b>Validación cruzada</b> — dividimos los datos en dos mitades independientes: la señal apareció en ambas, con la misma dirección.</li>
+      <li data-i18n-html="confirmed_li3"><b>Libre del artefacto principal</b> — Mercurio se mueve ~1°/día, así que el modelo nulo ±30 días captura variación real, no un efecto estático de planetas lentos.</li>
     </ol>
-    <p class="small muted">¿Qué sigue? Pre-registro en OSF, replicación en el catálogo histórico GCMT 1976–1999 (datos que no se usaron para el descubrimiento) y búsqueda de un mecanismo físico. Ver <a style="color:var(--oro);cursor:pointer" onclick="document.querySelector('[data-tab=ayuda]').click()">📖 Metodología → Artefactos</a> para entender qué podría falsificar este resultado.</p>
-    <button class="act" style="margin-top:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)">📊 Ver el Tablero: Sismos M≥6 confirmado</button>
+    <p class="small muted" data-i18n-html="confirmed_next">¿Qué sigue? Pre-registro en OSF, replicación en el catálogo histórico GCMT 1976–1999 (datos que no se usaron para el descubrimiento) y búsqueda de un mecanismo físico. Ver <a style="color:var(--oro);cursor:pointer" onclick="document.querySelector('[data-tab=ayuda]').click()">📖 Metodología → Artefactos</a> para entender qué podría falsificar este resultado.</p>
+    <button class="act" style="margin-top:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="confirmed_btn">📊 Ver el Tablero: Sismos M≥6 confirmado</button>
   </div>
 
   <!-- TU CIENCIA AQUÍ -->
   <div class="card">
-    <h2>¿Tu ciencia produce eventos fechados? Esta herramienta es tuya</h2>
-    <p class="small muted">Cualquier campo que registre <b>cuándo y dónde</b> ocurrió algo puede usar este método. El planeta o el tipo de evento no importa — la pregunta es siempre la misma: ¿hay algo en el cielo que acompañe esto más de lo esperado por azar?</p>
+    <h2 data-i18n="ciencia_h2">¿Tu ciencia produce eventos fechados? Esta herramienta es tuya</h2>
+    <p class="small muted" data-i18n-html="ciencia_subtitle">Cualquier campo que registre <b>cuándo y dónde</b> ocurrió algo puede usar este método. El planeta o el tipo de evento no importa — la pregunta es siempre la misma: ¿hay algo en el cielo que acompañe esto más de lo esperado por azar?</p>
     <table style="margin-top:10px">
-      <thead><tr><th>Tu área</th><th>Evento de referencia</th><th>Dato clave que necesitas</th></tr></thead>
+      <thead><tr><th data-i18n="ciencia_th_area">Tu área</th><th data-i18n="ciencia_th_evento">Evento de referencia</th><th data-i18n="ciencia_th_dato">Dato clave que necesitas</th></tr></thead>
       <tbody>
         <tr><td>🌍 Geofísica / sismología</td><td>Terremotos, erupciones</td><td>Fecha UTC + lat/lon + magnitud</td></tr>
         <tr><td>🌀 Meteorología / climatología</td><td>Huracanes, tormentas, sequías</td><td>Fecha de inicio + coordenadas</td></tr>
@@ -160,32 +187,32 @@
 
   <!-- NAVEGACIÓN RÁPIDA -->
   <div class="card">
-    <h2>¿Por dónde empezar según tu perfil?</h2>
+    <h2 data-i18n="nav_quick_h2">¿Por dónde empezar según tu perfil?</h2>
     <table>
       <tbody>
         <tr>
-          <td style="white-space:nowrap"><b>Quiero ver resultados</b></td>
-          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=tablero]').click()">📊 Tablero</button> — elige un dominio, explora el volcano plot</td>
+          <td style="white-space:nowrap"><b data-i18n="nav_quick_ver">Quiero ver resultados</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=tablero]').click()">📊 Tablero</button> <span data-i18n="nav_quick_tablero_desc">— elige un dominio, explora el volcano plot</span></td>
         </tr>
         <tr>
-          <td style="white-space:nowrap"><b>Quiero ver los datos en el mapa</b></td>
-          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=mapa]').click()">🗺 Mapa y grilla</button> — filtra por dominio y zona geográfica</td>
+          <td style="white-space:nowrap"><b data-i18n="nav_quick_mapa">Quiero ver los datos en el mapa</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=mapa]').click()">🗺 Mapa y grilla</button> <span data-i18n="nav_quick_mapa_desc">— filtra por dominio y zona geográfica</span></td>
         </tr>
         <tr>
-          <td style="white-space:nowrap"><b>Quiero agregar mis datos</b></td>
-          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=captura]').click()">📝 Captura</button> — ingreso manual, CSV, o nube compartida</td>
+          <td style="white-space:nowrap"><b data-i18n="nav_quick_agregar">Quiero agregar mis datos</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=captura]').click()">📝 Captura</button> <span data-i18n="nav_quick_captura_desc">— ingreso manual, CSV, o nube compartida</span></td>
         </tr>
         <tr>
-          <td style="white-space:nowrap"><b>Quiero formular una hipótesis</b></td>
-          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=hipotesis]').click()">🔭 Hipótesis</button> — redacta, guarda y pre-registra en OSF</td>
+          <td style="white-space:nowrap"><b data-i18n="nav_quick_hipotesis">Quiero formular una hipótesis</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=hipotesis]').click()">🔭 Hipótesis</button> <span data-i18n="nav_quick_hip_desc">— redacta, guarda y pre-registra en OSF</span></td>
         </tr>
         <tr>
-          <td style="white-space:nowrap"><b>Quiero entender la estadística</b></td>
-          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=ayuda]').click()">📖 Metodología</button> — modelo nulo, FDR, artefactos</td>
+          <td style="white-space:nowrap"><b data-i18n="nav_quick_estadistica">Quiero entender la estadística</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=ayuda]').click()">📖 Metodología</button> <span data-i18n="nav_quick_met_desc">— modelo nulo, FDR, artefactos</span></td>
         </tr>
         <tr>
-          <td style="white-space:nowrap"><b>Quiero más datos gratis</b></td>
-          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=fuentes]').click()">🌍 Fuentes</button> — catálogos públicos por ciencia</td>
+          <td style="white-space:nowrap"><b data-i18n="nav_quick_datos">Quiero más datos gratis</b></td>
+          <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=fuentes]').click()">🌍 Fuentes</button> <span data-i18n="nav_quick_fuentes_desc">— catálogos públicos por ciencia</span></td>
         </tr>
       </tbody>
     </table>
@@ -193,24 +220,24 @@
 
   <!-- FAQ ESENCIAL -->
   <div class="card">
-    <h2>Preguntas frecuentes</h2>
+    <h2 data-i18n="faq_h2">Preguntas frecuentes</h2>
 
-    <h3>¿Qué es un "modelo nulo" y para qué sirve?</h3>
-    <p>Es la <b>vara de medir del azar</b>. Por cada evento real, generamos 200 eventos ficticios en fechas cercanas (±30 días) y el mismo lugar. Si Mercurio-Urano aparece igual de seguido en los reales que en los ficticios, el resultado es cero. Si aparece significativamente más, hay una pista. Sin este paso, cualquier análisis daría resultados engañosos — los planetas lentos (Neptuno, Plutón) están en la misma posición durante décadas enteras y falsearían los resultados.</p>
+    <h3 data-i18n="faq_q1">¿Qué es un "modelo nulo" y para qué sirve?</h3>
+    <p data-i18n-html="faq_a1">Es la <b>vara de medir del azar</b>. Por cada evento real, generamos 200 eventos ficticios en fechas cercanas (±30 días) y el mismo lugar. Si Mercurio-Urano aparece igual de seguido en los reales que en los ficticios, el resultado es cero. Si aparece significativamente más, hay una pista. Sin este paso, cualquier análisis daría resultados engañosos — los planetas lentos (Neptuno, Plutón) están en la misma posición durante décadas enteras y falsearían los resultados.</p>
 
-    <h3>¿Por qué se prueban 522 configuraciones a la vez? ¿No aumenta los falsos positivos?</h3>
-    <p>Sí, y por eso aplicamos la corrección <span class="glos" data-glos="FDR">FDR de Benjamini-Hochberg</span>. Si pruebas 522 cosas al 5% de confianza, esperarías ~26 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class="glos" data-glos="split validation">validación cruzada</span>).</p>
+    <h3 data-i18n="faq_q2">¿Por qué se prueban 522 configuraciones a la vez? ¿No aumenta los falsos positivos?</h3>
+    <p data-i18n-html="faq_a2">Sí, y por eso aplicamos la corrección <span class="glos" data-glos="FDR">FDR de Benjamini-Hochberg</span>. Si pruebas 522 cosas al 5% de confianza, esperarías ~26 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class="glos" data-glos="split validation">validación cruzada</span>).</p>
 
-    <h3>¿Los datos astronómicos se calculan automáticamente?</h3>
-    <p>Sí. Tú solo das <b>fecha, hora y lugar</b> del evento. El programa usa la efeméride JPL DE421 (NASA) para calcular las posiciones exactas de 10 planetas. No se necesita saber nada de astrología para ingresar datos.</p>
+    <h3 data-i18n="faq_q3">¿Los datos astronómicos se calculan automáticamente?</h3>
+    <p data-i18n-html="faq_a3">Sí. Tú solo das <b>fecha, hora y lugar</b> del evento. El programa usa la efeméride JPL DE421 (NASA) para calcular las posiciones exactas de 10 planetas. No se necesita saber nada de astrología para ingresar datos.</p>
 
-    <h3>¿Se puede usar para eventos médicos o sociales, sin lat/lon precisa?</h3>
-    <p>Sí, con una limitación: sin coordenadas precisas, no se pueden calcular las <b>casas astrológicas</b> (que dependen del lugar). Pero los <b>aspectos planeta–planeta</b> (como Mercurio–Urano) son los mismos en todo el planeta en un momento dado, así que sí son analizables. Los dominios globales (tormentas solares) ya funcionan así.</p>
+    <h3 data-i18n="faq_q4">¿Se puede usar para eventos médicos o sociales, sin lat/lon precisa?</h3>
+    <p data-i18n-html="faq_a4">Sí, con una limitación: sin coordenadas precisas, no se pueden calcular las <b>casas astrológicas</b> (que dependen del lugar). Pero los <b>aspectos planeta–planeta</b> (como Mercurio–Urano) son los mismos en todo el planeta en un momento dado, así que sí son analizables. Los dominios globales (tormentas solares) ya funcionan así.</p>
 
-    <h3>¿Esto es astrología? ¿Qué dice la ciencia?</h3>
-    <p>La metodología es <b>estadística estándar aplicada a un objeto de estudio no convencional</b>. El análisis no "cree" en nada: compara frecuencias observadas contra frecuencias esperadas por azar, con los mismos métodos de epidemiología o genómica. Si el resultado es nulo, se reporta como nulo. Si hay asociación, se reporta con todas sus limitaciones. La pregunta sobre qué causa la asociación, si existe, es un paso ulterior.</p>
+    <h3 data-i18n="faq_q5">¿Esto es astrología? ¿Qué dice la ciencia?</h3>
+    <p data-i18n-html="faq_a5">La metodología es <b>estadística estándar aplicada a un objeto de estudio no convencional</b>. El análisis no "cree" en nada: compara frecuencias observadas contra frecuencias esperadas por azar, con los mismos métodos de epidemiología o genómica. Si el resultado es nulo, se reporta como nulo. Si hay asociación, se reporta con todas sus limitaciones. La pregunta sobre qué causa la asociación, si existe, es un paso ulterior.</p>
 
-    <h3>¿Por qué usan términos como "conjunción" o "signo zodiacal"? ¿No es eso astrología?</h3>
+    <h3 data-i18n="faq_q6">¿Por qué usan términos como "conjunción" o "signo zodiacal"? ¿No es eso astrología?</h3>
     <p>Lo que computamos es <b>astronomía de posición estándar</b>: longitudes eclípticas geocéntricas de 10 cuerpos del Sistema Solar, calculadas con la efeméride <b>JPL DE421</b> (la misma que usa la NASA para sus misiones). Los resultados se expresan en la <b>franja eclíptica</b> — el plano de la órbita terrestre dividido en 360°.</p>
     <p>Los términos que usamos son <b>compartidos entre astronomía y astrología desde la Antigüedad</b>:</p>
     <ul class="small">
@@ -223,29 +250,29 @@
 
   <!-- ===== REGISTRO INVESCIENCIAS ===== -->
   <div class="card" id="registro_card" style="border-left:4px solid var(--oro)">
-    <h2>📋 Accede a los datos de Invesciencias</h2>
-    <p>Llena el formulario y recibirás por correo las instrucciones de descarga, el formato de datos y el protocolo de análisis para tu área de investigación.</p>
+    <h2 data-i18n="reg_h2">📋 Accede a los datos de Invesciencias</h2>
+    <p data-i18n="reg_p">Llena el formulario y recibirás por correo las instrucciones de descarga, el formato de datos y el protocolo de análisis para tu área de investigación.</p>
 
     <form id="reg_form" style="display:grid;gap:12px;margin-top:16px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div>
-          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Nombre completo *</label>
-          <input id="reg_nombre" type="text" required placeholder="Tu nombre" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_nombre_label">Nombre completo *</label>
+          <input id="reg_nombre" type="text" required placeholder="Tu nombre" data-i18n-ph="reg_nombre_ph" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
         </div>
         <div>
-          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Institución</label>
-          <input id="reg_inst" type="text" placeholder="Universidad / empresa / independiente" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_inst_label">Institución</label>
+          <input id="reg_inst" type="text" placeholder="Universidad / empresa / independiente" data-i18n-ph="reg_inst_ph" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
         </div>
       </div>
 
       <div>
-        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Correo electrónico *</label>
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_email_label">Correo electrónico *</label>
         <input id="reg_email" type="email" required placeholder="tu@correo.com" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div>
-          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Área de investigación *</label>
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_area_label">Área de investigación *</label>
           <select id="reg_area" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
             <option value="">— selecciona —</option>
             <option>Geofísica / Sismología</option>
@@ -259,7 +286,7 @@
           </select>
         </div>
         <div>
-          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Datos de interés</label>
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_dominios_label">Datos de interés</label>
           <select id="reg_dominios" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
             <option value="">— selecciona —</option>
             <option>Sismos</option>
@@ -274,13 +301,13 @@
       </div>
 
       <div>
-        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">¿Qué fenómeno quieres analizar? <span class="muted">(opcional)</span></label>
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_pregunta_label">¿Qué fenómeno quieres analizar? <span class="muted">(opcional)</span></label>
         <textarea id="reg_pregunta" rows="2" placeholder="Ej: muertes por infarto agudo según posición lunar, brotes de dengue y ciclos planetarios..." style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;resize:vertical;box-sizing:border-box"></textarea>
       </div>
 
       <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
         <button type="submit" id="reg_btn" style="padding:10px 28px;background:var(--oro);color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">
-          Solicitar acceso
+          <span data-i18n="reg_submit">Solicitar acceso</span>
         </button>
         <span id="reg_msg" style="font-size:13px;display:none"></span>
       </div>
@@ -327,34 +354,34 @@
 <!-- ===================== CAPTURA ===================== -->
 <section id="captura" style="display:none">
   <div class="card">
-    <h2>Registrar un evento</h2>
-    <div class="hint">Las longitudes planetarias dependen del <b>instante UTC</b>; las casas, del instante <b>y</b> el lugar. Ingresa fecha/hora en la zona que indiques y se guarda normalizado.</div>
+    <h2 data-i18n="captura_h2">Registrar un evento</h2>
+    <div class="hint" data-i18n-html="captura_hint">Las longitudes planetarias dependen del <b>instante UTC</b>; las casas, del instante <b>y</b> el lugar. Ingresa fecha/hora en la zona que indiques y se guarda normalizado.</div>
     <div class="grid">
-      <div><label>ID del evento</label><input id="f_id" placeholder="auto si vacío"></div>
-      <div><label>Dominio</label><select id="f_domain">
+      <div><label data-i18n="captura_id">ID del evento</label><input id="f_id" placeholder="auto si vacío"></div>
+      <div><label data-i18n="captura_domain">Dominio</label><select id="f_domain">
         <option>sismo</option><option>huracan</option><option>tormenta_solar</option>
         <option>inundacion</option><option>sequia</option><option>erupcion</option>
         <option>incendio</option><option>tormenta</option><option>infarto</option>
         <option>otro</option></select></div>
-      <div><label>Subtipo</label><input id="f_subtype" placeholder="tectonico"></div>
-      <div><label>Fecha</label><input id="f_date" type="date"></div>
-      <div><label>Hora</label><input id="f_time" type="time" step="1"></div>
-      <div><label>Zona horaria</label><select id="f_tz">
+      <div><label data-i18n="captura_subtype">Subtipo</label><input id="f_subtype" placeholder="tectonico"></div>
+      <div><label data-i18n="captura_fecha">Fecha</label><input id="f_date" type="date"></div>
+      <div><label data-i18n="captura_hora">Hora</label><input id="f_time" type="time" step="1"></div>
+      <div><label data-i18n="captura_tz">Zona horaria</label><select id="f_tz">
         <option value="UTC">UTC</option></select></div>
-      <div><label>Latitud (°)</label><input id="f_lat" type="number" step="any" placeholder="-5.2697"></div>
-      <div><label>Longitud (°)</label><input id="f_lon" type="number" step="any" placeholder="125.595"></div>
-      <div><label>Lugar</label><input id="f_place" placeholder="Banda Sea"></div>
-      <div><label>Valor (magnitud/severidad)</label><input id="f_value" type="number" step="any" placeholder="6.0"></div>
-      <div><label>Tipo de valor</label><input id="f_vkind" placeholder="mag_mww"></div>
-      <div><label>Fuente</label><input id="f_source" placeholder="USGS"></div>
+      <div><label data-i18n="captura_lat">Latitud (°)</label><input id="f_lat" type="number" step="any" placeholder="-5.2697"></div>
+      <div><label data-i18n="captura_lon">Longitud (°)</label><input id="f_lon" type="number" step="any" placeholder="125.595"></div>
+      <div><label data-i18n="captura_lugar">Lugar</label><input id="f_place" placeholder="Banda Sea"></div>
+      <div><label data-i18n="captura_valor">Valor (magnitud/severidad)</label><input id="f_value" type="number" step="any" placeholder="6.0"></div>
+      <div><label data-i18n="captura_tipovalor">Tipo de valor</label><input id="f_vkind" placeholder="mag_mww"></div>
+      <div><label data-i18n="captura_fuente">Fuente</label><input id="f_source" placeholder="USGS"></div>
     </div>
 
-    <h3 style="margin-top:18px">Clasificación del sismo (opcional, para estratificar el análisis)</h3>
-    <p class="small muted">Estos campos se guardan en <code>extra_json</code> y permiten luego analizar subgrupos (p. ej. solo sismos superficiales, o solo tectónicos). La <b>energía liberada</b> se calcula sola a partir de la magnitud.</p>
+    <h3 style="margin-top:18px" data-i18n="captura_clasif_h3">Clasificación del sismo (opcional, para estratificar el análisis)</h3>
+    <p class="small muted" data-i18n-html="captura_clasif_p">Estos campos se guardan en <code>extra_json</code> y permiten luego analizar subgrupos (p. ej. solo sismos superficiales, o solo tectónicos). La <b>energía liberada</b> se calcula sola a partir de la magnitud.</p>
     <div class="grid">
-      <div><label>Profundidad (km)</label><input id="f_depth" type="number" step="any" placeholder="10"></div>
-      <div><label>Intensidad (Mercalli / MMI)</label><input id="f_intensity" placeholder="VII"></div>
-      <div><label>Naturaleza / causa</label><select id="f_cause">
+      <div><label data-i18n="captura_profundidad">Profundidad (km)</label><input id="f_depth" type="number" step="any" placeholder="10"></div>
+      <div><label data-i18n="captura_intensidad">Intensidad (Mercalli / MMI)</label><input id="f_intensity" placeholder="VII"></div>
+      <div><label data-i18n="captura_causa">Naturaleza / causa</label><select id="f_cause">
         <option value="">—</option>
         <option value="tectonico">tectónico</option>
         <option value="volcanico">volcánico</option>
@@ -362,59 +389,59 @@
         <option value="fracking">fracking / inducido</option>
         <option value="explosion">explosión</option>
         <option value="otro">otro</option></select></div>
-      <div><label>Duración (s)</label><input id="f_duration" type="number" step="any" placeholder="30"></div>
-      <div><label>Efecto / daño</label><input id="f_effect" placeholder="daño estructural leve"></div>
-      <div><label>Población afectada</label><input id="f_population" type="number" step="any" placeholder="50000"></div>
-      <div><label>Energía liberada (J) — automática</label><input id="f_energy" readonly placeholder="se calcula con la magnitud"></div>
+      <div><label data-i18n="captura_duracion">Duración (s)</label><input id="f_duration" type="number" step="any" placeholder="30"></div>
+      <div><label data-i18n="captura_efecto">Efecto / daño</label><input id="f_effect" placeholder="daño estructural leve"></div>
+      <div><label data-i18n="captura_poblacion">Población afectada</label><input id="f_population" type="number" step="any" placeholder="50000"></div>
+      <div><label data-i18n="captura_energia">Energía liberada (J) — automática</label><input id="f_energy" readonly placeholder="se calcula con la magnitud"></div>
     </div>
 
     <div class="row">
-      <button class="act" onclick="addEvent()">＋ Agregar evento</button>
+      <button class="act" onclick="addEvent()" data-i18n="captura_btn_add">＋ Agregar evento</button>
       <span class="pill" id="count">0 eventos en memoria</span>
     </div>
   </div>
 
   <div class="card">
-    <h2>Carga masiva (pegar CSV)</h2>
-    <p class="small muted">Encabezados: <code>event_id,domain,subtype,datetime_utc,latitude,longitude,place,value,value_kind,source</code>. <code>datetime_utc</code> en ISO-8601 (ej. <code>2023-04-22T08:23:42Z</code>).</p>
+    <h2 data-i18n="captura_masiva_h2">Carga masiva (pegar CSV)</h2>
+    <p class="small muted" data-i18n-html="captura_masiva_p">Encabezados: <code>event_id,domain,subtype,datetime_utc,latitude,longitude,place,value,value_kind,source</code>. <code>datetime_utc</code> en ISO-8601 (ej. <code>2023-04-22T08:23:42Z</code>).</p>
     <textarea id="bulk" placeholder="event_id,domain,...&#10;us6000k6ai,sismo,earthquake,2023-04-22T08:23:42Z,-5.2697,125.595,Banda Sea,6.0,mag_mww,USGS"></textarea>
     <div class="row">
-      <button class="act" onclick="importBulk()">Importar pegado</button>
-      <label class="ghost act" style="display:inline-block">Subir archivo CSV<input type="file" id="file" accept=".csv" style="display:none" onchange="importFile(event)"></label>
+      <button class="act" onclick="importBulk()" data-i18n="captura_btn_importar">Importar pegado</button>
+      <label class="ghost act" style="display:inline-block"><span data-i18n="captura_btn_csv">Subir archivo CSV</span><input type="file" id="file" accept=".csv" style="display:none" onchange="importFile(event)"></label>
     </div>
   </div>
 
   <div class="card">
-    <h2>☁ Nube compartida (Supabase)</h2>
-    <p class="small muted">Supabase <b>no es una fuente de datos</b>: es un almacén en la nube, gratis, donde los investigadores de Invesciencias <b>comparten entre ellos</b> los eventos que cargan. Crea un proyecto en supabase.com y la tabla <code>eventos</code> con el SQL de <code>SETUP_SUPABASE.md</code> (ya encaja con esta página, sin adaptar nada).</p>
-    <div class="hint small">
+    <h2 data-i18n="captura_nube_h2">☁ Nube compartida (Supabase)</h2>
+    <p class="small muted" data-i18n-html="captura_nube_p">Supabase <b>no es una fuente de datos</b>: es un almacén en la nube, gratis, donde los investigadores de Invesciencias <b>comparten entre ellos</b> los eventos que cargan. Crea un proyecto en supabase.com y la tabla <code>eventos</code> con el SQL de <code>SETUP_SUPABASE.md</code> (ya encaja con esta página, sin adaptar nada).</p>
+    <div class="hint small" data-i18n-html="captura_nube_hint">
       <b>¿De dónde saco estos dos datos?</b> En supabase.com → tu proyecto → <i>Project Settings → API</i>.
       La <b>URL del proyecto</b> es la de Supabase (<code>https://....supabase.co</code>), <u>no</u> la de GitHub.
       La <b>clave anon</b> es pública por diseño (empieza con <code>eyJ...</code>); nunca compartas la clave <code>service_role</code>.
     </div>
     <div class="grid">
-      <div><label>URL del proyecto (Supabase, no GitHub)</label><input id="sb_url" placeholder="https://xxxx.supabase.co"></div>
-      <div><label>Clave anon (public)</label><input id="sb_key" placeholder="eyJ..."></div>
+      <div><label data-i18n="captura_sb_url">URL del proyecto (Supabase, no GitHub)</label><input id="sb_url" placeholder="https://xxxx.supabase.co"></div>
+      <div><label data-i18n="captura_sb_key">Clave anon (public)</label><input id="sb_key" placeholder="eyJ..."></div>
     </div>
     <div class="row">
-      <button class="act" onclick="cloudTest()">🔌 Probar conexión</button>
-      <button class="ghost act" onclick="cloudPush()">⬆ Subir eventos a la nube</button>
-      <button class="ghost act" onclick="cloudPull()">⬇ Traer eventos de la nube</button>
-      <button class="ghost act" onclick="saveCloudCfg()">💾 Guardar config</button>
+      <button class="act" onclick="cloudTest()" data-i18n="captura_btn_test">🔌 Probar conexión</button>
+      <button class="ghost act" onclick="cloudPush()" data-i18n="captura_btn_push">⬆ Subir eventos a la nube</button>
+      <button class="ghost act" onclick="cloudPull()" data-i18n="captura_btn_pull">⬇ Traer eventos de la nube</button>
+      <button class="ghost act" onclick="saveCloudCfg()" data-i18n="captura_btn_save">💾 Guardar config</button>
       <span class="pill" id="cloudStatus">sin conectar</span>
     </div>
   </div>
 
   <div class="card">
-    <h2>Eventos almacenados</h2>
+    <h2 data-i18n="captura_almacenados_h2">Eventos almacenados</h2>
     <div class="row">
-      <button class="ghost act" onclick="exportCSV()">⬇ Exportar eventos.csv</button>
-      <button class="ghost act" onclick="clearEvents()">🗑 Vaciar (empezar de cero)</button>
-      <button class="ghost act" onclick="reloadDemo()">↻ Recargar sismos de ejemplo</button>
+      <button class="ghost act" onclick="exportCSV()" data-i18n="captura_btn_export">⬇ Exportar eventos.csv</button>
+      <button class="ghost act" onclick="clearEvents()" data-i18n="captura_btn_clear">🗑 Vaciar (empezar de cero)</button>
+      <button class="ghost act" onclick="reloadDemo()" data-i18n="captura_btn_reload">↻ Recargar sismos de ejemplo</button>
       <span class="pill" id="demoPill"></span>
     </div>
     <div style="overflow:auto;max-height:340px;margin-top:14px">
-      <table id="evtable"><thead><tr><th>ID</th><th>Dominio</th><th>UTC</th><th>Lat</th><th>Lon</th><th>Lugar</th><th>Valor</th></tr></thead><tbody></tbody></table>
+      <table id="evtable"><thead><tr><th data-i18n="captura_th_id">ID</th><th data-i18n="captura_th_dominio">Dominio</th><th data-i18n="captura_th_utc">UTC</th><th data-i18n="captura_th_lat">Lat</th><th data-i18n="captura_th_lon">Lon</th><th data-i18n="captura_th_lugar">Lugar</th><th data-i18n="captura_th_valor">Valor</th></tr></thead><tbody></tbody></table>
     </div>
   </div>
 </section>
@@ -422,58 +449,58 @@
 <!-- ===================== TABLERO ===================== -->
 <section id="tablero" style="display:none">
   <div class="card">
-    <h2>Resultados del modelo nulo</h2>
-    <p class="small muted">Resultados precalculados por <code>nullmodel.py</code>. Elige el <b>dominio</b> para comparar sismos, huracanes, etc.</p>
+    <h2 data-i18n="tablero_h2">Resultados del modelo nulo</h2>
+    <p class="small muted" data-i18n-html="tablero_p">Resultados precalculados por <code>nullmodel.py</code>. Elige el <b>dominio</b> para comparar sismos, huracanes, etc.</p>
     <div class="row">
-      <div><label>Dominio a analizar</label>
+      <div><label data-i18n="tablero_domain_label">Dominio a analizar</label>
         <select id="res_domain" onchange="switchResultDomain()"><option value="sismo">Sismos</option></select></div>
-      <label class="ghost act" style="display:inline-block;align-self:flex-end">Cargar otro CSV<input type="file" id="resfile" accept=".csv" style="display:none" onchange="loadResults(event)"></label>
+      <label class="ghost act" style="display:inline-block;align-self:flex-end"><span data-i18n="tablero_csv_btn">Cargar otro CSV</span><input type="file" id="resfile" accept=".csv" style="display:none" onchange="loadResults(event)"></label>
     </div>
     <div id="domWarn" class="hint" style="display:none;border-left-color:var(--oro)"></div>
     <div class="stat" id="summary" style="margin-top:16px"></div>
   </div>
 
   <div class="card">
-    <h2>Volcano plot — efecto vs. significancia</h2>
-    <div class="hint">Cada punto es una configuración astrológica. <b>Eje X</b>: tamaño de efecto (log₂ del riesgo relativo; derecha = exceso sobre el azar, izquierda = déficit). <b>Eje Y</b>: significancia (−log₁₀ p). Lo <span class="sig">verde</span> sobrevive la corrección por comparaciones múltiples (FDR&lt;0.05): ahí está la ciencia.</div>
+    <h2 data-i18n="tablero_volcano_h2">Volcano plot — efecto vs. significancia</h2>
+    <div class="hint" data-i18n-html="tablero_volcano_hint">Cada punto es una configuración astrológica. <b>Eje X</b>: tamaño de efecto (log₂ del riesgo relativo; derecha = exceso sobre el azar, izquierda = déficit). <b>Eje Y</b>: significancia (−log₁₀ p). Lo <span class="sig">verde</span> sobrevive la corrección por comparaciones múltiples (FDR&lt;0.05): ahí está la ciencia.</div>
     <div class="row">
       <select id="filterType" onchange="renderCharts()">
-        <option value="all">Todos los rasgos</option>
-        <option value="aspect">Solo aspectos</option>
-        <option value="house">Solo planeta en casa</option>
+        <option value="all" data-i18n="tablero_filter_all">Todos los rasgos</option>
+        <option value="aspect" data-i18n="tablero_filter_aspect">Solo aspectos</option>
+        <option value="house" data-i18n="tablero_filter_house">Solo planeta en casa</option>
       </select>
     </div>
     <div id="volcano" style="height:480px"></div>
   </div>
 
   <div class="card">
-    <h2>Ranking de configuraciones</h2>
+    <h2 data-i18n="tablero_ranking_h2">Ranking de configuraciones</h2>
     <div id="bar" style="height:520px"></div>
   </div>
 
   <div class="card">
-    <h2>Tabla completa (clic en encabezado para ordenar)</h2>
+    <h2 data-i18n="tablero_tabla_h2">Tabla completa (clic en encabezado para ordenar)</h2>
     <div style="overflow:auto;max-height:420px">
       <table id="restable"><thead></thead><tbody></tbody></table>
     </div>
   </div>
 
   <div class="card" id="compareCard">
-    <h2>⚖ Comparativa entre dominios</h2>
-    <div class="hint">El hallazgo más publicable es un patrón que <b>cruza dominios</b>: si una configuración aparece en sismos pero no en huracanes ni en eventos de control, es mucho más creíble que un resultado aislado. Aquí se compara el <b>z-score</b> (desviación respecto al azar) de cada rasgo en todos los dominios con resultados.</div>
+    <h2 data-i18n="tablero_compare_h2">⚖ Comparativa entre dominios</h2>
+    <div class="hint" data-i18n-html="tablero_compare_hint">El hallazgo más publicable es un patrón que <b>cruza dominios</b>: si una configuración aparece en sismos pero no en huracanes ni en eventos de control, es mucho más creíble que un resultado aislado. Aquí se compara el <b>z-score</b> (desviación respecto al azar) de cada rasgo en todos los dominios con resultados.</div>
     <div class="row">
-      <div><label>Familia de rasgos</label>
+      <div><label data-i18n="tablero_cmp_familia_label">Familia de rasgos</label>
         <select id="cmp_type" onchange="renderCompare()">
-          <option value="aspect_pp">Solo aspectos planeta–planeta (comparable entre todos)</option>
-          <option value="aspect">Todos los aspectos (incluye Asc/MC)</option>
-          <option value="all">Todos los rasgos</option>
+          <option value="aspect_pp" data-i18n="tablero_cmp_asp_pp">Solo aspectos planeta–planeta (comparable entre todos)</option>
+          <option value="aspect" data-i18n="tablero_cmp_asp">Todos los aspectos (incluye Asc/MC)</option>
+          <option value="all" data-i18n="tablero_cmp_all">Todos los rasgos</option>
         </select></div>
-      <div><label>Ordenar por</label>
+      <div><label data-i18n="tablero_cmp_sort_label">Ordenar por</label>
         <select id="cmp_sort" onchange="renderCompare()">
-          <option value="divergence">Mayor divergencia entre dominios</option>
-          <option value="maxabs">Mayor |z| en cualquier dominio</option>
+          <option value="divergence" data-i18n="tablero_cmp_divergencia">Mayor divergencia entre dominios</option>
+          <option value="maxabs" data-i18n="tablero_cmp_maxabs">Mayor |z| en cualquier dominio</option>
         </select></div>
-      <div><label>Cuántos rasgos</label>
+      <div><label data-i18n="tablero_cmp_top_label">Cuántos rasgos</label>
         <select id="cmp_top" onchange="renderCompare()">
           <option value="15">Top 15</option>
           <option value="25" selected>Top 25</option>
@@ -481,75 +508,75 @@
         </select></div>
     </div>
     <div id="compare" style="height:620px"></div>
-    <div class="hint" style="border-left-color:var(--oro)"><b>⚠ Léelo antes de interpretar:</b> dos dominios tienen sesgos conocidos que inflan sus barras.
+    <div class="hint" style="border-left-color:var(--oro)" data-i18n-html="tablero_compare_warn"><b>⚠ Léelo antes de interpretar:</b> dos dominios tienen sesgos conocidos que inflan sus barras.
       <b>Huracanes:</b> casas y ángulos sesgados por la hora sinóptica (00/06/12/18 UTC).
       <b>Tormentas solares:</b> muchas fulguraciones vienen de la <b>misma región activa</b> en pocos días (no son independientes → <b>pseudo-replicación</b>) y el punto subsolar fija al Sol en el cénit; sus z-scores están inflados y aún <b>no son válidos</b> sin de-duplicar a un evento por día/región.
       Por eso la comparación honesta hoy es <b>sismos</b> (limpio, resultado nulo). Las otras barras sirven para <i>ilustrar</i> cómo se ven los artefactos, no como evidencia.</div>
-    <p class="small muted">La línea en z=±2.8 marca el umbral aproximado de significancia. Barras en direcciones opuestas entre dominios sugieren que no hay un mecanismo común. Usa "solo aspectos planeta–planeta" para la comparación menos sesgada.</p>
+    <p class="small muted" data-i18n="tablero_compare_note">La línea en z=±2.8 marca el umbral aproximado de significancia. Barras en direcciones opuestas entre dominios sugieren que no hay un mecanismo común. Usa "solo aspectos planeta–planeta" para la comparación menos sesgada.</p>
   </div>
 </section>
 
 <!-- ===================== MAPA Y GRILLA ===================== -->
 <section id="mapa" style="display:none">
   <div class="card">
-    <h2>🗺 Distribución mundial de eventos</h2>
-    <div class="hint">Mapa de los eventos cargados (los <span class="tag-ex">rojos</span> son de mayor valor/magnitud). Abajo, una <b>grilla</b> de celdas lat/lon: haz clic en una celda para ver <b>cuándo</b> ocurrieron sus eventos en el tiempo.<br><b>🆕 Eje de impacto:</b> en "Color de la grilla" elige <b>☠ Impacto</b> para ver dónde estos eventos <b>afectaron más a la población</b> (muertos/afectados). Hay <b>4.080 sismos significativos</b> (NOAA NCEI, 2,5 millones de víctimas) y el campo está listo para sumar inundaciones/sequías con datos de EM-DAT.</div>
+    <h2 data-i18n="mapa_h2">🗺 Distribución mundial de eventos</h2>
+    <div class="hint" data-i18n-html="mapa_hint">Mapa de los eventos cargados (los <span class="tag-ex">rojos</span> son de mayor valor/magnitud). Abajo, una <b>grilla</b> de celdas lat/lon: haz clic en una celda para ver <b>cuándo</b> ocurrieron sus eventos en el tiempo.<br><b>🆕 Eje de impacto:</b> en "Color de la grilla" elige <b>☠ Impacto</b> para ver dónde estos eventos <b>afectaron más a la población</b> (muertos/afectados). Hay <b>4.080 sismos significativos</b> (NOAA NCEI, 2,5 millones de víctimas) y el campo está listo para sumar inundaciones/sequías con datos de EM-DAT.</div>
     <div class="row">
-      <div><label>Dominio del evento</label>
+      <div><label data-i18n="mapa_domain_label">Dominio del evento</label>
         <select id="map_domain_filter" onchange="resetCellAndRender()">
-          <option value="todos">Todos los dominios</option>
+          <option value="todos" data-i18n="mapa_todos">Todos los dominios</option>
         </select></div>
-      <div><label>Tamaño de celda de la grilla</label>
+      <div><label data-i18n="mapa_grid_size_label">Tamaño de celda de la grilla</label>
         <select id="grid_size" onchange="renderMap()">
           <option value="5">5° × 5°</option>
           <option value="10" selected>10° × 10°</option>
           <option value="20">20° × 20°</option>
           <option value="30">30° × 30°</option>
         </select></div>
-      <div><label>Color de la grilla</label>
+      <div><label data-i18n="mapa_color_label">Color de la grilla</label>
         <select id="grid_metric" onchange="renderMap()">
-          <option value="count">Cantidad de eventos</option>
-          <option value="mag">Valor/magnitud media</option>
-          <option value="year">Año medio</option>
-          <option value="impact_sum">☠ Impacto: muertos/afectados (suma)</option>
-          <option value="impact_max">☠ Impacto: peor evento</option>
+          <option value="count" data-i18n="mapa_color_count">Cantidad de eventos</option>
+          <option value="mag" data-i18n="mapa_color_mag">Valor/magnitud media</option>
+          <option value="year" data-i18n="mapa_color_year">Año medio</option>
+          <option value="impact_sum" data-i18n="mapa_color_impact_sum">☠ Impacto: muertos/afectados (suma)</option>
+          <option value="impact_max" data-i18n="mapa_color_impact_max">☠ Impacto: peor evento</option>
         </select></div>
-      <div><label>Año desde</label><input id="year_min" type="number" onchange="renderMap()"></div>
-      <div><label>Año hasta</label><input id="year_max" type="number" onchange="renderMap()"></div>
+      <div><label data-i18n="mapa_anio_desde">Año desde</label><input id="year_min" type="number" onchange="renderMap()"></div>
+      <div><label data-i18n="mapa_anio_hasta">Año hasta</label><input id="year_max" type="number" onchange="renderMap()"></div>
       <span class="pill" id="map_summary"></span>
     </div>
-    <div id="domainWarn" class="hint" style="display:none;border-left-color:var(--oro)">🌍 <b>Dominio global — sin ubicación puntual.</b> Las tormentas solares afectan a toda la Tierra simultáneamente; las sequías cubren regiones extensas. El mapa geográfico y la grilla no aplican para este dominio.<br>→ Ve al <b>📊 Tablero</b> y selecciona este dominio para ver los resultados estadísticos.<br>→ Usa solo <b>aspectos planeta–planeta</b> (no casas ni ángulos). Ver <b>📖 Metodología → Artefactos detectados</b> para entender por qué.</div>
+    <div id="domainWarn" class="hint" style="display:none;border-left-color:var(--oro)" data-i18n-html="mapa_global_warn">🌍 <b>Dominio global — sin ubicación puntual.</b> Las tormentas solares afectan a toda la Tierra simultáneamente; las sequías cubren regiones extensas. El mapa geográfico y la grilla no aplican para este dominio.<br>→ Ve al <b>📊 Tablero</b> y selecciona este dominio para ver los resultados estadísticos.<br>→ Usa solo <b>aspectos planeta–planeta</b> (no casas ni ángulos). Ver <b>📖 Metodología → Artefactos detectados</b> para entender por qué.</div>
     <div id="geomap" style="height:430px"></div>
   </div>
 
   <div class="card">
-    <h2>Grilla espacial — similitudes por zona</h2>
+    <h2 data-i18n="mapa_grilla_h2">Grilla espacial — similitudes por zona</h2>
     <div id="grid" style="height:460px"></div>
   </div>
 
   <div class="card">
-    <h2>Distribución temporal <span id="time_scope" class="small muted">(todos los eventos)</span></h2>
-    <div class="row"><button class="ghost act" onclick="clearCell()">Ver todos los eventos</button></div>
+    <h2 data-i18n="mapa_temporal_h2">Distribución temporal <span id="time_scope" class="small muted">(todos los eventos)</span></h2>
+    <div class="row"><button class="ghost act" onclick="clearCell()" data-i18n="mapa_ver_todos">Ver todos los eventos</button></div>
     <div id="timehist" style="height:320px"></div>
   </div>
 
   <div class="card">
-    <h2>🌙 Distribución por fase lunar</h2>
-    <p class="small muted">Elongación Sol–Luna en el momento de cada evento: 0° = luna nueva, 90° = cuarto creciente, 180° = luna llena, 270° = cuarto menguante. Una distribución uniforme (círculo punteado) indica ausencia de patrón. Las barras en <b style="color:var(--oro)">dorado</b> superan la expectativa; en <b style="color:var(--verde)">verde</b>, la están por debajo.</p>
+    <h2 data-i18n="mapa_lunar_h2">🌙 Distribución por fase lunar</h2>
+    <p class="small muted" data-i18n-html="mapa_lunar_p">Elongación Sol–Luna en el momento de cada evento: 0° = luna nueva, 90° = cuarto creciente, 180° = luna llena, 270° = cuarto menguante. Una distribución uniforme (círculo punteado) indica ausencia de patrón. Las barras en <b style="color:var(--oro)">dorado</b> superan la expectativa; en <b style="color:var(--verde)">verde</b>, la están por debajo.</p>
     <div id="lunarrose" style="height:420px"></div>
     <p class="small muted" id="lunar_note" style="text-align:center;margin-top:4px"></p>
   </div>
 
   <div class="card">
-    <h2>🪐 Astrología de la selección — zona vs. resto del mundo</h2>
-    <div class="hint">Selecciona una <b>celda</b> en la grilla de arriba (y opcionalmente un rango de años). Aquí se comparan las configuraciones astrológicas de esa zona contra el <b>resto</b> de los eventos, con prueba z de proporciones y corrección FDR. Lo <span class="sig">verde</span> es significativo. <b>Exploratorio</b>: las diferencias entre zonas también pueden reflejar cuándo se registró cada zona, así que esto <i>genera</i> hipótesis para confirmar después con el modelo nulo emparejado.</div>
+    <h2 data-i18n="mapa_astro_h2">🪐 Astrología de la selección — zona vs. resto del mundo</h2>
+    <div class="hint" data-i18n-html="mapa_astro_hint">Selecciona una <b>celda</b> en la grilla de arriba (y opcionalmente un rango de años). Aquí se comparan las configuraciones astrológicas de esa zona contra el <b>resto</b> de los eventos, con prueba z de proporciones y corrección FDR. Lo <span class="sig">verde</span> es significativo. <b>Exploratorio</b>: las diferencias entre zonas también pueden reflejar cuándo se registró cada zona, así que esto <i>genera</i> hipótesis para confirmar después con el modelo nulo emparejado.</div>
     <div class="row">
       <select id="astro_filter" onchange="renderAstro()">
-        <option value="all">Todos los rasgos</option>
-        <option value="aspect">Solo aspectos</option>
-        <option value="house">Solo planeta en casa</option>
+        <option value="all" data-i18n="tablero_filter_all">Todos los rasgos</option>
+        <option value="aspect" data-i18n="tablero_filter_aspect">Solo aspectos</option>
+        <option value="house" data-i18n="tablero_filter_house">Solo planeta en casa</option>
       </select>
-      <span class="pill" id="astro_summary">selecciona una celda en la grilla</span>
+      <span class="pill" id="astro_summary" data-i18n="mapa_astro_pill">selecciona una celda en la grilla</span>
     </div>
     <div id="astrobar" style="height:520px"></div>
     <div style="overflow:auto;max-height:360px;margin-top:10px">
@@ -561,24 +588,24 @@
 <!-- ===================== HIPÓTESIS Y EXPANSIÓN ===================== -->
 <section id="hipotesis" style="display:none">
   <div class="card" style="border-left:4px solid var(--ok)">
-    <h2>✅ Ejemplo de hipótesis confirmada — úsala como plantilla</h2>
-    <p class="small muted">Esta es la primera hipótesis confirmada del proyecto. Sirve como modelo para entender cómo se formula, pre-registra y valida una hipótesis en esta plataforma.</p>
+    <h2 data-i18n="hip_ejemplo_h2">✅ Ejemplo de hipótesis confirmada — úsala como plantilla</h2>
+    <p class="small muted" data-i18n="hip_ejemplo_subtitle">Esta es la primera hipótesis confirmada del proyecto. Sirve como modelo para entender cómo se formula, pre-registra y valida una hipótesis en esta plataforma.</p>
     <div style="background:var(--panel2);border-radius:8px;padding:14px 16px;margin:12px 0;font-size:14px;line-height:1.7">
-      <b>Dominio:</b> Sismos M≥6 (USGS 2000–2024, n=3.730)<br>
-      <b>Rasgo:</b> Aspecto Mercurio–Urano, conjunción (separación angular ≤8°)<br>
-      <b>Dirección:</b> Exceso (más sismos de lo esperado durante la conjunción)<br>
-      <b>Resultado:</b> z=+5.27 · RR=1.32 (32% más sismos) · FDR q=0,000047<br>
-      <b>Validación cruzada:</b> confirmado en mitad independiente (z=+3.88, q=0,00041) ✅<br>
-      <b>Replicación pendiente:</b> catálogo GCMT 1976–1999 (pre-registrado en OSF)
+      <span data-i18n-html="hip_ejemplo_dominio"><b>Dominio:</b> Sismos M≥6 (USGS 2000–2024, n=3.730)</span><br>
+      <span data-i18n-html="hip_ejemplo_rasgo"><b>Rasgo:</b> Aspecto Mercurio–Urano, conjunción (separación angular ≤8°)</span><br>
+      <span data-i18n-html="hip_ejemplo_dir"><b>Dirección:</b> Exceso (más sismos de lo esperado durante la conjunción)</span><br>
+      <span data-i18n-html="hip_ejemplo_res"><b>Resultado:</b> z=+5.27 · RR=1.32 (32% más sismos) · FDR q=0,000047</span><br>
+      <span data-i18n-html="hip_ejemplo_val"><b>Validación cruzada:</b> confirmado en mitad independiente (z=+3.88, q=0,00041) ✅</span><br>
+      <span data-i18n-html="hip_ejemplo_rep"><b>Replicación pendiente:</b> catálogo GCMT 1976–1999 (pre-registrado en OSF)</span>
     </div>
-    <p class="small muted">💡 <b>Para formular tu propia hipótesis:</b> elige un dominio de eventos de tu ciencia, un rasgo astronómico con justificación teórica, y pre-regístrala en OSF <i>antes</i> de mirar los datos. El constructor de abajo te genera el enunciado listo para registrar.</p>
+    <p class="small muted" data-i18n-html="hip_ejemplo_tip">💡 <b>Para formular tu propia hipótesis:</b> elige un dominio de eventos de tu ciencia, un rasgo astronómico con justificación teórica, y pre-regístrala en OSF <i>antes</i> de mirar los datos. El constructor de abajo te genera el enunciado listo para registrar.</p>
   </div>
 
   <div class="card">
-    <h2>🔭 Constructor de hipótesis falseables</h2>
-    <div class="hint">Una hipótesis sirve para la ciencia solo si se puede <b>rechazar</b>. Arma la tuya con los menús: el enunciado queda en formato listo para <b>pre-registrar</b> (OSF) antes de mirar los datos. Pre-registrar evita el autoengaño y es lo que hace publicable el trabajo.</div>
+    <h2 data-i18n="hip_constructor_h2">🔭 Constructor de hipótesis falseables</h2>
+    <div class="hint" data-i18n-html="hip_constructor_hint">Una hipótesis sirve para la ciencia solo si se puede <b>rechazar</b>. Arma la tuya con los menús: el enunciado queda en formato listo para <b>pre-registrar</b> (OSF) antes de mirar los datos. Pre-registrar evita el autoengaño y es lo que hace publicable el trabajo.</div>
     <div class="grid">
-      <div><label>Dominio de eventos</label><select id="h_domain">
+      <div><label data-i18n="hip_domain_label">Dominio de eventos</label><select id="h_domain">
         <option value="sismo_M6plus">Sismos M≥6 ✅ confirmado</option>
         <option value="sismo_M5plus">Sismos M≥5</option>
         <option value="sismo">Sismos (historial)</option>
@@ -591,62 +618,87 @@
         <option value="infarto">Infartos (datos propios)</option>
         <option value="nacimiento">Nacimientos (datos propios)</option>
         <option value="otro">Otro</option></select></div>
-      <div><label>Tipo de rasgo</label><select id="h_kind" onchange="hKindChange()">
-        <option value="aspect">Aspecto entre dos puntos</option>
-        <option value="house">Planeta en una casa</option></select></div>
-      <div id="h_p1box"><label>Punto 1</label><select id="h_p1"></select></div>
-      <div id="h_aspbox"><label>Aspecto</label><select id="h_asp">
+      <div><label data-i18n="hip_kind_label">Tipo de rasgo</label><select id="h_kind" onchange="hKindChange()">
+        <option value="aspect" data-i18n="hip_kind_aspect">Aspecto entre dos planetas</option>
+        <option value="house" data-i18n="hip_kind_house">Planeta en una casa (1–12)</option>
+        <option value="angular" data-i18n="hip_kind_angular">Planeta en ángulo (ASC/DSC/MC/IC)</option>
+        <option value="lunar_phase" data-i18n="hip_kind_lunar_phase">Fase lunar (luna nueva / cuartos / luna llena)</option>
+        <option value="lunar_distance" data-i18n="hip_kind_lunar_distance">Distancia lunar (perigeo / apogeo)</option>
+        <option value="tidal" data-i18n="hip_kind_tidal">Fuerza de marea (sicigia / cuadratura / extrema)</option></select></div>
+      <div id="h_p1box"><label data-i18n="hip_p1_label">Punto 1</label><select id="h_p1"></select></div>
+      <div id="h_aspbox"><label data-i18n="hip_asp_label">Aspecto</label><select id="h_asp">
         <option value="conjunción|0">conjunción (0°)</option>
         <option value="sextil|60">sextil (60°)</option>
         <option value="cuadratura|90">cuadratura (90°)</option>
         <option value="trígono|120">trígono (120°)</option>
         <option value="oposición|180">oposición (180°)</option></select></div>
-      <div id="h_p2box"><label>Punto 2</label><select id="h_p2"></select></div>
-      <div id="h_housebox" style="display:none"><label>Casa (1–12)</label><select id="h_house"></select></div>
-      <div><label>Orbe (°)</label><input id="h_orb" type="number" value="7" step="0.5"></div>
-      <div><label>Dirección esperada</label><select id="h_dir">
-        <option value="mayor">mayor que el azar (exceso)</option>
-        <option value="menor">menor que el azar (déficit)</option></select></div>
-      <div><label>Filtro (opcional)</label><input id="h_filter" placeholder="ej. magnitud ≥ 6"></div>
-      <div><label>Autor / equipo</label><input id="h_author" placeholder="tu nombre"></div>
+      <div id="h_p2box"><label data-i18n="hip_p2_label">Punto 2</label><select id="h_p2"></select></div>
+      <div id="h_housebox" style="display:none"><label data-i18n="hip_house_label">Casa (1–12)</label><select id="h_house"></select></div>
+      <div id="h_anglebox" style="display:none"><label data-i18n="hip_angle_label">Ángulo</label><select id="h_angle">
+        <option value="ASC">ASC — horizonte Este (salida)</option>
+        <option value="DSC">DSC — horizonte Oeste (puesta)</option>
+        <option value="MC">MC — cénit (mediodía local)</option>
+        <option value="IC">IC — nadir (medianoche local)</option></select></div>
+      <div id="h_phasebox" style="display:none"><label data-i18n="hip_phase_label">Fase</label><select id="h_phase">
+        <option value="luna_nueva">Luna nueva (0–45°)</option>
+        <option value="creciente_menor">Creciente menor (45–90°)</option>
+        <option value="cuarto_creciente">Cuarto creciente (90–135°)</option>
+        <option value="creciente_mayor">Creciente mayor (135–180°)</option>
+        <option value="luna_llena">Luna llena (180–225°)</option>
+        <option value="menguante_mayor">Menguante mayor (225–270°)</option>
+        <option value="cuarto_menguante">Cuarto menguante (270–315°)</option>
+        <option value="menguante_menor">Menguante menor (315–360°)</option></select></div>
+      <div id="h_distbox" style="display:none"><label data-i18n="hip_dist_label">Distancia</label><select id="h_dist">
+        <option value="perigeo">Perigeo — Luna más cerca (&lt;365.000 km)</option>
+        <option value="apogeo">Apogeo — Luna más lejos (&gt;400.000 km)</option></select></div>
+      <div id="h_tidalbox" style="display:none"><label data-i18n="hip_tidal_label">Tipo de marea</label><select id="h_tidal">
+        <option value="spring">Sicigia — luna nueva o llena (marea máxima)</option>
+        <option value="neap">Cuadratura — cuartos (marea mínima)</option>
+        <option value="spring_perigee">Extrema — sicigia + perigeo (máximo histórico)</option></select></div>
+      <div><label data-i18n="hip_orb_label">Orbe (°)</label><input id="h_orb" type="number" value="7" step="0.5"></div>
+      <div><label data-i18n="hip_dir_label">Dirección esperada</label><select id="h_dir">
+        <option value="mayor" data-i18n="hip_dir_mayor">mayor que el azar (exceso)</option>
+        <option value="menor" data-i18n="hip_dir_menor">menor que el azar (déficit)</option></select></div>
+      <div><label data-i18n="hip_filter_label">Filtro (opcional)</label><input id="h_filter" placeholder="ej. magnitud ≥ 6"></div>
+      <div><label data-i18n="hip_author_label">Autor / equipo</label><input id="h_author" placeholder="tu nombre"></div>
     </div>
     <div class="card" style="background:var(--panel2);margin-top:14px">
-      <span class="small muted">Enunciado generado:</span>
+      <span class="small muted" data-i18n="hip_preview_label">Enunciado generado:</span>
       <p id="h_preview" style="margin:8px 0 0;font-size:15px;line-height:1.5"></p>
     </div>
     <div class="row">
-      <button class="act" onclick="addHypothesis()">＋ Registrar hipótesis</button>
-      <button class="ghost act" onclick="exportHypotheses()">⬇ Exportar hipótesis.csv</button>
+      <button class="act" onclick="addHypothesis()" data-i18n="hip_btn_add">＋ Registrar hipótesis</button>
+      <button class="ghost act" onclick="exportHypotheses()" data-i18n="hip_btn_export">⬇ Exportar hipótesis.csv</button>
       <span class="pill" id="h_count">0 hipótesis</span>
     </div>
   </div>
 
   <div class="card">
-    <h2>Banco de hipótesis del equipo</h2>
-    <p class="small muted">Se guardan en este navegador. Lleva las prometedoras a OSF y, tras correr el análisis, marca si se confirmaron.</p>
+    <h2 data-i18n="hip_banco_h2">Banco de hipótesis del equipo</h2>
+    <p class="small muted" data-i18n="hip_banco_p">Se guardan en este navegador. Lleva las prometedoras a OSF y, tras correr el análisis, marca si se confirmaron.</p>
     <div style="overflow:auto;max-height:340px">
-      <table id="htable"><thead><tr><th>Dominio</th><th>Hipótesis</th><th>Dir.</th><th>Autor</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table>
+      <table id="htable"><thead><tr><th data-i18n="hip_th_domain">Dominio</th><th data-i18n="hip_th_hip">Hipótesis</th><th data-i18n="hip_th_dir">Dir.</th><th data-i18n="hip_th_autor">Autor</th><th data-i18n="hip_th_estado">Estado</th><th></th></tr></thead><tbody></tbody></table>
     </div>
   </div>
 
   <div class="card">
-    <h2>🌍 ¿Qué eventos podemos sumar? Ciencias y fuentes de datos</h2>
-    <div class="hint">Cualquier evento con <b>fecha, hora y lugar</b> puede entrar a la plataforma. Estos dominios biológicos y naturales son los más prometedores para la cosmobiología; todos tienen fuentes públicas abiertas, igual que USGS para sismos.</div>
+    <h2 data-i18n="hip_expansion_h2">🌍 ¿Qué eventos podemos sumar? Ciencias y fuentes de datos</h2>
+    <div class="hint" data-i18n-html="hip_expansion_hint">Cualquier evento con <b>fecha, hora y lugar</b> puede entrar a la plataforma. Estos dominios biológicos y naturales son los más prometedores para la cosmobiología; todos tienen fuentes públicas abiertas, igual que USGS para sismos.</div>
     <div style="overflow:auto">
-      <table id="srctable"><thead><tr><th>Ciencia / dominio</th><th>Evento</th><th>Por qué es interesante</th><th>Fuente pública</th></tr></thead><tbody></tbody></table>
+      <table id="srctable"><thead><tr><th data-i18n="hip_src_th_ciencia">Ciencia / dominio</th><th data-i18n="hip_src_th_evento">Evento</th><th data-i18n="hip_src_th_por_que">Por qué es interesante</th><th data-i18n="hip_src_th_fuente">Fuente pública</th></tr></thead><tbody></tbody></table>
     </div>
-    <p class="small muted" style="margin-top:12px">⚠ Datos de personas (nacimientos, infartos): usar solo fuentes anonimizadas o con consentimiento; respetar ética y privacidad. La hora exacta es clave para las casas.</p>
+    <p class="small muted" style="margin-top:12px" data-i18n="hip_etica">⚠ Datos de personas (nacimientos, infartos): usar solo fuentes anonimizadas o con consentimiento; respetar ética y privacidad. La hora exacta es clave para las casas.</p>
   </div>
 </section>
 
 <!-- ===================== FUENTES ===================== -->
 <section id="fuentes" style="display:none">
   <div class="card">
-    <h2>📦 Lo que ya está descargado y en la nube</h2>
-    <p class="small muted">Estos eventos vienen cargados por defecto en la página (pestañas Tablero y Mapa) y están subidos al Supabase compartido de Invesciencias. Puedes filtrarlos por <b>dominio</b> en el Tablero y en el Mapa.</p>
+    <h2 data-i18n="fuentes_h2">📦 Lo que ya está descargado y en la nube</h2>
+    <p class="small muted" data-i18n-html="fuentes_p">Estos eventos vienen cargados por defecto en la página (pestañas Tablero y Mapa) y están subidos al Supabase compartido de Invesciencias. Puedes filtrarlos por <b>dominio</b> en el Tablero y en el Mapa.</p>
     <div style="overflow:auto">
     <table>
-      <thead><tr><th>Dominio</th><th>Eventos</th><th>Fuente</th><th>Estado análisis</th><th>Tipo de rasgos válidos</th></tr></thead>
+      <thead><tr><th data-i18n="fuentes_th_dominio">Dominio</th><th data-i18n="fuentes_th_eventos">Eventos</th><th data-i18n="fuentes_th_fuente">Fuente</th><th data-i18n="fuentes_th_estado">Estado análisis</th><th data-i18n="fuentes_th_rasgos">Tipo de rasgos válidos</th></tr></thead>
       <tbody>
         <tr style="background:rgba(255,200,0,0.07)"><td>🟢 <b>Sismos M≥6</b> <span class="pill" style="background:var(--ok);color:#000">✅ confirmado</span></td><td>3.730</td><td>USGS FDSN</td><td>Mercurio–Urano conjunción: z=+5.27, RR=1.32, split ✅</td><td>Aspectos + casas</td></tr>
         <tr><td>🟢 <b>Sismos M≥6 — exploratoria</b></td><td>1.865</td><td>USGS FDSN</td><td>4 candidatos FDR&lt;0.05</td><td>Aspectos + casas</td></tr>
@@ -661,16 +713,16 @@
       </tbody>
     </table>
     </div>
-    <div class="hint" style="border-left-color:var(--oro)">Cada dominio tiene su sesgo propio. La regla general: los <b>aspectos planeta–planeta</b> sirven para todos; las <b>casas/ángulos</b> solo para eventos puntuales con hora exacta (sismos). Ver detalle en <code>COMPARABILIDAD_EVENTOS.md</code> y en la pestaña 📖 Metodología.</div>
+    <div class="hint" style="border-left-color:var(--oro)" data-i18n-html="fuentes_hint">Cada dominio tiene su sesgo propio. La regla general: los <b>aspectos planeta–planeta</b> sirven para todos; las <b>casas/ángulos</b> solo para eventos puntuales con hora exacta (sismos). Ver detalle en <code>COMPARABILIDAD_EVENTOS.md</code> y en la pestaña 📖 Metodología.</div>
     <div class="row">
-      <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()">📊 Ver la estadística por dominio</button>
-      <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()">🗺 Ver el mapa por dominio</button>
+      <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="fuentes_btn_tablero">📊 Ver la estadística por dominio</button>
+      <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()" data-i18n="fuentes_btn_mapa">🗺 Ver el mapa por dominio</button>
     </div>
   </div>
 
   <div class="card">
-    <h2>🌊 Inundaciones y 🏜 sequías — NASA EONET</h2>
-    <p class="small muted">EONET (Earth Observatory Natural Event Tracker) reúne eventos naturales con fecha y coordenadas, <b>gratis y sin clave</b>. Ya descargamos 743 inundaciones y 7 sequías.</p>
+    <h2 data-i18n="fuentes_eonet_h2">🌊 Inundaciones y 🏜 sequías — NASA EONET</h2>
+    <p class="small muted" data-i18n-html="fuentes_eonet_p">EONET (Earth Observatory Natural Event Tracker) reúne eventos naturales con fecha y coordenadas, <b>gratis y sin clave</b>. Ya descargamos 743 inundaciones y 7 sequías.</p>
     <div class="hint">
       <b>Descarga automática (1 comando):</b><br>
       <code>python descargar_eonet.py floods drought</code> → genera <code>eventos_eonet.csv</code><br>
@@ -688,8 +740,8 @@
   </div>
 
   <div class="card">
-    <h2>🏜 Sequías y desastres con impacto poblacional — EM-DAT</h2>
-    <p class="small muted">EM-DAT es la base de referencia para el <b>impacto en la población</b>: muertos, afectados y daños económicos de desastres de todo tipo, incluidas las sequías. Requiere registro académico gratis.</p>
+    <h2 data-i18n="fuentes_emdat_h2">🏜 Sequías y desastres con impacto poblacional — EM-DAT</h2>
+    <p class="small muted" data-i18n-html="fuentes_emdat_p">EM-DAT es la base de referencia para el <b>impacto en la población</b>: muertos, afectados y daños económicos de desastres de todo tipo, incluidas las sequías. Requiere registro académico gratis.</p>
     <div class="hint">
       1. Crea cuenta en <a href="https://public.emdat.be" target="_blank" style="color:var(--accent2)">public.emdat.be</a><br>
       2. Filtra y exporta a CSV (guárdalo como <code>emdat.csv</code>)<br>
@@ -699,13 +751,13 @@
   </div>
 
   <div class="card">
-    <h2>🌀 Huracanes — NOAA HURDAT2 <span class="pill">ya en la nube</span></h2>
+    <h2 data-i18n="fuentes_huracanes_h2">🌀 Huracanes — NOAA HURDAT2 <span class="pill">ya en la nube</span></h2>
     <p class="small muted">Atlántico (1851→) + Pacífico Este (1949→). Cada evento = momento de máxima intensidad (viento en nudos). Ya descargamos 2,494 (filtrados a ≥1900 por el rango de las efemérides).</p>
     <div class="hint"><b>Descarga automática:</b> <code>python descargar_huracanes.py</code> → <code>eventos_huracanes.csv</code></div>
   </div>
 
   <div class="card">
-    <h2>🌞 Tormentas solares — NASA DONKI <span class="pill">ya en la nube</span></h2>
+    <h2 data-i18n="fuentes_solar_h2">🌞 Tormentas solares — NASA DONKI <span class="pill">ya en la nube</span></h2>
     <p class="small muted">Fulguraciones (clase C/M/X) y tormentas geomagnéticas (Kp). Ya descargamos 3,469 (2010–2026).</p>
     <div class="hint">
       <b>Descarga automática:</b> <code>python descargar_solar.py --inicio 2010</code><br>
@@ -715,7 +767,7 @@
   </div>
 
   <div class="card">
-    <h2>🌋 Volcanes — Smithsonian GVP <span class="pill">descarga manual</span></h2>
+    <h2 data-i18n="fuentes_volcanes_h2">🌋 Volcanes — Smithsonian GVP <span class="pill">descarga manual</span></h2>
     <p class="small muted">Más de 10,000 erupciones con fecha, VEI y coordenadas. Dominio público, pero el sitio bloquea la descarga automática (CORS).</p>
     <div class="hint">
       1. Ve a <a href="https://volcano.si.edu/search_eruption.cfm" target="_blank" style="color:var(--accent2)">volcano.si.edu/search_eruption.cfm</a> → <b>Search</b> (sin filtros) → <b>Download Results (CSV)</b><br>
@@ -731,8 +783,8 @@
   </div>
 
   <div class="card">
-    <h2>🔄 Conversor genérico de CSV externo</h2>
-    <p class="small muted">Si tienes un CSV de otra fuente, mapea aquí sus columnas al esquema unificado.</p>
+    <h2 data-i18n="fuentes_conversor_h2">🔄 Conversor genérico de CSV externo</h2>
+    <p class="small muted" data-i18n="fuentes_conversor_p">Si tienes un CSV de otra fuente, mapea aquí sus columnas al esquema unificado.</p>
     <div class="grid">
       <div><label>Columna → event_id</label><input id="map_id" placeholder="id"></div>
       <div><label>Columna → datetime_utc</label><input id="map_dt" placeholder="time" value="time"></div>
@@ -753,7 +805,7 @@
   </div>
 
   <div class="card">
-    <h2>🧬 Natalidad — efecto Gauquelin <span class="pill">script listo</span></h2>
+    <h2 data-i18n="fuentes_gauquelin_h2">🧬 Natalidad — efecto Gauquelin <span class="pill">script listo</span></h2>
     <p class="small muted">El estudio más famoso de cosmobiología: Michel Gauquelin encontró que <b>Marte aparece más frecuentemente saliendo o culminando</b> (casas 1 y 10) en los nacimientos de campeones deportivos. Reproducible con nuestro motor porque ya calcula casas Whole Sign con hora exacta.</p>
 
     <div class="hint" style="border-left-color:var(--oro)">
@@ -813,7 +865,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2>📊 Otras fuentes planificadas</h2>
+    <h2 data-i18n="fuentes_otras_h2">📊 Otras fuentes planificadas</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px">
       <div style="background:var(--panel2);border-radius:10px;padding:14px">
         <b>🧬 Natalidad (Gauquelin) — más grupos</b><br>
@@ -838,13 +890,13 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 <!-- ===================== AYUDA ===================== -->
 <section id="ayuda" style="display:none">
 
-  <div class="hint" style="margin-bottom:16px">
+  <div class="hint" style="margin-bottom:16px" data-i18n-html="met_ayuda_hint">
     💡 <b>Haz clic en cualquier término subrayado</b> para ver su definición completa. Los términos en <span class="glos">color verde</span> abren una explicación detallada.
   </div>
 
   <!-- ÍNDICE RÁPIDO -->
   <div class="card" style="padding:14px 18px">
-    <p style="margin:0 0 8px;font-weight:600">Secciones de esta página:</p>
+    <p style="margin:0 0 8px;font-weight:600" data-i18n="met_index_title">Secciones de esta página:</p>
     <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px">
       <a href="#met_marco" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">📐 Marco científico</a>
       <a href="#met_nulo" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🎲 Modelo nulo</a>
@@ -852,6 +904,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
       <a href="#met_split" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">✂ Split validation</a>
       <a href="#met_artefactos" style="color:var(--oro);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">⚠ Artefactos ← leer primero</a>
       <a href="#met_estrat" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🔍 Estratificación</a>
+      <a href="#met_rasgos" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🌙 Grupos de rasgos</a>
       <a href="#met_flujo" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">⚙ Flujo de trabajo</a>
       <a href="#met_gauquelin" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">🧬 Gauquelin</a>
       <a href="#met_glosario" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">📖 Glosario</a>
@@ -860,17 +913,17 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
   <!-- NOTA EPISTEMOLÓGICA: para astrónomos y revisores de revistas -->
   <div id="met_marco" class="card" style="border-left:4px solid var(--accent2)">
-    <h2>📐 Marco científico: astronomía de posición, no astrología predictiva</h2>
-    <p class="small muted">Esta nota está dirigida a investigadores con formación en ciencias naturales que encuentran incómodo el lenguaje astrológico. La aclaración es importante para la integridad comunicativa del proyecto.</p>
+    <h2 data-i18n="met_marco_h2">📐 Marco científico: astronomía de posición, no astrología predictiva</h2>
+    <p class="small muted" data-i18n="met_marco_subtitle">Esta nota está dirigida a investigadores con formación en ciencias naturales que encuentran incómodo el lenguaje astrológico. La aclaración es importante para la integridad comunicativa del proyecto.</p>
 
-    <h3>¿Qué calculamos exactamente?</h3>
+    <h3 data-i18n="met_que_calc_h3">¿Qué calculamos exactamente?</h3>
     <p>Para cada evento calculamos las <b>longitudes eclípticas geocéntricas aparentes</b> de 10 cuerpos del Sistema Solar (Sol, Luna, Mercurio, Venus, Marte, Júpiter, Saturno, Urano, Neptuno, Plutón) usando la efeméride <b>JPL DE421</b> del Jet Propulsion Laboratory de la NASA — la misma base de datos de posiciones planetarias que se usa para calcular trayectorias de misiones espaciales. La precisión es de sub-arco-segundo.</p>
     <p>El sistema de referencia es la <b>franja eclíptica</b>: el plano de la órbita terrestre alrededor del Sol, dividido en 360°. Es un sistema de coordenadas astronómico estándar, descrito en cualquier manual de mecánica celeste.</p>
 
-    <h3>¿Qué son los "aspectos"?</h3>
+    <h3 data-i18n="met_aspectos_h3">¿Qué son los "aspectos"?</h3>
     <p>Son simplemente <b>separaciones angulares entre pares de planetas</b> medidas en longitud eclíptica:</p>
     <table class="small">
-      <thead><tr><th>Nombre</th><th>Separación angular</th><th>Tolerancia (orbe)</th><th>Uso en astronomía</th></tr></thead>
+      <thead><tr><th data-i18n="met_aspectos_th_nombre">Nombre</th><th data-i18n="met_aspectos_th_sep">Separación angular</th><th data-i18n="met_aspectos_th_tol">Tolerancia (orbe)</th><th data-i18n="met_aspectos_th_uso">Uso en astronomía</th></tr></thead>
       <tbody>
         <tr><td>Conjunción</td><td>0°</td><td>±8°</td><td>Estándar — dos cuerpos con la misma longitud eclíptica</td></tr>
         <tr><td>Oposición</td><td>180°</td><td>±8°</td><td>Estándar — cuerpo en dirección opuesta al Sol (oposición solar)</td></tr>
@@ -881,7 +934,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
     </table>
     <p>Todos estos términos aparecen en la literatura astronómica. "Conjunción" y "oposición" son términos de la <b>Unión Astronómica Internacional (IAU)</b>. Kepler estudió los aspectos como relaciones geométricas entre órbitas. El hecho de que la astrología tradicional también los use no los hace no-científicos.</p>
 
-    <h3>¿Qué son los "signos del zodíaco" en este contexto?</h3>
+    <h3 data-i18n="met_signos_h3">¿Qué son los "signos del zodíaco" en este contexto?</h3>
     <p>Son una forma de <b>dividir la franja eclíptica en 12 sectores de 30°</b> con fines de referencia. Este sistema fue adoptado independientemente por múltiples culturas:</p>
     <ul class="small">
       <li><b>Babilónica / griega / occidental</b>: zodíaco <i>tropical</i>, anclado al equinoccio vernal (0° Aries = inicio de la primavera boreal). Es el que usamos.</li>
@@ -891,17 +944,17 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
     <p>Para los <b>aspectos planeta–planeta</b> (las separaciones angulares entre dos planetas) la distinción tropical/sidéreo <b>no importa</b>: si Mercurio y Urano están a 3° de separación, lo están en cualquier sistema de coordenadas. La diferencia solo afecta la posición absoluta de un planeta en su sector de la eclíptica, no la geometría relativa entre planetas.</p>
     <p>En este proyecto <b>no analizamos signos zodiacales como variable</b>. La unidad de análisis es la separación angular entre pares de planetas y la posición relativa de planetas respecto al horizonte local (casas). Los signos son solo una convención de nomenclatura para describir en qué parte de la eclíptica está cada planeta.</p>
 
-    <h3>¿Por qué "cosmobiología" y no "astronomía estadística"?</h3>
+    <h3 data-i18n="met_cosmo_h3">¿Por qué "cosmobiología" y no "astronomía estadística"?</h3>
     <p>"Cosmobiología" es el término académico establecido para la investigación empírica de posibles relaciones entre posiciones astronómicas y fenómenos terrestres — introducido por el médico suizo Karl Ernst Krafft en los años 1920–30 y retomado por Michel Gauquelin en trabajos que generaron debate científico durante décadas. Usamos ese término por rigor histórico, no para validar las afirmaciones de la astrología popular.</p>
     <p>La distinción clave: la astrología predictiva tradicional <b>interpreta</b> posiciones planetarias como portadoras de significado simbólico. Este proyecto <b>mide</b> posiciones planetarias como variables numéricas y pregunta si alguna covaria con eventos, sin asumir ninguna interpretación simbólica.</p>
 
-    <div class="hint" style="border-left-color:var(--accent2)">
+    <div class="hint" style="border-left-color:var(--accent2)" data-i18n-html="met_reviewer_hint">
       <b>Para el revisor de revista:</b> los datos de entrada son coordenadas eclípticas JPL; las variables son separaciones angulares en grados; la estadística es z-score de proporciones con corrección FDR; la validación es split 50/50. El marco conceptual es exploración empírica de covarianza. El lenguaje astrológico es solo nomenclatura histórica del sistema de coordenadas, no una afirmación sobre mecanismos.
     </div>
   </div>
 
   <div class="card">
-    <h2 id="met_nulo">¿Por qué un <span class="glos" data-glos="modelo nulo">modelo nulo</span>?</h2>
+    <h2 id="met_nulo" data-i18n="met_nulo_h2">¿Por qué un <span class="glos" data-glos="modelo nulo">modelo nulo</span>?</h2>
     <p>Contar los <span class="glos" data-glos="aspecto">aspectos</span> más frecuentes en sismos <b>no es evidencia</b>: planetas lentos como Neptuno y Plutón están en sextil durante décadas, para cualquier evento — sismos, bodas, partidos de fútbol. Sin un punto de comparación, cualquier conteo parece significativo.</p>
     <p>Para cada evento real generamos <b>K controles ficticios</b> en fechas cercanas (±30 días, mismo lugar), calculamos la misma carta y comparamos frecuencias. El resultado es la diferencia entre lo real y lo aleatorio, medida con un <span class="glos" data-glos="z-score">z-score</span> y un <span class="glos" data-glos="p-valor">p-valor</span>.</p>
     <div class="hint">
@@ -910,14 +963,14 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2 id="met_fdr">Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>)</h2>
+    <h2 id="met_fdr" data-i18n="met_fdr_h2">Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>)</h2>
     <p>Probamos 522 características astrológicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
     <p>FDR ajusta cada p-valor teniendo en cuenta cuántas pruebas hicimos. Solo declaramos significativo lo que supera ese umbral más estricto. Resultado: en lugar de 26 falsos positivos, esperamos que máximo el 5% de los que declaramos significativos sean falsos.</p>
     <p class="small muted">El método BH es más permisivo que Bonferroni (que es demasiado conservador) y más estricto que no corregir. Es el estándar en genómica y estudios de múltiples hipótesis.</p>
   </div>
 
   <div class="card">
-    <h2 id="met_split"><span class="glos" data-glos="split validation">Validación exploratoria + confirmatoria</span> (anti <span class="glos" data-glos="p-hacking">p-hacking</span>)</h2>
+    <h2 id="met_split" data-i18n="met_split_h2"><span class="glos" data-glos="split validation">Validación exploratoria + confirmatoria</span> (anti <span class="glos" data-glos="p-hacking">p-hacking</span>)</h2>
     <p>El <span class="glos" data-glos="p-hacking">p-hacking</span> ocurre cuando buscamos en los datos con suficiente creatividad hasta encontrar algo, y reportamos solo eso. La solución es dividir los datos antes de empezar:</p>
     <ol>
       <li><b>Exploración (50%):</b> buscamos candidatos con FDR&lt;0.05. Pueden ser muchos o pocos.</li>
@@ -927,13 +980,13 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2>Sistema de casas — <span class="glos" data-glos="whole sign">Whole Sign</span></h2>
+    <h2 data-i18n="met_casas_h2">Sistema de casas — <span class="glos" data-glos="whole sign">Whole Sign</span></h2>
     <p>Las casas astrológicas dividen el cielo en 12 sectores según el punto del horizonte donde sale el sol (Ascendente). El sistema <span class="glos" data-glos="whole sign">Whole Sign</span> asigna cada casa a un signo zodiacal completo (30°).</p>
     <p><b>¿Por qué no Placidus?</b> Placidus (el más popular en astrología occidental) se degenera matemáticamente en latitudes &gt;66°N/S — exactamente donde ocurren muchos sismos importantes (Alaska, Kamchatka, norte de Japón). Whole Sign es estable en todo el globo.</p>
   </div>
 
   <div class="card">
-    <h2 id="met_estrat">🔍 <span class="glos" data-glos="estratificación">Estratificación</span>: cuándo el global da negativo y el subgrupo da positivo</h2>
+    <h2 id="met_estrat" data-i18n="met_estrat_h2">🔍 <span class="glos" data-glos="estratificación">Estratificación</span>: cuándo el global da negativo y el subgrupo da positivo</h2>
     <p>Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. El primer resultado confirmado de este proyecto (<b>Mercurio–Urano en sismos M≥6</b>) no apareció en el análisis global M≥5 — apareció al estratificar por magnitud.</p>
     <table>
       <thead><tr><th>Dimensión</th><th>Estratos útiles</th><th>Justificación física</th></tr></thead>
@@ -950,7 +1003,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2>🌍 Cómo se aplican los parámetros del evento al análisis</h2>
+    <h2 data-i18n="met_params_h2">🌍 Cómo se aplican los parámetros del evento al análisis</h2>
     <p>Los componentes físicos del sismo (profundidad, energía, tipo, duración…) no entran en el cálculo de la carta, pero <b>sí estructuran el análisis estadístico</b> de tres maneras complementarias:</p>
 
     <table>
@@ -967,7 +1020,42 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2 id="met_flujo">Flujo de trabajo completo</h2>
+    <div id="met_rasgos" class="card" style="border-left:4px solid var(--accent2)">
+    <h2 data-i18n="met_rasgos_h2">🌙 Grupos de rasgos astronómicos y físicos</h2>
+    <p>La plataforma calcula cuatro familias de rasgos para cada evento y sus controles del modelo nulo:</p>
+
+    <h3>1. Aspectos planeta–planeta</h3>
+    <p>Separaciones angulares entre pares de planetas en longitud eclíptica geocéntrica (zodíaco tropical, Skyfield + JPL DE421). Cinco aspectos mayores: conjunción (0°), sextil (60°), cuadratura (90°), trígono (120°), oposición (180°). <b>Válidos para todos los dominios</b> — no dependen del lugar ni de la hora exacta del día.</p>
+
+    <h3>2. Angularidad topocéntrica <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
+    <p>Un planeta está <b>angular</b> cuando se encuentra dentro de 8° de uno de los cuatro ángulos locales calculados desde el epicentro del evento:</p>
+    <ul>
+      <li><b>ASC (Ascendente)</b> — horizonte Este, donde el planeta está saliendo</li>
+      <li><b>DSC (Descendente)</b> — horizonte Oeste, donde el planeta está poniéndose</li>
+      <li><b>MC (Medio Cielo)</b> — punto más alto del cielo, mediodía local</li>
+      <li><b>IC (Fondo del Cielo)</b> — punto más bajo, medianoche local</li>
+    </ul>
+    <p>Estos ángulos giran 360° en 24 horas y son completamente distintos a 4 minutos de diferencia. <b>Solo válidos para eventos con hora exacta y coordenadas precisas</b> (sismos, volcanes). Primer resultado destacado en GCMT 1976–1999: Júpiter en DSC, z=+9.16 (p_fdr=2.1×10⁻¹⁷).</p>
+
+    <h3>3. Fase lunar y distancia <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
+    <p>La Luna completa un ciclo de fases (luna nueva → cuartos → luna llena) cada ~29.5 días. La plataforma divide este ciclo en <b>8 bins de 45°</b> y prueba si los eventos se concentran en alguna fase más de lo esperado por azar. También mide la <b>distancia geocéntrica lunar</b> en km:</p>
+    <ul>
+      <li><b>Perigeo</b> — Luna a menos de 365.000 km (marea gravitacional máxima)</li>
+      <li><b>Apogeo</b> — Luna a más de 400.000 km (marea gravitacional mínima)</li>
+    </ul>
+    <p>Primer resultado en GCMT: apogeo lunar con z=+3.01 (más sismos cuando la Luna está más lejos — resultado contraintuitivo, pendiente de replicación).</p>
+
+    <h3>4. Fuerza de marea <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
+    <p>La fuerza de marea combinada Luna+Sol (proporcional a GM/r³) varía hasta un 48% entre perigeo y apogeo. La plataforma define tres categorías:</p>
+    <ul>
+      <li><b>Sicigia</b> — luna nueva o llena: Sol y Luna alineados, mareas máximas (~50% del tiempo)</li>
+      <li><b>Cuadratura</b> — cuartos: Sol y Luna en ángulo recto, mareas mínimas (~50%)</li>
+      <li><b>Sicigia extrema</b> — sicigia + perigeo simultáneos: marea máxima histórica (&lt;5% del tiempo)</li>
+    </ul>
+    <div class="hint">⚠ Los rasgos de angularidad, fase lunar y distancia lunar <b>solo son válidos para eventos con hora exacta</b>. Para dominios con hora redondeada (HURDAT2: 00/06/12/18 UTC) estos rasgos generan artefactos sistemáticos y deben excluirse del análisis.</div>
+  </div>
+
+  <h2 id="met_flujo" data-i18n="met_flujo_h2">Flujo de trabajo completo</h2>
     <ol>
       <li>Captura/carga eventos → exporta <code>eventos.csv</code></li>
       <li><b>Pre-registra</b> la hipótesis en <a href="https://osf.io" target="_blank" style="color:var(--accent2)">osf.io</a> antes de mirar resultados</li>
@@ -980,7 +1068,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2 id="met_gauquelin">🧬 Efecto Gauquelin — natalidad y posición diurna</h2>
+    <h2 id="met_gauquelin" data-i18n="met_gauquelin_h2">🧬 Efecto Gauquelin — natalidad y posición diurna</h2>
     <p>El estudio estadístico más famoso en cosmobiología. Entre 1950 y 1991, Michel y Françoise Gauquelin analizaron los nacimientos de miles de profesionales europeos y encontraron una anomalía reproducible: ciertos planetas aparecen más frecuentemente <b>saliendo o culminando</b> en el horizonte en el momento del nacimiento de personas destacadas en su profesión.</p>
 
     <h3>El hallazgo central</h3>
@@ -1022,7 +1110,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2 id="met_artefactos">⚠ Artefactos detectados en este proyecto</h2>
+    <h2 id="met_artefactos" data-i18n="met_artefactos_h2">⚠ Artefactos detectados en este proyecto</h2>
     <p>Cada dominio nuevo trae sesgos propios. Detectarlos es parte del trabajo científico. Estos son los cuatro artefactos descubiertos en esta plataforma:</p>
 
     <h3>1. Artefacto de planetas lentos (nulo uniforme)</h3>
@@ -1046,7 +1134,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
   </div>
 
   <div class="card">
-    <h2 id="met_glosario">Glosario completo — haz clic para definición</h2>
+    <h2 id="met_glosario" data-i18n="met_glosario_h2">Glosario completo — haz clic para definición</h2>
     <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
       <span class="glos" data-glos="modelo nulo" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Modelo nulo</span>
       <span class="glos" data-glos="fdr" style="padding:6px 14px;background:var(--panel2);border-radius:20px">FDR</span>
@@ -1961,10 +2049,15 @@ let hyps=JSON.parse(localStorage.getItem('inv_hyps')||'[]');
   hPreview();renderHyp();
 })();
 function hKindChange(){
-  const asp=document.getElementById('h_kind').value==='aspect';
-  document.getElementById('h_aspbox').style.display=asp?'':'none';
-  document.getElementById('h_p2box').style.display=asp?'':'none';
-  document.getElementById('h_housebox').style.display=asp?'none':'';
+  const kind=document.getElementById('h_kind').value;
+  document.getElementById('h_aspbox').style.display=kind==='aspect'?'':'none';
+  document.getElementById('h_p2box').style.display=kind==='aspect'?'':'none';
+  document.getElementById('h_p1box').style.display=(kind==='aspect'||kind==='house'||kind==='angular')?'':'none';
+  document.getElementById('h_housebox').style.display=kind==='house'?'':'none';
+  document.getElementById('h_anglebox').style.display=kind==='angular'?'':'none';
+  document.getElementById('h_phasebox').style.display=kind==='lunar_phase'?'':'none';
+  document.getElementById('h_distbox').style.display=kind==='lunar_distance'?'':'none';
+  document.getElementById('h_tidalbox').style.display=kind==='tidal'?'':'none';
   hPreview();
 }
 function hStatement(){
@@ -1973,12 +2066,22 @@ function hStatement(){
   const orb=document.getElementById('h_orb').value;
   const filt=document.getElementById('h_filter').value.trim();
   const fstr=filt?` (${filt})`:'';
+  const kind=document.getElementById('h_kind').value;
   let rasgo;
-  if(document.getElementById('h_kind').value==='aspect'){
+  if(kind==='aspect'){
     const asp=document.getElementById('h_asp').value.split('|')[0];
     rasgo=`${asp} ${document.getElementById('h_p1').value}–${document.getElementById('h_p2').value} (orbe ${orb}°)`;
-  }else{
+  }else if(kind==='house'){
     rasgo=`${document.getElementById('h_p1').value} en la casa ${document.getElementById('h_house').value}`;
+  }else if(kind==='angular'){
+    const ang=document.getElementById('h_angle').selectedOptions[0].text;
+    rasgo=`${document.getElementById('h_p1').value} angular en ${ang} (orbe ${orb}°)`;
+  }else if(kind==='lunar_phase'){
+    rasgo=document.getElementById('h_phase').selectedOptions[0].text;
+  }else if(kind==='lunar_distance'){
+    rasgo=document.getElementById('h_dist').selectedOptions[0].text;
+  }else if(kind==='tidal'){
+    rasgo=`Fuerza de marea — ${document.getElementById('h_tidal').selectedOptions[0].text}`;
   }
   return `En eventos de tipo «${dom}»${fstr}, la frecuencia de ${rasgo} en el instante del evento es ${dir} que la esperada bajo el modelo nulo emparejado temporalmente, con p<0.05 corregido por FDR.`;
 }
@@ -2035,6 +2138,33 @@ const SOURCES=[
 // ---------- inicialización: mostrar estadística de ejemplo por defecto ----------
 populateDomainResults();
 if(results.length){afterLoad();}
+
+// ---------- toggle de idioma ----------
+function toggleLang(){
+  const next = document.documentElement.lang === 'es' ? 'en' : 'es';
+  document.documentElement.lang = next;
+  const dict = window.I18N && window.I18N[next];
+  if(dict){
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.getAttribute('data-i18n');
+      if(dict[k] !== undefined) el.textContent = dict[k];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const k = el.getAttribute('data-i18n-html');
+      if(dict[k] !== undefined) el.innerHTML = dict[k];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const k = el.getAttribute('data-i18n-ph');
+      if(dict[k] !== undefined) el.placeholder = dict[k];
+    });
+    // Update page title
+    if(dict.page_title) document.title = dict.page_title;
+  }
+  document.getElementById('lang-toggle').textContent = next==='es' ? '🌐 English' : '🌐 Español';
+  // Keep legacy banner always hidden — full translation replaces it
+  const banner = document.getElementById('en-banner');
+  if(banner) banner.style.display = 'none';
+}
 </script>
 </body>
 </html>
