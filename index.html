@@ -20,6 +20,13 @@
  --bg:#F7F9F8; --panel:#FFFFFF; --panel2:#F3FAF7; --ink:#1A2820;
  --muted:#4A5E56; --accent:#3A8C6E; --accent2:#2A6B52;
  --excess:#C0392B; --deficit:#336EB8; --line:#D4E8E0; --ok:#2A6B52;
+ /* Alias — nombres usados en el marcado que antes no estaban definidos.
+ Sin estos, 99 reglas caían al valor por defecto (bordes sin color,
+ fondos transparentes, texto heredado). */
+ --border:#D4E8E0; /* = --line */
+ --fg:#1A2820; /* = --ink */
+ --fondo-alt:#F3FAF7; /* = --panel2 */
+ --warn:#C0392B; /* = --excess (mensajes de error) */
  }
  *{box-sizing:border-box}
  body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
@@ -99,7 +106,7 @@
  <b style="color:var(--oro)">34,503 events</b><br>11 domains: earthquakes, hurricanes, floods, solar storms, disasters (EM-DAT), and more
  </div>
  <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
- <b style="color:var(--oro)">Matched null model</b><br>K=300 controls per event, ±30 days, same location — eliminates slow-planet artifacts
+ <b style="color:var(--oro)">Matched null model</b><br>K=200 controls per event, ±30 days, same location — eliminates slow-planet artifacts
  </div>
  <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
  <b style="color:var(--oro)">Pre-registered at OSF</b><br>Hypotheses registered before analysis. Results reported transparently including failures.
@@ -154,7 +161,7 @@
  <h2 style="font-size:22px;color:#fff;margin-bottom:6px" data-i18n="hero_h2">¿Hay patrones astronómicos en los grandes eventos del planeta?</h2>
  <p style="font-size:15px;margin-bottom:10px" data-i18n-html="hero_p">Esta plataforma permite <b>poner a prueba esa pregunta con rigor estadístico</b>, usando más de <b id="hero_n_events">34.000</b> eventos reales de <b id="hero_n_domains">11</b> dominios — sismos, huracanes, tormentas solares, desastres, inundaciones y más — comparados contra un <span style="border-bottom:1px dashed #adf;cursor:help" data-glos="modelo nulo">modelo nulo emparejado</span>. No necesitas instalar nada ni saber programar.</p>
  <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:14px">
- <span data-i18n-html="hero_confirmed"> <b>Primer resultado confirmado (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano — resultado que sobrevive 522 pruebas simultáneas y se replica en una muestra independiente.</span> <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="hero_btn_ver">Ver en el Tablero →</button>
+ <span data-i18n-html="hero_confirmed"> <b>Primer resultado confirmado (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano — resultado que sobrevive 522 pruebas simultáneas y se replica en la validación cruzada 50/50 del catálogo USGS (replicación en catálogo externo GCMT: pendiente).</span> <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="hero_btn_ver">Ver en el Tablero →</button>
  </div>
  <div class="row">
  <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="hero_btn_tablero">Explorar resultados</button>
@@ -178,7 +185,7 @@
  <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid #8bc34a">
  <div style="font-size:26px;margin-bottom:6px">②</div>
  <b>Verificar independencia (Von Neumann)</b>
- <p class="small" style="margin-top:6px">Antes de analizar, se comprueba que los eventos no están agrupados artificialmente en el tiempo — réplicas sísmicas, duración de un aspecto planetario, estacionalidad. Si los hay, se eliminan (<b>declusterización</b>). Método de <span class="glos" data-glos="von neumann">Von Neumann</span>, recomendado por <b>David Ferriz Olivares</b> en la <em>Teoría Científica de la Cosmobiología</em>.</p>
+ <p class="small" style="margin-top:6px">Antes de analizar, se comprueba que los eventos no están agrupados artificialmente en el tiempo — réplicas sísmicas, duración de un aspecto planetario, estacionalidad. Si los hay, se eliminan (<b>declusterización</b>). Método de <span class="glos" data-glos="von neumann">Von Neumann</span>, recomendado por <b>David Ferríz Olivares</b> en la <em>Teoría Científica de la Cosmobiología</em>.</p>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--oro)">
@@ -194,7 +201,52 @@
  </div>
 
  </div>
- <p class="small muted" style="margin-top:12px" data-i18n-html="como_warning"> <b>Asociación, no causalidad.</b>Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas "causan" los eventos. La física del mecanismo, explorada por la <b>Teoría Cicloidal</b> de Scipiòn Llona y retomada por David Ferriz Olivares, es un paso ulterior.</p>
+ <p class="small muted" style="margin-top:12px" data-i18n-html="como_warning"><b>Asociación, no causalidad.</b> Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas "causan" los eventos. La física del mecanismo, explorada por la <b>Teoría Cicloidal</b> de Scipión Llona y retomada por David Ferríz Olivares, se aborda ahora con el mismo motor estadístico (ver <a href="#" onclick="return irA('ayuda','met_llona')">Geodinámica de Llona</a>) — pero identificar un mecanismo causal sigue siendo un paso ulterior.</p>
+ </div>
+
+ <!-- AVANCES RECIENTES -->
+ <div class="card" style="border-left:4px solid var(--accent2)">
+ <h2>Avances recientes de la plataforma</h2>
+ <p class="small muted">Incorporación de tres pilares técnicos de la Teoría Científica de la Cosmobiología que antes solo existían en el texto de Ferríz Olivares, más la apertura del dominio médico.</p>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:14px">
+
+ <div style="background:var(--panel2);border-radius:8px;padding:14px;border-left:3px solid var(--verde)">
+ <b>Domificación topocéntrica</b>
+ <p class="small" style="margin-top:6px">Sistema <b>Polich-Page</b> (TCC cap. 38-39) implementado por fórmula cerrada y validado algebraicamente: Casa 1 = Ascendente exacto, Casa 10 = Medio Cielo exacto. Alternativa de precisión al sistema Whole Sign.</p>
+ <a href="#" class="small" onclick="return irA('ayuda','met_notacion')">Ver notación →</a>
+ </div>
+
+ <div style="background:var(--panel2);border-radius:8px;padding:14px;border-left:3px solid #e67e22">
+ <b>Factores cinéticos</b>
+ <p class="small" style="margin-top:6px">Direcciones Primarias por <b>ascensión recta</b> (ARMC, Distancia Meridiana) y Arco de Naibod, el método riguroso del cap. 47 — no solo la aproximación sobre la eclíptica.</p>
+ <a href="#" class="small" onclick="return irA('ayuda','met_cineticos')">Ver factores cinéticos →</a>
+ </div>
+
+ <div style="background:var(--panel2);border-radius:8px;padding:14px;border-left:3px solid #16a085">
+ <b>Geodinámica de Llona — con resultados</b>
+ <p class="small" style="margin-top:6px">Las curvas <b>Rdr'</b> y el ratio kepleriano se cruzaron por primera vez con el motor estadístico. Un candidato se sostiene (exceso cerca del <b>afelio</b>, z=+3.89); otro no replicó al ampliar la muestra.</p>
+ <a href="#" class="small" onclick="return irA('ayuda','met_llona')">Ver resultados →</a>
+ </div>
+
+ <div style="background:var(--panel2);border-radius:8px;padding:14px;border-left:3px solid var(--oro)">
+ <b>Duplas y tripletas</b>
+ <p class="small" style="margin-top:6px">Calculadora interactiva para probar <b>combinaciones</b> de 2-3 rasgos simultáneos (TCC cap. 16), no solo factores aislados, con ponderación opcional por energía liberada.</p>
+ <a href="#" class="small" onclick="return irA('ayuda','met_duplas')">Ver calculadora →</a>
+ </div>
+
+ <div style="background:var(--panel2);border-radius:8px;padding:14px;border-left:3px solid var(--accent2)">
+ <b>Epidemiología cosmobiológica</b>
+ <p class="small" style="margin-top:6px">Nuevo dominio de <b>Asistencia Social</b> (TCC 411) con el formulario de Historia Clínica del libro: biotipología, ciclo anual crítico, laboratorio sincrónico. Motor listo; pendiente cargar datos reales.</p>
+ <button class="ghost act small" style="font-size:12px;padding:3px 10px" onclick="document.querySelector('[data-tab=epidemiologia]').click()">Ir a Epidemiología</button>
+ </div>
+
+ <div style="background:var(--panel2);border-radius:8px;padding:14px;border-left:3px solid var(--muted)">
+ <b>Organización según la TCC</b>
+ <p class="small" style="margin-top:6px">El menú sigue el <b>Trinomio</b> de Ferríz Olivares (Investigación / Asistencia Social / Didáctica) y los dominios están etiquetados con la <b>clasificación decimal</b> de Invesciencias (230, 411, 453.5, 544).</p>
+ <a href="#" class="small" onclick="return irA('ayuda','met_codigos')">Ver clasificación →</a>
+ </div>
+
+ </div>
  </div>
 
  <!-- RESULTADO DESTACADO -->
@@ -211,7 +263,8 @@
  <li><b>Validación cruzada split 50/50</b> — la señal apareció en ambas mitades independientes con la misma dirección.</li>
  <li><b>Libre del artefacto de planetas lentos</b> — Mercurio se mueve ~1°/día; el modelo nulo ±30 días captura variación real.</li>
  </ol>
- <span class="small muted">Pre-registrado en OSF · Replicado en GCMT 1976–1999 (datos no usados en el descubrimiento).</span>
+ <p class="small" style="margin:8px 0 0;padding:8px 10px;background:rgba(230,126,34,.10);border-left:3px solid #e67e22;border-radius:6px"><b>Estado de la replicación externa:</b> la validación que superó fue el <b>split 50/50 dentro del catálogo USGS</b> (mitad confirmatoria n=1.865: z=+3.88, p_fdr=0.00041). La replicación en el catálogo <b>independiente GCMT 1976–1999</b> se intentó posteriormente y <b>no confirmó la señal</b> (z=−1.38; posible artefacto de catálogo en la muestra de descubrimiento). El hallazgo se mantiene como asociación robusta dentro de USGS 2000–2024, pero <b>pendiente de replicación externa exitosa</b>.</p>
+ <span class="small muted">Pre-registrado en OSF.</span>
  </div>
 
  <!-- PRE-REGISTRADOS FALLIDOS -->
@@ -309,8 +362,8 @@
  <h3 data-i18n="faq_q1">¿Qué es un "modelo nulo" y para qué sirve?</h3>
  <p data-i18n-html="faq_a1">Es la <b>vara de medir del azar</b>. Por cada evento real, generamos 200 eventos ficticios en fechas cercanas (±30 días) y el mismo lugar. Si Mercurio-Urano aparece igual de seguido en los reales que en los ficticios, el resultado es cero. Si aparece significativamente más, hay una pista. Sin este paso, cualquier análisis daría resultados engañosos — los planetas lentos (Neptuno, Plutón) están en la misma posición durante décadas enteras y falsearían los resultados.</p>
 
- <h3 data-i18n="faq_q2">¿Por qué se prueban 522 configuraciones a la vez? ¿No aumenta los falsos positivos?</h3>
- <p data-i18n-html="faq_a2">Sí, y por eso aplicamos la corrección <span class="glos" data-glos="FDR">FDR de Benjamini-Hochberg</span>. Si pruebas 522 cosas al 5% de confianza, esperarías ~26 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class="glos" data-glos="split validation">validación cruzada</span>).</p>
+ <h3 data-i18n="faq_q2">¿Por qué se prueban 575 configuraciones a la vez? ¿No aumenta los falsos positivos?</h3>
+ <p data-i18n-html="faq_a2">Sí, y por eso aplicamos la corrección <span class="glos" data-glos="FDR">FDR de Benjamini-Hochberg</span>. Si pruebas 575 cosas al 5% de confianza, esperarías ~29 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class="glos" data-glos="split validation">validación cruzada</span>).</p>
 
  <h3 data-i18n="faq_q3">¿Los datos astronómicos se calculan automáticamente?</h3>
  <p data-i18n-html="faq_a3">Sí. Tú solo das <b>fecha, hora y lugar</b> del evento. El programa usa la efeméride JPL DE421 (NASA) para calcular las posiciones exactas de 10 planetas. No se necesita saber nada de astrología para ingresar datos.</p>
@@ -602,7 +655,7 @@
  <!-- CALCULADORA DE DUPLAS (copia ligera en el Tablero) -->
  <div class="card" style="border-left:4px solid var(--accent2)">
  <h2>Calculadora de duplas y tripletas</h2>
- <p class="small muted">¿Dos rasgos juntos son más frecuentes de lo esperado? Selecciona 2 o 3 rasgos y calcula al instante. Método de duplas de Ferriz Olivares (TCC cap. 16).</p>
+ <p class="small muted">¿Dos rasgos juntos son más frecuentes de lo esperado? Selecciona 2 o 3 rasgos y calcula al instante. Método de duplas de Ferríz Olivares (TCC cap. 16).</p>
 
  <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin:14px 0">
  <div>
@@ -1203,23 +1256,23 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p>"Cosmobiología" es el término académico establecido para la investigación empírica de posibles relaciones entre posiciones astronómicas y fenómenos terrestres — introducido por el médico suizo Karl Ernst Krafft en los años 1920–30 y retomado por Michel Gauquelin en trabajos que generaron debate científico durante décadas. Usamos ese término por rigor histórico, no para validar las afirmaciones de la astrología popular.</p>
  <p>La distinción clave: la astrología predictiva tradicional <b>interpreta</b> posiciones planetarias como portadoras de significado simbólico. Este proyecto <b>mide</b> posiciones planetarias como variables numéricas y pregunta si alguna covaria con eventos, sin asumir ninguna interpretación simbólica.</p>
 
- <h3 id="met_linaje" style="margin-top:20px">Linaje científico: Raynaud de la Ferrière → Ferriz Olivares → esta plataforma</h3>
+ <h3 id="met_linaje" style="margin-top:20px">Linaje científico: Raynaud de la Ferrière → Ferríz Olivares → esta plataforma</h3>
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:10px">
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--accent2)">
  <b>Dr. Serge Raynaud de la Ferrière</b><br>
  <span class="small muted">Francia / Venezuela, 1910–1962</span>
- <p class="small" style="margin-top:8px">Científico, filósofo y maestro espiritual franco-venezolano. Fundó la <em>Gran Fraternidad Universal</em> y desarrolló una cosmobiología integradora que relacionaba posiciones planetarias con fenómenos geofísicos y la salud humana. Observó que <b>Plutón aparece en configuración prominente en terremotos y erupciones volcánicas</b> — hipótesis cualitativa que esta plataforma somete a prueba cuantitativa. Sus cartas a Ferriz Olivares desde 1957 (Bogotá) transmitieron los fundamentos de la interrelación cosmobiológica. Referencia: <em>Grandes Mensajes</em> y correspondencia con Ferriz <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
+ <p class="small" style="margin-top:8px">Científico, filósofo y maestro espiritual franco-venezolano. Fundó la <em>Gran Fraternidad Universal</em> y desarrolló una cosmobiología integradora que relacionaba posiciones planetarias con fenómenos geofísicos y la salud humana. Observó que <b>Plutón aparece en configuración prominente en terremotos y erupciones volcánicas</b> — hipótesis cualitativa que esta plataforma somete a prueba cuantitativa. Sus cartas a Ferríz Olivares desde 1957 (Bogotá) transmitieron los fundamentos de la interrelación cosmobiológica. Referencia: <em>Grandes Mensajes</em> y correspondencia con Ferríz <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--oro)">
- <b>Scipiòn E. Llona</b><br>
+ <b>Scipión E. Llona</b><br>
  <span class="small muted">Geofísico peruano, ~1940</span>
- <p class="small" style="margin-top:8px">Propuso la <b>Teoría Cicloidal</b>: los sismos y fenómenos geodinámicos resultan de la combinación de movimientos astronómicos sobre la corteza terrestre — rotación, traslación, marea terrestre lunar y solar, y otros catorce movimientos de origen astronómico. Señaló que "con cinco horas de anticipación puede predecirse un movimiento sísmico" combinando posiciones de Sol, Luna y planetas con registros barométricos y electromagnéticos. Ferriz Olivares retoma esta teoría como el marco físico que explica <em>por qué</em> podría existir una relación entre configuraciones planetarias y sismicidad <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
+ <p class="small" style="margin-top:8px">Propuso la <b>Teoría Cicloidal</b>: los sismos y fenómenos geodinámicos resultan de la combinación de movimientos astronómicos sobre la corteza terrestre — rotación, traslación, marea terrestre lunar y solar, y otros catorce movimientos de origen astronómico. Señaló que "con cinco horas de anticipación puede predecirse un movimiento sísmico" combinando posiciones de Sol, Luna y planetas con registros barométricos y electromagnéticos. Ferríz Olivares retoma esta teoría como el marco físico que explica <em>por qué</em> podría existir una relación entre configuraciones planetarias y sismicidad <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--verde)">
- <b>Dr. David Juan Ferriz Olivares</b><br>
+ <b>Dr. David Juan Ferríz Olivares</b><br>
  <span class="small muted">Kobe, Japón, 12 jun 1921 — Caracas, Venezuela, 22 oct 1992</span>
  <p class="small" style="margin-top:8px">Nació en la legación diplomática mexicana en Japón. Filósofo, científico, compositor y orador — más de 7.000 conferencias y 10.000 horas grabadas a lo largo de su vida. Doctor en Filosofía y Letras. El 3 de diciembre de 1953 conoció la obra del Dr. Serge Raynaud de la Ferrière, a quien dedicó el resto de su vida como discípulo predilecto, prologuista-traductor y coordinador de obra, siendo calificado como <em>Apóstol del Saber</em>. Mantuvieron una correspondencia de 2 cartas semanales durante 7 años. En <b>1975 fundó Invesciencias</b> (Instituto de Investigaciones y Aplicaciones Científicas y Tecnológicas) en Venezuela. Es autor de la <em>Teoría Científica de la Cosmobiología</em> (TCC, 1.064 pp.) — la sistematización estadística más extensa de la cosmobiología iberoamericana, con los métodos de Von Neumann, Wilcoxon y correlación serial que implementa esta plataforma. Su sinfonía "Oriente y Occidente" se estrenó en el Teatro Teresa Carreño de Caracas el 14 de octubre de 1990. "Soy sudamericano de cuna mexicana nacido en Japón."</p>
  </div>
@@ -1246,7 +1299,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <div class="card">
  <h2 id="met_fdr" data-i18n="met_fdr_h2">Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>) + <span class="glos" data-glos="von neumann">Von Neumann</span></h2>
- <p>Probamos 522 características astrológicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
+ <p>Probamos 575 características astronómicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
  <p>FDR ajusta cada p-valor teniendo en cuenta cuántas pruebas hicimos. Solo declaramos significativo lo que supera ese umbral más estricto. Resultado: en lugar de 26 falsos positivos, esperamos que máximo el 5% de los que declaramos significativos sean falsos.</p>
  <p class="small muted">El método BH es más permisivo que Bonferroni (que es demasiado conservador) y más estricto que no corregir. Es el estándar en genómica y estudios de múltiples hipótesis.</p>
 
@@ -1255,7 +1308,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="background:var(--fondo-alt);border-radius:8px;padding:12px 18px;font-family:monospace;text-align:center;margin:10px 0">
  δ² / s² ≈ 2 bajo H₀ (serie aleatoria)
  </div>
- <p>Un ratio significativamente menor a 2 indica <b>autocorrelación positiva</b>: los eventos se agrupan en el tiempo, lo cual infla artificialmente cualquier rasgo activo durante ese periodo. <b>David Ferriz Olivares</b>, fundador de Invesciencias y figura fundacional de la cosmobiología iberoamericana, lo incorpora en su <em>Teoría Científica de la Cosmobiología</em> (cap. 18) precisamente para "estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica" <a href="#ref_ferriz" style="color:var(--accent2)">[Ferriz, TCC cap. 18]</a>.</p>
+ <p>Un ratio significativamente menor a 2 indica <b>autocorrelación positiva</b>: los eventos se agrupan en el tiempo, lo cual infla artificialmente cualquier rasgo activo durante ese periodo. <b>David Ferríz Olivares</b>, fundador de Invesciencias y figura fundacional de la cosmobiología iberoamericana, lo incorpora en su <em>Teoría Científica de la Cosmobiología</em> (cap. 18) precisamente para "estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica" <a href="#ref_ferriz" style="color:var(--accent2)">[Ferríz, TCC cap. 18]</a>.</p>
 
  <h4 style="margin-top:12px">¿Por qué surge autocorrelación en datos cosmobiológicos?</h4>
  <ul class="small">
@@ -1280,7 +1333,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <!-- ═══════ CALCULADORA DE DUPLAS / TRIPLETAS ═══════ -->
  <div id="met_duplas" class="card" style="border-left:4px solid var(--accent2)">
  <h2>Calculadora de duplas y tripletas (TCC cap. 16)</h2>
- <p class="small muted">Selecciona 2 o 3 rasgos simultáneos y calcula cuántos eventos los presentan todos a la vez — comparado con lo que se esperaría si fueran independientes. Método de Ferriz Olivares para "duplas de parámetros" (estudio de 58 casos, TCC p. 371).</p>
+ <p class="small muted">Selecciona 2 o 3 rasgos simultáneos y calcula cuántos eventos los presentan todos a la vez — comparado con lo que se esperaría si fueran independientes. Método de Ferríz Olivares para "duplas de parámetros" (estudio de 58 casos, TCC p. 371).</p>
 
  <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin:14px 0">
  <div>
@@ -1974,7 +2027,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <!-- ═══ ANOTACIONES PARA CONOCEDORES DE LA TCC ═══ -->
  <div class="card" id="met_tcc_expertos" style="border-left:4px solid var(--oro);background:linear-gradient(135deg,var(--panel2),rgba(212,175,55,.06))">
  <h2>Para quienes conocen la TCC — cómo se continúa el legado</h2>
- <p class="small muted">Esta sección es para lectores familiarizados con la <em>Teoría Científica de la Cosmobiología</em> de David Juan Ferriz Olivares. Muestra cómo cada pieza de la plataforma corresponde a un imperativo de la obra.</p>
+ <p class="small muted">Esta sección es para lectores familiarizados con la <em>Teoría Científica de la Cosmobiología</em> de David Juan Ferríz Olivares. Muestra cómo cada pieza de la plataforma corresponde a un imperativo de la obra.</p>
 
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:16px">
 
@@ -1987,7 +2040,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="font-size:11px;color:var(--oro);font-weight:600">TCC cap. 18 — imperativo de rigor</div>
  </div>
  </div>
- <p class="small" style="margin:0 0 8px">Ferriz Olivares establece en el capítulo 18 que para <em>"estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica"</em> es indispensable verificar la independencia temporal de la serie antes de cualquier test de frecuencias.</p>
+ <p class="small" style="margin:0 0 8px">Ferríz Olivares establece en el capítulo 18 que para <em>"estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica"</em> es indispensable verificar la independencia temporal de la serie antes de cualquier test de frecuencias.</p>
  <p class="small" style="margin:0">Esta plataforma aplica el test de diferencias sucesivas δ²/s² de Von Neumann (1941) como paso <b>previo obligatorio</b> al análisis FDR — exactamente el orden que prescribe la TCC. Sin este paso, los resultados de Mercurio-Urano (que parecían significativos) quedaron expuestos como artefacto de réplicas sísmicas.</p>
  <div style="margin-top:10px;background:var(--panel2);border-radius:8px;padding:8px 12px;font-size:12px;border-left:3px solid var(--oro)">VN → declusterización → VN retest → modelo nulo → FDR (Benjamini-Hochberg)
  </div>
@@ -1999,11 +2052,11 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="font-size:26px">️</div>
  <div>
  <div style="font-weight:700;font-size:14px">Cibernética y cómputo masivo</div>
- <div style="font-size:11px;color:var(--oro);font-weight:600">El sueño de Ferriz Olivares, realizado</div>
+ <div style="font-size:11px;color:var(--oro);font-weight:600">El sueño de Ferríz Olivares, realizado</div>
  </div>
  </div>
- <p class="small" style="margin:0 0 8px">En 1975, Ferriz Olivares advertía que procesar la casuística cosmobiológica a mano requería <em>"más de seis meses de trabajo manual para un solo esquema"</em>. Propuso que los <em>"centros de cómputo y la cibernética"</em> serían la herramienta decisiva para validar la Teoría a escala masiva.</p>
- <p class="small" style="margin:0">Esta plataforma procesa <b>34 503 eventos en 11 dominios</b>, calcula 575 configuraciones astronómicas por evento y genera la distribución nula con 200 réplicas de control — en minutos, con código abierto en Python + NASA JPL DE421. Lo que Ferriz Olivares vislumbró como necesario en 1975 es hoy el pipeline estándar de la plataforma.</p>
+ <p class="small" style="margin:0 0 8px">En 1975, Ferríz Olivares advertía que procesar la casuística cosmobiológica a mano requería <em>"más de seis meses de trabajo manual para un solo esquema"</em>. Propuso que los <em>"centros de cómputo y la cibernética"</em> serían la herramienta decisiva para validar la Teoría a escala masiva.</p>
+ <p class="small" style="margin:0">Esta plataforma procesa <b>34 503 eventos en 11 dominios</b>, calcula 575 configuraciones astronómicas por evento y genera la distribución nula con 200 réplicas de control — en minutos, con código abierto en Python + NASA JPL DE421. Lo que Ferríz Olivares vislumbró como necesario en 1975 es hoy el pipeline estándar de la plataforma.</p>
  </div>
 
  <!-- Bloque 3: Ciencia-Síntesis / Biocibernética cósmica -->
@@ -2028,7 +2081,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="font-size:11px;color:var(--oro);font-weight:600">TCC p. 371 — duplas de parámetros</div>
  </div>
  </div>
- <p class="small" style="margin:0 0 8px">El <em>"principio para la investigación de la causalidad por la relación estadística"</em> (TCC p. 371) propone que la significación estadística aumenta drásticamente al cruzar dos o más parámetros inarmónicos — lo que Ferriz Olivares llama <b>duplas</b>. El estudio de 58 casos de malformaciones (TCC cap. 16) mostró que ciertas duplas aparecían en el 80–90% de los casos.</p>
+ <p class="small" style="margin:0 0 8px">El <em>"principio para la investigación de la causalidad por la relación estadística"</em> (TCC p. 371) propone que la significación estadística aumenta drásticamente al cruzar dos o más parámetros inarmónicos — lo que Ferríz Olivares llama <b>duplas</b>. El estudio de 58 casos de malformaciones (TCC cap. 16) mostró que ciertas duplas aparecían en el 80–90% de los casos.</p>
  <p class="small" style="margin:0">La calculadora de duplas y tripletas de esta plataforma implementa exactamente este principio: calcula la co-ocurrencia observada vs. esperada bajo independencia, y reporta el exceso con z-score y riesgo relativo. Es la extensión computacional directa de la metodología del cap. 16.</p>
  </div>
 
@@ -2046,9 +2099,9 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div class="card" id="ref_ferriz" style="border-left:4px solid var(--oro)">
  <h2>Referencias clave</h2>
  <ul class="small" style="line-height:1.9">
- <li><b>Raynaud de la Ferrière, S.</b> (1950–1962). <em>Grandes Mensajes</em> y correspondencia científica. Gran Fraternidad Universal. — Observó la asociación de Plutón con terremotos y erupciones volcánicas; formuló la interrelación cosmobiológica entre personas. Predecesor directo de David Ferriz Olivares.</li>
- <li><b>Llona, S. E.</b> (~1941). <em>Teoría Cicloidal</em> [manuscrito / publicaciones en La Prensa, Lima]. — Propone que los movimientos astronómicos (rotación, traslación, mareas terrestres) son la fuerza motriz de la sismicidad y los fenómenos geodinámicos. Citado extensamente en Ferriz Olivares, TCC cap. 36.</li>
- <li><b>Ferriz Olivares, D.</b> (s.f.). <em>Teoría Científica de la Cosmobiología</em> (TCC), 1.064 pp. Fundación Invesciencias. — Cap. 18: Von Neumann, Wilcoxon, correlación serial; Cap. 36: sismología y Teoría Cicloidal. Integra el linaje Raynaud de la Ferrière → Llona en un marco estadístico riguroso.</li>
+ <li><b>Raynaud de la Ferrière, S.</b> (1950–1962). <em>Grandes Mensajes</em> y correspondencia científica. Gran Fraternidad Universal. — Observó la asociación de Plutón con terremotos y erupciones volcánicas; formuló la interrelación cosmobiológica entre personas. Predecesor directo de David Ferríz Olivares.</li>
+ <li><b>Llona, S. E.</b> (~1941). <em>Teoría Cicloidal</em> [manuscrito / publicaciones en La Prensa, Lima]. — Propone que los movimientos astronómicos (rotación, traslación, mareas terrestres) son la fuerza motriz de la sismicidad y los fenómenos geodinámicos. Citado extensamente en Ferríz Olivares, TCC cap. 36.</li>
+ <li><b>Ferríz Olivares, D.</b> (s.f.). <em>Teoría Científica de la Cosmobiología</em> (TCC), 1.064 pp. Fundación Invesciencias. — Cap. 18: Von Neumann, Wilcoxon, correlación serial; Cap. 36: sismología y Teoría Cicloidal. Integra el linaje Raynaud de la Ferrière → Llona en un marco estadístico riguroso.</li>
  <li><b>Von Neumann, J., Kent, R. H., Bellinson, H. R., & Hart, B. I.</b> (1941). The mean square successive difference. <em>Annals of Mathematical Statistics</em>, 12(2), 153–162.</li>
  <li><b>Gardner, J. K., & Knopoff, L.</b> (1974). Is the sequence of earthquakes in Southern California, with aftershocks removed, Poissonian? <em>Bulletin of the Seismological Society of America</em>, 64(5), 1363–1367.</li>
  <li><b>Benjamini, Y., & Hochberg, Y.</b> (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society B</em>, 57(1), 289–300.</li>
@@ -2289,7 +2342,7 @@ const GLOSARIO = {
  },
  "fdr": {
  title: "FDR — Tasa de Falsos Descubrimientos",
- body: "Cuando hacemos 522 pruebas estadísticas a la vez, esperamos que ~26 salgan 'significativas' solo por azar. FDR (método Benjamini-Hochberg) ajusta cada resultado teniendo en cuenta que estamos probando muchas cosas simultáneamente. Es el estándar internacional para estudios de este tipo."
+ body: "Cuando hacemos 575 pruebas estadísticas a la vez, esperamos que ~29 salgan 'significativas' solo por azar. FDR (método Benjamini-Hochberg) ajusta cada resultado teniendo en cuenta que estamos probando muchas cosas simultáneamente. Es el estándar internacional para estudios de este tipo."
  },
  "benjamini-hochberg": {
  title: "Benjamini-Hochberg — corrección por comparaciones múltiples",
@@ -2297,7 +2350,7 @@ const GLOSARIO = {
  },
  "von neumann": {
  title: "Test de Von Neumann — independencia temporal",
- body: "Test de diferencias sucesivas (Von Neumann et al., 1941) que detecta autocorrelación en una serie ordenada temporalmente. El estadístico δ²/s² tiene valor esperado ≈2 bajo la hipótesis nula de aleatoriedad. Un valor significativamente menor a 2 indica que los eventos se agrupan en el tiempo (réplicas sísmicas, duración de un aspecto planetario, estacionalidad). Ferriz Papí lo recomienda en TCC cap. 18 para detectar 'influencias periódicas en la tendencia'. Es el paso previo obligatorio antes de aplicar la corrección FDR."
+ body: "Test de diferencias sucesivas (Von Neumann et al., 1941) que detecta autocorrelación en una serie ordenada temporalmente. El estadístico δ²/s² tiene valor esperado ≈2 bajo la hipótesis nula de aleatoriedad. Un valor significativamente menor a 2 indica que los eventos se agrupan en el tiempo (réplicas sísmicas, duración de un aspecto planetario, estacionalidad). Ferríz Papí lo recomienda en TCC cap. 18 para detectar 'influencias periódicas en la tendencia'. Es el paso previo obligatorio antes de aplicar la corrección FDR."
  },
  "declusterizacion": {
  title: "Declusterización — eliminar réplicas sísmicas",
@@ -2411,6 +2464,19 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  setTimeout(()=>{try{Plotly.Plots.resize('geomap');Plotly.Plots.resize('grid');Plotly.Plots.resize('timehist');Plotly.Plots.resize('lunarrose');}catch(e){}},60);}
  if(b.dataset.tab==='tablero'){populateDomainResults();}
 });
+
+// Enlaces a anclas que viven en OTRA pestaña (p.ej. desde "Empieza aquí" hacia
+// una sección de Metodología). Sin esto, el href="#..." no hace nada porque la
+// sección destino está en display:none.
+function irA(tab, anchorId){
+ const btn=document.querySelector('[data-tab='+tab+']');
+ if(btn)btn.click();
+ setTimeout(()=>{
+ const el=document.getElementById(anchorId);
+ if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+ },80);
+ return false;
+}
 
 // ---------- zonas horarias ----------
 (function(){
@@ -3423,6 +3489,14 @@ function initDuplas(){
  sel.innerHTML=base+sorted.map(f=>`<option value="${f}">${featureLabel(f)}</option>`).join('');
  });
  });
+}
+
+function setDupla(f1,f2,f3){
+ const s1=document.getElementById('dup_f1'),
+ s2=document.getElementById('dup_f2'),
+ s3=document.getElementById('dup_f3');
+ if(s1)s1.value=f1; if(s2)s2.value=f2; if(s3)s3.value=f3||'';
+ calcDupla();
 }
 
 function setDupla2(f1,f2,f3){
