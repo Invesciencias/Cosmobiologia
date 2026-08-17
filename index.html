@@ -1655,29 +1655,38 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p style="font-size:13px;margin-bottom:12px">
  Los rasgos cicloidales (Rdr', ratio kepleriano, oscilación N-S) se probaron por primera vez
  con el mismo rigor que el resto de la plataforma — modelo nulo emparejado (K=100, ±30 días)
- y corrección FDR — sobre <b>1.549 sismos M≥7</b> (GCMT, 1976-2024, sin declusterizar).
+ y corrección FDR — en dos catálogos GCMT: <b>1.549 sismos M≥7</b> (sin declusterizar) y
+ <b>6.169 sismos declustered</b> (Gardner-Knopoff, umbral menor). Nota de rigor: el catálogo
+ M≥7 probablemente es subconjunto del declustered — esto NO es una replicación en datos
+ independientes, sino una prueba de sensibilidad al umbral de magnitud sobre datos solapados.
  </p>
+
  <div style="background:rgba(192,57,43,.08);border-left:3px solid #c0392b;border-radius:8px;padding:12px;margin-bottom:10px">
- <span class="badge badge-candidate">Candidato — resultado que refuta la predicción</span>
+ <span class="badge badge-failed">No replica al bajar el umbral de magnitud</span>
  <p style="font-size:13px;margin:8px 0 0">
- <code>oscilación|cero</code>: z=−6.03, RR=0.29, <b>p_fdr=1.5×10⁻⁸</b>. Los sismos ocurren
- <b>71% menos</b> de lo esperado cuando la oscilación N-S paramétrica está cerca de su
- punto de velocidad cero — <b>lo opuesto</b> a lo que predice la cita de Llona ("tensión
- excepcional" en esos momentos). Resultado estadísticamente contundente (sobrevive FDR
- por amplio margen) pero que <b>contradice la interpretación textual</b> de la fuente.
+ <code>oscilación|cero</code> — en M≥7: z=−6.03, p_fdr=1.5×10⁻⁸ (déficit del 71%, contrario
+ a la predicción de Llona). En el catálogo declustered (M≥6, más eventos): <b>z=−1.53,
+ p_fdr=0.22 — deja de ser significativo.</b> El hallazgo inicial no sostiene al ampliar
+ la muestra: es más consistente con una fluctuación estadística en el subconjunto M≥7
+ que con un efecto real.
  </p>
  </div>
- <div style="background:rgba(230,126,34,.08);border-left:3px solid #e67e22;border-radius:8px;padding:12px">
- <span class="badge badge-caution">Candidato — señal débil</span>
+
+ <div style="background:rgba(39,174,96,.08);border-left:3px solid #27ae60;border-radius:8px;padding:12px;margin-bottom:10px">
+ <span class="badge badge-candidate">Candidato — misma dirección en ambos catálogos</span>
  <p style="font-size:13px;margin:8px 0 0">
- <code>kepler|extremo_afelio</code>: z=+2.78, RR=1.07, p_fdr=0.025. Leve exceso de sismos
- cerca del afelio. Sobrevive FDR con margen modesto (borderline).
+ <code>kepler|extremo_afelio</code> — en M≥7: z=+2.78, p_fdr=0.025. En declustered: z=+3.89,
+ <b>p_fdr=0.0003</b> (se fortalece). Exceso de sismos (RR≈1.04-1.07) cuando la Tierra está
+ cerca del afelio. También aparecen en el catálogo declustered: <code>kepler|extremo_perihelio</code>
+ (déficit, z=−4.12, p_fdr=0.0002) y <code>rdr|punto_critico</code> (déficit, z=−3.56, p_fdr=0.0008).
  </p>
  </div>
+
  <p class="small muted" style="margin-top:10px">
- Ninguno de los dos es todavía un resultado confirmado — falta replicar en un catálogo
- independiente (GCMT declustered) siguiendo el mismo protocolo de pre-registro + split
- usado para Mercurio-Urano. Módulo: <code>nullmodel.run_llona_null_test()</code>.
+ Ninguno es todavía un resultado confirmado — falta pre-registrar <code>kepler|extremo_afelio</code>
+ en OSF y validar con split exploratorio/confirmatorio en una muestra genuinamente independiente
+ (no solapada), siguiendo el mismo protocolo usado para Mercurio-Urano.
+ Módulo: <code>nullmodel.run_llona_null_test()</code>.
  </p>
  </div>
 
