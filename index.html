@@ -68,10 +68,14 @@
  .fila-hoy{background:rgba(142,68,173,.15);font-weight:700}
  .fila-seleccionada{outline:2px solid #ff9f43;outline-offset:-2px}
  @media (max-width:640px){
- #three_canvas_container{height:280px!important}
- .row{gap:6px}
- .row select,.row input[type=number],.row input[type=date],.row input[type=time]{max-width:100%!important;flex:1 1 120px}
- #three_hud button{flex:1 1 auto;font-size:12.5px;padding:9px 6px}
+ /* el mapa cósmico es lo principal en celular — que ocupe más pantalla,
+ no menos (antes se achicaba a 280px, quedaba diminuto para explorar) */
+ #three_canvas_container{height:62vh!important;min-height:340px;max-height:560px}
+ .row{gap:8px}
+ .row select,.row input[type=number],.row input[type=date],.row input[type=time]{max-width:100%!important;flex:1 1 120px;min-height:40px}
+ /* botones más grandes = más fáciles de tocar con el dedo (mínimo ~44px recomendado) */
+ #three_hud button{flex:1 1 auto;font-size:13px;padding:12px 8px;min-height:44px}
+ .card .row button.act,.card .row button.ghost{min-height:40px;padding:10px 12px;font-size:13px}
  table{font-size:11px}
  th,td{padding:5px 6px}
  }
@@ -6640,7 +6644,7 @@ function threeAbrirEsferaEnPestana() {
  // puntos cardinales
  const cardinales = [['N', -1.1, 0, 0], ['S', 1.1, 0, 0], ['E', 0, 1.1, 0], ['O', 0, -1.1, 0], ['Cénit', 0, 0, 1.1], ['Nadir', 0, 0, -1.1]];
  traces.push({ type: 'scatter3d', mode: 'markers+text', x: cardinales.map(c => c[1]), y: cardinales.map(c => c[2]), z: cardinales.map(c => c[3]),
- text: cardinales.map(c => c[0]), marker: { size: 3, color: '#1a5c33' }, textposition: 'top center', showlegend: false, name: 'Puntos cardinales' });
+ text: cardinales.map(c => c[0]), marker: { size: 6, color: '#1a5c33' }, textposition: 'top center', textfont: { size: 16, color: '#1a5c33' }, showlegend: false, name: 'Puntos cardinales' });
 
  // eje del Mundo local
  traces.push({ type: 'scatter3d', mode: 'lines', x: [-ncp.x * 1.3, ncp.x * 1.3], y: [-ncp.y * 1.3, ncp.y * 1.3], z: [-ncp.z * 1.3, ncp.z * 1.3],
@@ -6663,7 +6667,7 @@ function threeAbrirEsferaEnPestana() {
  traces.push({ type: 'scatter3d', mode: 'lines', x, y, z, line: { color: 'goldenrod', width: 5 }, name: 'Eclíptica (anillo)' });
  const signX = [], signY = [], signZ = [];
  for (let i = 0; i < 12; i++) { const [ra, dec] = _eclToEqDeg(i * 30, eps); const p = _eqToHorizonXYZ(ra, dec, ramc, lat).multiplyScalar(1.06); signX.push(p.x); signY.push(p.y); signZ.push(p.z); }
- traces.push({ type: 'scatter3d', mode: 'markers+text', x: signX, y: signY, z: signZ, text: CHART_SIGNS, marker: { size: 3, color: 'goldenrod' }, textfont: { size: 10, color: '#7a5c00' }, showlegend: false, name: 'Signos' });
+ traces.push({ type: 'scatter3d', mode: 'markers+text', x: signX, y: signY, z: signZ, text: CHART_SIGNS, marker: { size: 6, color: 'goldenrod' }, textfont: { size: 17, color: '#7a5c00' }, showlegend: false, name: 'Signos' });
  }
 
  // ángulos cardinales ASC/DSC/MC/IC
@@ -6678,14 +6682,20 @@ function threeAbrirEsferaEnPestana() {
  angColor.push(color);
  });
  traces.push({ type: 'scatter3d', mode: 'markers+text', x: angX, y: angY, z: angZ, text: angulos.map(a => a[0]),
- marker: { size: 6, color: angColor }, textposition: 'top center', textfont: { size: 13 }, hovertext: angText, hoverinfo: 'text', showlegend: false, name: 'Ángulos' });
+ marker: { size: 9, color: angColor }, textposition: 'top center', textfont: { size: 20 }, hovertext: angText, hoverinfo: 'text', showlegend: false, name: 'Ángulos' });
 
+ // Fuentes grandes en todo (títulos, ejes, leyenda) — pensado para que se
+ // lea bien también en el celular; el mapa se abre en pestaña propia
+ // donde SÍ hay espacio de sobra para textos más grandes.
  const layout = {
- title: `Esfera Celeste Topocéntrica — Polich-Page<br><sub>φ=${lat.toFixed(2)}° · ARMC=${ramc.toFixed(1)}° · ε=${eps.toFixed(4)}°</sub>`,
- scene: { xaxis: { title: 'X · Sur', range: [-1.3, 1.3] }, yaxis: { title: 'Y · Este', range: [-1.3, 1.3] }, zaxis: { title: 'Z · Cénit', range: [-1.3, 1.3] }, aspectmode: 'cube' },
- legend: { itemsizing: 'constant', font: { size: 10 } },
- margin: { l: 0, r: 0, t: 70, b: 0 },
- height: 900,
+ title: { text: `Esfera Celeste Topocéntrica — Polich-Page<br><sub>φ=${lat.toFixed(2)}° · ARMC=${ramc.toFixed(1)}° · ε=${eps.toFixed(4)}°</sub>`, font: { size: 20 } },
+ scene: { xaxis: { title: 'X · Sur', range: [-1.3, 1.3], titlefont: { size: 16 }, tickfont: { size: 13 } },
+ yaxis: { title: 'Y · Este', range: [-1.3, 1.3], titlefont: { size: 16 }, tickfont: { size: 13 } },
+ zaxis: { title: 'Z · Cénit', range: [-1.3, 1.3], titlefont: { size: 16 }, tickfont: { size: 13 } },
+ aspectmode: 'cube' },
+ legend: { itemsizing: 'constant', font: { size: 14 } },
+ margin: { l: 0, r: 0, t: 90, b: 0 },
+ autosize: true,
  };
 
  // Se construye evitando por completo escribir la etiqueta de guion bajo
@@ -6696,12 +6706,17 @@ function threeAbrirEsferaEnPestana() {
  // primera vez que se escribió esta nota — quedó como advertencia).
  const TAG_O = '<' + 'scr' + 'ipt';
  const TAG_C = '<' + '/scr' + 'ipt>';
- const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Esfera Topocéntrica — ' + fecha + ' ' + hora + '</title>'
+ // meta viewport + div a pantalla completa + scrollZoom:true — para que
+ // en celular se pueda hacer pellizco-zoom cómodo y el gráfico aproveche
+ // toda la pantalla (antes quedaba chico con textos diminutos)
+ const html = '<!DOCTYPE html><html><head><meta charset="utf-8">'
+ + '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">'
+ + '<title>Esfera Topocéntrica — ' + fecha + ' ' + hora + '</title>'
  + TAG_O + ' src="https://cdn.plot.ly/plotly-2.35.2.min.js">' + TAG_C
- + '<style>body{margin:0;font-family:sans-serif;background:#fff}</style></head>'
+ + '<style>html,body{margin:0;height:100%;font-family:sans-serif;background:#fff}#plot{width:100%;height:100%}</style></head>'
  + '<body><div id="plot"></div>'
  + TAG_O + '>'
- + "Plotly.newPlot('plot', " + JSON.stringify(traces) + ', ' + JSON.stringify(layout) + ', {responsive:true});'
+ + "Plotly.newPlot('plot', " + JSON.stringify(traces) + ", " + JSON.stringify(layout) + ", {responsive:true, scrollZoom:true});"
  + TAG_C + '</body></html>';
  const blob = new Blob([html], { type: 'text/html' });
  const url = URL.createObjectURL(blob);
