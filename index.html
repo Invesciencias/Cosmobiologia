@@ -6625,6 +6625,7 @@ function threeAbrirEsferaEnPestana() {
  const nepXYZ = _eqToHorizonXYZ(270, 90 - eps, ramc, lat);
 
  const traces = [];
+ const idxConNombres = []; // índices de las trazas con texto (para el interruptor "mostrar nombres")
 
  // esfera celeste — malla de baja densidad (mesh3d + alphahull=0 = casco
  // convexo, aproxima bien una esfera con pocos puntos)
@@ -6645,6 +6646,7 @@ function threeAbrirEsferaEnPestana() {
  const cardinales = [['N', -1.1, 0, 0], ['S', 1.1, 0, 0], ['E', 0, 1.1, 0], ['O', 0, -1.1, 0], ['Cénit', 0, 0, 1.1], ['Nadir', 0, 0, -1.1]];
  traces.push({ type: 'scatter3d', mode: 'markers+text', x: cardinales.map(c => c[1]), y: cardinales.map(c => c[2]), z: cardinales.map(c => c[3]),
  text: cardinales.map(c => c[0]), marker: { size: 6, color: '#1a5c33' }, textposition: 'top center', textfont: { size: 16, color: '#1a5c33' }, showlegend: false, name: 'Puntos cardinales' });
+ idxConNombres.push(traces.length - 1);
 
  // eje del Mundo local
  traces.push({ type: 'scatter3d', mode: 'lines', x: [-ncp.x * 1.3, ncp.x * 1.3], y: [-ncp.y * 1.3, ncp.y * 1.3], z: [-ncp.z * 1.3, ncp.z * 1.3],
@@ -6668,6 +6670,7 @@ function threeAbrirEsferaEnPestana() {
  const signX = [], signY = [], signZ = [];
  for (let i = 0; i < 12; i++) { const [ra, dec] = _eclToEqDeg(i * 30, eps); const p = _eqToHorizonXYZ(ra, dec, ramc, lat).multiplyScalar(1.06); signX.push(p.x); signY.push(p.y); signZ.push(p.z); }
  traces.push({ type: 'scatter3d', mode: 'markers+text', x: signX, y: signY, z: signZ, text: CHART_SIGNS, marker: { size: 6, color: 'goldenrod' }, textfont: { size: 17, color: '#7a5c00' }, showlegend: false, name: 'Signos' });
+ idxConNombres.push(traces.length - 1);
  }
 
  // ángulos cardinales ASC/DSC/MC/IC
@@ -6683,6 +6686,7 @@ function threeAbrirEsferaEnPestana() {
  });
  traces.push({ type: 'scatter3d', mode: 'markers+text', x: angX, y: angY, z: angZ, text: angulos.map(a => a[0]),
  marker: { size: 9, color: angColor }, textposition: 'top center', textfont: { size: 20 }, hovertext: angText, hoverinfo: 'text', showlegend: false, name: 'Ángulos' });
+ idxConNombres.push(traces.length - 1);
 
  // Fuentes grandes en todo (títulos, ejes, leyenda) — pensado para que se
  // lea bien también en el celular; el mapa se abre en pestaña propia
@@ -6693,8 +6697,10 @@ function threeAbrirEsferaEnPestana() {
  yaxis: { title: 'Y · Este', range: [-1.3, 1.3], titlefont: { size: 16 }, tickfont: { size: 13 } },
  zaxis: { title: 'Z · Cénit', range: [-1.3, 1.3], titlefont: { size: 16 }, tickfont: { size: 13 } },
  aspectmode: 'cube' },
- legend: { itemsizing: 'constant', font: { size: 14 } },
- margin: { l: 0, r: 0, t: 90, b: 0 },
+ // leyenda ABAJO y horizontal (antes quedaba al costado, tapando la mitad
+ // del gráfico en pantallas angostas de celular)
+ legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: -0.02, yanchor: 'top', font: { size: 11 } },
+ margin: { l: 0, r: 0, t: 80, b: 90 },
  autosize: true,
  };
 
@@ -6709,14 +6715,21 @@ function threeAbrirEsferaEnPestana() {
  // meta viewport + div a pantalla completa + scrollZoom:true — para que
  // en celular se pueda hacer pellizco-zoom cómodo y el gráfico aproveche
  // toda la pantalla (antes quedaba chico con textos diminutos)
+ // interruptor flotante "Mostrar nombres" — apaga el texto de las 3 trazas
+ // marcadas en idxConNombres (Plotly.restyle solo esas, sin redibujar todo)
  const html = '<!DOCTYPE html><html><head><meta charset="utf-8">'
  + '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">'
  + '<title>Esfera Topocéntrica — ' + fecha + ' ' + hora + '</title>'
  + TAG_O + ' src="https://cdn.plot.ly/plotly-2.35.2.min.js">' + TAG_C
- + '<style>html,body{margin:0;height:100%;font-family:sans-serif;background:#fff}#plot{width:100%;height:100%}</style></head>'
- + '<body><div id="plot"></div>'
+ + '<style>html,body{margin:0;height:100%;font-family:sans-serif;background:#fff}#plot{width:100%;height:100%}'
+ + '#panelNombres{position:fixed;top:8px;left:8px;z-index:10;background:rgba(255,255,255,.9);border:1px solid #ccc;border-radius:8px;padding:6px 10px;font-size:13px}</style></head>'
+ + '<body>'
+ + '<label id="panelNombres"><input type="checkbox" id="chkNombres" checked onchange="toggleNombres()"> Mostrar nombres</label>'
+ + '<div id="plot"></div>'
  + TAG_O + '>'
+ + "const idxConNombres = " + JSON.stringify(idxConNombres) + ";"
  + "Plotly.newPlot('plot', " + JSON.stringify(traces) + ", " + JSON.stringify(layout) + ", {responsive:true, scrollZoom:true});"
+ + "function toggleNombres(){ const on = document.getElementById('chkNombres').checked; Plotly.restyle('plot', {mode: on ? 'markers+text' : 'markers'}, idxConNombres); }"
  + TAG_C + '</body></html>';
  const blob = new Blob([html], { type: 'text/html' });
  const url = URL.createObjectURL(blob);
