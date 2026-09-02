@@ -2,6 +2,8 @@
 
 Plataforma de análisis estadístico falseable para cosmobiología: carga eventos con fecha, hora y lugar, calcula automáticamente la carta astral, y prueba si hay asociaciones significativas usando un modelo nulo emparejado con corrección FDR.
 
+Enlace: https://invesciencias.github.io/Cosmobiologia/ 
+
 **Fase 1:** Sismos (13,870 eventos M≥5, 2000–2023). Arquitectura extensible a volcanes, huracanes, natalidad y cualquier evento fechado.
 
 ---
