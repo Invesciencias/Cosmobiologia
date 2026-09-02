@@ -112,7 +112,7 @@
  <div class="logo-badge"><img src="logo.jpg" alt="Fundación Invesciencias"></div>
  <div>
  <h1 data-i18n="header_h1">Cosmobiología — Fundación Invesciencias</h1>
- <p data-i18n-html="header_subtitle">Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">Primer resultado confirmado: conjunción Mercurio–Urano en sismos M≥6</b></p>
+ <p data-i18n-html="header_subtitle">Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">Primer resultado positivo: Mercurio–Urano en sismos M≥6 — replicación externa pendiente</b></p>
  </div>
  <button id="lang-toggle" onclick="toggleLang()" style="margin-left:auto;padding:7px 16px;border-radius:20px;border:1.5px solid var(--oro);background:transparent;color:var(--oro);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">English</button>
 
@@ -183,7 +183,7 @@
  <h2 style="font-size:22px;color:#fff;margin-bottom:6px" data-i18n="hero_h2">¿Hay patrones astronómicos en los grandes eventos del planeta?</h2>
  <p style="font-size:15px;margin-bottom:10px" data-i18n-html="hero_p">Esta plataforma permite <b>poner a prueba esa pregunta con rigor estadístico</b>, usando más de <b id="hero_n_events">34.000</b> eventos reales de <b id="hero_n_domains">11</b> dominios — sismos, huracanes, tormentas solares, desastres, inundaciones y más — comparados contra un <span style="border-bottom:1px dashed #adf;cursor:help" data-glos="modelo nulo">modelo nulo emparejado</span>. No necesitas instalar nada ni saber programar.</p>
  <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:14px">
- <span data-i18n-html="hero_confirmed"> <b>Primer resultado confirmado (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano — resultado que sobrevive 522 pruebas simultáneas y se replica en la validación cruzada 50/50 del catálogo USGS (replicación en catálogo externo GCMT: pendiente).</span> <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="hero_btn_ver">Ver en el Tablero →</button>
+ <span data-i18n-html="hero_confirmed"> <b>Primer resultado positivo (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano. Sobrevive 522 pruebas simultáneas y replica en la validación cruzada 50/50 del catálogo USGS. <b>Todavía no es un resultado confirmado:</b> falta replicarlo en un catálogo externo (GCMT) y estratificarlo por tipo de falla y profundidad focal, como exige el propio diseño que publicamos en la <i>Circular Astronómica RAC</i> 1027 (sept. 2026).</span> <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="hero_btn_ver">Ver en el Tablero →</button>
  </div>
  <div class="row">
  <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="hero_btn_tablero">Explorar resultados</button>
@@ -374,6 +374,14 @@
  <label class="small" style="margin:0">Ir a:</label>
  <select id="three_const_selector" onchange="threeIrAEstrella(this.value)" style="max-width:200px"><option value="">objeto específico...</option></select>
  </div>
+ <div class="row" style="margin-bottom:8px;align-items:center">
+ <label class="small" style="margin:0">Límites oficiales (IAU/Delporte):</label>
+ <select id="const_limites" onchange="threeLimitesChanged()" style="max-width:200px">
+ <option value="ninguno" selected>No mostrar</option>
+ <option value="zodiaco">Solo las 13 de la eclíptica</option>
+ <option value="todas">Las 88 constelaciones</option>
+ </select>
+ </div>
  <div id="three_const_leyenda" class="small muted" style="margin-bottom:8px">Pasa el mouse sobre cualquier punto para ver su nombre, magnitud y distancia real. Usa el selector "Ir a" para moverte por el mapa — elige un <b>planeta</b> (Mercurio a Plutón) para ver además en qué signo va a estar los próximos años.</div>
 
  <div id="planeta_detalle" style="display:none;background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
@@ -415,11 +423,19 @@
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
  <div style="font-weight:700;font-size:13px;margin-bottom:8px">✨ ¿Se mueven las estrellas?</div>
  <div class="row" style="align-items:center;gap:8px;margin-bottom:6px">
+ <label class="small" style="margin:0">Marco de referencia:</label>
+ <select id="pm_marco" onchange="threeAplicarMovimientoPropio()" style="max-width:260px">
+ <option value="helio" selected>Heliocéntrico — como lo mide el catálogo</option>
+ <option value="lsr">LSR — sin el movimiento propio del Sol</option>
+ </select>
+ </div>
+ <div class="row" style="align-items:center;gap:8px;margin-bottom:6px">
  <label class="small" style="margin:0">Años simulados:</label>
  <input type="range" id="pm_anios" min="0" max="100000" step="1000" value="0" style="flex:1;min-width:100px" oninput="threeAplicarMovimientoPropio()">
  <span id="pm_anios_label" class="small" style="min-width:70px">0 años</span>
  </div>
  <div id="pm_nota" class="small muted"></div>
+ <details class="tccinfo"><summary>¿Qué es el "LSR" y por qué cambia lo que veo?</summary><p class="tccinfo-body small muted">Lo que mide un catálogo es movimiento <b>aparente</b>, visto desde el Sol — pero el Sol también se mueve, así que parte de ese movimiento es solo el <b>reflejo</b> del nuestro (como los árboles que "van hacia atrás" cuando uno va en carro). El <b>Local Standard of Rest</b> es el marco que acompaña la rotación galáctica a la velocidad <i>media</i> de las estrellas de la vecindad solar. Al restar la velocidad peculiar del Sol respecto al LSR (U,V,W = 11.10, 12.24, 7.25 km/s — Schönrich, Binney &amp; Dehnen 2010; en total ≈18 km/s hacia el <a href="#" onclick="threeIrAEstrella('→ Ápex solar');return false">ápex solar</a>) queda el movimiento propio <b>de cada estrella</b>, más limpio para estudiar la estructura del disco galáctico. Nota honesta: la corrección usa solo movimiento propio y distancia — sin velocidad radial no se reconstruye la velocidad 3D completa de cada estrella, pero para el <i>movimiento sobre el cielo</i> esta corrección sí es la completa (la parte radial no produce movimiento propio).</p></details>
  <details class="tccinfo"><summary>¿Se expanden o se contraen?</summary><p class="tccinfo-body small muted">Sí se mueven — cada una viaja por el espacio respecto al Sol a decenas de km/s ("movimiento propio", catálogo Hipparcos) — pero desde tan lejos se ve <b>diminuto</b> (fracciones de arcosegundo por año). No "se expanden ni se contraen": eso es la expansión del universo (Hubble), solo relevante entre galaxias muy lejanas. El control de arriba extrapola miles de años para ver la <i>dirección</i> real (línea recta, aproximación — la trayectoria real se curva por la rotación de la galaxia).</p></details>
  </div>
 
@@ -453,6 +469,94 @@
 
  </div><!-- /three_detail -->
  </div><!-- /card Mapa Cósmico -->
+
+  <!-- ═══ PUBLICACIÓN EN LA CIRCULAR ASTRONÓMICA DE LA RAC ═══ -->
+  <div class="card" id="publicacion_rac" style="border-left:4px solid var(--oro)">
+   <h2>📄 Este programa está publicado</h2>
+   <p class="small muted" style="margin-bottom:12px">El diseño de investigación que implementa esta plataforma fue publicado en el boletín de la
+   <b>Red de Astronomía de Colombia</b>. Si vienes de allí, esta es la herramienta que describe el artículo.</p>
+
+   <div style="background:var(--panel2);border-radius:10px;padding:14px 16px;margin-bottom:12px">
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px">El cosmos que habitamos</div>
+    <div class="small" style="margin-bottom:8px"><i>Fuerzas lunares, geomagnéticas y circadianas: evidencia escalonada y un programa de investigación desde Invesciencias</i></div>
+    <div class="small muted" style="font-family:ui-monospace,monospace;font-size:11.5px;line-height:1.7;background:var(--panel);padding:9px 11px;border-radius:6px">
+     Serrano, D. (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas —
+     evidencia escalonada y un programa de investigación desde Invesciencias.
+     <b>Circular Astronómica RAC</b>, N.º 1027, septiembre 2026, pp. 8–11.
+     Red de Astronomía de Colombia.
+    </div>
+   </div>
+
+   <p class="small" style="margin-bottom:8px"><b>Lo que sostiene el artículo</b>, en una frase: la contribución de Invesciencias
+   <i>no</i> es haber demostrado que los ciclos astronómicos afectan a los seres vivos, sino haber identificado que la pregunta
+   <b>es testeable con datos que ya existen</b>, y haber propuesto un diseño de estudio que cumple los estándares metodológicos actuales.</p>
+   <p class="small" style="margin:0">Su aporte metodológico más exigente — y el que esta plataforma todavía debe implementar — es que el análisis sísmico
+   <b>debe estratificar por tipo de falla y profundidad focal desde el diseño</b>. Sin eso, una correlación calculada sobre el catálogo completo
+   «diluirá la señal real y producirá un resultado nulo que no refuta la hipótesis, sino que no la pone a prueba correctamente».</p>
+
+   <div style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-top:14px">
+    <div style="font-weight:700;font-size:13px;margin-bottom:8px">El corpus, en cifras exactas</div>
+    <div style="overflow-x:auto">
+     <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="background:var(--panel)"><th style="padding:5px 8px;text-align:left">Conjunto</th><th style="padding:5px 8px;text-align:right">Eventos</th><th style="padding:5px 8px;text-align:left">Rango</th></tr></thead>
+      <tbody>
+       <tr><td style="padding:4px 8px">Sismos M≥6 — catálogo <b>USGS</b></td><td style="padding:4px 8px;text-align:right"><b>13.870</b></td><td style="padding:4px 8px">1900–2023</td></tr>
+       <tr><td style="padding:4px 8px">Sismos M≥6 — NOAA NCEI (significativos)</td><td style="padding:4px 8px;text-align:right">2.437</td><td style="padding:4px 8px">—</td></tr>
+       <tr><td style="padding:4px 8px">Sismos M≥6 — EM-DAT (con impacto)</td><td style="padding:4px 8px;text-align:right">675</td><td style="padding:4px 8px">—</td></tr>
+       <tr style="border-top:1px solid var(--border);font-weight:700"><td style="padding:5px 8px">Total sísmico M≥6</td><td style="padding:5px 8px;text-align:right">16.982</td><td style="padding:5px 8px">1900–2026</td></tr>
+       <tr style="background:rgba(255,200,0,.08)"><td style="padding:5px 8px">↳ subconjunto usado en el resultado Mercurio–Urano</td><td style="padding:5px 8px;text-align:right"><b>3.730</b></td><td style="padding:5px 8px">USGS, 2000–2024</td></tr>
+       <tr style="border-top:1px solid var(--border)"><td style="padding:5px 8px">Total de la plataforma (11 dominios)</td><td style="padding:5px 8px;text-align:right">34.503</td><td style="padding:5px 8px">1900–2026</td></tr>
+      </tbody>
+     </table>
+    </div>
+    <p class="small muted" style="margin:10px 0 0"><b>Precisión sobre el artículo:</b> la cifra publicada — «más de 10.000 eventos sísmicos M≥6.0 del catálogo USGS» — es
+    correcta: son <b>13.870</b>. El rango que la acompaña en el texto impreso (1973–2024) corresponde en realidad a <b>1900–2023</b>, que es la cobertura efectiva de ese
+    conjunto. El análisis concreto del que salió el resultado Mercurio–Urano usó el subconjunto de <b>3.730</b> sismos M≥6 de USGS entre 2000 y 2024, que es la ventana con
+    cobertura instrumental homogénea. Se deja anotado aquí en vez de corregirlo en silencio.</p>
+   </div>
+  </div>
+
+  <!-- ═══ LOS TRES NIVELES DE EVIDENCIA ═══ -->
+  <div class="card" id="niveles_evidencia">
+   <h2>Cómo leer lo que afirmamos: tres niveles de evidencia</h2>
+   <p class="small muted" style="margin-bottom:14px">Este es el marco que organiza el artículo publicado, y sirve para pesar cualquier afirmación
+   de esta plataforma. No todo lo que aparece aquí tiene el mismo respaldo, y mezclarlo sería el error más fácil de cometer.</p>
+
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
+
+    <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--verde)">
+     <div style="font-weight:800;font-size:13px;color:var(--verde);letter-spacing:.5px">NIVEL I</div>
+     <div style="font-weight:700;margin:4px 0 6px">Física establecida</div>
+     <p class="small" style="margin:0 0 8px">Efectos mareales y geomagnéticos medidos en geología y geofísica. <b>Sin controversia metodológica.</b></p>
+     <p class="small muted" style="margin:0">Ejemplo: las mareas terrestres deforman la corteza entre <b>20 y 55 cm</b>, modelado con gravimetría de precisión desde
+     los años 50 (Melchior 1983; Agnew 2015). Es geometría newtoniana aplicada al planeta entero.</p>
+    </div>
+
+    <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--oro)">
+     <div style="font-weight:800;font-size:13px;color:#8a6d10;letter-spacing:.5px">NIVEL II</div>
+     <div style="font-weight:700;margin:4px 0 6px">Señal sugerente</div>
+     <p class="small" style="margin:0 0 8px">Asociaciones estadísticas <b>reproducibles</b>. Alcance limitado al sistema estudiado.</p>
+     <p class="small muted" style="margin:0">Ejemplo: el diámetro de los troncos fluctúa con el ritmo de las mareas (Zürcher et al., <i>Nature</i> 1998) — pero eso
+     mide transporte de agua en tejido vegetal, <b>no es evidencia de que los planetas alteren la fisiología humana</b>.</p>
+    </div>
+
+    <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid #8a3a3a">
+     <div style="font-weight:800;font-size:13px;color:#8a3a3a;letter-spacing:.5px">NIVEL III</div>
+     <div style="font-weight:700;margin:4px 0 6px">Hipótesis mecanicista</div>
+     <p class="small" style="margin:0 0 8px">Asociaciones clínicas <b>mixtas</b>, con mecanismos propuestos en revisiones. Requieren estudios grandes y pre-registrados.</p>
+     <p class="small muted" style="margin:0">Ejemplo: el campo geomagnético como posible <i>zeitgeber</i> circadiano vía criptocromos (Martel et al. 2023). Hipótesis
+     plausible con evidencia animal, <b>no una demostración en humanos</b>.</p>
+    </div>
+
+   </div>
+
+   <div class="hint" style="margin-top:14px">
+    <b>¿Y dónde cae nuestro propio resultado?</b> La conjunción Mercurio–Urano en sismos M≥6 es una <b>asociación estadística sin mecanismo propuesto</b>.
+    Aspira al <b>Nivel II</b>, pero todavía no llega: la definición de Nivel II exige que la asociación sea <i>reproducible</i>, y hasta ahora solo replicó
+    en una mitad del mismo catálogo (validación cruzada interna), no en un catálogo externo ni con estratificación por tipo de falla.
+    Aplicar el criterio a uno mismo es lo que lo hace un criterio y no un adorno.
+   </div>
+  </div>
 
  <!-- CÓMO FUNCIONA EN 3 PASOS -->
  <div class="card">
@@ -540,7 +644,7 @@
 
  <!-- CONFIRMADO -->
  <div style="background:rgba(100,220,100,0.08);border-radius:10px;padding:14px;margin-top:14px;border-left:4px solid var(--verde)">
- <span class="badge badge-confirmed">Confirmado</span><b>Conjunción Mercurio–Urano en sismos M≥6</b>
+ <span class="badge badge-caution">Positivo — no confirmado</span><b>Conjunción Mercurio–Urano en sismos M≥6</b>
  <p class="small" style="margin-top:6px">En los <b>3.730 terremotos M≥6</b> (2000–2024), la conjunción Mercurio–Urano (alineación a menos de 8°, ~100 veces en 24 años) coincide con un <b>32% más de sismos de lo esperado por azar</b> (z = +5.27, RR = 1.32, FDR q = 0.000047). Pasó tres filtros de rigor:</p>
  <ol class="small" style="margin:6px 0 6px 18px">
  <li><b>FDR por 522 pruebas simultáneas</b> (q = 0.000047) — descarta suerte entre muchos intentos.</li>
@@ -1154,7 +1258,7 @@
  <span data-i18n-html="hip_ejemplo_rasgo"><b>Rasgo:</b>Aspecto Mercurio–Urano, conjunción (separación angular ≤8°)</span><br>
  <span data-i18n-html="hip_ejemplo_dir"><b>Dirección:</b>Exceso (más sismos de lo esperado durante la conjunción)</span><br>
  <span data-i18n-html="hip_ejemplo_res"><b>Resultado:</b> z=+5.27 · RR=1.32 (32% más sismos) · FDR q=0,000047</span><br>
- <span data-i18n-html="hip_ejemplo_val"><b>Validación cruzada:</b> confirmado en mitad independiente (z=+3.88, q=0,00041) </span><br>
+ <span data-i18n-html="hip_ejemplo_val"><b>Validación cruzada interna:</b> replica en mitad independiente (z=+3.88, q=0,00041) — falta replicación externa y estratificación por tipo de falla </span><br>
  <span data-i18n-html="hip_ejemplo_rep"><b>Replicación pendiente:</b> catálogo GCMT 1976–1999 (pre-registrado en OSF)</span>
  </div>
  <p class="small muted" data-i18n-html="hip_ejemplo_tip"> <b>Para formular tu propia hipótesis:</b> elige un dominio de eventos de tu ciencia, un rasgo astronómico con justificación teórica, y pre-regístrala en OSF <i>antes</i> de mirar los datos. El constructor de abajo te genera el enunciado listo para registrar.</p>
@@ -1165,7 +1269,7 @@
  <div class="hint" data-i18n-html="hip_constructor_hint">Una hipótesis sirve para la ciencia solo si se puede <b>rechazar</b>. Arma la tuya con los menús: el enunciado queda en formato listo para <b>pre-registrar</b> (OSF) antes de mirar los datos. Pre-registrar evita el autoengaño y es lo que hace publicable el trabajo.</div>
  <div class="grid">
  <div><label data-i18n="hip_domain_label">Dominio de eventos</label><select id="h_domain">
- <option value="sismo_M6plus">Sismos M≥6 confirmado</option>
+ <option value="sismo_M6plus">Sismos M≥6 (corpus completo)</option>
  <option value="sismo_M5plus">Sismos M≥5</option>
  <option value="sismo">Sismos (historial)</option>
  <option value="huracanes">Huracanes</option>
@@ -1298,7 +1402,7 @@
  <table>
  <thead><tr><th data-i18n="fuentes_th_dominio">Dominio</th><th data-i18n="fuentes_th_eventos">Eventos</th><th data-i18n="fuentes_th_fuente">Fuente</th><th data-i18n="fuentes_th_estado">Estado análisis</th><th data-i18n="fuentes_th_rasgos">Tipo de rasgos válidos</th></tr></thead>
  <tbody>
- <tr style="background:rgba(255,200,0,0.07)"><td> <b>Sismos M≥6</b> <span class="pill" style="background:var(--ok);color:#000"> confirmado</span></td><td>3.730</td><td>USGS FDSN</td><td>Mercurio–Urano conjunción: z=+5.27, RR=1.32, split </td><td>Aspectos + casas</td></tr>
+ <tr style="background:rgba(255,200,0,0.07)"><td> <b>Sismos M≥6</b> <span class="pill" style="background:var(--oro);color:#3a2f10"> positivo, no confirmado</span></td><td>3.730</td><td>USGS FDSN</td><td>Mercurio–Urano conjunción: z=+5.27, RR=1.32, split </td><td>Aspectos + casas</td></tr>
  <tr><td> <b>Sismos M≥6 — exploratoria</b></td><td>1.865</td><td>USGS FDSN</td><td>4 candidatos FDR&lt;0.05</td><td>Aspectos + casas</td></tr>
  <tr><td> <b>Sismos M≥6 — confirmatoria</b></td><td>1.865</td><td>USGS FDSN</td><td>1 confirmado (Mercurio–Urano)</td><td>Aspectos + casas</td></tr>
  <tr><td> <b>Sismos M≥5</b></td><td>44.390</td><td>USGS FDSN</td><td>73 sig. FDR&lt;0.05 — exploratoria, pendiente confirmación</td><td>Aspectos + casas</td></tr>
@@ -2115,6 +2219,61 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
  <p class="small muted" style="margin-top:10px">El punto vernal actual (con dirección real, no solo esquemática) se puede ver marcado en el
  <a href="#" onclick="return irA('guia','')">Mapa Cósmico</a> (pestaña "Empieza aquí" → modo "Mapa Cósmico" → botón "Ir al Punto Vernal").</p>
+
+ <!-- ═══ Límites reales de constelaciones (IAU / Delporte 1930, B1875) ═══ -->
+ <div style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-top:14px;border-left:3px solid #16a085">
+ <div style="font-weight:700;font-size:14px;margin-bottom:6px;color:#16a085">Contraste con los límites astronómicos reales (IAU / Delporte)</div>
+ <p class="small" style="margin:0 0 10px">Las 12 divisiones iguales de arriba son una <b>convención</b>. Las constelaciones reales
+ <b>no miden 30° cada una</b>: sus fronteras oficiales las fijó <b>Eugène Delporte (1930)</b> para la Unión Astronómica
+ Internacional, trazadas sobre meridianos y paralelos del <b>equinoccio B1875.0</b> (por eso hoy se ven inclinadas: el marco
+ precesó desde entonces). Con esos límites, Piscis ocupa un tramo de eclíptica mucho mayor que 30°, y el paso del punto
+ vernal a Acuario cae <b>siglos después</b> que en cualquier convención de 12 partes iguales.</p>
+ <div class="row" style="margin-bottom:10px;align-items:center">
+ <label class="small" style="margin:0">Año en que el punto vernal cruza a Acuario (límite IAU):</label>
+ <input type="number" id="iau_cruce_anio" value="2598" step="1" style="max-width:100px" oninput="actualizarEraPrecesional()">
+ </div>
+ <div id="iau_resultado" class="small" style="background:rgba(22,160,133,.1);border-radius:8px;padding:10px"></div>
+ <details class="tccinfo"><summary>¿De dónde sale ese año? (se derivó aquí, no se copió)</summary><div class="tccinfo-body small muted">
+ <p style="margin:0 0 8px">Se cargaron los <b>polígonos de frontera reales</b> de las 88 constelaciones (Delporte 1930, precesados a J2000), se recorrió
+ la eclíptica a paso de 0.02° anotando en qué polígono caía cada punto, y salió que el límite <b>Piscis→Acuario está en la longitud
+ eclíptica J2000 de 351.64°</b>. Al punto vernal le faltan por tanto <b>8.36°</b> desde J2000, que a la tasa de precesión validada
+ (IAU 2006) dan el año <b>2597.7</b>. La cifra que se cita habitualmente es ≈2597: coincide dentro de <b>0.7 años</b>, lo cual es
+ una confirmación independiente, no una copia.</p>
+ <p style="margin:0 0 8px"><b>Comprobaciones que pasaron los datos antes de usarlos:</b> el punto vernal J2000 cae dentro de Piscis ✓ · Sirio→CMa,
+ Betelgeuse→Ori, Antares→Sco ✓ · el recorrido completo de la eclíptica suma exactamente 360.00° ✓ · los anchos reproducen los
+ valores publicados (Virgo la más larga ≈44°, Escorpio la más corta ≈6.6°) ✓. Puedes repetirlas con <code>limitesAutoVerificar()</code> en la consola.</p>
+ <p style="margin:0"><b>Limitación honesta:</b> los polígonos vienen ya precesados a J2000 por la fuente; no se partió del catálogo Delporte B1875 en crudo.
+ Las verificaciones de arriba dan confianza en que la precesión aplicada es la correcta, pero no sustituyen un cotejo contra el catálogo IAU original.</p>
+ </div></details>
+
+ <div style="overflow-x:auto;margin-top:12px">
+ <div class="small" style="font-weight:700;margin-bottom:6px">Lo que mide de verdad cada constelación sobre la eclíptica</div>
+ <table style="width:100%;border-collapse:collapse;font-size:12px">
+ <thead><tr style="background:var(--panel)"><th style="padding:5px 8px;text-align:left">Constelación</th><th style="padding:5px 8px;text-align:right">Ancho real</th><th style="padding:5px 8px;text-align:right">vs. 30° de la convención</th></tr></thead>
+ <tbody id="iau_tramos_body"></tbody>
+ </table>
+ <p class="small muted" style="margin-top:8px">Nota: son <b>13</b>, no 12 — la eclíptica atraviesa también <b>Ofiuco</b> (18.6°), entre Escorpio y Sagitario. Escorpio,
+ el más famoso, es en realidad el tramo <b>más corto</b> de todos: el Sol pasa por él apenas una semana.</p>
+ </div>
+ </div>
+
+ <!-- ═══ Estatus científico real de las constelaciones ═══ -->
+ <div style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-top:14px;border-left:3px solid #7f8c8d">
+ <div style="font-weight:700;font-size:14px;margin-bottom:6px">¿Qué peso tienen hoy las constelaciones en astronomía profesional?</div>
+ <p class="small" style="margin:0 0 8px">La Fundación Invesciencias consultó esto directamente al <b>Observatorio de París</b>. Resumen de la respuesta del
+ <b>Ing. Renaud Savalle</b> (Observatoire de Paris, Meudon; correspondencia del 20 de julio de 2022, en respuesta a la consulta de
+ David Serrano, Juansergio Cuenca y Gerson Marín):</p>
+ <ul class="small" style="margin:0 0 8px;padding-left:18px">
+ <li>Las constelaciones IAU <b>ya casi no se usan</b> en astronomía profesional, y <b>no le consta ninguna intención de la IAU de actualizar</b> los límites fijados por Delporte en 1930.</li>
+ <li>Las constelaciones adoptadas por la IAU están <b>ligadas a la cultura griega y occidental</b>; la astronomía moderna reconoce que otras culturas vieron cielos distintos (el programa libre <b>Stellarium</b> implementa varias "sky cultures").</li>
+ <li>Un mismo objeto tiene <b>muchísimos identificadores</b> — HIP 101936 aparece con 36 identificadores distintos en SIMBAD — y se resuelven con servicios como <b>Sesame</b> y los <i>crossmatch</i> del CDS de Estrasburgo, no por el nombre con genitivo.</li>
+ <li>El <code>source_id</code> de <b>Gaia</b> codifica el <b>HEALPIX</b> (la región del cielo) del objeto: en sus palabras, una forma moderna de ubicar objetos en el cielo, análoga a lo que antes hacían las constelaciones — «mucho menos poética, pero tan precisa como quieras».</li>
+ <li>Aun así, siguen siendo <b>importantes para aprender el cielo y para divulgación</b>, y usar el nombre antiguo con genitivo sigue siendo válido: es simplemente uno más entre muchos nombres.</li>
+ </ul>
+ <p class="small muted" style="margin:0">Por qué importa aquí: esta plataforma dibuja los límites de Delporte porque son <b>el marco convencional compartido</b> que permite
+ decir sin ambigüedad "el punto vernal está en Piscis" — no porque sean una frontera física. Ese matiz es exactamente el que separa
+ una afirmación astronómica verificable de una interpretación.</p>
+ </div>
  </div>
  </div>
 
@@ -2464,7 +2623,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <div class="card">
  <h2 id="met_estrat" data-i18n="met_estrat_h2"> <span class="glos" data-glos="estratificación">Estratificación</span>: cuándo el global da negativo y el subgrupo da positivo</h2>
- <p>Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. El primer resultado confirmado de este proyecto (<b>Mercurio–Urano en sismos M≥6</b>) no apareció en el análisis global M≥5 — apareció al estratificar por magnitud.</p>
+ <p>Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. El primer resultado positivo de este proyecto (<b>Mercurio–Urano en sismos M≥6</b>, aún no confirmado) no apareció en el análisis global M≥5 — apareció al estratificar por magnitud.</p>
  <table>
  <thead><tr><th>Dimensión</th><th>Estratos útiles</th><th>Justificación física</th></tr></thead>
  <tbody>
@@ -2474,7 +2633,33 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <tr><td><b>Región</b></td><td>Anillo de Fuego · Himalaya · Mediterráneo</td><td>Contexto tectónico distinto. El Mapa y Grilla ya permite esto: clic en una celda.</td></tr>
  </tbody>
  </table>
- <div class="hint" style="margin-top:12px;border-left-color:var(--ok)">
+   <div style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-top:14px">
+   <div style="font-weight:700;font-size:13px;margin-bottom:8px">Qué está estratificado hoy y qué no</div>
+   <p class="small muted" style="margin:0 0 10px">La tabla de arriba lista las dimensiones <i>útiles</i>. Esta dice cuáles están realmente implementadas en el código
+   y cuál falta — que es la que el artículo publicado señala como la más importante.</p>
+   <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+     <thead><tr style="background:var(--panel)"><th style="padding:5px 8px;text-align:left">Dimensión</th><th style="padding:5px 8px;text-align:left">Estado</th><th style="padding:5px 8px;text-align:left">Dónde</th></tr></thead>
+     <tbody>
+      <tr><td style="padding:5px 8px"><b>Magnitud</b></td><td style="padding:5px 8px"><span class="badge badge-confirmed" style="font-size:9px">Implementado</span></td><td style="padding:5px 8px"><code>estratificar_sismos.py --por magnitud</code></td></tr>
+      <tr><td style="padding:5px 8px"><b>Profundidad focal</b></td><td style="padding:5px 8px"><span class="badge badge-confirmed" style="font-size:9px">Implementado</span></td><td style="padding:5px 8px"><code>--por profundidad</code> · conjuntos superficial / intermedio / profundo ya generados</td></tr>
+      <tr><td style="padding:5px 8px"><b>Causa</b> (tectónico / volcánico / inducido)</td><td style="padding:5px 8px"><span class="badge badge-confirmed" style="font-size:9px">Implementado</span></td><td style="padding:5px 8px"><code>--por causa</code> — los inducidos sirven de control negativo</td></tr>
+      <tr><td style="padding:5px 8px"><b>Región tectónica</b></td><td style="padding:5px 8px"><span class="badge badge-confirmed" style="font-size:9px">Implementado</span></td><td style="padding:5px 8px">Conjuntos por anillo pacífico, Sudamérica, Asia central, Mediterráneo, Atlántico</td></tr>
+      <tr style="background:rgba(255,200,0,.10)"><td style="padding:5px 8px"><b>Tipo de falla</b> (inversa / normal / desgarre)</td><td style="padding:5px 8px"><span class="badge badge-caution" style="font-size:9px">Pendiente</span></td><td style="padding:5px 8px">Falta el dato, no solo el análisis — ver abajo</td></tr>
+     </tbody>
+    </table>
+   </div>
+   <div class="hint" style="margin-top:12px">
+    <b>Por qué falta el tipo de falla, y cómo se resuelve.</b> Tanaka, Ohtake y Sato (2002) encontraron que la correlación marea–sismo es significativa
+    <b>solo en fallas inversas de zonas de subducción</b>, no en el catálogo global. Por eso el artículo publicado lo pone como requisito de diseño.
+    El obstáculo aquí es concreto: la descarga de GCMT conservó únicamente fecha, coordenadas, profundidad y magnitud, y <b>descartó el tensor de momento</b>
+    — que es justamente lo que permite clasificar el mecanismo focal. Es recuperable: volver a descargar GCMT conservando el tensor y clasificar por el
+    ángulo de deslizamiento (<i>rake</i>) o por los ejes P/T/B. Hasta que eso se haga, ningún resultado sísmico de esta plataforma —incluido Mercurio–Urano—
+    puede considerarse correctamente puesto a prueba según el criterio que nosotros mismos publicamos.
+   </div>
+  </div>
+
+<div class="hint" style="margin-top:12px;border-left-color:var(--ok)">
  <b>Ejemplo de hipótesis pre-registrable:</b> «Sismos M≥7, profundidad &lt;70 km, Anillo de Fuego (n≈120): la cuadratura Marte–Luna dentro de 8° ocurre con mayor frecuencia que en los controles (p&lt;0.05 FDR, validación cruzada).» — Específica, física, difícil de atribuir al azar.
  </div>
  </div>
@@ -2682,6 +2867,79 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <!-- Enlace al nuevo card en el índice de métodos -->
 
+ <div class="card" id="met_potencia" style="border-left:4px solid #2980b9">
+  <h2>¿Qué puede ver este método? La curva de potencia</h2>
+  <p class="small muted" style="margin-bottom:12px">Todo instrumento tiene un límite de sensibilidad. Un telescopio no ve
+  estrellas más débiles que cierta magnitud; este método no detecta efectos más pequeños que cierto tamaño. Saber cuál es
+  ese límite es lo que separa un resultado negativo <b>informativo</b> ("no hay efectos grandes") de uno <b>vacío</b>
+  ("no vimos nada, pero tampoco habríamos podido").</p>
+
+  <h3>Cómo se midió</h3>
+  <p class="small">No se estimó en teoría: se midió sobre el propio catálogo. Se generaron catálogos con las <b>fechas
+  aleatorizadas</b> (cada evento desplazado ±365 días, lo que destruye cualquier relación real con las posiciones
+  planetarias pero conserva la estructura del catálogo) y se corrió el análisis completo sobre ellos. El <b>máximo |z|</b>
+  que aparece entre los ~400 rasgos es, por definición, lo que produce el <b>puro azar</b>.</p>
+  <div class="hint" style="margin:10px 0">
+   <b>Resultado:</b> techo de ruido <b>|z| = 3,22 ± 0,65</b> (5 réplicas; el máximo llegó a 3,97). Umbral práctico de
+   detección: <b>z = 3,88</b>. Dato aleccionador: <b>una de las cinco réplicas produjo 2 rasgos con FDR&lt;0,05 usando
+   fechas completamente inventadas</b> — por eso ningún hallazgo aislado, por muy corregido que esté, sustituye a la
+   replicación en datos independientes.
+  </div>
+
+  <h3>El límite, en números</h3>
+  <div id="pot_plot" style="height:340px;margin:10px 0"></div>
+  <p class="small muted" style="margin:0 0 12px">Cada curva es un tipo de rasgo según su frecuencia base <i>f</i> (qué
+  porcentaje del tiempo está activo). Por debajo de la curva, el efecto es invisible para este diseño; por encima, detectable.</p>
+
+  <div style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+   <div style="font-weight:700;font-size:13px;margin-bottom:8px">Calculadora: ¿alcanza mi muestra?</div>
+   <div class="row" style="align-items:center;gap:10px">
+    <label class="small" style="margin:0">Eventos (n):</label>
+    <input type="number" id="pot_n" value="3730" min="100" max="1000000" step="100" style="max-width:110px" oninput="potenciaCalcular()">
+    <label class="small" style="margin:0">Frecuencia base del rasgo:</label>
+    <select id="pot_f" onchange="potenciaCalcular()" style="max-width:110px">
+     <option value="0.01">1%</option><option value="0.05" selected>5%</option><option value="0.10">10%</option><option value="0.25">25%</option>
+    </select>
+   </div>
+   <div id="pot_res" class="small" style="margin-top:10px"></div>
+  </div>
+
+  <h3>Cuántos eventos hace falta según el tamaño del efecto</h3>
+  <div style="overflow-x:auto">
+   <table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead><tr style="background:var(--panel2)"><th style="padding:5px 8px;text-align:left">Tamaño del efecto</th><th style="padding:5px 8px;text-align:right">RR</th><th style="padding:5px 8px;text-align:right">Eventos necesarios</th><th style="padding:5px 8px;text-align:left">¿Lo tenemos?</th></tr></thead>
+    <tbody>
+     <tr><td style="padding:4px 8px">Grande</td><td style="padding:4px 8px;text-align:right">1,30</td><td style="padding:4px 8px;text-align:right">2.856</td><td style="padding:4px 8px;color:var(--ok)">Sí — M≥6 (3.730)</td></tr>
+     <tr><td style="padding:4px 8px">Moderado</td><td style="padding:4px 8px;text-align:right">1,20</td><td style="padding:4px 8px;text-align:right">6.426</td><td style="padding:4px 8px;color:var(--ok)">Sí — M≥5 (44.390)</td></tr>
+     <tr><td style="padding:4px 8px">Pequeño</td><td style="padding:4px 8px;text-align:right">1,10</td><td style="padding:4px 8px;text-align:right">25.706</td><td style="padding:4px 8px;color:var(--ok)">Sí — M≥5 (44.390)</td></tr>
+     <tr><td style="padding:4px 8px">Muy pequeño</td><td style="padding:4px 8px;text-align:right">1,05</td><td style="padding:4px 8px;text-align:right">102.824</td><td style="padding:4px 8px;color:var(--oro)">Todavía no</td></tr>
+     <tr style="background:rgba(200,60,60,.08)"><td style="padding:4px 8px"><b>Escala de marea (Tanaka)</b></td><td style="padding:4px 8px;text-align:right">1,02</td><td style="padding:4px 8px;text-align:right"><b>642.649</b></td><td style="padding:4px 8px;color:#c0392b">Fuera de alcance</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+  <h3>Qué implica esto — y por qué cambia la lectura de los resultados</h3>
+  <ul class="small" style="line-height:1.8">
+   <li><b>El primer resultado (Mercurio–Urano) no era ruido de las 398 pruebas.</b> Su z=5,27 supera el techo de ruido
+   medido (máximo 3,97). Que no haya replicado en un catálogo independiente significa que <b>no generaliza</b>, no que
+   fuera un artefacto trivial del método. La distinción importa.</li>
+   <li><b>El resultado negativo sobre mareas no vale como refutación de Tanaka.</b> Su efecto reportado es de ~1-2%; con
+   los 2.262 sismos del estrato correspondiente, ese tamaño daría <b>z ≈ 0,23</b>. La prueba <b>nunca pudo salir
+   positiva</b>. Reportarla como si zanjara algo sería exactamente el error que advierte la literatura: un nulo que no
+   refuta la hipótesis porque no la puso a prueba.</li>
+   <li><b>Los efectos sutiles necesitan otro diseño, no más eventos.</b> Llegar a 641.000 sismos catalogados es
+   inviable. La vía es la <b>capa espectral sobre series continuas</b> (caudales, mareógrafos, registros horarios), donde
+   la potencia viene de la longitud de la serie y no del número de eventos discretos.</li>
+   <li><b>Los negativos que sí valen.</b> Con el catálogo actual se puede afirmar con propiedad: <i>no existen efectos de
+   RR≥1,26 en rasgos con frecuencia base del 5%</i>. Eso es una restricción cuantitativa publicable, no un silencio.</li>
+  </ul>
+
+  <p class="small muted" style="margin-top:10px">La fórmula es
+  <code>RR_min = 1 + z·0,948·√((1−f)/(n·f))</code>, donde 0,948 es la razón medida entre la desviación del modelo
+  nulo emparejado y la binomial equivalente (mediana sobre 345 rasgos). La relación <code>z = (RR−1)·f/σ₀</code> se
+  verificó contra la corrida real: correlación 1,000000.</p>
+ </div>
+
  <div class="card" id="ref_ferriz" style="border-left:4px solid var(--oro)">
  <h2>Referencias clave</h2>
  <ul class="small" style="line-height:1.9">
@@ -2692,7 +2950,21 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <li><b>Gardner, J. K., & Knopoff, L.</b> (1974). Is the sequence of earthquakes in Southern California, with aftershocks removed, Poissonian? <em>Bulletin of the Seismological Society of America</em>, 64(5), 1363–1367.</li>
  <li><b>Benjamini, Y., & Hochberg, Y.</b> (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society B</em>, 57(1), 289–300.</li>
  <li><b>Gauquelin, M.</b> (1955). <em>L'influence des astres</em>. Le Dauphin, Paris.</li>
- <li><b>Rhodes, B.</b> (2019). <em>Skyfield: High Precision Research-Grade Positions for Planets and Earth Satellites</em>. Astrophysics Source Code Library, ascl:1907.024. Efeméride JPL DE421 (Folkner et al., 2009), Jet Propulsion Laboratory.</li>
+ <li style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px"><b>Serrano, D.</b> (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. <em>Circular Astronómica RAC</em>, N.º 1027, septiembre 2026, pp. 8–11. Red de Astronomía de Colombia. — <b>Artículo que describe el diseño de esta plataforma</b>; fuente de los tres niveles de evidencia y del requisito de estratificar por tipo de falla.</li>
+<li><b>Tanaka, S., Ohtake, M., &amp; Sato, H.</b> (2002). Evidence for tidal triggering of earthquakes as revealed from statistical analysis of global data. <em>Journal of Geophysical Research: Solid Earth</em>, 107(B10), 2211. <a href="https://doi.org/10.1029/2001JB001577" target="_blank" rel="noopener">doi</a> — 9.350 sismos; la correlación es significativa <b>solo en fallas inversas de zonas de subducción</b>, no en el catálogo global. Base del requisito de estratificación.</li>
+<li><b>Métivier, L., de Viron, O., Conrad, C. P., Renault, S., Diament, M., &amp; Patau, G.</b> (2009). Evidence of earthquake triggering by the solid earth tides. <em>Earth and Planetary Science Letters</em>, 278(3–4), 370–375. <a href="https://doi.org/10.1016/j.epsl.2008.12.020" target="_blank" rel="noopener">doi</a></li>
+<li><b>Melchior, P.</b> (1983). <em>The Tides of the Planet Earth</em> (2.ª ed.). Pergamon Press, Oxford. — Nivel I.</li>
+<li><b>Agnew, D. C.</b> (2015). Earth tides. En G. Schubert (Ed.), <em>Treatise on Geophysics</em> (2.ª ed., vol. 3, pp. 151–178). Elsevier. — Nivel I.</li>
+<li><b>Zürcher, E., Cantiani, M.-G., Sorbetti Guerri, F., &amp; Michel, D.</b> (1998). Tree stem diameters fluctuate with tide. <em>Nature</em>, 392, 665–666. — Nivel II.</li>
+<li><b>Zürcher, E.</b> (1999). Lunar rhythms in forestry traditions — lunar-correlated phenomena in tree biology and wood properties. <em>Earth, Moon, and Planets</em>, 85, 463–478. <a href="https://doi.org/10.1023/A:1017018821490" target="_blank" rel="noopener">doi</a></li>
+<li><b>Martel, J., Chang, S. H., Chevalier, G., Ojcius, D. M., &amp; Young, J. D.</b> (2023). Influence of electromagnetic fields on the circadian rhythm: implications for human health and disease. <em>Biomedical Journal</em>, 46(1), 48–59. <a href="https://doi.org/10.1016/j.bj.2023.01.003" target="_blank" rel="noopener">doi</a> — Nivel III.</li>
+<li><b>Xue, X., Ali, Y. F., Luo, W., Liu, C., Zhou, G., &amp; Liu, N. A.</b> (2021). Biological effects of space hypomagnetic environment on circadian rhythm. <em>Frontiers in Physiology</em>, 12, 643943. <a href="https://doi.org/10.3389/fphys.2021.643943" target="_blank" rel="noopener">doi</a></li>
+<li><b>Joswig, H., Stienen, M. N., Hock, C., Hildebrandt, G., &amp; Surbeck, W.</b> (2016). The influence of lunar phases and zodiac sign &#39;Leo&#39; on perioperative complications and outcome in elective spine surgery. <em>Acta Neurochirurgica</em>, 158(6), 1095–1101. <a href="https://doi.org/10.1007/s00701-016-2802-8" target="_blank" rel="noopener">doi</a> — señal intraoperatoria (OR 1,54) <b>sin</b> efecto en los desenlaces clínicos relevantes.</li>
+<li><b>Raposio, E., Caruana, G., Santi, P., &amp; Cafiero, F.</b> (2017). Relationship between lunar cycle and haemorrhagic complication rate in surgery. <em>Acta Chirurgica Belgica</em>, 117(4), 245–249. <a href="https://doi.org/10.1080/00015458.2017.1310480" target="_blank" rel="noopener">doi</a> — no alcanza significación tras corrección.</li>
+<li><b>Hung, C. C.</b> (2007). <em>Apparent relations between solar activity and solar tides caused by the planets</em> (N.º E-15714-2). NASA Technical Memorandum.</li>
+<li><b>Saavedra, J.</b> (2026). Arqueoastronomía: un fértil campo de investigación interdisciplinaria. <em>Circular Astronómica RAC</em>, 1019, enero 2026, pp. 36–38.</li>
+<li><b>Pérez Henao, Á. P.</b> (2026). Y la Tierra sigue su viaje espacial [Editorial]. <em>Circular Astronómica RAC</em>, 1019, enero 2026.</li>
+<li><b>Rhodes, B.</b> (2019). <em>Skyfield: High Precision Research-Grade Positions for Planets and Earth Satellites</em>. Astrophysics Source Code Library, ascl:1907.024. Efeméride JPL DE421 (Folkner et al., 2009), Jet Propulsion Laboratory.</li>
  </ul>
  </div>
 
@@ -3049,7 +3321,7 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  if(b.dataset.tab==='mapa'){populateDomainFilter();renderMap();
  setTimeout(()=>{try{Plotly.Plots.resize('geomap');Plotly.Plots.resize('grid');Plotly.Plots.resize('timehist');Plotly.Plots.resize('lunarrose');}catch(e){}},60);}
  if(b.dataset.tab==='tablero'){populateDomainResults();}
- if(b.dataset.tab==='ayuda'){setTimeout(renderDensidadHallazgo,50);setTimeout(llonaSimular,50);setTimeout(precesionSimular,50);setTimeout(actualizarEraPrecesional,50);}
+ if(b.dataset.tab==='ayuda'){setTimeout(renderDensidadHallazgo,50);setTimeout(llonaSimular,50);setTimeout(precesionSimular,50);setTimeout(actualizarEraPrecesional,50);setTimeout(potenciaGrafico,60);setTimeout(potenciaCalcular,60);}
 });
 
 // Enlaces a anclas que viven en OTRA pestaña (p.ej. desde "Empieza aquí" hacia
@@ -3411,8 +3683,8 @@ const DOMAIN_WARN={
  sequia:'⚠ <b>Sequías:</b> son procesos extensos (meses) y aquí hay muy pocas (7). Muestra insuficiente; solo ilustrativo.',
  sismo_M5plus:'<b>Sismos M≥5 — 44,390 eventos, K=200:</b>73 rasgos FDR<0.05, de los cuales 68 son aspectos planeta–planeta. Top hallazgo: <code>Mercury|Jupiter|conjunction</code> z=11.4, y <code>Mercury|Uranus|conjunction</code> z=10.5 (exceso 20%) — <b>replica exacta del hallazgo confirmado en M≥6</b>. ADVERTENCIA: el gran N amplifica señales muy pequeñas. No todos los 73 son igualmente robustos; los que involucran pares lentos (Júpiter–Saturno, Júpiter–Urano) pueden tener artefacto residual. Prioriza los aspectos con planetas rápidos (Mercurio, Venus, Marte).',
  sismo_M6plus:'<b>Sismos M≥6 — RESULTADO CONFIRMADO:</b> <code>aspect|Mercury|Uranus|conjunction</code> z=3.88, p_fdr=0.00041, exceso del 32%. Sobrevive FDR (522 pruebas) y validación cruzada exploratoria+confirmatoria (1,865+1,865 sismos independientes). Primer resultado positivo del proyecto. Ver pestaña <b>Sismos M≥6 — confirmatoria</b> para los 4 candidatos testados.',
- sismo_M6plus_confirmatorio:'<b>Confirmatoria M≥6:</b> de 4 candidatos del set exploratorio, <b>1 confirmado</b> con misma dirección: <code>Mercury|Uranus|conjunction</code> (z=3.88, p_fdr=0.00041). Los otros 3 no replicaron — eran ruido. Estándar de oro anti p-hacking: este resultado es publicable.',
- sismo_M6plus_exploratorio:'<b>Exploratoria M≥6 (50% datos):</b>4 candidatos FDR<0.05. Solo Mercurio–Urano conjunción replicó en la confirmatoria. Ver dominio <b>Sismos M≥6 confirmado</b> para el análisis completo.',
+ sismo_M6plus_confirmatorio:'<b>Confirmatoria M≥6:</b> de 4 candidatos del set exploratorio, <b>1 confirmado</b> con misma dirección: <code>Mercury|Uranus|conjunction</code> (z=3.88, p_fdr=0.00041). Los otros 3 no replicaron — eran ruido. Estándar de oro anti p-hacking. Pendiente antes de llamarlo confirmado: estratificar por tipo de falla y profundidad focal, y replicar en catálogo externo.',
+ sismo_M6plus_exploratorio:'<b>Exploratoria M≥6 (50% datos):</b>4 candidatos FDR<0.05. Solo Mercurio–Urano conjunción replicó en la confirmatoria. Ver dominio <b>Sismos M≥6 (corpus completo)</b> para el análisis completo.',
  sismo_impacto:'<b>Sismos ponderados por muertos:</b>4.080 sismos significativos de NOAA NCEI (2,5 millones de víctimas), donde cada evento pesa por <code>log₁₀(1+muertos)</code>. Responde "¿alguna configuración planetaria se asocia a los sismos más <b>letales</b>, no solo a los más frecuentes?". <b>Resultado: 0 significativos</b> — tampoco hay señal con la población. Es el eje de impacto al servicio de la gente.',
  __natal:'<b>Natalidad (efecto Gauquelin):</b> cada evento es un nacimiento con hora exacta de acta. La hipótesis clásica: <b>Marte en casas 1 y 10</b> (saliendo y culminando) aparece más en campeones deportivos que en el resto. Busca <code>house|Mars|1</code> y <code>house|Mars|10</code> en la tabla. Las casas y el Ascendente son <b>válidos</b> aquí (hora exacta disponible). Pre-registra la hipótesis en OSF antes de analizar para que el resultado sea publicable.'
 };
@@ -3442,7 +3714,7 @@ function afterLoad(){
  <div><b>${k}</b><span class="muted">controles (K)</span></div>`;
  renderCharts();renderTable();renderCompare();
 }
-const DOMAIN_LABEL={sismo:'Sismos M≥5 (historial)',sismo_impacto:'Sismos (×muertos)',sismo_M5plus:'Sismos M≥5 — 44k ',sismo_M6plus:'Sismos M≥6 confirmado',sismo_M6plus_exploratorio:'Sismos M≥6 — exploratoria',sismo_M6plus_confirmatorio:'Sismos M≥6 — confirmatoria',huracanes:'Huracanes',huracan:'Huracanes',tormenta_solar:'Tormentas solares',erupcion:'Erupciones',inundacion:'Inundaciones',sequia:'Sequías',tormenta:'Tormentas',temperatura_extrema:'Temperatura extrema',incendio:'Incendios',deslizamiento:'Deslizamientos',natal_atletismo:'Natalidad — Atletismo',natal_medicos:'Natalidad — Médicos',natal_ciclismo:'Natalidad — Ciclismo',natal_futbol:'Natalidad — Fútbol',natal_general:'Natalidad — General'};
+const DOMAIN_LABEL={sismo:'Sismos M≥5 (historial)',sismo_impacto:'Sismos (×muertos)',sismo_M5plus:'Sismos M≥5 — 44k ',sismo_M6plus:'Sismos M≥6 (corpus completo)',sismo_M6plus_exploratorio:'Sismos M≥6 — exploratoria',sismo_M6plus_confirmatorio:'Sismos M≥6 — confirmatoria',huracanes:'Huracanes',huracan:'Huracanes',tormenta_solar:'Tormentas solares',erupcion:'Erupciones',inundacion:'Inundaciones',sequia:'Sequías',tormenta:'Tormentas',temperatura_extrema:'Temperatura extrema',incendio:'Incendios',deslizamiento:'Deslizamientos',natal_atletismo:'Natalidad — Atletismo',natal_medicos:'Natalidad — Médicos',natal_ciclismo:'Natalidad — Ciclismo',natal_futbol:'Natalidad — Fútbol',natal_general:'Natalidad — General'};
 const DOMAIN_COLOR={sismo:'#3A8C6E',sismo_impacto:'#1A4A38',sismo_M5plus:'#5BAF8F',sismo_M6plus:'#C8A84B',sismo_M6plus_exploratorio:'#E2C97E',sismo_M6plus_confirmatorio:'#C8A84B',huracanes:'#C8A84B',huracan:'#C8A84B',tormenta_solar:'#336EB8',erupcion:'#C0392B',inundacion:'#5BAF8F',sequia:'#8A6F20',tormenta:'#336EB8',temperatura_extrema:'#C0392B',incendio:'#E67E22',deslizamiento:'#7F8C8D',natal_atletismo:'#7B3FA0',natal_medicos:'#5E4FA0',natal_ciclismo:'#9B59B6',natal_futbol:'#8E44AD',natal_general:'#6C3483'};
 // para dominios natal_* no listados, asignar etiqueta y color genéricos
 function domainLabel(d){return DOMAIN_LABEL[d]||(d.startsWith('natal_')?'Natalidad — '+d.replace('natal_',''):d);}
@@ -4524,6 +4796,110 @@ function actualizarEraPrecesional() {
  <td style="padding:5px 8px">${fmt(inicio)} — ${fmt(fin)}</td></tr>`;
  }
  tbodyEl.innerHTML = filas;
+ actualizarLimiteIAU(calibAnio, yearNow);
+}
+
+// ═══ Contraste con los límites reales de constelaciones (IAU/Delporte) ═══
+// Convierte, con la MISMA fórmula de precesión ya validada (IAU 2006), el
+// año de cruce del punto vernal a Acuario en distancias angulares: cuánto
+// le faltaba en el año de calibración (p. ej. 1948) y cuánto le falta hoy.
+// El año de cruce es un dato CITADO y editable, no una constante oculta
+// (ver el <details> de la interfaz).
+// ═══════════════════════════════════════════════════════════════
+// CURVA DE POTENCIA — qué tamaño de efecto puede detectar el método
+// ═══════════════════════════════════════════════════════════════
+// Umbral medido empíricamente: se corrió el análisis completo sobre
+// catálogos con fechas aleatorizadas (+-365 días por evento) y se registró
+// el max|z| entre los ~400 rasgos. Ese es el techo que produce el azar.
+const POT_Z_UMBRAL = 3.88;   // media (3.22) + 1 desv (0.65) de 5 réplicas nulas
+const POT_FACTOR = 0.948;    // sigma0 del nulo emparejado / binomial, medido
+
+function potenciaRRmin(n, f, z) {
+ z = z || POT_Z_UMBRAL;
+ return 1 + z * POT_FACTOR * Math.sqrt((1 - f) / (n * f));
+}
+function potenciaNnecesario(rr, f, z) {
+ z = z || POT_Z_UMBRAL;
+ return Math.pow(z * POT_FACTOR, 2) * (1 - f) / (f * Math.pow(rr - 1, 2));
+}
+
+function potenciaCalcular() {
+ const el = document.getElementById('pot_res');
+ if (!el) return;
+ const n = parseFloat(document.getElementById('pot_n').value) || 3730;
+ const f = parseFloat(document.getElementById('pot_f').value);
+ const rr = potenciaRRmin(n, f);
+ const pct = (rr - 1) * 100;
+ const nMod = potenciaNnecesario(1.10, f);
+ el.innerHTML = '<div style="font-size:16px;font-weight:700;color:#2980b9">Efecto mínimo detectable: RR = ' +
+  rr.toFixed(3) + '  <span class="muted" style="font-weight:400">(un exceso del ' + pct.toFixed(1) + '%)</span></div>' +
+  '<div class="muted" style="margin-top:4px">Cualquier efecto real menor que ese pasaría desapercibido con esta muestra. ' +
+  'Para bajar el umbral a un efecto pequeño (RR=1,10) harían falta <b>' +
+  Math.round(nMod).toLocaleString('es') + '</b> eventos.</div>';
+}
+
+function potenciaGrafico() {
+ const div = document.getElementById('pot_plot');
+ if (!div || typeof Plotly === 'undefined') return;
+ const ns = [];
+ for (let e = Math.log10(500); e <= Math.log10(1000000) + 1e-9; e += 0.05) ns.push(Math.pow(10, e));
+ const series = [[0.01, '#c0392b', 'Rasgo raro (f = 1%)'],
+                 [0.05, '#2980b9', 'Rasgo tipico (f = 5%)'],
+                 [0.10, '#16a085', 'Rasgo frecuente (f = 10%)']];
+ const trazas = series.map(function (s) {
+  return { x: ns, y: ns.map(function (n) { return potenciaRRmin(n, s[0]); }),
+           mode: 'lines', name: s[2], line: { color: s[1], width: 2.5 } };
+ });
+ const marcas = [[3730, 'M>=6 (3.730)'], [6035, 'GCMT (6.035)'], [44390, 'M>=5 (44.390)']];
+ marcas.forEach(function (m) {
+  trazas.push({ x: [m[0], m[0]], y: [1.0, 1.86], mode: 'lines', showlegend: false,
+                line: { color: '#999', width: 1, dash: 'dot' }, hoverinfo: 'skip' });
+ });
+ trazas.push({ x: marcas.map(function (m) { return m[0]; }), y: [1.77, 1.63, 1.77],
+               mode: 'text', text: marcas.map(function (m) { return m[1]; }),
+               textposition: 'top center', textfont: { size: 10, color: '#777' },
+               showlegend: false, hoverinfo: 'skip' });
+ trazas.push({ x: [3730], y: [1.315], mode: 'markers+text', text: ['Mercurio-Urano observado'],
+               textposition: 'middle right', textfont: { size: 10, color: '#8e44ad' },
+               marker: { size: 10, color: '#8e44ad', symbol: 'star' }, name: 'Hallazgo original' });
+ Plotly.newPlot(div, trazas, {
+  margin: { l: 55, r: 15, t: 10, b: 78 },
+  xaxis: { type: 'log', title: 'Numero de eventos (n)', tickvals: [1000, 3000, 10000, 30000, 100000, 300000, 1000000], ticktext: ['1.000', '3.000', '10.000', '30.000', '100.000', '300.000', '1 millon'] },
+  yaxis: { title: 'RR minimo detectable', range: [1.0, 1.86] },
+  legend: { orientation: 'h', y: -0.30, x: 0.5, xanchor: 'center' },
+  paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)'
+ }, { displayModeBar: false, responsive: true });
+}
+
+function actualizarLimiteIAU(calibAnio, yearNow) {
+ const el = document.getElementById('iau_resultado');
+ const inp = document.getElementById('iau_cruce_anio');
+ if (!el || !inp) return;
+ const cruce = parseFloat(inp.value) || 2597;
+ // distancia angular recorrida por el punto vernal entre dos años
+ const sep = (a, b) => (_precesionArcsec(b) - _precesionArcsec(a)) / 3600.0;
+ const dCalib = sep(calibAnio, cruce);
+ const dHoy = sep(yearNow, cruce);
+ const tasa = (_precesionArcsec(2001) - _precesionArcsec(2000)); // "/año en la época actual
+ el.innerHTML =
+ `<div style="font-size:15px;font-weight:700;color:#16a085;margin-bottom:6px">En ${Math.round(calibAnio)}, al punto vernal le faltaban ${dCalib.toFixed(2)}° para salir de Piscis</div>` +
+ `<div>· Distancia angular hoy (${Math.floor(yearNow)}): <b>${dHoy.toFixed(2)}°</b> — a ${tasa.toFixed(2)}″/año son <b>≈${Math.round(cruce - yearNow)} años</b> más dentro de Piscis.</div>` +
+ `<div>· Diferencia entre la convención de ${Math.round(calibAnio)} y el límite IAU: <b>${Math.round(cruce - calibAnio)} años</b> (${dCalib.toFixed(2)}° de precesión).</div>` +
+ `<div class="muted" style="margin-top:6px">Las dos cosas pueden convivir sin contradicción: una es una <b>convención simbólica</b> de 12 partes iguales; la otra es <b>dónde están dibujadas las fronteras astronómicas</b> desde 1930. Lo que no sería honesto es presentar una como si fuera la otra.</div>`;
+
+ // tabla de anchos reales vs. los 30° de la convención
+ const tb = document.getElementById('iau_tramos_body');
+ if (tb) {
+ tb.innerHTML = ZODIACO_IAU_TRAMOS.map(function (t) {
+ const dif = t[3] - 30;
+ const col = dif >= 0 ? '#16a085' : '#c0392b';
+ const esOph = t[0] === 'Oph';
+ return '<tr' + (esOph ? ' style="background:rgba(230,126,34,.12)"' : '') + '>' +
+ '<td style="padding:4px 8px">' + ZODIACO_IAU_ABREV[t[0]] + (esOph ? ' <span class="muted">(no está en el zodíaco tradicional)</span>' : '') + '</td>' +
+ '<td style="padding:4px 8px;text-align:right"><b>' + t[3].toFixed(2) + '°</b></td>' +
+ '<td style="padding:4px 8px;text-align:right;color:' + col + '">' + (dif >= 0 ? '+' : '') + dif.toFixed(2) + '°</td></tr>';
+ }).join('');
+ }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -5689,6 +6065,14 @@ const GALACTIC_CENTER = { ra: 266.4, dec: -29.0, distLy: 26000 };
 // Dec≈+30° (próximo a la estrella Vega), velocidad ≈20 km/s respecto al
 // estándar local de reposo (LSR). Es un dato real, distinto y mucho más
 // pequeño que los ≈220 km/s de la órbita galáctica.
+// OJO — hay DOS "ápex solares" distintos, ambos estándar, y conviene no
+// confundirlos (verificado numéricamente: difieren ≈7.8°):
+// (a) "Movimiento solar estándar": respecto a la media de las estrellas
+// brillantes cercanas → ≈19.5 km/s hacia RA≈270°, Dec≈+30° (el clásico
+// "ápex en Hércules"). Es el que se marca con la flecha en el mapa.
+// (b) "Movimiento respecto al LSR": ≈18.0 km/s hacia RA≈267.1°, Dec≈+23.1°,
+// derivado de (U,V,W)=(11.10, 12.24, 7.25) km/s (Schönrich+2010) — es el
+// que se usa para la corrección al marco LSR (ver SOL_LSR_UVW).
 const SOLAR_APEX = { ra: 271, dec: 30, speedKmS: 20 };
 
 let _threeCosmicObjects = {}; // {nombre: mesh} — TODO lo que hay en el mapa (planetas + estrellas + centro galáctico), para el selector "Ir a"
@@ -5878,6 +6262,91 @@ function threeAnimarOrbitaGalactica() {
  _threeCosmicAnimId = requestAnimationFrame(frame);
 }
 
+// ═══════════════════════════════════════════════════════════════
+// MARCO DE REFERENCIA LOCAL (LSR) — separar el movimiento del SOL del
+// movimiento propio de cada estrella
+// ═══════════════════════════════════════════════════════════════
+// Lo que mide un catálogo (Hipparcos/Gaia) es movimiento propio
+// APARENTE, visto desde el Sol. Pero el Sol también se mueve, así que
+// parte de lo que vemos es solo el REFLEJO de nuestro propio movimiento
+// (como los árboles que "van hacia atrás" cuando uno va en carro). Para
+// ver la forma limpia del movimiento estelar hay que restar ese reflejo
+// — eso es pasar al "Local Standard of Rest" (LSR): el marco que gira
+// con la galaxia a la velocidad MEDIA de las estrellas de la vecindad
+// solar, sin la velocidad peculiar del Sol.
+//
+// Velocidad peculiar del Sol respecto al LSR (Schönrich, Binney &
+// Dehnen 2010 — valores estándar ampliamente citados), en coordenadas
+// galácticas: U hacia el centro galáctico, V en el sentido de la
+// rotación galáctica, W hacia el polo norte galáctico.
+const SOL_LSR_UVW = { U: 11.10, V: 12.24, W: 7.25 }; // km/s
+
+// Marco galáctico J2000 (valores IAU estándar). La perpendicularidad
+// entre polo y centro se comprueba en lsrAutoVerificar().
+const NGP_RA = 192.85948, NGP_DEC = 27.12825; // polo norte galáctico
+const GC_RA = 266.40500, GC_DEC = -28.93617; // centro galáctico (l=0, b=0)
+const KM_S_POR_UA_ANIO = 4.740470446; // 1 UA/año = 4.74047 km/s (constante estándar de movimiento propio)
+const LY_POR_PC = 3.261563777;
+
+function _uvecEq(raDeg, decDeg) {
+ const ra = THREE.MathUtils.degToRad(raDeg), dec = THREE.MathUtils.degToRad(decDeg);
+ return new THREE.Vector3(Math.cos(dec) * Math.cos(ra), Math.cos(dec) * Math.sin(ra), Math.sin(dec));
+}
+
+// Velocidad del Sol respecto al LSR en coordenadas ECUATORIALES (km/s):
+// se arma la base galáctica con las direcciones reales del centro y del
+// polo galáctico, y se combina con (U,V,W).
+function _solVelEquatorial() {
+ const gx = _uvecEq(GC_RA, GC_DEC); // l=0,b=0 → centro galáctico
+ const gz = _uvecEq(NGP_RA, NGP_DEC); // b=+90 → polo norte galáctico
+ const gy = new THREE.Vector3().crossVectors(gz, gx).normalize(); // l=90 → sentido de rotación
+ return gx.clone().multiplyScalar(SOL_LSR_UVW.U)
+ .addScaledVector(gy, SOL_LSR_UVW.V)
+ .addScaledVector(gz, SOL_LSR_UVW.W);
+}
+
+// Movimiento propio de REFLEJO: la parte del movimiento aparente que se
+// debe SOLO a que el Sol se mueve. Se proyecta la velocidad solar sobre
+// el plano perpendicular a la línea de visión (componentes α* y δ) y se
+// divide por 4.74·d(pc). Devuelve mas/año. No necesita velocidad radial:
+// la componente radial no produce movimiento propio, solo Doppler.
+function _pmReflejoSolar(raDeg, decDeg, distLy) {
+ const dPc = distLy / LY_POR_PC;
+ if (!(dPc > 0)) return [0, 0];
+ const ra = THREE.MathUtils.degToRad(raDeg), dec = THREE.MathUtils.degToRad(decDeg);
+ const eAlpha = new THREE.Vector3(-Math.sin(ra), Math.cos(ra), 0); // base tangente local
+ const eDelta = new THREE.Vector3(-Math.sin(dec) * Math.cos(ra), -Math.sin(dec) * Math.sin(ra), Math.cos(dec));
+ const vSol = _solVelEquatorial();
+ // signo negativo: si el Sol va hacia allá, las estrellas parecen ir al contrario
+ return [-vSol.dot(eAlpha) / (KM_S_POR_UA_ANIO * dPc) * 1000,
+ -vSol.dot(eDelta) / (KM_S_POR_UA_ANIO * dPc) * 1000];
+}
+
+// Movimiento propio según el marco: 'helio' = lo que mide el catálogo;
+// 'lsr' = restando el reflejo solar → movimiento propio de la estrella.
+function _pmSegunMarco(s, marco) {
+ if (marco !== 'lsr') return s.pm;
+ const [rA, rD] = _pmReflejoSolar(s.raDeg, s.decDeg, s.distLy);
+ return [s.pm[0] - rA, s.pm[1] - rD];
+}
+
+// Comprobaciones internas (se pueden llamar desde la consola):
+// 1) centro galáctico ⟂ polo galáctico; 2) el ápex solar derivado de
+// (U,V,W) debe caer cerca de SOLAR_APEX, que se cargó por separado.
+function lsrAutoVerificar() {
+ const gx = _uvecEq(GC_RA, GC_DEC), gz = _uvecEq(NGP_RA, NGP_DEC);
+ const v = _solVelEquatorial(), u = v.clone().normalize();
+ const apexRa = ((Math.atan2(u.y, u.x) * 180 / Math.PI) % 360 + 360) % 360;
+ const apexDec = Math.asin(u.z) * 180 / Math.PI;
+ const apexRef = _uvecEq(SOLAR_APEX.ra, SOLAR_APEX.dec);
+ return {
+ ortogonalidadGC_NGP: gx.dot(gz), // debe ser ≈ 0
+ rapidezSolarKmS: v.length(), // ≈ 18 km/s
+ apexRa, apexDec, // ≈ 271°, +30°
+ separacionConSOLAR_APEXgrados: Math.acos(Math.min(1, u.dot(apexRef))) * 180 / Math.PI,
+ };
+}
+
 // Aplica el movimiento propio real (extrapolación LINEAL, declarada así)
 // a las estrellas con dato conocido, según los "años simulados" del
 // slider. pm está en mas/año con μα YA multiplicado por cos(δ) (convención
@@ -5890,18 +6359,25 @@ function threeAplicarMovimientoPropio() {
  if (!slider) return;
  const anios = parseFloat(slider.value);
  label.textContent = anios.toLocaleString() + ' años';
+ const selMarco = document.getElementById('pm_marco');
+ const marco = selMarco ? selMarco.value : 'helio';
  Object.entries(_threeStarBase).forEach(([nom, s]) => {
+ const pm = _pmSegunMarco(s, marco);
  const decRad0 = THREE.MathUtils.degToRad(s.decDeg);
- const dRa = (s.pm[0] / 3600000) / Math.cos(decRad0) * anios;
- const dDec = (s.pm[1] / 3600000) * anios;
+ const dRa = (pm[0] / 3600000) / Math.cos(decRad0) * anios;
+ const dDec = (pm[1] / 3600000) * anios;
  const raDeg = s.raDeg + dRa, decDeg = s.decDeg + dDec;
  const ra = THREE.MathUtils.degToRad(raDeg), dec = THREE.MathUtils.degToRad(decDeg);
  const r = _logRadius(s.distLy * AU_PER_LY);
  s.mesh.position.set(r * Math.cos(dec) * Math.cos(ra), r * Math.sin(dec), r * Math.cos(dec) * Math.sin(ra));
  });
- nota.textContent = anios === 0
+ const vSol = _solVelEquatorial().length();
+ const explicaMarco = marco === 'lsr'
+ ? ` — marco <b>LSR</b>: se restó el reflejo del movimiento del Sol (${vSol.toFixed(1)} km/s), así que lo que queda es el movimiento propio de cada estrella, no el nuestro.`
+ : ' — marco <b>heliocéntrico</b>: incluye el reflejo de nuestro propio movimiento (así lo mide el catálogo).';
+ nota.innerHTML = (anios === 0
  ? 'Posiciones reales de catálogo (año 2000, J2000.0). Mueve el control para ver hacia dónde derivan.'
- : `Posiciones extrapoladas ${anios.toLocaleString()} años hacia el futuro (línea recta, sin curvar por rotación galáctica — solo ${Object.keys(_threeStarBase).length} estrellas tienen aquí dato de movimiento propio real).`;
+ : `Posiciones extrapoladas ${anios.toLocaleString()} años (línea recta, sin curvar por rotación galáctica — ${Object.keys(_threeStarBase).length} estrellas con dato real).`) + explicaMarco;
 }
 
 // Etiqueta de texto SIEMPRE VISIBLE (no solo al pasar el mouse) — para los
@@ -5919,6 +6395,106 @@ function threeMakeLabel(texto, color) {
  const sprite = new THREE.Sprite(mat);
  sprite.scale.set(8, 2, 1);
  return sprite;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LÍMITES OFICIALES DE LAS CONSTELACIONES (IAU / Delporte 1930)
+// ═══════════════════════════════════════════════════════════════
+// Polígonos de frontera de las 88 constelaciones, tal como los fijó
+// Eugène Delporte en 1930 para la IAU sobre meridianos y paralelos del
+// equinoccio B1875.0, ya PRECESADOS a J2000 (por eso hoy se ven algo
+// inclinados en vez de perfectamente rectos: el marco giró ~1.75° desde
+// 1875). Descargados de un conjunto público y VERIFICADOS aquí antes de
+// usarlos, no a ojo:
+//   · el punto vernal J2000 (RA 0, Dec 0) cae dentro de Piscis ✓
+//   · Sirio→CMa, Betelgeuse→Ori, Antares→Sco ✓
+//   · el recorrido completo de la eclíptica suma exactamente 360.00° ✓
+//   · los anchos coinciden con los publicados (Virgo la más larga ≈44°,
+//     Escorpio la más corta ≈6.6°, Ofiuco ≈18.6°) ✓
+// Formato compacto: "ID:lon,lat;lon,lat;...|ID:..." con lon en [-180,180]
+// (RA = lon si lon≥0, si no lon+360) y lat = declinación, en grados.
+const CONST_BOUNDS_RAW = "And:-15.5,35.2;-15.7,53.2;-8.5,53.2;-8.5,50.7;-4.7,50.7;-4.7,48.7;4.1,48.7;4.1,46.7;14.8,46.7;14.8,48.7;18.6,48.7;18.6,50.7;22.4,50.6;27.0,50.6;26.9,47.6;32.6,47.6;32.7,51.1;39.9,51.0;39.7,37.3;31.9,37.3;31.9,35.6;22.9,35.6;22.9,33.6;12.4,33.7;12.4,24.4;14.4,24.4;14.4,21.7;3.7,21.7;3.7,22.7;2.6,22.7;2.6,28.7;1.6,28.7;1.6,32.0;-2.2,32.0;-2.2,32.8;-6.0,32.8;-6.0,35.2;-15.5,35.2|Ant:141.9,-24.5;141.8,-37.3;141.7,-40.3;166.5,-40.4;166.5,-35.7;164.0,-35.7;164.0,-31.8;160.2,-31.8;160.2,-29.8;155.2,-29.8;155.2,-27.1;147.7,-27.1;147.7,-24.6;141.9,-24.5|Aps:-150.9,-83.1;-83.1,-82.5;-85.8,-75.0;-86.7,-67.5;-94.2,-67.6;-101.8,-67.7;-101.5,-70.2;-135.8,-70.5;-152.5,-70.6;-152.2,-75.6;-150.9,-83.1|Aqr:-50.4,0.4;-50.4,2.4;-45.9,2.5;-38.4,2.5;-36.4,2.6;-36.4,3.3;-33.4,3.3;-33.4,2.3;-28.4,2.4;-28.4,2.6;-17.2,2.7;-17.2,0.7;-17.1,-3.3;-0.9,-3.3;-0.9,-6.3;-0.9,-24.8;-13.3,-24.8;-30.2,-24.9;-30.3,-8.4;-38.3,-8.5;-38.3,-14.5;-50.3,-14.6;-50.3,-8.6;-50.4,0.4|Aql:-79.6,0.1;-79.7,2.1;-75.4,2.2;-75.5,6.4;-78.5,6.4;-78.6,12.1;-75.5,12.2;-75.6,18.7;-73.6,18.7;-73.6,16.4;-61.1,16.5;-61.1,16.1;-56.4,16.1;-56.4,8.9;-54.0,8.9;-53.9,2.4;-50.4,2.4;-50.4,0.4;-50.3,-8.6;-58.3,-8.6;-58.3,-11.7;-75.3,-11.9;-75.4,-3.8;-79.6,-3.9;-79.6,0.1|Ara:-111.0,-60.3;-111.4,-45.8;-90.2,-45.5;-87.7,-45.5;-87.3,-57.0;-94.8,-57.1;-94.2,-67.6;-101.8,-67.7;-104.3,-67.7;-104.5,-65.2;-105.7,-65.2;-105.8,-63.8;-108.3,-63.8;-108.5,-61.2;-110.9,-61.3;-111.0,-60.3|Ari:31.7,10.5;26.7,10.5;26.7,25.6;30.5,25.6;30.5,27.9;38.1,27.8;38.1,31.2;42.6,31.2;52.4,31.1;52.3,19.4;51.0,19.4;50.9,10.4;31.7,10.5|Aur:69.5,30.9;69.6,36.3;72.5,36.2;72.8,52.7;77.5,52.7;77.6,56.2;94.1,56.0;94.1,54.0;100.0,53.9;99.9,49.9;104.4,49.8;104.3,44.3;112.7,44.2;112.6,35.2;100.1,35.4;100.0,27.9;90.2,28.0;90.2,28.5;73.2,28.7;73.2,30.2;69.5,30.3;69.5,30.9|Boo:-132.2,7.5;-155.9,7.4;-156.0,14.4;-156.0,27.9;-149.2,27.9;-149.2,30.1;-148.1,30.2;-148.3,47.9;-148.4,54.9;-142.7,54.9;-130.4,55.0;-130.3,52.5;-122.9,52.6;-122.9,51.1;-122.6,39.6;-127.4,39.6;-127.3,32.6;-131.0,32.5;-130.9,25.5;-132.4,25.5;-132.2,7.5|Cae:65.1,-39.7;64.9,-48.7;68.4,-48.7;68.4,-46.2;73.4,-46.3;73.5,-42.8;76.0,-42.8;76.3,-27.1;73.8,-27.0;71.8,-27.0;71.7,-29.8;70.0,-29.8;69.9,-36.8;65.1,-36.7;65.1,-39.7|Cam:94.1,56.0;77.6,56.2;77.5,52.7;72.8,52.7;52.3,52.9;52.4,55.4;49.9,55.5;49.9,57.5;48.9,57.5;49.4,68.5;54.2,68.4;55.3,77.4;56.7,77.4;57.5,80.4;80.5,80.1;84.5,85.1;128.0,84.6;130.4,86.1;-147.0,85.9;-143.2,79.4;-156.2,79.4;-155.8,76.4;-164.2,76.3;174.4,76.3;174.5,79.3;162.8,79.3;163.1,81.3;142.2,81.5;140.6,73.0;123.1,73.1;122.1,59.6;107.8,59.8;107.9,61.8;94.4,62.0;94.1,56.0|Cnc:140.4,6.5;122.9,6.6;120.5,6.7;120.6,9.7;118.8,9.7;118.9,13.2;118.9,19.7;120.1,19.7;120.2,27.7;121.9,27.6;122.0,33.1;140.6,33.0;140.4,6.5|CVn:-178.4,33.3;-178.4,44.3;-177.2,44.3;-177.2,52.3;-156.3,52.4;-156.2,47.9;-148.3,47.9;-148.1,30.2;-149.2,30.1;-149.2,27.9;-156.0,27.9;-159.8,27.8;-159.8,31.3;-173.4,31.3;-173.4,33.3;-178.4,33.3|CMa:93.2,-11.0;112.0,-11.3;111.7,-33.3;99.9,-33.1;92.9,-33.0;93.0,-27.3;93.2,-11.0|CMi:122.8,-0.4;109.6,-0.2;109.6,1.3;106.9,1.3;106.9,5.3;106.7,5.3;106.7,9.8;106.7,12.3;114.2,12.2;114.3,13.2;118.9,13.2;118.8,9.7;120.6,9.7;120.5,6.7;122.9,6.6;122.8,-0.4|Cap:-50.3,-8.6;-58.3,-8.6;-58.3,-11.7;-58.1,-27.6;-53.1,-27.6;-38.2,-27.5;-38.2,-25.0;-30.2,-24.9;-30.3,-8.4;-38.3,-8.5;-38.3,-14.5;-50.3,-14.6;-50.3,-8.6|Car:170.2,-57.2;166.3,-57.2;133.3,-57.0;133.4,-55.0;127.6,-54.9;127.6,-53.4;123.3,-53.4;123.4,-51.1;120.9,-51.1;90.7,-50.8;90.7,-52.5;93.2,-52.5;93.1,-55.0;98.1,-55.1;98.0,-58.1;103.0,-58.2;102.7,-64.2;136.1,-64.5;135.2,-75.5;169.9,-75.7;170.1,-64.7;170.2,-57.2|Cas:-15.7,53.2;-15.7,56.9;-15.7,59.8;-11.1,59.8;-11.2,63.7;-4.8,63.7;-4.8,66.7;6.8,66.7;6.9,77.7;55.3,77.4;54.2,68.4;49.4,68.5;48.9,57.5;38.8,57.6;38.8,59.1;30.8,59.1;30.8,58.1;27.6,58.1;27.5,54.6;22.5,54.6;22.4,50.6;18.6,50.7;18.6,48.7;14.8,48.7;14.8,46.7;4.1,46.7;4.1,48.7;-4.7,48.7;-4.7,50.7;-8.5,50.7;-8.5,53.2;-15.7,53.2|Cen:166.5,-35.7;166.5,-40.4;166.3,-57.2;170.2,-57.2;170.1,-64.7;179.1,-64.7;179.1,-55.7;-165.7,-55.7;-165.6,-64.7;-155.3,-64.6;-139.5,-64.5;-139.8,-55.5;-145.3,-55.6;-145.5,-42.6;-134.2,-42.5;-134.4,-30.0;-169.6,-30.2;-169.6,-33.7;-174.6,-33.7;-174.6,-35.7;166.5,-35.7|Cep:-59.4,59.9;-59.5,61.9;-53.2,61.9;-53.5,67.4;-49.7,67.4;-50.4,75.4;-58.1,75.4;-59.3,80.4;-46.3,80.5;-51.3,86.5;-51.7,86.6;-16.5,86.8;-20.7,88.7;0.9,88.6;24.7,88.4;57.7,88.0;135.8,87.6;130.4,86.1;128.0,84.6;84.5,85.1;80.5,80.1;57.5,80.4;56.7,77.4;55.3,77.4;6.9,77.7;6.8,66.7;-4.8,66.7;-4.8,63.7;-11.2,63.7;-11.1,59.8;-15.7,59.8;-15.7,56.9;-24.1,56.9;-24.1,55.6;-26.9,55.6;-26.8,53.4;-29.4,53.4;-29.4,55.4;-50.2,55.3;-50.4,61.4;-51.3,61.3;-51.3,59.9;-59.4,59.9|Cet:6.6,0.7;6.6,2.7;31.6,2.6;31.7,10.5;50.9,10.4;50.9,0.4;50.8,-1.3;41.3,-1.2;41.1,-23.9;26.5,-23.8;26.5,-24.9;-0.9,-24.8;-0.9,-6.3;6.6,-6.3;6.6,0.7|Cha:111.7,-82.8;-150.9,-83.1;-152.2,-75.6;169.9,-75.7;135.2,-75.5;114.2,-75.3;111.7,-82.8|Cir:-155.3,-64.6;-155.3,-65.6;-152.7,-65.6;-152.5,-70.6;-135.8,-70.5;-136.0,-68.0;-133.4,-68.0;-133.6,-64.1;-129.8,-64.0;-129.9,-61.5;-127.4,-61.4;-127.5,-60.4;-127.6,-55.4;-131.9,-55.5;-139.8,-55.5;-139.5,-64.5;-155.3,-64.6|Col:76.0,-42.8;76.3,-27.1;93.0,-27.3;92.9,-33.0;99.9,-33.1;99.7,-43.1;91.0,-43.0;76.0,-42.8|Com:179.6,13.3;179.6,28.3;-178.4,28.3;-178.4,33.3;-173.4,33.3;-173.4,31.3;-159.8,31.3;-159.8,27.8;-156.0,27.9;-156.0,14.4;-165.9,14.3;-165.9,13.3;179.6,13.3|CrA:-90.4,-37.0;-70.4,-36.8;-70.2,-45.3;-87.7,-45.5;-90.2,-45.5;-90.4,-37.0|CrB:-130.9,25.5;-131.0,32.5;-127.3,32.6;-127.4,39.6;-122.6,39.6;-113.9,39.7;-113.7,26.7;-116.2,26.7;-116.2,25.7;-118.2,25.7;-130.9,25.5|Crv:-165.9,-11.7;179.1,-11.7;179.1,-25.2;-169.6,-25.2;-169.6,-22.7;-165.8,-22.7;-165.9,-11.7|Crt:162.8,-6.7;162.8,-11.7;162.8,-19.7;164.0,-19.7;164.0,-25.2;179.1,-25.2;179.1,-11.7;179.1,-6.7;174.3,-6.7;162.8,-6.7|Cru:179.1,-55.7;179.1,-64.7;-165.6,-64.7;-165.7,-55.7;179.1,-55.7|Cyg:-69.9,27.7;-69.9,30.2;-68.4,30.2;-68.5,36.7;-67.9,36.8;-68.0,43.8;-71.5,43.7;-71.6,47.7;-72.9,47.7;-73.1,55.7;-68.1,55.8;-68.2,58.3;-62.9,58.3;-63.0,59.8;-59.4,59.9;-51.3,59.9;-51.3,61.3;-50.4,61.4;-50.2,55.3;-29.4,55.4;-29.4,53.4;-29.2,44.6;-30.1,44.6;-30.1,44.3;-30.6,44.3;-30.5,36.6;-32.7,36.6;-32.6,28.6;-37.4,28.5;-44.9,28.5;-44.9,29.5;-63.7,29.3;-63.7,27.8;-69.9,27.7|Del:-50.4,2.4;-53.9,2.4;-54.0,8.9;-56.4,8.9;-56.4,16.1;-54.8,16.1;-54.9,20.9;-50.1,20.9;-50.1,19.9;-42.8,20.0;-42.8,12.3;-45.4,12.3;-45.3,6.5;-46.0,6.5;-45.9,2.5;-50.4,2.4|Dor:58.3,-52.8;60.8,-52.8;60.7,-56.2;65.7,-56.2;65.6,-58.7;69.3,-58.8;68.8,-67.2;68.6,-69.7;98.5,-70.1;98.9,-64.1;90.2,-64.0;90.3,-61.0;82.9,-60.9;83.0,-57.4;75.5,-57.3;75.7,-53.8;68.2,-53.7;68.4,-48.7;64.9,-48.7;62.1,-48.7;62.1,-50.7;58.4,-50.6;58.3,-52.8|Dra:140.6,73.0;142.2,81.5;163.1,81.3;162.8,79.3;174.5,79.3;174.4,76.3;-164.2,76.3;-163.9,69.3;-149.3,69.4;-149.2,65.4;-124.7,65.6;-124.9,69.6;-112.2,69.7;-112.8,74.7;-98.5,74.9;-99.8,79.9;-92.3,80.0;-98.3,85.9;-51.3,86.5;-46.3,80.5;-59.3,80.4;-58.1,75.4;-50.4,75.4;-49.7,67.4;-53.5,67.4;-53.2,61.9;-59.5,61.9;-59.4,59.9;-63.0,59.8;-62.9,58.3;-68.2,58.3;-68.1,55.8;-73.1,55.7;-72.9,47.7;-85.7,47.5;-85.7,50.5;-104.2,50.3;-104.2,51.3;-122.9,51.1;-122.9,52.6;-130.3,52.5;-130.4,55.0;-142.7,54.9;-143.0,62.4;-156.4,62.4;-156.4,63.4;-178.4,63.3;-178.4,65.8;171.8,65.8;172.0,72.8;140.6,73.0|Equ:-45.9,2.5;-46.0,6.5;-45.3,6.5;-45.4,12.3;-42.8,12.3;-41.7,12.3;-41.8,13.0;-38.5,13.0;-38.4,2.5;-45.9,2.5|Eri:55.4,0.4;70.9,0.2;71.6,0.2;71.6,-3.8;77.8,-3.8;77.7,-10.8;75.2,-10.8;75.2,-14.3;73.9,-14.3;73.8,-27.0;71.8,-27.0;71.7,-29.8;70.0,-29.8;69.9,-36.8;65.1,-36.7;65.1,-39.7;59.1,-39.6;59.0,-43.6;52.3,-43.6;52.3,-45.6;46.1,-45.5;46.0,-48.5;41.1,-48.5;41.0,-50.5;37.3,-50.4;37.3,-53.4;33.6,-53.4;33.5,-57.9;21.2,-57.8;21.3,-52.8;25.0,-52.9;25.0,-50.9;28.7,-50.9;28.7,-47.6;36.2,-47.6;36.3,-39.4;46.2,-39.5;46.2,-39.1;53.6,-39.2;53.7,-35.6;57.4,-35.6;57.6,-24.0;41.1,-23.9;41.3,-1.2;50.8,-1.3;55.3,-1.3;55.4,0.4|For:26.5,-23.8;41.1,-23.9;57.6,-24.0;57.4,-35.6;53.7,-35.6;53.6,-39.2;46.2,-39.1;46.2,-39.5;36.3,-39.4;26.4,-39.4;26.5,-24.9;26.5,-23.8|Gem:96.4,11.9;96.4,17.4;95.1,17.4;95.1,21.4;90.1,21.5;90.1,22.8;90.2,28.0;100.0,27.9;100.1,35.4;112.6,35.2;118.3,35.2;118.3,33.2;122.0,33.1;121.9,27.6;120.2,27.7;120.1,19.7;118.9,19.7;118.9,13.2;114.3,13.2;114.2,12.2;106.7,12.3;106.7,9.8;105.7,9.8;105.7,11.8;96.4,11.9|Gru:-38.1,-36.5;-38.0,-45.0;-37.9,-49.5;-28.0,-49.4;-27.9,-56.4;-8.2,-56.3;-8.3,-39.3;-8.3,-36.3;-13.3,-36.3;-38.1,-36.5|Her:-114.4,3.7;-117.2,3.7;-117.3,15.7;-119.8,15.6;-119.9,21.6;-118.1,21.7;-118.2,25.7;-116.2,25.7;-116.2,26.7;-113.7,26.7;-113.9,39.7;-122.6,39.6;-122.9,51.1;-104.2,51.3;-104.2,50.3;-85.7,50.5;-85.7,47.5;-86.5,47.5;-86.2,30.0;-83.3,30.1;-83.2,26.1;-75.7,26.2;-75.7,25.7;-75.7,21.2;-75.6,18.7;-75.5,12.2;-78.6,12.1;-84.8,12.1;-84.8,14.4;-99.8,14.2;-99.8,12.7;-107.3,12.6;-107.2,3.8;-114.4,3.7|Hor:65.1,-39.7;64.9,-48.7;62.1,-48.7;62.1,-50.7;58.4,-50.6;58.3,-52.8;53.4,-52.7;53.2,-57.1;48.8,-57.0;48.4,-67.0;33.2,-66.9;33.5,-57.9;33.6,-53.4;37.3,-53.4;37.3,-50.4;41.0,-50.5;41.1,-48.5;46.0,-48.5;46.1,-45.5;52.3,-45.6;52.3,-43.6;59.0,-43.6;59.1,-39.6;65.1,-39.7|Hya:122.8,-0.4;122.9,6.6;140.4,6.5;145.4,6.4;145.3,-0.6;145.3,-11.6;162.8,-11.7;162.8,-19.7;164.0,-19.7;164.0,-25.2;179.1,-25.2;-169.6,-25.2;-169.6,-22.7;-165.8,-22.7;-144.5,-22.6;-144.5,-25.1;-134.4,-25.0;-134.4,-30.0;-169.6,-30.2;-169.6,-33.7;-174.6,-33.7;-174.6,-35.7;166.5,-35.7;164.0,-35.7;164.0,-31.8;160.2,-31.8;160.2,-29.8;155.2,-29.8;155.2,-27.1;147.7,-27.1;147.7,-24.6;141.9,-24.5;137.6,-24.5;137.7,-19.5;130.2,-19.4;130.2,-17.4;126.9,-17.4;127.0,-11.4;122.7,-11.4;122.8,-0.4|Hyi:68.8,-67.2;68.6,-69.7;68.0,-74.7;52.1,-74.6;50.1,-82.1;1.5,-81.8;1.6,-74.3;12.3,-74.3;12.3,-75.3;20.7,-75.3;21.2,-57.8;33.5,-57.9;33.2,-66.9;48.4,-67.0;68.8,-67.2|Ind:-36.8,-74.5;-8.0,-74.3;-8.1,-66.8;-27.6,-66.9;-27.9,-56.4;-28.0,-49.4;-37.9,-49.5;-38.0,-45.0;-52.8,-45.1;-52.5,-56.6;-52.4,-59.6;-37.7,-59.5;-36.8,-74.5|Lac:-30.5,36.6;-30.6,44.3;-30.1,44.3;-30.1,44.6;-29.2,44.6;-29.4,53.4;-26.8,53.4;-26.9,55.6;-24.1,55.6;-24.1,56.9;-15.7,56.9;-15.7,53.2;-15.5,35.2;-16.3,35.2;-16.3,35.7;-28.6,35.6;-28.6,36.6;-30.5,36.6|Leo:162.8,-0.7;162.9,6.3;145.4,6.4;140.4,6.5;140.6,33.0;150.1,32.9;150.0,27.9;159.2,27.9;159.2,22.9;162.9,22.8;163.0,24.8;166.7,24.8;166.7,28.3;179.6,28.3;179.6,13.3;179.6,10.3;174.4,10.3;174.4,-0.7;174.3,-6.7;162.8,-6.7;162.8,-0.7|LMi:140.6,33.0;140.7,39.2;145.7,39.2;145.7,41.4;154.4,41.4;154.4,39.4;163.5,39.3;163.5,33.3;166.7,33.3;166.7,28.3;166.7,24.8;163.0,24.8;162.9,22.8;159.2,22.9;159.2,27.9;150.0,27.9;150.1,32.9;140.6,33.0|Lep:73.8,-27.0;76.3,-27.1;93.0,-27.3;93.2,-11.0;89.0,-11.0;77.7,-10.8;75.2,-10.8;75.2,-14.3;73.9,-14.3;73.8,-27.0|Lib:-132.1,-0.5;-138.4,-0.5;-138.3,-8.5;-144.6,-8.6;-144.5,-22.6;-144.5,-25.1;-134.4,-25.0;-134.4,-30.0;-123.1,-29.9;-123.2,-20.4;-119.4,-20.4;-119.6,-8.4;-119.6,-3.6;-132.1,-3.7;-132.1,-0.5|Lup:-145.3,-55.6;-139.8,-55.5;-131.9,-55.5;-131.9,-54.5;-127.6,-54.4;-127.8,-48.4;-122.8,-48.4;-122.9,-42.4;-117.8,-42.3;-118.1,-29.8;-123.1,-29.9;-134.4,-30.0;-134.2,-42.5;-145.5,-42.6;-145.3,-55.6|Lyn:112.6,35.2;112.7,44.2;104.3,44.3;104.4,49.8;99.9,49.9;100.0,53.9;94.1,54.0;94.1,56.0;94.4,62.0;107.9,61.8;107.8,59.8;122.1,59.6;128.8,59.6;128.4,46.6;139.6,46.5;139.5,41.5;145.7,41.4;145.7,39.2;140.7,39.2;140.6,33.0;122.0,33.1;118.3,33.2;118.3,35.2;112.6,35.2|Lyr:-75.7,25.7;-75.7,26.2;-83.2,26.1;-83.3,30.1;-86.2,30.0;-86.5,47.5;-85.7,47.5;-72.9,47.7;-71.6,47.7;-71.5,43.7;-68.0,43.8;-67.9,36.8;-68.5,36.7;-68.4,30.2;-69.9,30.2;-69.9,27.7;-69.8,25.7;-75.7,25.7|Men:109.0,-85.3;48.2,-84.6;50.1,-82.1;52.1,-74.6;68.0,-74.7;68.6,-69.7;98.5,-70.1;97.8,-75.1;114.2,-75.3;111.7,-82.8;109.0,-85.3|Mic:-53.1,-27.6;-38.2,-27.5;-38.1,-36.5;-38.0,-45.0;-52.8,-45.1;-53.1,-27.6|Mon:95.2,-0.1;95.3,9.9;96.3,9.9;96.4,11.9;105.7,11.8;105.7,9.8;106.7,9.8;106.7,5.3;106.9,5.3;106.9,1.3;109.6,1.3;109.6,-0.2;122.8,-0.4;122.7,-11.4;112.0,-11.3;93.2,-11.0;89.0,-11.0;89.1,-4.0;95.2,-4.1;95.2,-0.1|Mus:170.1,-64.7;169.9,-75.7;-152.2,-75.6;-152.5,-70.6;-152.7,-65.6;-155.3,-65.6;-155.3,-64.6;-165.6,-64.7;179.1,-64.7;170.1,-64.7|Nor:-127.5,-60.4;-111.0,-60.3;-111.4,-45.8;-111.5,-42.3;-117.8,-42.3;-122.9,-42.4;-122.8,-48.4;-127.8,-48.4;-127.6,-54.4;-131.9,-54.5;-131.9,-55.5;-127.6,-55.4;-127.5,-60.4|Oct:1.5,-81.8;50.1,-82.1;48.2,-84.6;109.0,-85.3;111.7,-82.8;-150.9,-83.1;-83.1,-82.5;-85.8,-75.0;-36.8,-74.5;-8.0,-74.3;1.6,-74.3;1.5,-81.8|Oph:-114.4,-0.3;-114.4,3.7;-107.2,3.8;-107.3,12.6;-99.8,12.7;-99.8,14.2;-84.8,14.4;-84.8,12.1;-78.6,12.1;-78.5,6.4;-84.7,6.3;-84.7,4.6;-82.1,4.6;-82.1,3.1;-84.7,3.1;-84.6,0.1;-90.9,-0.0;-90.9,-4.0;-88.9,-4.0;-88.8,-10.0;-93.3,-10.1;-93.3,-11.7;-94.5,-11.7;-94.5,-10.1;-100.8,-10.1;-100.7,-16.1;-94.2,-16.1;-94.0,-30.1;-106.8,-30.2;-106.8,-24.8;-114.1,-24.9;-114.2,-19.5;-112.5,-19.5;-112.6,-18.5;-114.2,-18.5;-114.3,-8.3;-119.6,-8.4;-119.6,-3.6;-114.4,-3.5;-114.4,-0.3|Ori:70.9,0.2;71.0,15.7;76.3,15.7;76.3,16.2;81.8,16.1;81.8,15.6;85.8,15.6;85.8,12.6;88.3,12.5;88.3,18.0;87.3,18.0;87.4,22.9;90.1,22.8;90.1,21.5;95.1,21.4;95.1,17.4;96.4,17.4;96.4,11.9;96.3,9.9;95.3,9.9;95.2,-0.1;95.2,-4.1;89.1,-4.0;89.0,-11.0;77.7,-10.8;77.8,-3.8;71.6,-3.8;71.6,0.2;70.9,0.2|Pav:-85.8,-75.0;-36.8,-74.5;-37.7,-59.5;-52.4,-59.6;-52.5,-56.6;-87.3,-57.0;-94.8,-57.1;-94.2,-67.6;-86.7,-67.5;-85.8,-75.0|Peg:-38.4,2.5;-38.5,13.0;-41.8,13.0;-41.7,12.3;-42.8,12.3;-42.8,20.0;-39.8,20.0;-39.8,24.0;-37.3,24.0;-37.4,28.5;-32.6,28.6;-32.7,36.6;-30.5,36.6;-28.6,36.6;-28.6,35.6;-16.3,35.7;-16.3,35.2;-15.5,35.2;-6.0,35.2;-6.0,32.8;-2.2,32.8;-2.2,32.0;1.6,32.0;1.6,28.7;2.6,28.7;2.6,22.7;3.7,22.7;3.7,21.7;3.7,13.2;1.6,13.2;1.6,10.7;-0.9,10.7;-0.9,8.2;-17.2,8.2;-17.2,2.7;-28.4,2.6;-28.4,2.4;-33.4,2.3;-33.4,3.3;-36.4,3.3;-36.4,2.6;-38.4,2.5|Per:42.6,31.2;42.7,34.5;40.4,34.5;40.4,37.3;39.7,37.3;39.9,51.0;32.7,51.1;32.6,47.6;26.9,47.6;27.0,50.6;22.4,50.6;22.5,54.6;27.5,54.6;27.6,58.1;30.8,58.1;30.8,59.1;38.8,59.1;38.8,57.6;48.9,57.5;49.9,57.5;49.9,55.5;52.4,55.4;52.3,52.9;72.8,52.7;72.5,36.2;69.6,36.3;69.5,30.9;52.4,31.1;42.6,31.2|Phe:-8.3,-39.3;-8.2,-56.3;-8.2,-57.8;21.2,-57.8;21.3,-52.8;25.0,-52.9;25.0,-50.9;28.7,-50.9;28.7,-47.6;36.2,-47.6;36.3,-39.4;26.4,-39.4;0.6,-39.3;-8.3,-39.3|Pic:91.0,-43.0;76.0,-42.8;73.5,-42.8;73.4,-46.3;68.4,-46.2;68.4,-48.7;68.2,-53.7;75.7,-53.8;75.5,-57.3;83.0,-57.4;82.9,-60.9;90.3,-61.0;90.2,-64.0;98.9,-64.1;102.7,-64.2;103.0,-58.2;98.0,-58.1;98.1,-55.1;93.1,-55.0;93.2,-52.5;90.7,-52.5;90.7,-50.8;91.0,-43.0|Psc:-17.2,0.7;-17.2,2.7;-17.2,8.2;-0.9,8.2;-0.9,10.7;1.6,10.7;1.6,13.2;3.7,13.2;3.7,21.7;14.4,21.7;14.4,24.4;12.4,24.4;12.4,33.7;22.9,33.6;22.9,28.6;26.8,28.6;26.7,25.6;26.7,10.5;31.7,10.5;31.6,2.6;6.6,2.7;6.6,0.7;6.6,-6.3;-0.9,-6.3;-0.9,-3.3;-17.1,-3.3;-17.2,0.7|PsA:-13.3,-24.8;-30.2,-24.9;-38.2,-25.0;-38.2,-27.5;-38.1,-36.5;-13.3,-36.3;-13.3,-24.8|Pup:112.0,-11.3;111.7,-33.3;99.9,-33.1;99.7,-43.1;91.0,-43.0;90.7,-50.8;120.9,-51.1;121.0,-43.4;126.6,-43.4;126.7,-37.2;126.9,-17.4;127.0,-11.4;122.7,-11.4;112.0,-11.3|Pyx:126.9,-17.4;130.2,-17.4;130.2,-19.4;137.7,-19.5;137.6,-24.5;141.9,-24.5;141.8,-37.3;126.7,-37.2;126.9,-17.4|Ret:48.4,-67.0;68.8,-67.2;69.3,-58.8;65.6,-58.7;65.7,-56.2;60.7,-56.2;60.8,-52.8;58.3,-52.8;53.4,-52.7;53.2,-57.1;48.8,-57.0;48.4,-67.0|Sge:-75.6,18.7;-75.7,21.2;-69.9,21.3;-69.9,19.4;-61.1,19.5;-61.1,21.6;-54.9,21.6;-54.9,20.9;-54.8,16.1;-56.4,16.1;-61.1,16.1;-61.1,16.5;-73.6,16.4;-73.6,18.7;-75.6,18.7|Sgr:-75.3,-11.9;-75.2,-15.8;-84.5,-15.9;-94.2,-16.1;-94.0,-30.1;-90.5,-30.0;-90.4,-37.0;-70.4,-36.8;-70.2,-45.3;-52.8,-45.1;-53.1,-27.6;-58.1,-27.6;-58.3,-11.7;-75.3,-11.9|Sco:-119.6,-8.4;-114.3,-8.3;-114.2,-18.5;-112.6,-18.5;-112.5,-19.5;-114.2,-19.5;-114.1,-24.9;-106.8,-24.8;-106.8,-30.2;-94.0,-30.1;-90.5,-30.0;-90.4,-37.0;-90.2,-45.5;-111.4,-45.8;-111.5,-42.3;-117.8,-42.3;-118.1,-29.8;-123.1,-29.9;-123.2,-20.4;-119.4,-20.4;-119.6,-8.4|Scl:-13.3,-24.8;-0.9,-24.8;26.5,-24.9;26.4,-39.4;0.6,-39.3;-8.3,-39.3;-8.3,-36.3;-13.3,-36.3;-13.3,-24.8|Sct:-84.5,-15.9;-75.2,-15.8;-75.3,-11.9;-75.4,-3.8;-79.6,-3.9;-84.6,-3.9;-84.5,-15.9|Ser:-132.1,-0.5;-132.2,7.5;-132.4,25.5;-130.9,25.5;-118.2,25.7;-118.1,21.7;-119.9,21.6;-119.8,15.6;-117.3,15.7;-117.2,3.7;-114.4,3.7;-114.4,-0.3;-114.4,-3.5;-119.6,-3.6;-132.1,-3.7;-132.1,-0.5|Ser:-84.6,0.1;-84.7,3.1;-82.1,3.1;-82.1,4.6;-84.7,4.6;-84.7,6.3;-78.5,6.4;-75.5,6.4;-75.4,2.2;-79.7,2.1;-79.6,0.1;-79.6,-3.9;-84.6,-3.9;-84.5,-15.9;-94.2,-16.1;-100.7,-16.1;-100.8,-10.1;-94.5,-10.1;-94.5,-11.7;-93.3,-11.7;-93.3,-10.1;-88.8,-10.0;-88.9,-4.0;-90.9,-4.0;-90.9,-0.0;-84.6,0.1|Sex:145.3,-0.6;145.4,6.4;162.9,6.3;162.8,-0.7;162.8,-6.7;162.8,-11.7;145.3,-11.6;145.3,-0.6|Tau:50.8,-1.3;50.9,0.4;50.9,10.4;51.0,19.4;52.3,19.4;52.4,31.1;69.5,30.9;69.5,30.3;73.2,30.2;73.2,28.7;90.2,28.5;90.2,28.0;90.1,22.8;87.4,22.9;87.3,18.0;88.3,18.0;88.3,12.5;85.8,12.6;85.8,15.6;81.8,15.6;81.8,16.1;76.3,16.2;76.3,15.7;71.0,15.7;70.9,0.2;55.4,0.4;55.3,-1.3;50.8,-1.3|Tel:-52.5,-56.6;-52.8,-45.1;-70.2,-45.3;-87.7,-45.5;-87.3,-57.0;-52.5,-56.6|Tri:26.7,25.6;26.8,28.6;22.9,28.6;22.9,33.6;22.9,35.6;31.9,35.6;31.9,37.3;39.7,37.3;40.4,37.3;40.4,34.5;42.7,34.5;42.6,31.2;38.1,31.2;38.1,27.8;30.5,27.9;30.5,25.6;26.7,25.6|TrA:-135.8,-70.5;-136.0,-68.0;-133.4,-68.0;-133.6,-64.1;-129.8,-64.0;-129.9,-61.5;-127.4,-61.4;-127.5,-60.4;-111.0,-60.3;-110.9,-61.3;-108.5,-61.2;-108.3,-63.8;-105.8,-63.8;-105.7,-65.2;-104.5,-65.2;-104.3,-67.7;-101.8,-67.7;-101.5,-70.2;-135.8,-70.5|Tuc:-8.0,-74.3;1.6,-74.3;12.3,-74.3;12.3,-75.3;20.7,-75.3;21.2,-57.8;-8.2,-57.8;-8.2,-56.3;-27.9,-56.4;-27.6,-66.9;-8.1,-66.8;-8.0,-74.3|UMa:145.7,41.4;139.5,41.5;139.6,46.5;128.4,46.6;128.8,59.6;122.1,59.6;123.1,73.1;140.6,73.0;172.0,72.8;171.8,65.8;-178.4,65.8;-178.4,63.3;-156.4,63.4;-156.4,62.4;-143.0,62.4;-142.7,54.9;-148.4,54.9;-148.3,47.9;-156.2,47.9;-156.3,52.4;-177.2,52.3;-177.2,44.3;-178.4,44.3;-178.4,33.3;-178.4,28.3;179.6,28.3;166.7,28.3;166.7,33.3;163.5,33.3;163.5,39.3;154.4,39.4;154.4,41.4;145.7,41.4|UMi:-164.2,76.3;-163.9,69.3;-149.3,69.4;-149.2,65.4;-124.7,65.6;-124.9,69.6;-112.2,69.7;-112.8,74.7;-98.5,74.9;-99.8,79.9;-92.3,80.0;-98.3,85.9;-51.3,86.5;-51.7,86.6;-16.5,86.8;-20.7,88.7;0.9,88.6;24.7,88.4;57.7,88.0;135.8,87.6;130.4,86.1;-147.0,85.9;-143.2,79.4;-156.2,79.4;-155.8,76.4;-164.2,76.3|Vel:166.3,-57.2;166.5,-40.4;141.7,-40.3;141.8,-37.3;126.7,-37.2;126.6,-43.4;121.0,-43.4;120.9,-51.1;123.4,-51.1;123.3,-53.4;127.6,-53.4;127.6,-54.9;133.4,-55.0;133.3,-57.0;166.3,-57.2|Vir:174.4,-0.7;174.4,10.3;179.6,10.3;179.6,13.3;-165.9,13.3;-165.9,14.3;-156.0,14.4;-155.9,7.4;-132.2,7.5;-132.1,-0.5;-138.4,-0.5;-138.3,-8.5;-144.6,-8.6;-144.5,-22.6;-165.8,-22.7;-165.9,-11.7;179.1,-11.7;179.1,-6.7;174.3,-6.7;174.4,-0.7|Vol:98.9,-64.1;98.5,-70.1;97.8,-75.1;114.2,-75.3;135.2,-75.5;136.1,-64.5;102.7,-64.2;98.9,-64.1|Vul:-75.7,21.2;-75.7,25.7;-69.8,25.7;-69.9,27.7;-63.7,27.8;-63.7,29.3;-44.9,29.5;-44.9,28.5;-37.4,28.5;-37.3,24.0;-39.8,24.0;-39.8,20.0;-42.8,20.0;-50.1,19.9;-50.1,20.9;-54.9,20.9;-54.9,21.6;-61.1,21.6;-61.1,19.5;-69.9,19.4;-69.9,21.3;-75.7,21.2";
+
+const ZODIACO_IAU_ABREV = { Ari:'Aries', Tau:'Tauro', Gem:'Géminis', Cnc:'Cáncer', Leo:'Leo', Vir:'Virgo',
+ Lib:'Libra', Sco:'Escorpio', Sgr:'Sagitario', Cap:'Capricornio', Aqr:'Acuario', Psc:'Piscis', Oph:'Ofiuco' };
+
+// Tramos REALES que cada constelación ocupa sobre la eclíptica, medidos
+// sobre los polígonos de arriba (longitud eclíptica J2000, grados). Se
+// calcularon recorriendo la eclíptica a paso 0.02° y anotando en qué
+// polígono caía cada punto — no son valores copiados a mano.
+const ZODIACO_IAU_TRAMOS = [
+ ['Psc', 351.64, 28.70, 37.06], ['Ari', 28.70, 53.42, 24.72], ['Tau', 53.42, 90.16, 36.74],
+ ['Gem', 90.16, 118.00, 27.84], ['Cnc', 118.00, 138.06, 20.06], ['Leo', 138.06, 173.86, 35.80],
+ ['Vir', 173.86, 217.82, 43.96], ['Lib', 217.82, 241.06, 23.24], ['Sco', 241.06, 247.64, 6.58],
+ ['Oph', 247.64, 266.26, 18.62], ['Sgr', 266.26, 299.68, 33.42], ['Cap', 299.68, 327.50, 27.82],
+ ['Aqr', 327.50, 351.64, 24.14],
+];
+// Longitud eclíptica J2000 del límite Piscis→Acuario: el que cruza el
+// punto vernal al entrar en Acuario en sentido ASTRONÓMICO.
+const LIMITE_PSC_AQR_LON = 351.64;
+
+let _threeConstBoundsGroup = null, _threeConstBoundsParsed = null;
+function _parseConstBounds() {
+ if (_threeConstBoundsParsed) return _threeConstBoundsParsed;
+ _threeConstBoundsParsed = CONST_BOUNDS_RAW.split('|').map(seg => {
+ const i = seg.indexOf(':');
+ const id = seg.slice(0, i);
+ const pts = seg.slice(i + 1).split(';').map(p => { const c = p.split(','); return [parseFloat(c[0]), parseFloat(c[1])]; });
+ // "desenrollar" longitudes para que los tramos que cruzan ±180 no den la vuelta al cielo
+ for (let k = 1; k < pts.length; k++) {
+ while (pts[k][0] - pts[k - 1][0] > 180) pts[k][0] -= 360;
+ while (pts[k][0] - pts[k - 1][0] < -180) pts[k][0] += 360;
+ }
+ return { id: id, pts: pts };
+ });
+ return _threeConstBoundsParsed;
+}
+
+// Dibuja las fronteras sobre una "esfera celeste" de radio fijo, entre
+// las estrellas del mapa. Cada arista se subdivide para que siga la
+// curvatura de la esfera y no corte por dentro como una cuerda recta.
+function threeDibujarLimitesConstelaciones(modo) {
+ if (!_threeScene) return;
+ if (_threeConstBoundsGroup) { _threeScene.remove(_threeConstBoundsGroup); _threeConstBoundsGroup = null; }
+ if (!modo || modo === 'ninguno') return;
+ const R = 78; // entre las estrellas del zodíaco (r entre 65 y 82 en la escala logarítmica)
+ const soloZod = (modo === 'zodiaco');
+ const g = new THREE.Group();
+ _parseConstBounds().forEach(function (b) {
+ const esZod = !!ZODIACO_IAU_ABREV[b.id];
+ if (soloZod && !esZod) return;
+ const pts = b.pts, v = [];
+ for (let k = 0; k < pts.length; k++) {
+ const a = pts[k], c = pts[(k + 1) % pts.length];
+ const n = Math.max(2, Math.ceil(Math.max(Math.abs(c[0] - a[0]), Math.abs(c[1] - a[1])) / 2));
+ for (let s = 0; s < n; s++) {
+ const t = s / n;
+ const lon = a[0] + (c[0] - a[0]) * t, lat = a[1] + (c[1] - a[1]) * t;
+ const ra = THREE.MathUtils.degToRad(lon), dec = THREE.MathUtils.degToRad(lat);
+ v.push(new THREE.Vector3(R * Math.cos(dec) * Math.cos(ra), R * Math.sin(dec), R * Math.cos(dec) * Math.sin(ra)));
+ }
+ }
+ v.push(v[0].clone());
+ g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(v),
+ new THREE.LineBasicMaterial({ color: esZod ? 0x16a085 : 0x44607a, transparent: true, opacity: esZod ? 0.85 : 0.4 })));
+ });
+ _threeScene.add(g);
+ _threeConstBoundsGroup = g;
+}
+
+function threeLimitesChanged() {
+ const sel = document.getElementById('const_limites');
+ threeDibujarLimitesConstelaciones(sel ? sel.value : 'ninguno');
+}
+
+// Comprobación interna: el arco pendiente hasta el límite Psc/Aqr debe
+// reproducir el año de cruce ≈2598 con la fórmula de precesión validada.
+function limitesAutoVerificar() {
+ const grados = 360 - LIMITE_PSC_AQR_LON;
+ let lo = 2000, hi = 4000;
+ for (let i = 0; i < 200; i++) { const m = (lo + hi) / 2; if (_precesionArcsec(m) / 3600 < grados) lo = m; else hi = m; }
+ return { sumaTramos: ZODIACO_IAU_TRAMOS.reduce(function (a, t) { return a + t[3]; }, 0),
+ arcoPendienteJ2000: grados, anioCruceAcuario: (lo + hi) / 2 };
 }
 
 function buildCosmicMap() {
@@ -6123,6 +6699,8 @@ function buildCosmicMap() {
 
  const pmSlider = document.getElementById('pm_anios');
  if (pmSlider) { pmSlider.value = 0; threeAplicarMovimientoPropio(); }
+ _threeConstBoundsGroup = null; // el grupo vivía en la escena que threeClearScene() acaba de vaciar
+ threeLimitesChanged(); // redibujar los límites si el selector los pedía
  const detallePl = document.getElementById('planeta_detalle'); if (detallePl) detallePl.style.display = 'none';
  _planetaDetalleActual = null;
  const fechaSlider = document.getElementById('cm_fecha_anio');
