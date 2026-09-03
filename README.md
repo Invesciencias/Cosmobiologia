@@ -4,7 +4,7 @@ Plataforma de análisis estadístico falseable: carga eventos con fecha, hora y 
 
 **Estado actual:** 34.503 eventos en 11 dominios · 6.035 sismos con mecanismo focal · límite de detección caracterizado.
 
-📄 **Publicado en:** Serrano, D. (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. *Circular Astronómica RAC*, N.º 1027, septiembre 2026, pp. 8–11. Red de Astronomía de Colombia.
+📄 Extiende el programa de investigación propuesto en: Serrano, D. (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. Circular Astronómica RAC, N.º 1027, septiembre 2026, pp. 8–11. Red de Astronomía de Colombia.
 
 🌐 **Sitio:** https://invesciencias.github.io/Cosmobiologia/
 
