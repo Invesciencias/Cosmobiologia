@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 <script src="data.js"></script>
 <script src="features.js"></script>
 <script src="translations.js"></script>
@@ -59,6 +60,32 @@
  button.ghost{background:var(--verde-muy-palido);border:1px solid var(--line);color:var(--verde-oscuro)}
  button.ghost:hover{background:var(--verde-palido)}
  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+ /* ═══ Rediseño del Mapa Cósmico: rieles de iconos con tooltip propio,
+ en vez de filas de botones/checkboxes con texto largo debajo del mapa. ═══ */
+ .map-shell{display:flex;gap:0;border-radius:12px;overflow:hidden;background:#0a1420}
+ .map-rail{display:flex;flex-direction:column;gap:6px;padding:8px;background:rgba(10,20,32,.55);backdrop-filter:blur(2px)}
+ .map-rail.rail-right{border-left:1px solid rgba(255,255,255,.08)}
+ .rail-btn{width:44px;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s;position:relative}
+ .rail-btn:hover{background:rgba(255,255,255,.16);transform:scale(1.06)}
+ .rail-btn.on{background:var(--accent);border-color:var(--accent)}
+ .rail-btn.toggle-off{opacity:.45}
+ .rail-sep{height:1px;background:rgba(255,255,255,.12);margin:2px 4px}
+ .rail-tip{position:fixed;pointer-events:none;background:rgba(10,20,32,.96);color:#fff;padding:7px 11px;border-radius:8px;font-size:12px;line-height:1.5;z-index:9999;max-width:220px;border:1px solid rgba(255,255,255,.2);display:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+ /* Flyout — el panel de "sub-botones" que se abre junto al icono de
+ categoría que lo invocó (Movimientos, Vistas, Constelaciones, Animación),
+ en vez de tener las ~19 opciones sueltas y siempre visibles en el riel. */
+ .rail-flyout{position:fixed;display:none;flex-direction:column;gap:6px;background:rgba(10,20,32,.97);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:8px;z-index:9997;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+ .map-canvas-wrap{flex:1;position:relative;min-width:0}
+ .map-bottombar{position:absolute;left:0;right:0;bottom:0;z-index:15;display:none;align-items:center;gap:14px;padding:8px 14px;background:linear-gradient(0deg,rgba(6,12,20,.88),rgba(6,12,20,.35));backdrop-filter:blur(2px)}
+ .bb-play{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+ .bb-play:hover{background:rgba(255,255,255,.24)}
+ .map-bottombar input[type=range]{accent-color:var(--accent);cursor:pointer}
+ .bb-chip{flex:0 0 auto;padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:12px;cursor:pointer}
+ .bb-chip:hover{background:rgba(255,255,255,.22)}
+ .bb-speedgroup{flex:0 0 auto;display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:16px;padding:2px}
+ .bb-speed{border:none;background:transparent;color:#cfe0da;font-size:11px;padding:4px 9px;border-radius:14px;cursor:pointer}
+ .bb-speed.on{background:var(--accent);color:#fff}
+ .map-bottombar kbd{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:1px 5px;font-family:inherit;font-size:11px}
  details.tccinfo{margin-top:6px}
  details.tccinfo summary{cursor:pointer;font-size:12.5px;color:var(--muted);list-style:none}
  details.tccinfo summary::-webkit-details-marker{display:none}
@@ -138,7 +165,7 @@
  </div>
  </div>
  <p style="margin:8px 0 4px"><b>Connection to indigenous astronomical knowledge:</b>Many cultures (Salish, Babylonian, Maya, Chinese) developed calendrical systems correlating celestial cycles with seasonal water events, resource availability, and natural hazards. This platform provides the statistical framework to test whether those correlations are real — and to quantify their effect sizes across independent datasets.</p>
- <p style="margin:4px 0 0"><b>Current status:</b>Mercury–Uranus conjunction in M≥6 earthquakes — pre-registered hypothesis did not replicate in GCMT 1976–1999 (z=−1.38, likely catalog artifact). Jupiter at Descendant (topocentric) shows strong signal in GCMT 1976–1999 (z=+9.16, RR=1.34, p=2.1×10⁻¹⁷) — pre-registration underway. Built with Skyfield + JPL DE421 · Python · Plotly · Fundación Invesciencias, Colombia.</p>
+ <p style="margin:4px 0 0"><b>Current status:</b>Mercury–Uranus conjunction in M≥6 earthquakes — pre-registered hypothesis did not replicate in GCMT 1976–1999 (z=+0.61, RR=1.04 on the corrected Mw≥6 catalogue; the earlier z=−1.38 came from the magnitude-inflated one). This test had adequate power, so the non-replication is interpretable. Jupiter at Descendant (topocentric): the earlier figure (z=+9.16) was computed on a GCMT catalogue inflated 5.5× by a magnitude-type error (mb/MS instead of Mw). On the corrected Mw≥6 catalogue the signal survives but is far more modest: <b>z=+4.07, RR=1.37, q=0.019</b> in the reverse-fault stratum, above that stratum's own measured noise ceiling (3.27±0.31). Pre-registration underway with the corrected figures. Built with Skyfield + JPL DE421 · Python · Plotly · Fundación Invesciencias, Colombia.</p>
  </div>
 </div>
 <nav>
@@ -148,7 +175,7 @@
 </div>
 <div class="nav-sep"></div>
 <div class="nav-group">
-<span class="nav-group-label">I. Investigación</span>
+<span class="nav-group-label" data-i18n="navgroup_investigacion">I. Investigación</span>
 <div class="nav-group-buttons">
 <button data-tab="captura" data-i18n="nav_captura">Captura de eventos</button>
 <button data-tab="tablero" data-i18n="nav_tablero">Tablero estadístico</button>
@@ -159,16 +186,19 @@
 </div>
 <div class="nav-sep"></div>
 <div class="nav-group">
-<span class="nav-group-label">II. Asistencia social</span>
+<span class="nav-group-label" data-i18n="navgroup_asistencia">II. Asistencia social</span>
 <div class="nav-group-buttons">
-<button data-tab="epidemiologia">Epidemiología</button>
+<button data-tab="epidemiologia" data-i18n="nav_epidemiologia">Epidemiología</button>
+<button data-tab="historia_social" data-i18n="nav_historia_social">📜 Casos y estudios históricos</button>
 </div>
 </div>
 <div class="nav-sep"></div>
 <div class="nav-group">
-<span class="nav-group-label">III. Didáctica</span>
+<span class="nav-group-label" data-i18n="navgroup_didactica">III. Didáctica</span>
 <div class="nav-group-buttons">
 <button data-tab="ayuda" data-i18n="nav_ayuda">Metodología</button>
+<button data-tab="ajedrez" data-i18n="nav_ajedrez">♟ Ajedrez</button>
+<button data-tab="sismos" data-i18n="nav_sismos">🌍 Sismos</button>
 </div>
 </div>
 </div>
@@ -183,7 +213,7 @@
  <h2 style="font-size:22px;color:#fff;margin-bottom:6px" data-i18n="hero_h2">¿Hay patrones astronómicos en los grandes eventos del planeta?</h2>
  <p style="font-size:15px;margin-bottom:10px" data-i18n-html="hero_p">Esta plataforma permite <b>poner a prueba esa pregunta con rigor estadístico</b>, usando más de <b id="hero_n_events">34.000</b> eventos reales de <b id="hero_n_domains">11</b> dominios — sismos, huracanes, tormentas solares, desastres, inundaciones y más — comparados contra un <span style="border-bottom:1px dashed #adf;cursor:help" data-glos="modelo nulo">modelo nulo emparejado</span>. No necesitas instalar nada ni saber programar.</p>
  <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:14px">
- <span data-i18n-html="hero_confirmed"> <b>Primer resultado positivo (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano. Sobrevive 522 pruebas simultáneas y replica en la validación cruzada 50/50 del catálogo USGS. <b>Todavía no es un resultado confirmado:</b> falta replicarlo en un catálogo externo (GCMT) y estratificarlo por tipo de falla y profundidad focal, como exige el propio diseño que publicamos en la <i>Circular Astronómica RAC</i> 1027 (sept. 2026).</span> <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="hero_btn_ver">Ver en el Tablero →</button>
+ <span data-i18n-html="hero_confirmed"> <b>Primer resultado positivo (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano. Sobrevive 398 pruebas simultáneas y replica en la validación cruzada 50/50 del catálogo USGS. <b>Todavía no es un resultado confirmado:</b> falta replicarlo en un catálogo externo (GCMT) y estratificarlo por tipo de falla y profundidad focal, como exige el propio diseño que publicamos en la <i>Circular Astronómica RAC</i> 1027 (sept. 2026).</span> <button class="ghost act" style="font-size:12px;padding:3px 10px;margin-left:8px" onclick="document.querySelector('[data-tab=tablero]').click();setTimeout(()=>{document.getElementById('res_domain').value='sismo_M6plus';switchResultDomain();},300)" data-i18n="hero_btn_ver">Ver en el Tablero →</button>
  </div>
  <div class="row">
  <button class="act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="hero_btn_tablero">Explorar resultados</button>
@@ -198,40 +228,70 @@
  <h2>Mapa Cósmico — mira lo que estamos calculando</h2>
  <p class="small muted" style="margin-bottom:10px">Elige una vista. Rota con el mouse, haz zoom con la rueda — el detalle de cada vista aparece debajo del mapa.</p>
 
- <div id="three_hud" class="row" style="margin-bottom:10px;gap:6px">
- <button class="act" id="hud_tierra" onclick="threeHudGo('tierra')">🌍 Tierra</button>
- <button class="ghost act" id="hud_sistema" onclick="threeHudGo('sistema')">☀ Sistema Solar</button>
- <button class="ghost act" id="hud_estrellas" onclick="threeHudGo('estrellas')">✨ Estrellas</button>
- <button class="ghost act" id="hud_galaxia" onclick="threeHudGo('galaxia')">🌌 Galaxia</button>
- <button class="ghost act" id="hud_carta" onclick="threeHudGo('carta')">🔮 Carta astral</button>
- </div>
+ <p class="small muted" style="margin:-4px 0 8px">👈 Pasa el mouse sobre cualquier botón del mapa para ver qué hace. Rota con el mouse, haz zoom con la rueda.</p>
 
- <div id="three_canvas_container" style="width:100%;height:380px;border-radius:12px;overflow:hidden;background:#0a1420;position:relative">
+ <div class="map-shell">
+ <div class="map-rail" id="hud_rail">
+ <!-- se llena por JS (railBuild) para poder mostrar tooltip propio sin depender de title nativo -->
+ </div>
+ <div class="map-canvas-wrap">
+ <div id="three_canvas_container" style="width:100%;height:380px;position:relative">
  <div id="three_canvas" style="width:100%;height:100%"></div>
  <svg id="chart_wheel_svg" viewBox="0 0 400 400" style="display:none;width:100%;height:100%;background:#fff"></svg>
  <div id="three_tooltip" style="display:none;position:absolute;pointer-events:none;background:rgba(10,20,32,.92);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;line-height:1.5;z-index:20;white-space:nowrap;border:1px solid rgba(255,255,255,.2)"></div>
+ <div class="map-bottombar" id="map_bottombar">
+ <div id="bb_movs" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+ <button class="bb-play" id="three_play_btn" onclick="threePlayToggle()" title="Reproducir">▶</button>
+ <input type="range" id="three_slider" min="0" max="100" step="0.001" value="0" style="flex:1" oninput="threeSliderChanged()">
+ <span id="three_mov_label" class="small" style="color:#cfe0da;white-space:nowrap"></span>
+ <span class="bb-speedgroup">
+ <button class="bb-speed" onclick="threeSetPlaySpeed(0.1,this)" title="Velocidad 0.1× (muy lenta — para ver la rotación diaria con detalle)">0.1×</button>
+ <button class="bb-speed" onclick="threeSetPlaySpeed(0.5,this)" title="Velocidad 0.5×">0.5×</button>
+ <button class="bb-speed on" onclick="threeSetPlaySpeed(1,this)" title="Velocidad normal">1×</button>
+ <button class="bb-speed" onclick="threeSetPlaySpeed(2,this)" title="Velocidad 2×">2×</button>
+ <button class="bb-speed" onclick="threeSetPlaySpeed(4,this)" title="Velocidad 4×">4×</button>
+ </span>
  </div>
+ <div id="bb_time" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
+ <span style="font-size:15px">🕰️</span>
+ <input type="range" id="cm_fecha_anio" min="1900" max="2100" step="1" value="2026" style="flex:1" oninput="threeCosmicIrAFecha()">
+ <span id="cm_fecha_anio_label" class="small" style="color:#fff;font-weight:700;min-width:38px">2026</span>
+ <button class="bb-chip" onclick="document.getElementById('cm_fecha_anio').value=new Date().getFullYear();threeCosmicIrAFecha()">Hoy</button>
+ </div>
+ <div id="bb_nave" style="display:none;align-items:center;gap:10px;flex:1;min-width:0;color:#cfe0da;font-size:12px">
+ <span>🚀 <b>Modo nave</b> — <kbd>↑↓←→</kbd> mover · mouse (clic y arrastra) mirar</span>
+ <span class="bb-speedgroup" style="margin-left:auto">
+ <button class="bb-speed" onclick="threeNaveSetSpeed(0.5,this)" title="Vuelo lento">0.5×</button>
+ <button class="bb-speed on" onclick="threeNaveSetSpeed(1,this)" title="Vuelo normal">1×</button>
+ <button class="bb-speed" onclick="threeNaveSetSpeed(3,this)" title="Vuelo rápido">3×</button>
+ </span>
+ <button class="bb-chip" onclick="threeNaveToggle()">✕ Salir</button>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="map-rail rail-right" id="mov_rail"></div>
+ </div>
+ <div class="rail-tip" id="rail_tip"></div>
  <p class="small muted" style="margin-top:8px">Distancias esquemáticas, no a escala real — el objetivo es la geometría angular (qué tan alineados están los planetas), no la distancia física. Posiciones planetarias: modelo kepleriano simplificado para el navegador (la plataforma usa Skyfield + JPL DE421 para los cálculos reales).</p>
 
  <!-- ═══ Detalle — cambia según el botón del HUD que elegiste arriba ═══ -->
  <div id="three_detail" style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px">
 
  <div id="three_panel_movimientos">
- <p class="small muted" style="margin-bottom:6px">Marca uno o <b>varios</b> movimientos a la vez — la Tierra real hace todos simultáneamente, y es esa combinación (no un solo movimiento) la que Llona señala como origen de las curvas cicloidales.</p>
- <div class="row" style="margin-bottom:8px">
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="mov_rotacion" checked onchange="threeMovimientosChanged()"> Rotación diaria (real)</label>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="mov_traslacion" onchange="threeMovimientosChanged()"> Traslación anual (real)</label>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="mov_precesion" onchange="threeMovimientosChanged()"> Precesión (esquemática, acelerada)</label>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="mov_nutacion" onchange="threeMovimientosChanged()"> Nutación (esquemática, exagerada)</label>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="mov_galactico" onchange="threeMovimientosChanged()"> Órbita galáctica del Sol (12° movimiento, esquemática)</label>
+ <p class="small muted" style="margin-bottom:8px">▶ El control de reproducción y la barra de progreso ahora están integrados abajo del mapa mismo.</p>
+ <!-- checkboxes reales, ocultos: los botones del riel lateral los controlan
+ (se conservan para no tocar threeMovimientosChanged() ni el resto de la
+ lógica ya validada, que lee estos mismos ids) -->
+ <div style="display:none">
+ <input type="checkbox" id="mov_rotacion" checked onchange="threeMovimientosChanged()">
+ <input type="checkbox" id="mov_traslacion" onchange="threeMovimientosChanged()">
+ <input type="checkbox" id="mov_precesion" onchange="threeMovimientosChanged()">
+ <input type="checkbox" id="mov_nutacion" onchange="threeMovimientosChanged()">
+ <input type="checkbox" id="mov_galactico" onchange="threeMovimientosChanged()">
  </div>
- <div class="row" style="align-items:center;gap:8px">
- <button class="act" id="three_play_btn" onclick="threePlayToggle()" style="min-width:110px">▶ Reproducir</button>
- <input type="range" id="three_slider" min="0" max="100" step="0.001" value="0" style="flex:1" oninput="threeSliderChanged()">
- </div>
- <div id="three_mov_label" class="small muted" style="text-align:center;margin-top:4px"></div>
 
- <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-top:10px">
+ <div id="three_escala_tiempo" style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-top:10px;display:none">
  <div style="font-weight:700;font-size:13px;margin-bottom:4px">⏱ Escala de tiempo</div>
  <details class="tccinfo"><summary>¿Qué hace esto?</summary><p class="tccinfo-body small muted">Elige un movimiento y cuántos segundos reales quieres que dure verlo completo de principio a fin (5-10 s recomendado). Esto aísla ese movimiento solo (desmarca los demás) para que se vea claro.</p></details>
  <div class="row" style="align-items:center;gap:8px;margin-top:8px">
@@ -254,14 +314,6 @@
  <button class="act" id="three_ciclo_btn" onclick="threeReproducirCicloCompleto()">▶ Ver 1 ciclo completo</button>
  <button class="ghost act" onclick="threeDetenerAnimaciones()" style="padding:8px 12px">⏹</button>
  </div>
- </div>
-
- <div class="row" style="margin-top:8px;gap:6px">
- <span class="small muted" style="margin:0;align-self:center">Vista:</span>
- <button class="ghost act" style="font-size:11px;padding:4px 10px" onclick="threeFocusEarth('frontal')">Frontal</button>
- <button class="ghost act" style="font-size:11px;padding:4px 10px" onclick="threeFocusEarth('lateral')">Lateral</button>
- <button class="ghost act" style="font-size:11px;padding:4px 10px" onclick="threeFocusEarth('superior')">Superior</button>
- <button class="ghost act" style="font-size:11px;padding:4px 10px" onclick="threeFocusEarth('general')">Vista general</button>
  </div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-top:10px">
@@ -346,13 +398,8 @@
  <div id="three_panel_const" style="display:none">
  <details class="tccinfo" style="margin-bottom:8px"><summary>¿Qué significa "escala logarítmica"?</summary><p class="tccinfo-body small muted">El orden de anidamiento (qué está dentro de qué) es real, pero las distancias exactas están comprimidas para que quepan juntas Mercurio y el centro de la galaxia — si no, Mercurio sería invisible al lado de las estrellas.</p></details>
 
- <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
- <div style="font-weight:700;font-size:13px;margin-bottom:6px">🕰️ Línea de tiempo — ¿dónde estaban/estarán los planetas?</div>
- <div class="row" style="align-items:center;gap:8px;margin-top:0">
- <input type="range" id="cm_fecha_anio" min="1900" max="2100" step="1" value="2026" style="flex:1;min-width:140px" oninput="threeCosmicIrAFecha()">
- <span id="cm_fecha_anio_label" class="small" style="min-width:45px;font-weight:700">2026</span>
- <button class="ghost act" style="font-size:12px;padding:6px 10px" onclick="document.getElementById('cm_fecha_anio').value=new Date().getFullYear();threeCosmicIrAFecha()">Hoy</button>
- </div>
+ <div style="background:var(--panel2);border-radius:10px;padding:8px 12px;margin-bottom:10px">
+ <span class="small muted">🕰️ La <b>línea de tiempo</b> (¿dónde estaban/estarán los planetas?) ahora está integrada abajo del mapa mismo.</span>
  <details class="tccinfo"><summary>¿Qué mueve exactamente?</summary><p class="tccinfo-body small muted">Recoloca el Sol, los planetas, la Luna y Plutón según el 1 de enero del año elegido (mismo modelo orbital elíptico de todo el mapa) — de 1900 a 2100. Las estrellas NO se mueven aquí (para eso usa el control de "movimiento propio" más abajo, en años simulados, no calendario).</p></details>
  </div>
 
@@ -363,24 +410,43 @@
  <button class="ghost act" style="font-size:12px" onclick="threeHudGo('carta')">🔮 Ver carta astral de este momento</button>
  </div>
  <div class="row" style="margin-bottom:8px;align-items:center">
- <label class="small" style="margin:0">Resaltar constelación:</label>
- <select id="three_const_filtro" onchange="threeResaltarConstelacion(this.value)" style="max-width:180px">
+ <label class="small" style="margin:0">Ir a:</label>
+ <select id="three_const_selector" onchange="threeIrAEstrella(this.value)" style="max-width:200px"><option value="">objeto específico...</option></select>
+ <span class="small muted">✨ y ○/🌗/🗺️ (resaltar constelación y fronteras oficiales) ahora son botones dentro del mapa mismo.</span>
+ </div>
+ <!-- selects reales, ocultos: el botón ✨ del riel (railCycleResaltar) y el
+ botón ○/🌗/🗺️ (railCycleFronteras) los controlan sin tocar la lógica ya
+ validada, que lee estos mismos ids -->
+ <div style="display:none">
+ <select id="three_const_filtro" onchange="threeResaltarConstelacion(this.value)">
  <option value="">Todas</option>
  <option value="Aries">Aries</option><option value="Tauro">Tauro</option><option value="Géminis">Géminis</option>
  <option value="Cáncer">Cáncer</option><option value="Leo">Leo</option><option value="Virgo">Virgo</option>
  <option value="Libra">Libra</option><option value="Escorpio">Escorpio</option><option value="Sagitario">Sagitario</option>
  <option value="Capricornio">Capricornio</option><option value="Acuario">Acuario</option><option value="Piscis">Piscis</option>
  </select>
- <label class="small" style="margin:0">Ir a:</label>
- <select id="three_const_selector" onchange="threeIrAEstrella(this.value)" style="max-width:200px"><option value="">objeto específico...</option></select>
- </div>
- <div class="row" style="margin-bottom:8px;align-items:center">
- <label class="small" style="margin:0">Límites oficiales (IAU/Delporte):</label>
- <select id="const_limites" onchange="threeLimitesChanged()" style="max-width:200px">
+ <select id="const_limites" onchange="threeLimitesChanged()">
  <option value="ninguno" selected>No mostrar</option>
  <option value="zodiaco">Solo las 13 de la eclíptica</option>
  <option value="todas">Las 88 constelaciones</option>
  </select>
+ </div>
+ <div id="const_epoca_bar" style="display:none;align-items:center;gap:8px;margin-bottom:8px;background:var(--panel2);border-radius:10px;padding:8px 12px">
+ <span class="small" style="font-weight:700">📜 Época de las fronteras (precesión):</span>
+ <input type="number" id="const_limites_epoca" value="1948" step="1" style="max-width:80px" onchange="threeLimitesChanged()" title="Año al que se precesan las fronteras. Delporte las definió en B1875.0; 2000 = sin precesar (J2000.0).">
+ <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=1875;threeLimitesChanged()" title="B1875.0 — el año exacto en que Delporte trazó las fronteras como meridianos y paralelos rectos">B1875 original</button>
+ <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=2000;threeLimitesChanged()" title="J2000.0 — la época de referencia moderna, la que usa el resto de esta plataforma">J2000</button>
+ <span id="const_limites_nota" class="small muted"></span>
+ </div>
+ <div id="const_info_panel" style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-bottom:10px;min-height:20px"><span class="small muted">Activa las fronteras (○ en el mapa) y pasa el mouse sobre cualquier constelación para ver su nombre y datos aquí — se resalta en dorado sobre el mapa.</span></div>
+
+ <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
+ <div class="row" style="align-items:center;gap:8px;margin-bottom:4px">
+ <button class="ghost act" id="three_medir_btn" onclick="threeMedirToggle()">📐 Medir distancia angular</button>
+ <span id="three_medir_nota" class="small muted"></span>
+ </div>
+ <details class="tccinfo"><summary>¿Cómo funciona?</summary><p class="tccinfo-body small muted">Sistema de coordenadas ecuatoriales (Ascensión Recta / Declinación), el mismo que usa toda la plataforma. Actívalo y haz clic en dos estrellas o planetas cualesquiera — se mide el ángulo real entre sus dos direcciones vistas desde el origen (no depende de qué tan "lejos" se ve cada uno en este mapa esquemático).</p></details>
+ <div id="three_medir_resultado" class="small" style="margin-top:6px"></div>
  </div>
  <div id="three_const_leyenda" class="small muted" style="margin-bottom:8px">Pasa el mouse sobre cualquier punto para ver su nombre, magnitud y distancia real. Usa el selector "Ir a" para moverte por el mapa — elige un <b>planeta</b> (Mercurio a Plutón) para ver además en qué signo va a estar los próximos años.</div>
 
@@ -397,27 +463,27 @@
  <p class="small muted" style="margin-top:8px">Elemento (Fuego/Tierra/Aire/Agua) y modalidad (Cardinal/Fijo/Mutable) son categorías estándar de la astrología occidental, no mediciones — el <i>signo y fecha</i> de cada tránsito sí vienen del mismo modelo orbital kepleriano usado en todo el Mapa Cósmico (± unos días de margen, no la precisión de la Captura de Eventos con Skyfield/DE421).</p>
  </div>
 
- <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
- <div style="font-weight:700;font-size:13px;margin-bottom:8px">🌀 Sol + planetas en movimiento</div>
- <div class="row" style="align-items:center;gap:8px;margin-bottom:6px">
- <select id="cm_espiral_seg" style="max-width:70px"><option value="6">6 s</option><option value="8" selected>8 s</option><option value="10">10 s</option></select>
- <button class="act" id="cm_espiral_btn" onclick="threeAnimarEspiral()">▶ Espiral (los dos juntos)</button>
- <select id="cm_planetas_seg" style="max-width:70px"><option value="5">5 s</option><option value="7" selected>7 s</option><option value="10">10 s</option></select>
- <button class="ghost act" id="cm_planetas_btn" onclick="threeAnimarPlanetas()">▶ Solo planetas</button>
- <select id="cm_galaxia_seg" style="max-width:70px"><option value="5">5 s</option><option value="7" selected>7 s</option><option value="10">10 s</option></select>
- <button class="ghost act" id="cm_galaxia_btn" onclick="threeAnimarOrbitaGalactica()">▶ Solo el Sol</button>
- <button class="ghost act" onclick="threeDetenerAnimaciones()" style="padding:8px 12px">⏹</button>
+ <div class="small muted" style="background:var(--panel2);border-radius:10px;padding:8px 12px;margin-bottom:10px">
+ 🌀 <b>Sol + planetas en movimiento</b> (espiral real, solo planetas, solo el Sol, ¿gira la galaxia?) ahora son botones dentro del mapa mismo, junto a ⏹ para detenerlos.
+ <details class="tccinfo"><summary>¿Por qué se ve como una espiral?</summary><p class="tccinfo-body small muted">Los planetas orbitan el Sol (más rápido cuanto más cerca — 3ª ley de Kepler) <b>y al mismo tiempo</b> el Sol, con todo el sistema, orbita el centro de la galaxia (mucho más lento, y orientado hacia el Centro Galáctico real que ves marcado en el mapa). Vistos juntos desde afuera, el camino real de cada planeta no es un círculo cerrado: es una espiral enroscada alrededor de la trayectoria del Sol — el botón 🌀 traza ese camino real con una estela para Mercurio, la Tierra y Júpiter. El giro galáctico sigue siendo esquemático/acelerado (real ≈230 millones de años, ≈220 km/s) — pero la <i>razón</i> entre velocidades de los planetas sí es real.</p></details>
  </div>
- <div id="cm_espiral_nota" class="small muted"></div>
- <div id="cm_planetas_nota" class="small muted"></div>
- <div id="cm_galaxia_nota" class="small muted"></div>
- <div class="row" style="align-items:center;gap:8px;margin-top:6px">
- <select id="cm_girogalaxia_seg" style="max-width:70px"><option value="5">5 s</option><option value="7" selected>7 s</option><option value="10">10 s</option></select>
- <button class="ghost act" id="cm_girogalaxia_btn" onclick="threeAnimarGalaxiaGirando()">🌌 ¿Gira la galaxia? Ver estrellas girando</button>
- <button class="ghost act" onclick="threeDetenerAnimaciones()" style="padding:8px 12px">⏹</button>
- </div>
- <div id="cm_girogalaxia_nota" class="small muted"></div>
- <details class="tccinfo"><summary>¿Por qué se ve como una espiral?</summary><p class="tccinfo-body small muted">Los planetas orbitan el Sol (más rápido cuanto más cerca — 3ª ley de Kepler) <b>y al mismo tiempo</b> el Sol, con todo el sistema, orbita el centro de la galaxia (anillo punteado morado — mucho más lento, y orientado hacia el Centro Galáctico real que ves marcado en el mapa). Vistos juntos desde afuera, el camino real de cada planeta no es un círculo cerrado: es una espiral enroscada alrededor de la trayectoria del Sol — el botón "Espiral" traza ese camino real con una estela para Mercurio, la Tierra y Júpiter. El giro galáctico sigue siendo esquemático/acelerado (real ≈230 millones de años, ≈220 km/s) — pero la <i>razón</i> entre velocidades de los planetas sí es real. También puedes verlo junto a los demás movimientos de la Tierra en <a href="#" onclick="threeHudGo('tierra');document.getElementById('three_ciclo_mov').value='galactico';return false">🌍 Tierra → Escala de tiempo</a>.</p></details>
+ <!-- selects reales de duración + botones reales, ocultos: los botones
+ 🌀/🪐/☀️/🌌/⏹ del riel (mov_rail_anim) simulan el clic sobre estos mismos
+ ids, sin tocar threeAnimarEspiral()/threeAnimarPlanetas()/etc. ni sus
+ notas de estado, ya validadas -->
+ <div style="display:none">
+ <select id="cm_espiral_seg"><option value="6">6 s</option><option value="8" selected>8 s</option><option value="10">10 s</option></select>
+ <button id="cm_espiral_btn" onclick="threeAnimarEspiral()">▶ Espiral</button>
+ <select id="cm_planetas_seg"><option value="5">5 s</option><option value="7" selected>7 s</option><option value="10">10 s</option></select>
+ <button id="cm_planetas_btn" onclick="threeAnimarPlanetas()">▶ Solo planetas</button>
+ <select id="cm_galaxia_seg"><option value="5">5 s</option><option value="7" selected>7 s</option><option value="10">10 s</option></select>
+ <button id="cm_galaxia_btn" onclick="threeAnimarOrbitaGalactica()">▶ Solo el Sol</button>
+ <div id="cm_espiral_nota"></div>
+ <div id="cm_planetas_nota"></div>
+ <div id="cm_galaxia_nota"></div>
+ <select id="cm_girogalaxia_seg"><option value="5">5 s</option><option value="7" selected>7 s</option><option value="10">10 s</option></select>
+ <button id="cm_girogalaxia_btn" onclick="threeAnimarGalaxiaGirando()">🌌 ¿Gira la galaxia?</button>
+ <div id="cm_girogalaxia_nota"></div>
  </div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
@@ -485,6 +551,7 @@
      <b>Circular Astronómica RAC</b>, N.º 1027, septiembre 2026, pp. 8–11.
      Red de Astronomía de Colombia.
     </div>
+    <a class="ghost act" style="display:inline-block;margin-top:10px;font-size:12.5px;padding:6px 12px" href="https://rac.net.co/nuevositio/wp-content/uploads/2026/08/circular-septiembre-2026.pdf" target="_blank" rel="noopener">📄 Leer la Circular completa (PDF, RAC, sept. 2026) →</a>
    </div>
 
    <p class="small" style="margin-bottom:8px"><b>Lo que sostiene el artículo</b>, en una frase: la contribución de Invesciencias
@@ -585,7 +652,7 @@
  <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--accent2)">
  <div style="font-size:26px;margin-bottom:6px">④</div>
  <b data-i18n="como_step3_title">Comparar: ¿algo sobresale?</b>
- <p class="small" style="margin-top:6px" data-i18n-html="como_step3_p">Se prueban 575 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR Benjamini-Hochberg</span>).</p>
+ <p class="small" style="margin-top:6px" data-i18n-html="como_step3_p">Se prueban 398 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR Benjamini-Hochberg</span>).</p>
  </div>
 
  </div>
@@ -647,11 +714,26 @@
  <span class="badge badge-caution">Positivo — no confirmado</span><b>Conjunción Mercurio–Urano en sismos M≥6</b>
  <p class="small" style="margin-top:6px">En los <b>3.730 terremotos M≥6</b> (2000–2024), la conjunción Mercurio–Urano (alineación a menos de 8°, ~100 veces en 24 años) coincide con un <b>32% más de sismos de lo esperado por azar</b> (z = +5.27, RR = 1.32, FDR q = 0.000047). Pasó tres filtros de rigor:</p>
  <ol class="small" style="margin:6px 0 6px 18px">
- <li><b>FDR por 522 pruebas simultáneas</b> (q = 0.000047) — descarta suerte entre muchos intentos.</li>
+ <li><b>FDR por 398 pruebas simultáneas</b> (q = 0.000047) — descarta suerte entre muchos intentos.</li>
  <li><b>Validación cruzada split 50/50</b> — la señal apareció en ambas mitades independientes con la misma dirección.</li>
  <li><b>Libre del artefacto de planetas lentos</b> — Mercurio se mueve ~1°/día; el modelo nulo ±30 días captura variación real.</li>
  </ol>
- <p class="small" style="margin:8px 0 0;padding:8px 10px;background:rgba(230,126,34,.10);border-left:3px solid #e67e22;border-radius:6px"><b>Estado de la replicación externa:</b> la validación que superó fue el <b>split 50/50 dentro del catálogo USGS</b> (mitad confirmatoria n=1.865: z=+3.88, p_fdr=0.00041). La replicación en el catálogo <b>independiente GCMT 1976–1999</b> se intentó posteriormente y <b>no confirmó la señal</b> (z=−1.38; posible artefacto de catálogo en la muestra de descubrimiento). El hallazgo se mantiene como asociación robusta dentro de USGS 2000–2024, pero <b>pendiente de replicación externa exitosa</b>.</p>
+ <div class="hint" style="margin:10px 0;border-left-color:var(--accent2)">
+  <b>Precisión sobre el origen de esta hipótesis.</b> Este resultado surgió de un <b>rastreo exploratorio</b> de 398 rasgos,
+  no de una predicción teórica previa. Conviene distinguirlo de la hipótesis documentada sobre este mismo par planetario:
+  <b>Raynaud de la Ferrière asocia la conjunción Mercurio–Urano con la actividad intelectual y los hitos científicos</b>
+  —Mercurio como inteligencia y ciencia, Urano como acontecimiento brusco y fuerza desencadenada— <b>no con la sismicidad</b>.
+  En <i>Los Grandes Mensajes</i>, capítulo «La Era Atómica vista por la Astrología», señala la conjunción de junio de 1945 en
+  Géminis en relación con la era atómica.
+  <p class="small" style="margin:8px 0 0"><b>Ese dato astronómico lo verificamos</b> con Skyfield y la efeméride JPL DE421:
+  la conjunción ocurrió el <b>11 de junio de 1945</b> con una separación de <b>0,07°</b> —prácticamente exacta— y en efecto
+  <b>en Géminis</b> (ambos cuerpos en 73,6°). El cálculo, hecho a mano en su momento, es correcto.</p>
+  <p class="small" style="margin:8px 0 0">La consecuencia metodológica importa: la hipótesis histórica sobre Mercurio–Urano
+  pertenece a <b>otro dominio</b> y <b>sigue sin ponerse a prueba</b>. Que nuestro hallazgo sísmico no replicara en un catálogo
+  independiente no dice nada sobre ella. Y una coincidencia retrospectiva aislada, por precisa que sea, tampoco la confirma:
+  probarla exigiría un catálogo fechado de hitos científicos contrastado contra el mismo modelo nulo.</p>
+ </div>
+ <p class="small" style="margin:8px 0 0;padding:8px 10px;background:rgba(230,126,34,.10);border-left:3px solid #e67e22;border-radius:6px"><b>Estado de la replicación externa:</b> la validación que superó fue el <b>split 50/50 dentro del catálogo USGS</b> (mitad confirmatoria n=1.865: z=+3.88, p_fdr=0.00041). La replicación en el catálogo <b>independiente GCMT 1976–1999</b> se intentó posteriormente y <b>no confirmó la señal</b>: sobre el catálogo corregido Mw≥6 da <b>z=+0,61, RR=1,04</b> (la cifra de z=−1,38 publicada antes procedía del catálogo con el error de magnitud). Aquí sí hay potencia suficiente —n=2.731 y piso de detección RR≥1,25 frente al RR=1,32 del descubrimiento—, de modo que este resultado <b>sí es interpretable</b>: la señal no generaliza. El hallazgo se mantiene como asociación robusta dentro de USGS 2000–2024, pero <b>pendiente de replicación externa exitosa</b>.</p>
  <span class="small muted">Pre-registrado en OSF.</span>
  </div>
 
@@ -669,20 +751,73 @@
  <!-- NUEVOS CANDIDATOS GCMT DECLUSTERED -->
  <div style="background:rgba(100,160,255,0.07);border-radius:10px;padding:14px;margin-top:10px;border-left:4px solid var(--accent2)">
  <span class="badge badge-candidate">Candidatos</span><b>GCMT declustered — pendientes de pre-registro confirmatorio</b>
- <p class="small" style="margin-top:6px">Emergieron del análisis sobre 6.169 mainshocks GCMT tras eliminar el 58.9% de réplicas (Gardner-Knopoff) y verificar independencia temporal (Von Neumann p = 0.089):</p>
+ <p class="small" style="margin-top:6px">Emergieron del análisis sobre 6.169 <i>mainshocks</i> GCMT tras eliminar réplicas (Gardner-Knopoff) y verificar independencia temporal.</p>
+   <div class="hint" style="margin:10px 0;border-left-color:var(--oro)">
+    <b>Revisión de septiembre de 2026 — estos cinco candidatos quedan en suspenso.</b> El catálogo del que salieron estaba
+    <b>inflado 5,5×</b> por un error de tipo de magnitud: se filtraba por el máximo de mb/MS en vez de calcular Mw desde el
+    momento escalar, lo que admitía sismos de Mw&lt;6. Sobre el catálogo corregido (Mw≥6, 1976–1999, declusterizado: n=1.147)
+    <b>ninguno alcanza significancia</b>.
+    <p class="small" style="margin:8px 0 0"><b>Pero no están refutados: están sin poner a prueba.</b> El piso de detección
+    del catálogo corregido (RR≥1,19 a 1,51 según el rasgo) queda <i>por encima</i> de los efectos observados, así que esa
+    prueba no podía salir positiva. Nótese además que los <b>tamaños de efecto se mantienen</b> — lo que estaba inflado era
+    la significancia, no la magnitud. Siguen siendo hipótesis vivas, y ahora se sabe cuántos eventos harían falta para
+    probarlas de verdad.</p>
+   </div>
  <div style="overflow-x:auto;margin-top:8px">
  <table class="small">
- <thead><tr><th>Rasgo</th><th>z</th><th>RR</th><th>p_fdr</th><th>Categoría</th></tr></thead>
+ <thead><tr><th rowspan="2">Rasgo</th><th colspan="2">Catálogo inflado (n=6.169)</th><th colspan="2">Corregido Mw≥6 (n=1.147)</th><th rowspan="2">Piso de<br>detección</th></tr>
+ <tr><th>z</th><th>RR</th><th>z</th><th>RR</th></tr></thead>
  <tbody>
- <tr><td><b>Conjunción Venus–Júpiter</b></td><td>+5.86</td><td>1.41</td><td>&lt;0.001</td><td>Aspecto</td></tr>
- <tr><td><b>Luna en ASC (topocéntrico)</b></td><td>+5.41</td><td>1.38</td><td>&lt;0.001</td><td>Angularidad</td></tr>
- <tr><td><b>Luna en apogeo</b></td><td>+4.44</td><td>1.29</td><td>&lt;0.001</td><td>Distancia lunar</td></tr>
- <tr><td>Luna en DSC (topocéntrico)</td><td>+3.13</td><td>1.22</td><td>0.010</td><td>Angularidad</td></tr>
- <tr><td>Júpiter en DSC</td><td>+2.13</td><td>1.15</td><td>0.090</td><td>Angularidad</td></tr>
+ <tr><td><b>Conjunción Venus–Júpiter</b></td><td>+5.86</td><td>1.285</td><td>+2.04</td><td>1.218</td><td>RR≥1,50</td></tr>
+ <tr><td><b>Luna en ASC (topocéntrico)</b></td><td>+5.41</td><td>1.302</td><td>+0.82</td><td>1.111</td><td>RR≥1,51</td></tr>
+ <tr><td><b>Luna en apogeo</b></td><td>+4.44</td><td>1.097</td><td>+2.25</td><td>1.117</td><td>RR≥1,19</td></tr>
+ <tr><td>Luna en DSC (topocéntrico)</td><td>+3.13</td><td>1.196</td><td>+1.17</td><td>1.161</td><td>RR≥1,50</td></tr>
+ <tr><td>Júpiter en DSC</td><td>+2.13</td><td>1.136</td><td>+0.56</td><td>1.073</td><td>RR≥1,50</td></tr>
  </tbody>
  </table>
  </div>
  <span class="small muted">Próximo paso: pre-registro en OSF de Venus–Júpiter conjunción y Luna en apogeo antes de correr el catálogo de validación.</span>
+ </div>
+
+ <!-- SINTESIS: QUE HACER CON UN RESULTADO QUE NO REPLICA -->
+ <div id="met_sintesis_replica" class="card" style="border-left:4px solid var(--accent2);margin-top:16px">
+ <h2>Ninguno de estos casos replicó — ¿y ahora qué? Cuatro palancas, no una</h2>
+ <p class="small muted">Todos los casos de esta página comparten el mismo patrón: un hallazgo exploratorio fuerte que se diluye o desaparece al exigirle independencia real. Antes de descartar la hipótesis, hay cuatro preguntas distintas que conviene separar — confundirlas es la forma más común de tirar una hipótesis viva a la basura, o de insistir en una que ya está muerta.</p>
+
+ <div style="overflow-x:auto;margin:12px 0">
+ <table class="small">
+ <thead><tr><th>Caso</th><th>Descubrimiento</th><th>Al exigir independencia</th><th>Diagnóstico</th></tr></thead>
+ <tbody>
+  <tr><td><b>Mercurio–Urano</b> (sismos M≥6)</td><td>z=+5,27 (USGS 2000–24)</td><td>z=+0,61 (GCMT 1976–99)</td><td>Potencia suficiente en la réplica — <b>la señal no generaliza</b>, no es un problema de datos insuficientes.</td></tr>
+  <tr><td><b>Venus–Júpiter sextil</b> (sismos)</td><td>z=+3,1 (USGS)</td><td>déficit (GCMT)</td><td>Pre-registrado antes de la réplica — el protocolo funcionó como debía.</td></tr>
+  <tr><td><b>Marte–Urano trígono</b> (sismos)</td><td>z=+2,8 (USGS)</td><td>déficit (GCMT)</td><td>Mismo patrón — candidato exploratorio que no sobrevive.</td></tr>
+  <tr><td><b>5 candidatos GCMT</b> (Venus-Júpiter conj., Luna ASC/DSC/apogeo, Júpiter DSC)</td><td>z hasta +5,86 (catálogo inflado 5,5×)</td><td>z&lt;2,3 (catálogo corregido)</td><td><b>No están refutados, están sin poner a prueba</b> — el piso de detección del catálogo corregido queda por encima del efecto.</td></tr>
+  <tr><td><b>Marte</b> (ajedrez, Nivel 2)</td><td>p=0,047 crudo</td><td>no sobrevive Holm-Bonferroni</td><td>Comparaciones múltiples: con 45 pares probados a la vez, un p=0,047 aislado es justo lo esperable por azar.</td></tr>
+  <tr><td><b>Repetición diurna</b> (Llona, Anexo A §A.6)</td><td>—</td><td>χ²=8,1, n=16 pares</td><td>Muestra insuficiente para cualquier veredicto — ni confirma ni refuta.</td></tr>
+  <tr><td><b>Isomorfía sísmica</b> (carta fundacional de zona)</td><td>—</td><td>r=0,027, p=0,521, n=585</td><td>Nulo limpio con potencia razonable — de los pocos casos donde sí se puede decir "no hay efecto de este tamaño".</td></tr>
+ </tbody>
+ </table>
+ </div>
+
+ <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:6px">
+  <div style="background:var(--panel2);border-radius:10px;padding:14px">
+   <div style="font-weight:700;color:var(--verde-oscuro);margin-bottom:6px">① Más datos — ¿de dónde?</div>
+   <p class="small" style="margin:0">Solo cuando el piso de detección quedó <i>por encima</i> del efecto observado (como los 5 candidatos GCMT). Fuentes concretas ya identificadas: ampliar el catálogo sísmico a M≥5 (44.390 eventos ya cargados, exploratoria pendiente), sumar más torneos de ajedrez (pipeline ya construido, costo marginal es solo cómputo), o construir un catálogo comparativo de cartas de fundación (vía c, hoy n=1).</p>
+  </div>
+  <div style="background:var(--panel2);border-radius:10px;padding:14px">
+   <div style="font-weight:700;color:var(--verde-oscuro);margin-bottom:6px">② Acotar la ventana temporal — ¿cuándo sí, cuándo no?</div>
+   <p class="small" style="margin:0">Útil cuando se sospecha que el mecanismo (si existiera) no es constante en el tiempo — p. ej. estratificar sismos por tipo de falla y profundidad focal (la exigencia más dura del propio artículo RAC, todavía pendiente) en vez de mezclar corteza superficial y subducción profunda en un solo z global.</p>
+  </div>
+  <div style="background:var(--panel2);border-radius:10px;padding:14px">
+   <div style="font-weight:700;color:var(--verde-oscuro);margin-bottom:6px">③ Cambiar la hipótesis — ¿cuál, y por qué esa?</div>
+   <p class="small" style="margin:0">Cuando el problema no es potencia sino que <b>la señal genuinamente no está</b> (Mercurio–Urano en GCMT, isomorfía sísmica): no se "arregla" con más datos del mismo tipo. Las alternativas ya identificadas: análisis de sensibilidad por hora de nacimiento (ajedrez), sub-corpus con control de tiempo fijo (rompe el confusor tiempo-de-pensamiento), o las vías (a)/(c) — decisiones regulatorias y cartas de fundación — descritas en Hipótesis y expansión.</p>
+  </div>
+  <div style="background:var(--panel2);border-radius:10px;padding:14px">
+   <div style="font-weight:700;color:var(--verde-oscuro);margin-bottom:6px">④ Asociaciones múltiples — planetas y casas a la vez</div>
+   <p class="small" style="margin:0">Un solo cuerpo aislado (Marte, Mercurio) rara vez sobrevive la corrección. La vía con más recorrido: <b>pares y tríos de rasgos con término de interacción</b> (sinergia — ya probada en ajedrez: 45 pares, 0 sobreviven, pero el método existe y escala a sismos) y <b>cruzar aspecto + casa</b> (¿Venus-Júpiter en conjunción <i>Y</i> Luna en el Ascendente, a la vez?) en vez de probar cada uno por separado — el candidato "Venus-Júpiter + Luna en apogeo" de Hipótesis y expansión es exactamente esa lógica, todavía sin pre-registrar.</p>
+  </div>
+ </div>
+ <p class="small muted" style="margin-top:12px">Esta síntesis sigue la misma estructura de huecos → qué los resolvería → plan de continuación del marco metodológico completo (anexos del artículo RAC). <a href="#" onclick="return irA('hipotesis','')">Ver Hipótesis y expansión →</a></p>
  </div>
 
  <div class="row" style="margin-top:14px;gap:10px">
@@ -750,8 +885,8 @@
  <h3 data-i18n="faq_q1">¿Qué es un "modelo nulo" y para qué sirve?</h3>
  <p data-i18n-html="faq_a1">Es la <b>vara de medir del azar</b>. Por cada evento real, generamos 200 eventos ficticios en fechas cercanas (±30 días) y el mismo lugar. Si Mercurio-Urano aparece igual de seguido en los reales que en los ficticios, el resultado es cero. Si aparece significativamente más, hay una pista. Sin este paso, cualquier análisis daría resultados engañosos — los planetas lentos (Neptuno, Plutón) están en la misma posición durante décadas enteras y falsearían los resultados.</p>
 
- <h3 data-i18n="faq_q2">¿Por qué se prueban 575 configuraciones a la vez? ¿No aumenta los falsos positivos?</h3>
- <p data-i18n-html="faq_a2">Sí, y por eso aplicamos la corrección <span class="glos" data-glos="FDR">FDR de Benjamini-Hochberg</span>. Si pruebas 575 cosas al 5% de confianza, esperarías ~29 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class="glos" data-glos="split validation">validación cruzada</span>).</p>
+ <h3 data-i18n="faq_q2">¿Por qué se prueban 398 configuraciones a la vez? ¿No aumenta los falsos positivos?</h3>
+ <p data-i18n-html="faq_a2">Sí, y por eso aplicamos la corrección <span class="glos" data-glos="FDR">FDR de Benjamini-Hochberg</span>. Si pruebas 398 cosas al 5% de confianza, esperarías ~20 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class="glos" data-glos="split validation">validación cruzada</span>).</p>
 
  <h3 data-i18n="faq_q3">¿Los datos astronómicos se calculan automáticamente?</h3>
  <p data-i18n-html="faq_a3">Sí. Tú solo das <b>fecha, hora y lugar</b> del evento. El programa usa la efeméride JPL DE421 (NASA) para calcular las posiciones exactas de 10 planetas. No se necesita saber nada de astrología para ingresar datos.</p>
@@ -1364,7 +1499,7 @@
  <p class="small" style="margin-top:6px">Llona (Teoría Cicloidal) señala que las fuerzas de marea lunar modulan la actividad geodinámica. Esta hipótesis tiene dos lecturas distintas:</p>
  <ul class="small" style="margin:6px 0 0 16px">
  <li><b>Periodicidad temporal</b> (más sismos cada ~29.5 días): <b>no confirmada</b> en GCMT declustered — correlación serial R<sub>h</sub>=−0.001, p=0.93. El catálogo limpio es compatible con un proceso de Poisson sin ritmo lunar.</li>
- <li><b>Posición lunar al momento del sismo</b> (fase, distancia, angularidad): <b>señales preliminares</b> — <code>lunar_distance|apogeo</code> z=+4.44 y <code>angular|Moon|ASC</code> z=+5.41 sobreviven declustering. Esto es más fiel a Llona: no "más sismos cada mes", sino "más sismos cuando la Luna está en cierta posición".</li>
+ <li><b>Posición lunar al momento del sismo</b> (fase, distancia, angularidad): <b>en suspenso</b> — <code>lunar_distance|apogeo</code> (z=+4.44) y <code>angular|Moon|ASC</code> (z=+5.41) salieron del catálogo inflado 5,5× por el error de magnitud; sobre el corregido dan z=+2.25 y z=+0.82, por debajo de su piso de detección. Sin potencia para concluir, en ninguna dirección. Esto es más fiel a Llona: no "más sismos cada mes", sino "más sismos cuando la Luna está en cierta posición".</li>
  </ul>
  <div class="row" style="margin-top:10px;gap:8px">
  <span class="pill" style="background:var(--panel2)">Exploratoria</span>
@@ -1374,7 +1509,7 @@
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-left:4px solid var(--verde)">
  <b>H3 · Luna en apogeo → mayor sismicidad (ya candidata)</b>
- <p class="small" style="margin-top:6px">Emergió del análisis GCMT declustered con z=+4.44 (p_fdr &lt; 0.001). Consistente con Llona: en el apogeo la velocidad orbital de la Luna cambia de manera que la marea terrestre varía — posible ventana de menor "amortiguación" de esfuerzos corticales. <b>Candidata a pre-registro confirmatorio.</b></p>
+ <p class="small" style="margin-top:6px">Emergió del análisis GCMT declustered con z=+4.44 (p_fdr &lt; 0.001), <b>pero sobre el catálogo con el error de magnitud</b>; sobre el corregido da z=+2.25 con piso de detección RR≥1,19 — sin potencia para decidir. Consistente con Llona: en el apogeo la velocidad orbital de la Luna cambia de manera que la marea terrestre varía — posible ventana de menor "amortiguación" de esfuerzos corticales. <b>Candidata a pre-registro confirmatorio.</b></p>
  <div class="row" style="margin-top:10px;gap:8px">
  <span class="pill" style="background:rgba(100,220,100,0.15);color:var(--verde)">Candidata OSF</span>
  </div>
@@ -1395,6 +1530,27 @@
 
 <!-- ===================== FUENTES ===================== -->
 <section id="fuentes" style="display:none">
+ <div class="card" style="border-left:4px solid var(--oro)">
+ <h2>📦 El repositorio del proyecto — qué hay y para qué sirve cada cosa</h2>
+ <p class="small muted">Todo el código, los catálogos y esta misma página viven en un repositorio público. No hace falta descargar nada para usar la plataforma — es para quien quiera reproducir un análisis, auditar un resultado, o construir un módulo nuevo.</p>
+ <p style="margin:10px 0"><a class="act" style="text-decoration:none;display:inline-block" href="https://github.com/Invesciencias/Cosmobiologia" target="_blank" rel="noopener">↗ github.com/Invesciencias/Cosmobiologia</a></p>
+ <div style="overflow-x:auto;margin-top:8px">
+ <table class="small">
+ <thead><tr><th>Qué es</th><th>Archivo(s)</th><th>Para qué sirve</th><th>Cómo se usa</th></tr></thead>
+ <tbody>
+  <tr><td><b>Esta página</b></td><td><code>index.html</code></td><td>Todo el sitio (mapa 3D, tablero, mapa/grilla, didáctica) en un solo archivo, sin build ni dependencias de servidor.</td><td>Abrir directo en el navegador, o servir con cualquier host estático.</td></tr>
+  <tr><td><b>Catálogo de eventos</b></td><td><code>data.js</code>, <code>features.js</code></td><td>Los 34.503 eventos de los 11 dominios, ya con sus rasgos astronómicos precalculados (aspectos, casas, fase lunar).</td><td>Se cargan automáticamente al abrir la página. Para tu propio análisis: son arrays JS/JSON planos, cárgalos con cualquier lenguaje.</td></tr>
+  <tr><td><b>Motor astronómico</b></td><td><code>charts.py</code>, <code>marea_tensor.py</code>, <code>mecanismo_focal.py</code></td><td>Posiciones planetarias (Skyfield + JPL DE421), casas topocéntricas Polich-Page, tensor de marea sobre plano de falla.</td><td><code>from charts import compute_charts; compute_charts(fechas, lat, lon, topocentric=True, house_system='polich_page')</code></td></tr>
+  <tr><td><b>Modelo estadístico</b></td><td><code>nullmodel.py</code>, <code>compute_features.py</code></td><td>El modelo nulo emparejado + corrección FDR que corre cada resultado del Tablero.</td><td><code>python nullmodel.py tu_catalogo.csv 200 --include-angles</code> — ver <a href="#" onclick="return irA('ayuda','met_nulo')">Metodología → ¿Por qué un modelo nulo?</a></td></tr>
+  <tr><td><b>Descargadores de catálogo</b></td><td><code>descargar_sismos_masivo.py</code>, <code>descargar_huracanes.py</code>, <code>descargar_volcanes.py</code></td><td>Bajan catálogos públicos actualizados (USGS, NOAA, Smithsonian) directo a CSV.</td><td><code>python descargar_sismos_masivo.py</code> — un comando, sin clave de API.</td></tr>
+  <tr><td><b>Partidas de ajedrez reales</b></td><td><code>real_pgn/*.pgn</code>, <code>players_natal.csv</code>, <code>synastry_modeling_frame.csv</code></td><td>Las 348 partidas del piloto de ajedrez, con reloj real, y ya cruzadas con casa natal por jugada.</td><td>Ábrelas con cualquier lector de PGN, o cárgalas en pandas para reanalizar. La pestaña ♟ Ajedrez de este sitio las usa así.</td></tr>
+  <tr><td><b>Documentación completa</b></td><td><code>README.md</code>, <code>FUENTES_DATOS.md</code>, <code>SETUP_SUPABASE.md</code></td><td>Cómo instalar, de dónde sale cada catálogo, y cómo conectar tu propia nube compartida.</td><td>Se leen directo en GitHub — son la referencia técnica detrás de esta pestaña.</td></tr>
+ </tbody>
+ </table>
+ </div>
+ <div class="hint" style="margin-top:10px">Si vas a reanalizar algo: el <b>hash de la instantánea</b> de cada catálogo importa tanto como el código — un resultado que no se puede reconstruir bit a bit no se acepta como reporte válido en este programa (ver <a href="#" onclick="return irA('ayuda','met_flujo')">Metodología → Flujo de trabajo completo</a>).</div>
+ </div>
+
  <div class="card">
  <h2 data-i18n="fuentes_h2">Lo que ya está descargado y en la nube</h2>
  <p class="small muted" data-i18n-html="fuentes_p">Estos eventos vienen cargados por defecto en la página (pestañas Tablero y Mapa) y están subidos al Supabase compartido de Invesciencias. Puedes filtrarlos por <b>dominio</b> en el Tablero y en el Mapa.</p>
@@ -1622,7 +1778,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </details>
  <details style="margin-bottom:8px">
  <summary style="cursor:pointer;font-weight:600">¿Por qué hay que "corregir" cuando se prueban muchas cosas a la vez?</summary>
- <p class="small" style="margin-top:8px">Si lanzas una moneda 100 veces buscando "10 caras seguidas", es raro que pase — pero si repites el experimento 1.000 veces, tarde o temprano ocurrirá por pura casualidad. Probar 575 configuraciones astronómicas es parecido: algunas van a salir "significativas" solo por haber probado tantas. La corrección FDR ajusta el umbral para que eso no engañe.
+ <p class="small" style="margin-top:8px">Si lanzas una moneda 100 veces buscando "10 caras seguidas", es raro que pase — pero si repites el experimento 1.000 veces, tarde o temprano ocurrirá por pura casualidad. Probar 398 configuraciones astronómicas es parecido: algunas van a salir "significativas" solo por haber probado tantas. La corrección FDR ajusta el umbral para que eso no engañe.
  <br><a href="https://es.wikipedia.org/wiki/Tasa_de_falsos_descubrimientos" target="_blank" rel="noopener">Leer más en Wikipedia: Tasa de falsos descubrimientos →</a></p>
  </details>
  <details style="margin-bottom:8px">
@@ -1726,7 +1882,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <div class="card">
  <h2 id="met_fdr" data-i18n="met_fdr_h2">Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>) + <span class="glos" data-glos="von neumann">Von Neumann</span></h2>
- <p>Probamos 575 características astronómicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
+ <p>Probamos 398 características astronómicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
  <p>FDR ajusta cada p-valor teniendo en cuenta cuántas pruebas hicimos. Solo declaramos significativo lo que supera ese umbral más estricto. Resultado: en lugar de 26 falsos positivos, esperamos que máximo el 5% de los que declaramos significativos sean falsos.</p>
  <p class="small muted">El método BH es más permisivo que Bonferroni (que es demasiado conservador) y más estricto que no corregir. Es el estándar en genómica y estudios de múltiples hipótesis.</p>
 
@@ -2697,7 +2853,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <li><b>MC (Medio Cielo)</b> — punto más alto del cielo, mediodía local</li>
  <li><b>IC (Fondo del Cielo)</b> — punto más bajo, medianoche local</li>
  </ul>
- <p>Estos ángulos giran 360° en 24 horas y son completamente distintos a 4 minutos de diferencia. <b>Solo válidos para eventos con hora exacta y coordenadas precisas</b> (sismos, volcanes). Primer resultado destacado en GCMT 1976–1999: Júpiter en DSC, z=+9.16 (p_fdr=2.1×10⁻¹⁷).</p>
+ <p>Estos ángulos giran 360° en 24 horas y son completamente distintos a 4 minutos de diferencia. <b>Solo válidos para eventos con hora exacta y coordenadas precisas</b> (sismos, volcanes). Primer resultado destacado: Júpiter en DSC. La cifra inicial (z=+9,16) se calculó sobre un catálogo GCMT inflado 5,5× por un error de tipo de magnitud (se usaba mb/MS en vez de Mw). Sobre el catálogo corregido Mw≥6 el hallazgo <b>sobrevive pero es mucho más modesto: z=+4,07, RR=1,37, q=0,019</b> en fallas inversas — por encima del techo de ruido propio de ese estrato (3,27±0,31), medido con 5 réplicas.</p>
 
  <h3>3. Fase lunar y distancia <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
  <p>La Luna completa un ciclo de fases (luna nueva → cuartos → luna llena) cada ~29.5 días. La plataforma divide este ciclo en <b>8 bins de 45°</b> y prueba si los eventos se concentran en alguna fase más de lo esperado por azar. También mide la <b>distancia geocéntrica lunar</b> en km:</p>
@@ -2827,7 +2983,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
  </div>
  <p class="small" style="margin:0 0 8px">En 1975, Ferríz Olivares advertía que procesar la casuística cosmobiológica a mano requería <em>"más de seis meses de trabajo manual para un solo esquema"</em>. Propuso que los <em>"centros de cómputo y la cibernética"</em> serían la herramienta decisiva para validar la Teoría a escala masiva.</p>
- <p class="small" style="margin:0">Esta plataforma procesa <b>34 503 eventos en 11 dominios</b>, calcula 575 configuraciones astronómicas por evento y genera la distribución nula con 200 réplicas de control — en minutos, con código abierto en Python + NASA JPL DE421. Lo que Ferríz Olivares vislumbró como necesario en 1975 es hoy el pipeline estándar de la plataforma.</p>
+ <p class="small" style="margin:0">Esta plataforma procesa <b>34 503 eventos en 11 dominios</b>, calcula 398 configuraciones astronómicas por evento y genera la distribución nula con 200 réplicas de control — en minutos, con código abierto en Python + NASA JPL DE421. Lo que Ferríz Olivares vislumbró como necesario en 1975 es hoy el pipeline estándar de la plataforma.</p>
  </div>
 
  <!-- Bloque 3: Ciencia-Síntesis / Biocibernética cósmica -->
@@ -2884,6 +3040,55 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
    detección: <b>z = 3,88</b>. Dato aleccionador: <b>una de las cinco réplicas produjo 2 rasgos con FDR&lt;0,05 usando
    fechas completamente inventadas</b> — por eso ningún hallazgo aislado, por muy corregido que esté, sustituye a la
    replicación en datos independientes.
+  </div>
+
+  <div class="hint" style="margin:10px 0;border-left-color:#c0392b">
+   <b>Advertencia esencial: el techo de ruido es propiedad del catálogo, no del método.</b> El valor de 3,22 corresponde
+   al catálogo global M≥6, cuyos eventos están temporalmente dispersos. Un catálogo <b>agrupado</b> produce muchísimo más
+   ruido, porque sus eventos no son independientes y se viola el supuesto del FDR. Comprobado con un control negativo:
+   <b>sismicidad inducida por inyección de aguas residuales en Oklahoma</b> (n=3.126, 2009–2023), donde ninguna influencia
+   celeste es físicamente posible porque los sismos los causa la inyección de fluidos.
+   <div style="overflow-x:auto;margin-top:10px">
+    <table style="width:100%;border-collapse:collapse;font-size:12px;background:var(--panel)">
+     <thead><tr style="background:var(--panel2)"><th style="padding:5px 8px;text-align:left">Catálogo</th><th style="padding:5px 8px;text-align:right">Von Neumann</th><th style="padding:5px 8px;text-align:right">Techo propio</th><th style="padding:5px 8px;text-align:right">Falsos positivos por réplica</th></tr></thead>
+     <tbody>
+      <tr style="background:rgba(200,60,60,.10)"><td style="padding:4px 8px">Oklahoma inducido (agrupado)</td><td style="padding:4px 8px;text-align:right">1,339</td><td style="padding:4px 8px;text-align:right"><b>5,48 ± 0,97</b></td><td style="padding:4px 8px;text-align:right"><b>3 a 7</b></td></tr>
+      <tr><td style="padding:4px 8px">↳ el mismo, tras declusterizar (n=42)</td><td style="padding:4px 8px;text-align:right">1,629</td><td style="padding:4px 8px;text-align:right">3,00 ± 0,47</td><td style="padding:4px 8px;text-align:right">0</td></tr>
+      <tr><td style="padding:4px 8px">GCMT fallas inversas</td><td style="padding:4px 8px;text-align:right">1,938</td><td style="padding:4px 8px;text-align:right">3,27 ± 0,31</td><td style="padding:4px 8px;text-align:right">0</td></tr>
+      <tr><td style="padding:4px 8px">Global M≥6 (el de esta curva)</td><td style="padding:4px 8px;text-align:right">1,830</td><td style="padding:4px 8px;text-align:right">3,22 ± 0,65</td><td style="padding:4px 8px;text-align:right">0 a 2</td></tr>
+     </tbody>
+    </table>
+   </div>
+   <p class="small" style="margin:10px 0 0">Un catálogo con Von Neumann 1,34 tiene un techo <b>70% más alto</b> que uno
+   con 1,83: llega a producir <b>z = 7 a partir de ruido puro</b>. Declusterizar lo resuelve — eliminó el 98,7% de los
+   eventos de Oklahoma y los falsos positivos desaparecieron por completo. Esto cuantifica por qué la TCC de Ferríz
+   Olivares exige el <b>test de Von Neumann de diferencias sucesivas</b> antes de cualquier análisis: no es una cautela
+   formal, es la diferencia entre un umbral de 3,2 y uno de 5,5.</p>
+  </div>
+
+  <h3>Validación: ¿la curva es correcta?</h3>
+  <p class="small">La fórmula se contrastó <b>inyectando efectos de tamaño conocido</b> en el catálogo real: se desplazan
+  eventos dentro de la misma ventana de ±30 días hacia instantes donde un rasgo neutro se cumple, elevando su frecuencia
+  en una cantidad exacta. Luego se mide con qué frecuencia el pipeline lo recupera. 60 corridas, 6 niveles de efecto.</p>
+  <div style="overflow-x:auto;margin:10px 0">
+   <table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead><tr style="background:var(--panel2)"><th style="padding:5px 8px;text-align:left">RR inyectado</th><th style="padding:5px 8px;text-align:right">Potencia (FDR)</th><th style="padding:5px 8px;text-align:right">z medido</th><th style="padding:5px 8px;text-align:right">z predicho</th></tr></thead>
+    <tbody>
+     <tr style="background:rgba(60,160,60,.10)"><td style="padding:4px 8px"><b>1,000 (control)</b></td><td style="padding:4px 8px;text-align:right"><b>0%</b></td><td style="padding:4px 8px;text-align:right">+0,04</td><td style="padding:4px 8px;text-align:right">0,00</td></tr>
+     <tr><td style="padding:4px 8px">1,100</td><td style="padding:4px 8px;text-align:right">0%</td><td style="padding:4px 8px;text-align:right">+1,93</td><td style="padding:4px 8px;text-align:right">+1,72</td></tr>
+     <tr><td style="padding:4px 8px">1,151</td><td style="padding:4px 8px;text-align:right">0%</td><td style="padding:4px 8px;text-align:right">+2,77</td><td style="padding:4px 8px;text-align:right">+2,61</td></tr>
+     <tr><td style="padding:4px 8px">1,197</td><td style="padding:4px 8px;text-align:right"><b>90%</b></td><td style="padding:4px 8px;text-align:right">+3,60</td><td style="padding:4px 8px;text-align:right">+3,40</td></tr>
+     <tr><td style="padding:4px 8px">1,245</td><td style="padding:4px 8px;text-align:right">100%</td><td style="padding:4px 8px;text-align:right">+4,54</td><td style="padding:4px 8px;text-align:right">+4,23</td></tr>
+     <tr><td style="padding:4px 8px">1,350</td><td style="padding:4px 8px;text-align:right">100%</td><td style="padding:4px 8px;text-align:right">+6,30</td><td style="padding:4px 8px;text-align:right">+6,05</td></tr>
+    </tbody>
+   </table>
+  </div>
+  <div class="hint" style="margin-bottom:14px">
+   <b>Dos resultados.</b> Primero, el <b>control de falsos positivos es limpio</b>: con RR=1,000 las diez réplicas dieron
+   0% de detección (z medio +0,04). El método no inventa señal donde no la hay. Segundo, la fórmula analítica <b>acierta
+   con un sesgo sistemático de +0,2 a +0,3 en z</b>, siempre hacia el lado seguro: el pipeline real detecta algo mejor de
+   lo que ella predice. Potencia del 80% medida en <b>RR = 1,19</b>, frente al 1,225 que anuncia la fórmula. La curva de
+   abajo es, por tanto, ligeramente <b>conservadora</b>.
   </div>
 
   <h3>El límite, en números</h3>
@@ -2950,7 +3155,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <li><b>Gardner, J. K., & Knopoff, L.</b> (1974). Is the sequence of earthquakes in Southern California, with aftershocks removed, Poissonian? <em>Bulletin of the Seismological Society of America</em>, 64(5), 1363–1367.</li>
  <li><b>Benjamini, Y., & Hochberg, Y.</b> (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society B</em>, 57(1), 289–300.</li>
  <li><b>Gauquelin, M.</b> (1955). <em>L'influence des astres</em>. Le Dauphin, Paris.</li>
- <li style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px"><b>Serrano, D.</b> (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. <em>Circular Astronómica RAC</em>, N.º 1027, septiembre 2026, pp. 8–11. Red de Astronomía de Colombia. — <b>Artículo que describe el diseño de esta plataforma</b>; fuente de los tres niveles de evidencia y del requisito de estratificar por tipo de falla.</li>
+ <li style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px"><b>Serrano, D.</b> (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. <em>Circular Astronómica RAC</em>, N.º 1027, septiembre 2026, pp. 8–11. Red de Astronomía de Colombia. — <b>Artículo que describe el diseño de esta plataforma</b>; fuente de los tres niveles de evidencia y del requisito de estratificar por tipo de falla. <a href="https://rac.net.co/nuevositio/wp-content/uploads/2026/08/circular-septiembre-2026.pdf" target="_blank" rel="noopener">PDF →</a></li>
 <li><b>Tanaka, S., Ohtake, M., &amp; Sato, H.</b> (2002). Evidence for tidal triggering of earthquakes as revealed from statistical analysis of global data. <em>Journal of Geophysical Research: Solid Earth</em>, 107(B10), 2211. <a href="https://doi.org/10.1029/2001JB001577" target="_blank" rel="noopener">doi</a> — 9.350 sismos; la correlación es significativa <b>solo en fallas inversas de zonas de subducción</b>, no en el catálogo global. Base del requisito de estratificación.</li>
 <li><b>Métivier, L., de Viron, O., Conrad, C. P., Renault, S., Diament, M., &amp; Patau, G.</b> (2009). Evidence of earthquake triggering by the solid earth tides. <em>Earth and Planetary Science Letters</em>, 278(3–4), 370–375. <a href="https://doi.org/10.1016/j.epsl.2008.12.020" target="_blank" rel="noopener">doi</a></li>
 <li><b>Melchior, P.</b> (1983). <em>The Tides of the Planet Earth</em> (2.ª ed.). Pergamon Press, Oxford. — Nivel I.</li>
@@ -3052,25 +3257,190 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
 </section>
 
+<!-- ===================== AJEDREZ (Didáctica) ===================== -->
+<section id="ajedrez" style="display:none">
+<style>
+ .aj-player-row{display:flex;gap:10px;margin:14px 0 4px;flex-wrap:wrap}
+ .aj-player-badge{flex:1;min-width:180px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-weight:700;font-size:13px;color:var(--verde-oscuro);text-align:center;transition:background .15s}
+ .aj-player-badge.turn{background:var(--verde-palido);border-color:var(--accent)}
+ .aj-layout{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:16px;align-items:start;margin-top:10px}
+ @media (max-width:860px){.aj-layout{grid-template-columns:1fr}}
+ .aj-movelist-wrap{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}
+ .aj-movelist{max-height:380px;overflow-y:auto;font-family:ui-monospace,monospace;font-size:12.5px;line-height:1.7}
+ .aj-mv{cursor:pointer;padding:1px 4px;border-radius:4px;white-space:nowrap}
+ .aj-mv:hover{background:var(--verde-palido)}
+ .aj-mv.active{background:var(--accent);color:#fff;font-weight:700}
+ .aj-mv.blunder{color:#c0392b;font-weight:700}
+ .aj-mv.mistake{color:#e67e22}
+ .aj-board{display:inline-grid;grid-template-columns:repeat(8,36px);grid-template-rows:repeat(8,36px);border:3px solid var(--oro);border-radius:4px;overflow:hidden}
+ .aj-sq{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1}
+ .aj-controls{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+ .aj-controls button{padding:8px 12px;font-size:13px}
+</style>
+
+ <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
+ <h2 style="font-size:22px;color:#fff;margin-bottom:6px">♟ Sinastría en ajedrez de élite</h2>
+ <p style="font-size:15px;margin-bottom:0">348 partidas de siete torneos de élite (2021–2025), 12 jugadores reales, cada jugada con su instante exacto. Este módulo prueba si la <span style="border-bottom:1px dashed #adf;cursor:help" data-glos="modelo nulo">carta natal</span> de un jugador, cruzada con la carta del instante de su jugada, se asocia con la calidad de su decisión.</p>
+ </div>
+
+ <div class="card">
+ <h2>Los 12 jugadores del piloto</h2>
+ <p class="small muted" style="margin-bottom:14px">Fecha y ciudad de nacimiento, tal como constan en fuentes públicas (Wikipedia). Ninguno tiene hora de nacimiento publicada — por eso el Ascendente y las casas natales quedan indeterminados; ver nota más abajo. Elige un jugador para ver el esquema de su carta.</p>
+ <div id="ajGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"></div>
+ </div>
+
+ <div class="card">
+ <div id="ajDetail" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap"></div>
+ <details class="tccinfo" style="margin-top:14px"><summary>¿Qué es exactamente y qué es esquemático?</summary><p class="tccinfo-body small muted">Real: las 12 divisiones y los ejes ASC/MC/DSC/IC son la estructura genuina del sistema de casas topocéntrico (Polich-Page, 1961) que usa la plataforma. Esquemático: sin hora de nacimiento, <b>las posiciones planetarias de esta rueda son ilustrativas</b> — no un cálculo real de Skyfield/JPL DE421. La plataforma resuelve esto probando el efecto con <b>ángulos continuos</b> (no requieren casas natales) y, aparte, con un análisis de sensibilidad que recorre las 24 horas posibles del día.</p></details>
+ </div>
+
+ <div class="card" id="aj_partida" style="border-left:4px solid var(--oro)">
+ <h2>Partida completa, jugada a jugada</h2>
+ <p class="small muted">20 partidas reales de siete torneos distintos (2021–2025) — Mundiales, Candidatos, Norway Chess — elige una. Cada jugada trae su reloj real y, del lado derecho, la casa real (1–12) donde cae en ese instante cada planeta natal del jugador que mueve — el mismo dato que usa el módulo estadístico, no una recreación.</p>
+
+ <label class="small muted" style="display:block;margin-bottom:4px">Elige una partida</label>
+ <select id="aj_game_select" style="margin-bottom:12px"></select>
+
+ <div class="aj-player-row">
+  <div class="aj-player-badge" id="aj_pbadge_w">Blancas</div>
+  <div class="aj-player-badge" id="aj_pbadge_b">Negras</div>
+ </div>
+
+ <div class="aj-layout">
+  <div class="aj-movelist-wrap">
+   <div class="small muted" style="margin-bottom:6px">Jugadas — clic para saltar</div>
+   <div id="aj_movelist" class="aj-movelist"></div>
+  </div>
+
+  <div style="text-align:center">
+   <div id="aj_board" class="aj-board"></div>
+   <div class="aj-controls">
+    <button class="ghost act" id="aj_btn_first" onclick="ajGoto(0)">⏮</button>
+    <button class="ghost act" id="aj_btn_prev" onclick="ajStep(-1)">◀</button>
+    <button class="act" id="aj_btn_play" onclick="ajTogglePlay()">▶ Reproducir</button>
+    <button class="ghost act" id="aj_btn_next" onclick="ajStep(1)">▶</button>
+    <button class="ghost act" id="aj_btn_last" onclick="ajGoto(9999)">⏭</button>
+   </div>
+   <input type="range" id="aj_slider" min="0" max="270" value="0" style="width:100%;margin-top:10px" oninput="ajGoto(parseInt(this.value))">
+   <div id="aj_moveinfo" class="small" style="margin-top:8px;min-height:36px"></div>
+  </div>
+
+  <div style="text-align:center">
+   <div id="aj_wheel_dyn"></div>
+   <div id="aj_wheel_label" class="small muted" style="margin-top:6px"></div>
+  </div>
+ </div>
+
+ <details class="tccinfo" style="margin-top:12px"><summary>¿Qué es exactamente y qué es esquemático en esta rueda?</summary><p class="tccinfo-body small muted">Real: los ejes ASC/MC/DSC/IC y las 12 casas son la carta topocéntrica genuina calculada para el instante y sede exactos de esa jugada (Polich-Page). La casa donde cae cada planeta <b>natal</b> del jugador que mueve —el dato dorado si es angular (casa 1/4/7/10)— es la cifra real que usa el análisis estadístico (columnas <code>house_*</code> del piloto, Anexo B §B.5), no una ilustración. Esquemático: dentro de su casa, la posición exacta en grados del planeta en el dibujo es arbitraria — solo la casa (1 a 12) es el dato real.</p></details>
+
+ <div class="hint" style="margin-top:14px">
+ <b>Lo que encontró esta prueba</b>, sobre las 13.156 jugadas confirmatorias de las 166 partidas nunca vistas en la fase exploratoria: ningún patrón de sinastría sobrevivió la corrección estadística (p=0,495). El rasgo aislado más prometedor —Marte, p=0,047 sin corregir— no sobrevivió <span class="glos" data-glos="fdr">Holm-Bonferroni</span> al probarse junto con los otros 44 pares de cuerpos.
+ </div>
+ </div>
+
+ <div class="card">
+ <h2>Cómo se llegó a ese número</h2>
+ <table style="width:100%;border-collapse:collapse;font-size:13px">
+  <thead><tr style="background:var(--panel2)"><th style="padding:6px 8px;text-align:left">Paso</th><th style="padding:6px 8px;text-align:left">Qué se hizo</th></tr></thead>
+  <tbody>
+   <tr><td style="padding:6px 8px">1. Datos</td><td style="padding:6px 8px">Reconstrucción del timestamp UTC real por jugada + corrección de 4 artefactos de reloj específicos de cada torneo.</td></tr>
+   <tr><td style="padding:6px 8px">2. Carta</td><td style="padding:6px 8px">Carta topocéntrica exacta por jugada (instante + sede del torneo), motor validado contra Swiss Ephemeris.</td></tr>
+   <tr><td style="padding:6px 8px">3. Exploratorio</td><td style="padding:6px 8px">Fórmula congelada sobre el torneo Tata Steel — nunca se vuelve a tocar después de este paso.</td></tr>
+   <tr><td style="padding:6px 8px">4. Confirmatorio</td><td style="padding:6px 8px">Corrida única, una sola vez, sobre 166 partidas y 13.156 jugadas nunca vistas por la calibración.</td></tr>
+   <tr><td style="padding:6px 8px">5. Sinergia</td><td style="padding:6px 8px">45 pares de cuerpos con término de interacción, corregidos con Holm-Bonferroni: 0/45 sobreviven.</td></tr>
+  </tbody>
+ </table>
+ <p class="small muted" style="margin-top:10px">Metodología completa (modelo nulo, artefactos de reloj, distinción confusor/mediador): <a href="#" onclick="return irA('ayuda','met_split')">Validación exploratoria + confirmatoria →</a></p>
+ </div>
+
+</section>
+
+<!-- ===================== SISMOS (Didáctica) ===================== -->
+<section id="sismos" style="display:none">
+
+ <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
+ <h2 style="font-size:22px;color:#fff;margin-bottom:6px">🌍 Cuando el propio suelo firma la causa</h2>
+ <p style="font-size:15px;margin-bottom:0">Un sismo <b>inducido</b> — por inyección de agua residual de la extracción de petróleo y gas, o por fracturamiento hidráulico (fracking) — es el control negativo perfecto: la presión de un fluido inyectado en una falla ya existente es un mecanismo físico documentado, con calendario humano, no astronómico.</p>
+ </div>
+
+ <div class="card">
+ <h2>La geometría que se calcula para cada sismo</h2>
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px">
+  <div style="text-align:center"><div id="si_marea" style="margin:0 auto"></div><p class="small muted" style="margin-top:8px"><b>Marea gravitacional</b><br>deforma la corteza 20–55 cm</p></div>
+  <div style="text-align:center"><div id="si_falla" style="margin:0 auto"></div><p class="small muted" style="margin-top:8px"><b>Plano de falla</b><br>esfuerzo de Coulomb resuelto</p></div>
+  <div style="text-align:center"><div id="si_casas" style="margin:0 auto"></div><p class="small muted" style="margin-top:8px"><b>Casas topocéntricas</b><br>del epicentro, al instante exacto</p></div>
+ </div>
+ </div>
+
+ <div class="card" style="border-left:4px solid #c0392b">
+ <h2>El caso de Oklahoma: 3.126 sismos que siguen el calendario de un permiso</h2>
+ <p class="small muted">Oklahoma y el sur de Kansas, 2009–2023, catálogo USGS FDSN, M≥3,0. El perfil por año es la propia demostración: sube con el auge de la inyección de aguas residuales, llega a su pico, y cae con las restricciones regulatorias de 2015–2016 (Ellsworth 2013; Keranen et al. 2014).</p>
+ <div id="si_bars" style="display:flex;align-items:flex-end;gap:16px;height:150px;margin:18px 0 6px"></div>
+ <p class="small muted">Fondo tectónico previo: 20–63 eventos/año (2009–2012). Tras las restricciones: 296→61 (2017–2019) y de vuelta a 16–37 (2020–2023).</p>
+ <div class="hint" style="margin-top:10px">Una secuencia tectónica natural no sigue el calendario regulatorio de un estado — y en el análisis de potencia de esta plataforma, este mismo catálogo se usó como control negativo: <a href="#" onclick="return irA('ayuda','met_potencia')">ver la curva de potencia completa →</a></div>
+ </div>
+
+ <div class="card" id="si_secuencia" style="border-left:4px solid var(--oro)">
+ <h2>Los 15 sismos inducidos más fuertes de Oklahoma, evento a evento</h2>
+ <p class="small muted">2011–2022, ordenados en el tiempo. Para cada uno, la casa que ves a la derecha es la <b>carta topocéntrica real</b> (Polich-Page, motor validado contra Swiss Ephemeris) calculada para el instante y epicentro exactos de ESE sismo — no hay ambigüedad de hora de nacimiento aquí: la hora del sismo es exacta y pública.</p>
+
+ <div class="aj-layout">
+  <div class="aj-movelist-wrap">
+   <div class="small muted" style="margin-bottom:6px">Sismos — clic para saltar</div>
+   <div id="si_movelist" class="aj-movelist"></div>
+  </div>
+
+  <div style="text-align:center">
+   <div class="aj-controls">
+    <button class="ghost act" onclick="siGoto(0)">⏮</button>
+    <button class="ghost act" onclick="siStep(-1)">◀</button>
+    <button class="act" id="si_btn_play" onclick="siTogglePlay()">▶ Reproducir</button>
+    <button class="ghost act" onclick="siStep(1)">▶</button>
+    <button class="ghost act" onclick="siGoto(9999)">⏭</button>
+   </div>
+   <input type="range" id="si_slider" min="0" max="14" value="0" style="width:100%;margin-top:10px" oninput="siGoto(parseInt(this.value))">
+   <div id="si_eventbox" style="margin-top:14px"></div>
+  </div>
+
+  <div style="text-align:center">
+   <div id="si_wheel_dyn"></div>
+   <div class="small muted" style="margin-top:6px">Carta real del instante del sismo</div>
+  </div>
+ </div>
+ <div class="hint" style="margin-top:12px">Fíjate en la <b>hora solar local</b> de cada sismo (columna en la lista): la Ley de las repeticiones periódicas de Llona predice que sismos sucesivos de la misma zona deberían agruparse a horas similares. Compáralos tú mismo, evento a evento.</div>
+ </div>
+
+ <div class="card" style="border-left:4px solid #16a085">
+ <h2>La Teoría Cicloidal de Llona, en esta plataforma</h2>
+ <p class="small muted">Scipión E. Llona (Director del Observatorio Sismológico de Lima, h. 1941) asoció los "puntos singulares" de la curva cicloidal terrestre —cada 30° de arco— con extremos de tensión dinámica en la corteza. Ya puedes explorar esa curva en 3D y comprobar la posición orbital de cualquier fecha:</p>
+ <div class="row" style="gap:10px;margin-top:10px">
+  <button class="ghost act" onclick="return irA('guia','')">🌀 Ver la Cicloide de Llona en 3D (Empieza aquí)</button>
+  <button class="ghost act" onclick="return irA('ayuda','met_llona')">Compruébalo tú mismo — simulador de fecha →</button>
+ </div>
+ <div class="hint" style="margin-top:12px">Probado en el piloto de repetición diurna (16 pares de sismos de la misma falla): nulo, χ²=8,1 — muestra insuficiente para una prueba concluyente, pendiente de un catálogo mayor.</div>
+ </div>
+
+</section>
+
 <!-- ===================== EPIDEMIOLOGÍA COSMOBIOLÓGICA (Asistencia Social) ===================== -->
 <section id="epidemiologia" style="display:none">
 
  <div class="card">
- <h2>Epidemiología Cosmobiológica</h2>
- <p class="small muted" style="margin-bottom:6px">
+ <h2 data-i18n="epi_h2">Epidemiología Cosmobiológica</h2>
+ <p class="small muted" style="margin-bottom:6px" data-i18n-html="epi_codigos">
  <code>TCC 411</code> Medicina Preventiva y Salud Pública ·
  <code>TCC 411.1</code> Planificación de servicios de salud ·
  <code>TCC 411.4</code> Nutrología ·
  <code>TCC 437.2</code> Asistencia Social — Prontuario I, Parte II, cap. 5 y 18.
  </p>
- <p>
+ <p data-i18n-html="epi_intro">
  La TCC plantea la epidemiología no como un recuento de casos, sino como el análisis
  de si un fenómeno clínico aparece <em>"con más frecuencia bajo ciertas condiciones
  climáticas o cósmicas de lo que sería de esperar estadísticamente"</em>. Esta sección
  aplica el mismo motor estadístico ya validado para sismos (modelo nulo emparejado,
  Test de Von Neumann, corrección FDR) a datos de salud colectiva.
  </p>
- <div class="hint">
+ <div class="hint" data-i18n-html="epi_estado">
  <b>Estado del módulo:</b> el motor estadístico (<code>epidemiology.py</code>) está
  implementado y validado con 5 tests unitarios. Los datasets reales (admisiones
  hospitalarias, número de Wolf, índice geomagnético Kp, series meteorológicas) deben
@@ -3182,6 +3552,95 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
 </section>
 
+<!-- ===================== ASISTENCIA SOCIAL — Casos y estudios históricos ===================== -->
+<section id="historia_social" style="display:none">
+
+ <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
+ <h2 style="font-size:22px;color:#fff;margin-bottom:6px" data-i18n="hist_h2">📜 Casos y estudios históricos citados en la TCC</h2>
+ <p style="font-size:15px;margin-bottom:0" data-i18n="hist_intro">La Teoría Científica de la Cosmobiología de David Ferriz no es solo el marco teórico detrás del instrumento de captura — dedica capítulos enteros a resumir estudios reales, con sus cifras, sus autores y sus revistas, sobre ritmos biológicos, geomagnetismo y salud, y criminalidad. Esta pestaña reúne los más citables, tal como aparecen en el libro.</p>
+ </div>
+
+ <div class="card" style="border-left:4px solid var(--oro)">
+ <h2>¿De dónde sale todo esto? — antecedentes reales citados en la TCC</h2>
+ <p>El instrumento de captura de arriba no nace de la nada: reproduce, campo por campo, la <b>Historia Clínica Cosmobiológica</b> del propio Prontuario I (biotipo, laboratorio sincrónico, ciclo anual) y responde a una tradición de más de un siglo de estudios reales — algunos publicados en revistas médicas serias, otros con resultados nulos igual de honestos — que la TCC recopila en los capítulos <code>11. Acta médica de ritmos biológicos</code>, <code>13. Trabajos cosmobiomédicos y prospectiva</code> y <code>20. Observaciones de Jung y Barbault</code>. Van aquí, con sus cifras y su cita tal como aparecen en el libro, para que quien entra a Asistencia Social vea el contexto histórico completo — <b>no son resultados de esta plataforma</b> (que solo valida lo que aparece en Investigación → Tablero), son los antecedentes que la propia TCC reconoce.</p>
+ <button class="ghost act small" style="font-size:12px;padding:3px 10px;margin-top:6px" onclick="document.querySelector('[data-tab=epidemiologia]').click()">↑ Ir al instrumento de captura</button>
+ </div>
+
+ <div class="card">
+ <h2>Un resultado nulo bien reportado, hace más de 60 años</h2>
+ <p class="small muted"><code>TCC, cap. 11</code> — Kelley, sobre datos de Pokorny et al. (<i>Am. J. Psychiat.</i>, 120, 1963–64)</p>
+ <p>Texas, 1959–1961: <b>2.497 suicidios y 2.017 homicidios</b>, identificados por fecha, raza y sexo, cruzados contra las 4 fases lunares y contra el ciclo afelio-perihelio de la Luna. Es exactamente el tipo de prueba que esta plataforma sigue haciendo hoy — con la diferencia de que aquí el propio estudio original ya declaró el resultado con honestidad:</p>
+ <div style="overflow-x:auto"><table>
+ <thead><tr><th>Quincena lunar</th><th>Suicidios</th><th>Homicidios</th></tr></thead>
+ <tbody>
+ <tr><td>Luna llena</td><td>1.246</td><td>1.005</td></tr>
+ <tr><td>Luna nueva</td><td>1.251</td><td>1.012</td></tr>
+ <tr><td><b>Total</b></td><td><b>2.497</b></td><td><b>2.017</b></td></tr>
+ </tbody>
+ </table></div>
+ <p class="small muted" style="margin-top:8px">Y agrupando por afelio/perihelio, la simetría es igual de exacta: Afelio 1.251 suicidios / 1.024 homicidios, Perihelio 1.246 / 993.</p>
+ <div class="hint" style="margin-top:8px"><b>Conclusión del estudio original:</b> "No se encontró ninguna relación significativa" — ni por fase lunar, ni por sexo, ni por raza, ni por el día previo al perihelio (la desviación entre lo esperado y lo observado en 1959–1961 no fue estadísticamente significativa). Es el mismo tipo de honestidad estadística — reportar el nulo en vez de esconderlo — que esta plataforma intenta sostener con el modelo nulo emparejado y la corrección FDR.</div>
+ </div>
+
+ <div class="card">
+ <h2>Geomagnetismo y salud — tres estudios reales de los años 1959–1963</h2>
+ <p class="small muted"><code>TCC, cap. 13</code></p>
+ <table>
+ <thead><tr><th>Estudio</th><th>Qué midió</th><th>Fuente citada en la TCC</th></tr></thead>
+ <tbody>
+ <tr><td>Friedman, Becker &amp; Bachman</td><td>8 hospitales psiquiátricos de Nueva York, admisiones vs. parámetros geomagnéticos</td><td><i>"Geomagnetic Parameters and Psychiatric Hospital Admissions"</i>, <i>Nature</i>, vol. 200, 1963</td></tr>
+ <tr><td>Poumailloux &amp; Viart</td><td>Incidencia de infartos de miocardio en Pavia, 1954–1958, vs. actividad solar/geomagnética creciente</td><td><i>Bull. Acad. Méd.</i>, CXLIII, n.º 7–8, pág. 167, 1959 (Academia de Medicina de París)</td></tr>
+ <tr><td>N. Romensky</td><td>3 explosiones solares intensas hacia la Tierra + aumento de pacientes vasculares, Observatorio de la Academia de Ciencias de la URSS</td><td>Recueil des Travaux Scientifiques, Estaciones Termales y Climáticas, Sochi, 1960</td></tr>
+ </tbody>
+ </table>
+ <p class="small muted" style="margin-top:8px">Conclusión textual de Friedman, Becker y Bachman: "la conducta del organismo es significativamente afectada, a través del sistema de control directo en funcionamiento en momento dado, por campos de fuerza externos". Esta es exactamente la clase de hipótesis que el módulo de <a href="#" onclick="return irA('epidemiologia','')">Epidemiología</a> de arriba te permite volver a poner a prueba con datos propios (número de Wolf, índice Kp) y el mismo rigor del resto de la plataforma.</p>
+ </div>
+
+ <div class="card">
+ <h2>Biotipo humano — por qué el formulario de arriba lo pregunta</h2>
+ <p class="small muted"><code>TCC, cap. 18</code> — Historia Clínica Cosmobiológica, ítem 13</p>
+ <p>El campo "Biotipología humana" del instrumento de captura reproduce dos clasificaciones clásicas de la constitución humana que la TCC cruza con el análisis cosmobiológico — ninguna de las dos nació con la cosmobiología, pero la TCC las incorpora como variable de estratificación:</p>
+ <div style="overflow-x:auto"><table>
+ <thead><tr><th>Sistema</th><th>Categorías</th><th>Origen</th></tr></thead>
+ <tbody>
+ <tr><td>Biotipología constitucional</td><td>Pícnico · Atlético · Asténico (· Displástico)</td><td>Ernst Kretschmer, psiquiatra alemán (constitución física ↔ temperamento)</td></tr>
+ <tr><td>Temperamentos clásicos</td><td>Bilioso · Nervioso · Sanguíneo · Linfático</td><td>Doctrina humoral hipocrática, retomada por la medicina constitucional del s. XX</td></tr>
+ </tbody>
+ </table></div>
+ <p class="small muted" style="margin-top:8px">Un dato real que la TCC cita de Kretschmer para justificar por qué esto importa en un formulario cosmobiológico: en su casuística, <b>las fases maníacas se concentraban en abril y agosto, y las depresivas en enero y septiembre</b> — una periodicidad anual real, documentada, que cualquier cruce entre biotipo y fecha de crisis debería poder distinguir de una simple coincidencia estacional.</p>
+ </div>
+
+ <div class="card">
+ <h2>Laboratorio sincrónico — qué hay detrás de la "Reacción de Takata"</h2>
+ <p class="small muted"><code>TCC, cap. 13</code> — el mismo campo que aparece en "Laboratorio sincrónico" del formulario de arriba</p>
+ <p>En 1941, el científico japonés Maki Takata describió que el <b>índice de floculación de la albúmina en suero sanguíneo</b> varía con el ritmo menstrual y — más llamativo — empieza a subir pocos minutos antes del amanecer, "como si la sangre previese la aparición del sol" (M. Takata y T. Murasugi, <i>Bioklimat. Beibl.</i>, VII, 1941). El propio Takata documentó en 1951 que esa reacción presenta variaciones marcadas y reproducibles. Un fenómeno análogo — cambios en la estabilidad de soluciones coloidales (oxicloruro de bismuto) correlacionados con factores atmosféricos/cósmicos — fue estudiado por Giorgio Piccardi, director del Instituto Físico-Químico de Florencia.</p>
+ <div class="hint">Ninguno de los dos fenómenos se mide en esta plataforma (no fabricamos datos de laboratorio) — el campo "Reacción de Takata" del formulario existe para que, si tú o tu institución <i>sí</i> tienen esa medición real, quede registrada junto con el resto del evento y pueda cruzarse después con el motor estadístico.</div>
+ </div>
+
+ <div class="card">
+ <h2>Criminalidad y estación del año — más de 150 años de "calendarios"</h2>
+ <p class="small muted"><code>TCC, cap. 20</code> — vía Durkheim, <i>El Suicidio</i> (1897), cap. II "Los factores extrasociales"</p>
+ <p>Alexandre Lacassagne publicó su <i>"calendario de la criminalidad"</i> (<i>Revue Scientifique</i>, 1881) sobre datos franceses de 1827–1870: los <b>delitos contra la propiedad</b> tienen su máximo en <b>invierno</b>, mientras los <b>delitos contra las personas</b> tienen su máximo a <b>fines de primavera/inicios de verano</b> — patrón que Quetelet (1835), Guerry, Ferri y Corre confirmaron después con series propias. Durkheim, en el mismo capítulo, tabuló la proporción estacional del suicidio en 7 países europeos (cuadro XI, sobre 1.000 casos/año) — el patrón se repite casi idéntico de un país a otro:</p>
+ <div style="overflow-x:auto"><table style="font-size:12px">
+ <thead><tr><th>Estación</th><th>Dinamarca<br><span class="small muted">1858–65</span></th><th>Bélgica<br><span class="small muted">1841–49</span></th><th>Francia<br><span class="small muted">1835–43</span></th><th>Sajonia<br><span class="small muted">1847–58</span></th><th>Baviera<br><span class="small muted">1858–65</span></th><th>Austria<br><span class="small muted">1858–59</span></th><th>Prusia<br><span class="small muted">1869–72</span></th></tr></thead>
+ <tbody>
+ <tr><td>Verano</td><td>312</td><td>301</td><td>306</td><td>307</td><td>308</td><td>315</td><td>290</td></tr>
+ <tr><td>Primavera</td><td>284</td><td>275</td><td>283</td><td>281</td><td>282</td><td>281</td><td>284</td></tr>
+ <tr><td>Otoño</td><td>227</td><td>229</td><td>210</td><td>217</td><td>218</td><td>219</td><td>227</td></tr>
+ <tr><td>Invierno</td><td>177</td><td>195</td><td>201</td><td>195</td><td>192</td><td>185</td><td>199</td></tr>
+ </tbody>
+ </table></div>
+ <p class="small muted" style="margin-top:8px">Nótese que este patrón, real y bien documentado desde el siglo XIX, es <b>estacional</b> (ligado al calendario solar/climático), no necesariamente astrológico — la propia TCC lo presenta como antecedente de que "el ritmo cósmico se deja sentir en las actividades sociales", una hipótesis más amplia que esta plataforma solo puede poner a prueba con series propias, evento por evento, con el mismo modelo nulo emparejado de siempre.</p>
+ </div>
+
+ <div class="card" style="background:var(--panel2)">
+ <h2>Un dato pendiente de rastrear hasta su fuente original</h2>
+ <p class="small muted"><code>TCC, pág. 212</code> — se incluye tal como aparece en el libro, sin la referencia bibliográfica completa del estudio original; queda como antecedente histórico por verificar, no como hallazgo confirmado por esta plataforma.</p>
+ <p>"De 47 mujeres fallecidas de suicidio, accidente o enfermedad, 45 estaban en la fase luteínica" del ciclo menstrual — mencionado en la TCC junto a los trabajos de Weinstein (poliomielitis y ciclo menstrual) y Dowling (susceptibilidad al resfriado común según la fase del ciclo).</p>
+ </div>
+
+</section>
+
 </main>
 
 <!-- Tooltip flotante del glosario -->
@@ -3200,7 +3659,7 @@ const GLOSARIO = {
  },
  "fdr": {
  title: "FDR — Tasa de Falsos Descubrimientos",
- body: "Cuando hacemos 575 pruebas estadísticas a la vez, esperamos que ~29 salgan 'significativas' solo por azar. FDR (método Benjamini-Hochberg) ajusta cada resultado teniendo en cuenta que estamos probando muchas cosas simultáneamente. Es el estándar internacional para estudios de este tipo."
+ body: "Cuando hacemos 398 pruebas estadísticas a la vez, esperamos que ~20 salgan 'significativas' solo por azar. FDR (método Benjamini-Hochberg) ajusta cada resultado teniendo en cuenta que estamos probando muchas cosas simultáneamente. Es el estándar internacional para estudios de este tipo."
  },
  "benjamini-hochberg": {
  title: "Benjamini-Hochberg — corrección por comparaciones múltiples",
@@ -3315,13 +3774,15 @@ document.addEventListener('click',e=>{
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
  b.classList.add('active');
- ['guia','captura','tablero','mapa','hipotesis','fuentes','ayuda','epidemiologia'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
+ ['guia','captura','tablero','mapa','hipotesis','fuentes','ayuda','epidemiologia','historia_social','ajedrez','sismos'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
  if(b.dataset.tab==='tablero'&&results.length){renderCharts();renderTable();renderCompare();
  setTimeout(()=>{try{Plotly.Plots.resize('volcano');Plotly.Plots.resize('bar');Plotly.Plots.resize('compare');}catch(e){}},60);}
  if(b.dataset.tab==='mapa'){populateDomainFilter();renderMap();
  setTimeout(()=>{try{Plotly.Plots.resize('geomap');Plotly.Plots.resize('grid');Plotly.Plots.resize('timehist');Plotly.Plots.resize('lunarrose');}catch(e){}},60);}
  if(b.dataset.tab==='tablero'){populateDomainResults();}
  if(b.dataset.tab==='ayuda'){setTimeout(renderDensidadHallazgo,50);setTimeout(llonaSimular,50);setTimeout(precesionSimular,50);setTimeout(actualizarEraPrecesional,50);setTimeout(potenciaGrafico,60);setTimeout(potenciaCalcular,60);}
+ if(b.dataset.tab==='ajedrez'){setTimeout(ajedrezInit,30);}
+ if(b.dataset.tab==='sismos'){setTimeout(sismosInit,30);}
 });
 
 // Enlaces a anclas que viven en OTRA pestaña (p.ej. desde "Empieza aquí" hacia
@@ -3682,7 +4143,7 @@ const DOMAIN_WARN={
  inundacion:'ℹ <b>Inundaciones (EONET):</b> tienen lugar y fecha, pero pueden agruparse por temporada (monzones). Prioriza los <b>aspectos planeta–planeta</b> y confirma con validación cruzada.',
  sequia:'⚠ <b>Sequías:</b> son procesos extensos (meses) y aquí hay muy pocas (7). Muestra insuficiente; solo ilustrativo.',
  sismo_M5plus:'<b>Sismos M≥5 — 44,390 eventos, K=200:</b>73 rasgos FDR<0.05, de los cuales 68 son aspectos planeta–planeta. Top hallazgo: <code>Mercury|Jupiter|conjunction</code> z=11.4, y <code>Mercury|Uranus|conjunction</code> z=10.5 (exceso 20%) — <b>replica exacta del hallazgo confirmado en M≥6</b>. ADVERTENCIA: el gran N amplifica señales muy pequeñas. No todos los 73 son igualmente robustos; los que involucran pares lentos (Júpiter–Saturno, Júpiter–Urano) pueden tener artefacto residual. Prioriza los aspectos con planetas rápidos (Mercurio, Venus, Marte).',
- sismo_M6plus:'<b>Sismos M≥6 — RESULTADO CONFIRMADO:</b> <code>aspect|Mercury|Uranus|conjunction</code> z=3.88, p_fdr=0.00041, exceso del 32%. Sobrevive FDR (522 pruebas) y validación cruzada exploratoria+confirmatoria (1,865+1,865 sismos independientes). Primer resultado positivo del proyecto. Ver pestaña <b>Sismos M≥6 — confirmatoria</b> para los 4 candidatos testados.',
+ sismo_M6plus:'<b>Sismos M≥6 — RESULTADO CONFIRMADO:</b> <code>aspect|Mercury|Uranus|conjunction</code> z=3.88, p_fdr=0.00041, exceso del 32%. Sobrevive FDR (398 pruebas) y validación cruzada exploratoria+confirmatoria (1,865+1,865 sismos independientes). Primer resultado positivo del proyecto. Ver pestaña <b>Sismos M≥6 — confirmatoria</b> para los 4 candidatos testados.',
  sismo_M6plus_confirmatorio:'<b>Confirmatoria M≥6:</b> de 4 candidatos del set exploratorio, <b>1 confirmado</b> con misma dirección: <code>Mercury|Uranus|conjunction</code> (z=3.88, p_fdr=0.00041). Los otros 3 no replicaron — eran ruido. Estándar de oro anti p-hacking. Pendiente antes de llamarlo confirmado: estratificar por tipo de falla y profundidad focal, y replicar en catálogo externo.',
  sismo_M6plus_exploratorio:'<b>Exploratoria M≥6 (50% datos):</b>4 candidatos FDR<0.05. Solo Mercurio–Urano conjunción replicó en la confirmatoria. Ver dominio <b>Sismos M≥6 (corpus completo)</b> para el análisis completo.',
  sismo_impacto:'<b>Sismos ponderados por muertos:</b>4.080 sismos significativos de NOAA NCEI (2,5 millones de víctimas), donde cada evento pesa por <code>log₁₀(1+muertos)</code>. Responde "¿alguna configuración planetaria se asocia a los sismos más <b>letales</b>, no solo a los más frecuentes?". <b>Resultado: 0 significativos</b> — tampoco hay señal con la población. Es el eje de impacto al servicio de la gente.',
@@ -4297,11 +4758,14 @@ const SOURCES=[
 populateDomainResults();
 if(results.length){afterLoad();}
 
-// ---------- toggle de idioma ----------
-function toggleLang(){
- const next = document.documentElement.lang === 'es' ? 'en' : 'es';
- document.documentElement.lang = next;
- const dict = window.I18N && window.I18N[next];
+// ---------- idioma: aplicar + recordar la elección ----------
+// applyLang() es la función real (la reutilizan tanto el botón como la
+// restauración automática al cargar la página); toggleLang() solo decide
+// cuál es "el otro" idioma y se la delega — así nunca quedan dos copias de
+// la misma lógica de reemplazo de texto para mantener sincronizadas.
+function applyLang(lang){
+ document.documentElement.lang = lang;
+ const dict = window.I18N && window.I18N[lang];
  if(dict){
  document.querySelectorAll('[data-i18n]').forEach(el => {
  const k = el.getAttribute('data-i18n');
@@ -4318,11 +4782,28 @@ function toggleLang(){
  // Update page title
  if(dict.page_title) document.title = dict.page_title;
  }
- document.getElementById('lang-toggle').textContent = next==='es' ? '🌐 English' : '🌐 Español';
+ const toggleBtn = document.getElementById('lang-toggle');
+ if(toggleBtn) toggleBtn.textContent = lang==='es' ? '🌐 English' : '🌐 Español';
  // Keep legacy banner always hidden — full translation replaces it
  const banner = document.getElementById('en-banner');
  if(banner) banner.style.display = 'none';
+ // recordar la elección — para que "fácil de usar" incluya no tener que
+ // volver a pulsar el botón cada vez que se recarga la página o se vuelve
+ // más tarde (antes se reseteaba siempre a español)
+ try { localStorage.setItem('cosmobiologia_lang', lang); } catch(e) {}
 }
+function toggleLang(){
+ const next = document.documentElement.lang === 'es' ? 'en' : 'es';
+ applyLang(next);
+}
+// restaurar el idioma guardado (si lo hay) al cargar — este script corre
+// después de que todo el HTML con data-i18n ya existe en el DOM
+(function(){
+ try {
+ const saved = localStorage.getItem('cosmobiologia_lang');
+ if (saved === 'en') applyLang('en');
+ } catch(e) {}
+})();
 
 // ═══════════════════════════════════════════════════════════
 // CALCULADORA DE DUPLAS / TRIPLETAS (TCC cap. 16)
@@ -5034,8 +5515,79 @@ function threeInit() {
  window.addEventListener('resize', threeOnResize);
  _threeRenderer.domElement.addEventListener('mousemove', threeOnMouseMove);
  _threeRenderer.domElement.addEventListener('mouseleave', () => { document.getElementById('three_tooltip').style.display = 'none'; });
+ _threeRenderer.domElement.addEventListener('click', threeOnClickMedir);
  threeBuildMovimientosScene();
  threeAnimate();
+}
+
+// ═══ Medición de distancia angular — sistema de coordenadas ecuatoriales.
+// Actívala y haz clic en dos estrellas/planetas cualesquiera: se calcula el
+// ángulo real entre ambas direcciones vistas desde el origen (independiente
+// del radio esquemático de cada una, que solo codifica distancia real en
+// años luz) y se muestra la AR/Dec de cada punto, recuperada invirtiendo la
+// misma convención (x=r cosδ cosα, y=r senδ, z=r cosδ senα) que usa toda
+// esta escena para ubicar estrellas y límites de constelación. ═══
+let _threeMedirActivo = false;
+let _threeMedirPuntos = [];
+let _threeMedirMarkers = [];
+function threeMedirToggle() {
+ _threeMedirActivo = !_threeMedirActivo;
+ const btn = document.getElementById('three_medir_btn');
+ if (btn) btn.className = _threeMedirActivo ? 'act' : 'ghost act';
+ const btnRail = document.getElementById('three_medir_btn_rail');
+ if (btnRail) btnRail.classList.toggle('on', _threeMedirActivo);
+ threeMedirReset();
+ const nota = document.getElementById('three_medir_nota');
+ if (nota) nota.textContent = _threeMedirActivo ? 'Activo — haz clic en dos estrellas o planetas cualesquiera.' : '';
+}
+function threeMedirReset() {
+ _threeMedirPuntos = [];
+ _threeMedirMarkers.forEach(m => _threeScene && _threeScene.remove(m));
+ _threeMedirMarkers = [];
+ const res = document.getElementById('three_medir_resultado');
+ if (res) res.innerHTML = '';
+}
+function _xyzToRaDec(pos) {
+ const r = pos.length();
+ const dec = Math.asin(Math.max(-1, Math.min(1, pos.y / r)));
+ const ra = (Math.atan2(pos.z, pos.x) * 180 / Math.PI + 360) % 360;
+ return { ra, dec: dec * 180 / Math.PI };
+}
+function threeOnClickMedir(ev) {
+ if (!_threeMedirActivo || !_threeScene) return;
+ _threeRaycaster.setFromCamera(_threeMouseNDC, _threeCamera);
+ const meshes = _threeHoverables.map(h => h.mesh);
+ const hits = _threeRaycaster.intersectObjects(meshes, false);
+ if (!hits.length) return;
+ const hit = _threeHoverables.find(h => h.mesh === hits[0].object);
+ if (!hit) return;
+ const nombre0 = hit.info.match(/<b>(.*?)<\/b>/); const label0 = nombre0 ? nombre0[1] : '(punto)';
+ if (hit.mesh.position.length() < 0.05) {
+ const res0 = document.getElementById('three_medir_resultado');
+ if (res0) res0.innerHTML = `<b>${label0}</b> está en el origen de este mapa (0,0,0) — no tiene una dirección propia que medir aquí. Elige otro punto.`;
+ return;
+ }
+ if (_threeMedirPuntos.length >= 2) threeMedirReset();
+ const nombre = nombre0; const label = label0;
+ const pos = hit.mesh.position.clone();
+ const marker = new THREE.Mesh(new THREE.RingGeometry(pos.length() * 0.012, pos.length() * 0.018, 24),
+ new THREE.MeshBasicMaterial({ color: 0xff5555, side: THREE.DoubleSide }));
+ marker.position.copy(pos); marker.lookAt(0, 0, 0);
+ _threeScene.add(marker); _threeMedirMarkers.push(marker);
+ _threeMedirPuntos.push({ label, pos });
+ const res = document.getElementById('three_medir_resultado');
+ if (_threeMedirPuntos.length === 1) {
+ const c = _xyzToRaDec(pos);
+ res.innerHTML = `Punto A: <b>${label}</b> — AR ${(c.ra / 15).toFixed(2)}h (${c.ra.toFixed(2)}°), Dec ${c.dec >= 0 ? '+' : ''}${c.dec.toFixed(2)}°. Elige el segundo punto…`;
+ } else if (_threeMedirPuntos.length === 2) {
+ const [a, b] = _threeMedirPuntos;
+ const ca = _xyzToRaDec(a.pos), cb = _xyzToRaDec(b.pos);
+ const cosang = a.pos.clone().normalize().dot(b.pos.clone().normalize());
+ const ang = Math.acos(Math.max(-1, Math.min(1, cosang))) * 180 / Math.PI;
+ res.innerHTML = `<b>${a.label}</b> (AR ${(ca.ra / 15).toFixed(2)}h, Dec ${ca.dec >= 0 ? '+' : ''}${ca.dec.toFixed(2)}°) ↔ <b>${b.label}</b> (AR ${(cb.ra / 15).toFixed(2)}h, Dec ${cb.dec >= 0 ? '+' : ''}${cb.dec.toFixed(2)}°)<br><span style="font-size:16px;font-weight:700;color:var(--accent2)">Distancia angular: ${ang.toFixed(2)}°</span> — haz clic en cualquier punto para empezar de nuevo.`;
+ _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a.pos, b.pos]),
+ new THREE.LineDashedMaterial({ color: 0xff5555, dashSize: 2, gapSize: 1 })).computeLineDistances());
+ }
 }
 
 // ═══ Tooltip al pasar el mouse — funciona en las 3 vistas (movimientos,
@@ -5058,8 +5610,10 @@ function threeOnMouseMove(ev) {
  tooltip.style.display = hit ? '' : 'none';
  tooltip.style.left = (ev.clientX - rect.left + 14) + 'px';
  tooltip.style.top = (ev.clientY - rect.top + 14) + 'px';
+ if (typeof threeConstResaltar === 'function') threeConstResaltar(hit && hit.esConstFill ? hit.constId : null);
  } else {
  tooltip.style.display = 'none';
+ if (typeof threeConstResaltar === 'function') threeConstResaltar(null);
  }
 }
 
@@ -5099,9 +5653,90 @@ function threeGirarSoles() {
  _threeSolMeshes.forEach(s => { s.rotation.y += velocidadRad * dtSeg; });
 }
 
+// ═══ Modo nave — vuelo libre por la escena del Mapa Cósmico: flechas para
+// moverse, mouse (clic y arrastra) para mirar. Reemplaza temporalmente a
+// OrbitControls (que orbita alrededor de un punto fijo) por una cámara
+// libre en primera persona — útil para "sobrevolar" y encontrar los
+// objetos marcados (estrellas, planetas, centro galáctico, los objetos
+// famosos del espacio profundo) en vez de solo rotar/hacer zoom sobre el
+// origen. Se integra en el MISMO bucle de render (threeAnimate) que ya
+// corre siempre, no abre uno aparte. ═══
+let _threeNaveActive = false;
+let _threeNaveYaw = 0, _threeNavePitch = 0, _threeNaveSpeedMult = 1;
+let _threeNaveKeys = {};
+let _threeNaveDragging = false, _threeNaveLastX = 0, _threeNaveLastY = 0, _threeNaveLastMs = null;
+function threeNaveSetSpeed(v, btn) {
+ _threeNaveSpeedMult = parseFloat(v);
+ document.querySelectorAll('#bb_nave .bb-speed').forEach(b => b.classList.remove('on'));
+ if (btn) btn.classList.add('on');
+}
+const _THREE_NAVE_TECLAS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+function _threeNaveKeyDown(e) { if (_THREE_NAVE_TECLAS.includes(e.key)) { _threeNaveKeys[e.key] = true; e.preventDefault(); } }
+function _threeNaveKeyUp(e) { if (_THREE_NAVE_TECLAS.includes(e.key)) _threeNaveKeys[e.key] = false; }
+function _threeNaveMouseDown(e) { _threeNaveDragging = true; _threeNaveLastX = e.clientX; _threeNaveLastY = e.clientY; }
+function _threeNaveMouseUp() { _threeNaveDragging = false; }
+function _threeNaveMouseMove(e) {
+ if (!_threeNaveDragging) return;
+ const dx = e.clientX - _threeNaveLastX, dy = e.clientY - _threeNaveLastY;
+ _threeNaveLastX = e.clientX; _threeNaveLastY = e.clientY;
+ _threeNaveYaw -= dx * 0.006;
+ _threeNavePitch = Math.max(-1.5, Math.min(1.5, _threeNavePitch - dy * 0.006));
+}
+function threeNaveToggle() {
+ if (!_threeCamera || !_threeRenderer) return;
+ _threeNaveActive = !_threeNaveActive;
+ const btn = document.getElementById('nave_toggle_btn');
+ const bbMovs = document.getElementById('bb_movs'), bbTime = document.getElementById('bb_time'), bbNave = document.getElementById('bb_nave');
+ if (_threeNaveActive) {
+ if (btn) btn.classList.add('on');
+ if (_threeControls) _threeControls.enabled = false;
+ // el yaw/pitch inicial es la dirección actual de la cámara, para que
+ // activar la nave no "salte" la vista a otro lado
+ const dir = new THREE.Vector3(); _threeCamera.getWorldDirection(dir);
+ _threeNavePitch = Math.asin(Math.max(-1, Math.min(1, dir.y)));
+ _threeNaveYaw = Math.atan2(-dir.x, -dir.z);
+ _threeNaveKeys = {}; _threeNaveLastMs = null; _threeNaveDragging = false;
+ window.addEventListener('keydown', _threeNaveKeyDown);
+ window.addEventListener('keyup', _threeNaveKeyUp);
+ _threeRenderer.domElement.addEventListener('mousedown', _threeNaveMouseDown);
+ window.addEventListener('mouseup', _threeNaveMouseUp);
+ window.addEventListener('mousemove', _threeNaveMouseMove);
+ if (bbMovs) bbMovs.style.display = 'none';
+ if (bbTime) bbTime.style.display = 'none';
+ if (bbNave) bbNave.style.display = 'flex';
+ } else {
+ if (btn) btn.classList.remove('on');
+ if (_threeControls) { _threeControls.enabled = true; _threeControls.target.set(0, 0, 0); }
+ window.removeEventListener('keydown', _threeNaveKeyDown);
+ window.removeEventListener('keyup', _threeNaveKeyUp);
+ _threeRenderer.domElement.removeEventListener('mousedown', _threeNaveMouseDown);
+ window.removeEventListener('mouseup', _threeNaveMouseUp);
+ window.removeEventListener('mousemove', _threeNaveMouseMove);
+ if (bbNave) bbNave.style.display = 'none';
+ if (_threeMode === 'movimientos' && bbMovs) bbMovs.style.display = 'flex';
+ else if (_threeMode === 'constelaciones' && bbTime) bbTime.style.display = 'flex';
+ }
+}
+function threeNaveUpdate() {
+ if (!_threeNaveActive || !_threeCamera) return;
+ const now = performance.now();
+ if (_threeNaveLastMs === null) { _threeNaveLastMs = now; return; }
+ const dt = Math.min(0.1, (now - _threeNaveLastMs) / 1000);
+ _threeNaveLastMs = now;
+ _threeCamera.quaternion.setFromEuler(new THREE.Euler(_threeNavePitch, _threeNaveYaw, 0, 'YXZ'));
+ const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(_threeCamera.quaternion);
+ const right = new THREE.Vector3(1, 0, 0).applyQuaternion(_threeCamera.quaternion);
+ const speed = 35 * _threeNaveSpeedMult * dt; // ~35 unidades/s a 1× — cruza el mapa (radio ≈150) en unos segundos
+ if (_threeNaveKeys.ArrowUp) _threeCamera.position.addScaledVector(forward, speed);
+ if (_threeNaveKeys.ArrowDown) _threeCamera.position.addScaledVector(forward, -speed);
+ if (_threeNaveKeys.ArrowLeft) _threeCamera.position.addScaledVector(right, -speed);
+ if (_threeNaveKeys.ArrowRight) _threeCamera.position.addScaledVector(right, speed);
+}
+
 function threeAnimate() {
  _threeAnimId = requestAnimationFrame(threeAnimate);
  threeGirarSoles();
+ threeNaveUpdate();
  if (_threeTween) {
  const t = Math.min(1, (performance.now() - _threeTween.t0) / _threeTween.duration);
  const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // easeInOutQuad
@@ -5111,7 +5746,12 @@ function threeAnimate() {
  if (_threeControls) _threeControls.target.copy(curTarget);
  if (t >= 1) _threeTween = null;
  }
- if (_threeControls) _threeControls.update();
+ // OrbitControls.update() recalcula la posición de la cámara a partir de
+ // su punto orbital fijo SIEMPRE que se llama, sin importar .enabled (ese
+ // flag solo apaga los listeners de mouse/touch) — si se llamara también
+ // en modo nave, pelearía cuadro a cuadro contra threeNaveUpdate() y la
+ // cámara "temblaría" entre las dos posiciones.
+ if (_threeControls && !_threeNaveActive) _threeControls.update();
  if (_threeRenderer) _threeRenderer.render(_threeScene, _threeCamera);
 }
 
@@ -5363,7 +6003,7 @@ let _threePlayV = 0; // acumulador INTERNO de precisión completa (0-1), indepen
 // todo pasa por aquí, así que cualquier botón nuevo SIEMPRE libera a los
 // demás también.
 function threeDetenerAnimaciones() {
- if (_threePlayInterval) { clearInterval(_threePlayInterval); _threePlayInterval = null; const b = document.getElementById('three_play_btn'); if (b) b.textContent = '▶ Reproducir'; }
+ if (_threePlayInterval) { clearInterval(_threePlayInterval); _threePlayInterval = null; const b = document.getElementById('three_play_btn'); if (b) { b.textContent = '▶'; b.title = 'Reproducir'; } }
  if (_threeCicloAnimId) { cancelAnimationFrame(_threeCicloAnimId); _threeCicloAnimId = null; }
  if (_threeCosmicAnimId) { cancelAnimationFrame(_threeCosmicAnimId); _threeCosmicAnimId = null; }
  ['three_ciclo_btn', 'cm_espiral_btn', 'cm_planetas_btn', 'cm_galaxia_btn', 'cm_girogalaxia_btn', 'llona_play_btn'].forEach(id => { const b = document.getElementById(id); if (b) b.disabled = false; });
@@ -5375,18 +6015,27 @@ function threePlayToggle() {
  if (_threePlayInterval) {
  clearInterval(_threePlayInterval);
  _threePlayInterval = null;
- btn.textContent = '▶ Reproducir';
+ btn.textContent = '▶'; btn.title = 'Reproducir';
  } else {
  threeDetenerAnimaciones(); // libera cualquier otra animación en curso (ciclo, planetas, espiral...) antes de arrancar esta
- btn.textContent = '⏸ Pausar';
+ btn.textContent = '⏸'; btn.title = 'Pausar';
  _threePlayV = parseFloat(slider.value) / 100;
  _threePlayInterval = setInterval(() => {
- _threePlayV += 0.0015; // avance suave, precisión completa (no ligado al step del <input>)
+ _threePlayV += 0.0015 * _threePlaySpeed; // avance suave, precisión completa (no ligado al step del <input>)
  if (_threePlayV > 1) _threePlayV = 0;
  slider.value = (_threePlayV * 100).toFixed(1); // solo para la posición visual
  threeSliderChanged(_threePlayV); // el cálculo usa el valor preciso, no el redondeado
  }, 40);
  }
+}
+// Multiplicador de velocidad de ▶ Reproducir — NO cambia lo que se calcula
+// (el resultado en cada instante sigue siendo el mismo cálculo real), solo
+// qué tan rápido se recorre el rango de tiempo mostrado en la barra.
+let _threePlaySpeed = 1;
+function threeSetPlaySpeed(v, btn) {
+ _threePlaySpeed = parseFloat(v);
+ document.querySelectorAll('.bb-speed').forEach(b => b.classList.remove('on'));
+ if (btn) btn.classList.add('on');
 }
 
 // ═══ Escala de tiempo — mostrar UN ciclo natural completo de un solo
@@ -5662,6 +6311,12 @@ function threeSetMode(mode) {
  document.getElementById('three_panel_const').style.display = mode === 'constelaciones' ? '' : 'none';
  document.getElementById('chart_wheel_svg').style.display = 'none';
  document.getElementById('three_canvas').style.display = '';
+ const bbMovs = document.getElementById('bb_movs'), bbTime = document.getElementById('bb_time'), bb = document.getElementById('map_bottombar');
+ if (bb) {
+ bb.style.display = (mode === 'movimientos' || mode === 'constelaciones') ? 'flex' : 'none';
+ if (bbMovs) bbMovs.style.display = mode === 'movimientos' ? 'flex' : 'none';
+ if (bbTime) bbTime.style.display = mode === 'constelaciones' ? 'flex' : 'none';
+ }
  const btnEsfera = document.getElementById('three_toggle_esfera'); if (btnEsfera) btnEsfera.textContent = '🌐 Ver esfera de casas (3D)';
  if (mode === 'movimientos') {
  threeBuildMovimientosScene();
@@ -5682,7 +6337,16 @@ function threeSetMode(mode) {
 function threeHudGo(view) {
  if (view === 'tierra') threeSetMode('movimientos');
  else if (view === 'carta') threeSetMode('evento');
- else { threeSetMode('constelaciones'); threeCosmicZoom(view); }
+ else {
+ threeSetMode('constelaciones'); threeCosmicZoom(view);
+ // buildCosmicMap() (dentro de threeSetMode) reconstruye la escena entera
+ // cada vez -- si fronteras/nombres estaban activados, se vuelven a
+ // dibujar sobre la escena nueva en vez de quedar "apagados" al cambiar
+ // de Sistema Solar/Estrellas/Galaxia.
+ const sel = document.getElementById('const_limites');
+ threeDibujarLimitesConstelaciones(sel ? sel.value : 'ninguno');
+ threeConstNamesApply();
+ }
  _threeHudView = view;
  threeHudSync();
 }
@@ -5693,9 +6357,291 @@ function threeHudSync() {
  const btn = document.getElementById('hud_' + v);
  if (!btn) return;
  const activo = map[v] ? (_threeMode === map[v] || (v === 'carta' && _threeMode === 'topocentrica')) : (_threeMode === 'constelaciones' && _threeHudView === v);
- btn.className = activo ? 'act' : 'ghost act';
+ btn.className = 'rail-btn' + (activo ? ' on' : '');
+ });
+ railSyncMov();
+}
+
+// ═══ Rieles de iconos del Mapa Cósmico — reemplazan las filas de botones
+// con texto largo y la lista de casillas debajo del mapa. Cada botón lleva
+// su descripción en un tooltip propio (#rail_tip), no en texto visible. ═══
+function railTip(btn, text) {
+ btn.addEventListener('mouseenter', () => {
+ const tip = document.getElementById('rail_tip');
+ tip.textContent = text;
+ tip.style.display = 'block';
+ const r = btn.getBoundingClientRect();
+ const onRight = btn.closest('.rail-right');
+ if (onRight) { tip.style.left = 'auto'; tip.style.right = (window.innerWidth - r.left + 8) + 'px'; }
+ else { tip.style.right = 'auto'; tip.style.left = (r.right + 8) + 'px'; }
+ tip.style.top = Math.max(6, r.top - 4) + 'px';
+ });
+ btn.addEventListener('mouseleave', () => { document.getElementById('rail_tip').style.display = 'none'; });
+}
+function railBtn(id, icon, tip, onclick) {
+ const b = document.createElement('button');
+ b.className = 'rail-btn'; if (id) b.id = id;
+ b.type = 'button'; b.innerHTML = icon;
+ b.onclick = onclick;
+ railTip(b, tip);
+ return b;
+}
+function railSep(container) { const s = document.createElement('div'); s.className = 'rail-sep'; container.appendChild(s); }
+
+const HUD_RAIL_ITEMS = [
+ ['hud_tierra', '🌍', 'Tierra — sus movimientos: rotación, traslación, precesión, nutación, eclipses y la cicloide de Llona.', () => threeHudGo('tierra')],
+ ['hud_sistema', '☀️', 'Sistema Solar — los planetas y sus órbitas reales alrededor del Sol.', () => threeHudGo('sistema')],
+ ['hud_estrellas', '✨', 'Estrellas — el zodíaco, las estrellas más brillantes y las 88 fronteras oficiales IAU/Delporte.', () => threeHudGo('estrellas')],
+ ['hud_galaxia', '🌌', 'Galaxia — dónde está el centro galáctico y hacia dónde viaja el Sol.', () => threeHudGo('galaxia')],
+ ['hud_carta', '🔮', 'Carta astral — calcula la carta topocéntrica exacta de cualquier fecha, hora y lugar.', () => threeHudGo('carta')],
+ null, // separador
+ ['hud_llona', '🌀', 'Cicloide de Llona — la curva real que traza un punto de la corteza combinando rotación + traslación (Parte XIV de la TCC).', () => threeAtajoLlona()],
+ ['hud_page', '🏛️', 'Topocentrismo de Polich-Page — la esfera de casas 3D, el sistema de domificación que usa toda esta plataforma.', () => threeAtajoPage()],
+];
+function threeAtajoLlona() {
+ threeHudGo('tierra');
+ setTimeout(() => { threeLlonaAnimar(); document.getElementById('three_detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 60);
+}
+function threeAtajoPage() {
+ threeHudGo('carta');
+ setTimeout(() => { threeToggleEsferaTopocentrica(); document.getElementById('three_detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 80);
+}
+function railBuildHud() {
+ const rail = document.getElementById('hud_rail');
+ if (!rail || rail.dataset.built) return;
+ rail.dataset.built = '1';
+ HUD_RAIL_ITEMS.forEach(item => { if (!item) { railSep(rail); return; } const [id, icon, tip, fn] = item; rail.appendChild(railBtn(id, icon, tip, fn)); });
+}
+
+function railToggleMov(chkId, btn) {
+ const chk = document.getElementById(chkId);
+ chk.checked = !chk.checked;
+ btn.classList.toggle('on', chk.checked);
+ threeMovimientosChanged();
+}
+const MOV_RAIL_ITEMS = [
+ ['mov_rotacion', '🌐', 'Rotación diaria (real) — un giro completo cada 24 h.'],
+ ['mov_traslacion', '🪐', 'Traslación anual (real) — la vuelta completa alrededor del Sol en 1 año.'],
+ ['mov_precesion', '🎡', 'Precesión (esquemática, acelerada) — el bamboleo del eje terrestre, real ≈25.772 años.'],
+ ['mov_nutacion', '〰️', 'Nutación (esquemática, exagerada) — pequeño temblor del eje sobre la precesión, real ≈18.6 años.'],
+ ['mov_galactico', '🌀', 'Órbita galáctica del Sol (esquemática) — el Sol también viaja, real ≈230 millones de años por vuelta.'],
+];
+const VISTA_RAIL_ITEMS = [
+ ['👁️', 'Vista frontal', () => threeFocusEarth('frontal')],
+ ['↔️', 'Vista lateral', () => threeFocusEarth('lateral')],
+ ['⬆️', 'Vista superior', () => threeFocusEarth('superior')],
+ ['🔭', 'Vista general (aleja la cámara)', () => threeFocusEarth('general')],
+];
+function railToggleEscalaTiempo(btn) {
+ const p = document.getElementById('three_escala_tiempo');
+ const on = p.style.display === 'none';
+ p.style.display = on ? '' : 'none';
+ btn.classList.toggle('on', on);
+}
+
+// ═══ Flyout genérico — un solo panel compartido que se abre junto al
+// icono de CATEGORÍA que lo invocó (Movimientos/Vistas/Constelaciones/
+// Animación), con sus opciones dentro. Antes cada categoría era una fila
+// fija de iconos siempre visible a la vez — hasta 19 sueltos en el riel
+// derecho. Ahora cada categoría es UN icono; sus "sub-botones" solo
+// aparecen al hacer clic, y se cierran al elegir otra categoría o al
+// hacer clic fuera. ═══
+let _railFlyoutAnchor = null;
+function railFlyoutEl() {
+ let el = document.getElementById('rail_flyout');
+ if (!el) {
+ el = document.createElement('div');
+ el.id = 'rail_flyout';
+ el.className = 'rail-flyout';
+ document.body.appendChild(el);
+ document.addEventListener('click', (e) => {
+ if (!_railFlyoutAnchor || el.style.display === 'none') return;
+ if (_railFlyoutAnchor.contains(e.target)) return; // el propio botón de categoría ya se encarga de abrir/cerrar
+ // por posición (no por el.contains(e.target)): un clic dentro de un
+ // sub-botón que justo se refrescó (railFlyoutRefresh reemplaza el
+ // contenido con innerHTML='') deja ese elemento desprendido del DOM
+ // en el momento en que este listener corre — el.contains(e.target)
+ // daría "false" aunque el clic fuera realmente dentro del panel.
+ const r = el.getBoundingClientRect();
+ const dentro = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+ if (!dentro) railFlyoutClose();
+ });
+ }
+ return el;
+}
+function railFlyoutClose() {
+ const el = document.getElementById('rail_flyout');
+ if (el) el.style.display = 'none';
+ if (_railFlyoutAnchor) _railFlyoutAnchor.classList.remove('on');
+ _railFlyoutAnchor = null;
+}
+function railFlyoutOpen(anchorBtn, buildFn) {
+ const el = railFlyoutEl();
+ if (_railFlyoutAnchor === anchorBtn) { railFlyoutClose(); return; }
+ if (_railFlyoutAnchor) _railFlyoutAnchor.classList.remove('on');
+ _railFlyoutAnchor = anchorBtn;
+ anchorBtn.classList.add('on');
+ el.innerHTML = '';
+ buildFn().forEach(b => el.appendChild(b));
+ const onRight = !!anchorBtn.closest('.rail-right');
+ el.classList.toggle('rail-right', onRight); // para que los tooltips de los sub-botones se abran hacia el lado correcto
+ el.style.display = 'flex';
+ const r = anchorBtn.getBoundingClientRect();
+ if (onRight) { el.style.right = (window.innerWidth - r.left + 6) + 'px'; el.style.left = 'auto'; }
+ else { el.style.left = (r.right + 6) + 'px'; el.style.right = 'auto'; }
+ el.style.top = Math.max(6, r.top) + 'px';
+}
+// Reabre el flyout activo con contenido recién construido — para que un
+// ciclo de icono (fronteras, resaltar) se vea actualizado al instante sin
+// tener que cerrar y reabrir el panel.
+function railFlyoutRefresh(buildFn) {
+ const el = document.getElementById('rail_flyout');
+ if (!el || el.style.display === 'none') return;
+ el.innerHTML = '';
+ buildFn().forEach(b => el.appendChild(b));
+}
+
+function railBuildMovFlyoutButtons() {
+ return MOV_RAIL_ITEMS.map(([chkId, icon, tip]) => {
+ const btn = railBtn(null, icon, tip, null);
+ btn.onclick = () => railToggleMov(chkId, btn);
+ if (document.getElementById(chkId) && document.getElementById(chkId).checked) btn.classList.add('on');
+ return btn;
  });
 }
+function railBuildVistaFlyoutButtons() {
+ return VISTA_RAIL_ITEMS.map(([icon, tip, fn]) => railBtn(null, icon, tip, fn));
+}
+const ZODIAC_CICLO = [
+ ['', '✨'], ['Aries', '♈'], ['Tauro', '♉'], ['Géminis', '♊'], ['Cáncer', '♋'], ['Leo', '♌'], ['Virgo', '♍'],
+ ['Libra', '♎'], ['Escorpio', '♏'], ['Sagitario', '♐'], ['Capricornio', '♑'], ['Acuario', '♒'], ['Piscis', '♓'],
+];
+const FRONTERAS_CICLO = [
+ ['ninguno', '○', 'Fronteras oficiales IAU/Delporte — clic para mostrar solo las 13 del zodíaco.'],
+ ['zodiaco', '🌗', 'Mostrando las 13 fronteras de la eclíptica. Clic para ver las 88 constelaciones completas.'],
+ ['todas', '🗺️', 'Mostrando las 88 fronteras oficiales. Clic para ocultarlas.'],
+];
+// El marco de referencia del Sistema Solar (☉ heliocéntrico / ⊕ geocéntrico)
+// se define aquí (no junto a threeCentroToggle/threeAplicarCentroReferencia,
+// más abajo) porque railBuildMov() -- que la usa -- se ejecuta de inmediato
+// al cargar la página, antes de llegar a esa parte del archivo.
+const CENTRO_CICLO = [
+ ['sol', '☉', 'Marco heliocéntrico (Copérnico) — el Sol en el centro. Clic para ver el Sistema Solar desde la Tierra (geocéntrico).'],
+ ['tierra', '⊕', 'Marco geocéntrico — la Tierra en el centro, con la distancia REAL a cada planeta en este instante (cambia todo el año; no es un círculo). Clic para volver al marco heliocéntrico.'],
+];
+let _railFronterasEstado = 'ninguno';
+let _railResaltarNombre = '';
+function railCycleFronteras() {
+ const idx = FRONTERAS_CICLO.findIndex(f => f[0] === _railFronterasEstado);
+ _railFronterasEstado = FRONTERAS_CICLO[(idx + 1) % FRONTERAS_CICLO.length][0];
+ const sel = document.getElementById('const_limites');
+ if (sel) sel.value = _railFronterasEstado;
+ threeLimitesChanged();
+ railFlyoutRefresh(railBuildConstFlyoutButtons);
+}
+function railCycleResaltar() {
+ const idx = ZODIAC_CICLO.findIndex(z => z[0] === _railResaltarNombre);
+ _railResaltarNombre = ZODIAC_CICLO[(idx + 1) % ZODIAC_CICLO.length][0];
+ const sel = document.getElementById('three_const_filtro');
+ if (sel) sel.value = _railResaltarNombre;
+ threeResaltarConstelacion(_railResaltarNombre);
+ railFlyoutRefresh(railBuildConstFlyoutButtons);
+}
+function railBuildConstFlyoutButtons() {
+ const fEstado = FRONTERAS_CICLO.find(f => f[0] === _railFronterasEstado);
+ const fronterasBtn = railBtn(null, fEstado[1], fEstado[2], () => railCycleFronteras());
+ fronterasBtn.classList.toggle('on', _railFronterasEstado !== 'ninguno');
+ const nombresBtn = railBtn(null, '🏷️', 'Nombres de constelación — muestra/oculta una etiqueta fija sobre cada una (además del nombre al pasar el mouse por una estrella).', null);
+ nombresBtn.classList.toggle('on', _threeConstNamesOn);
+ nombresBtn.onclick = () => { threeToggleNombresConstelaciones(nombresBtn); railFlyoutRefresh(railBuildConstFlyoutButtons); };
+ const rIcon = ZODIAC_CICLO.find(z => z[0] === _railResaltarNombre)[1];
+ const rTip = _railResaltarNombre ? `Resaltando ${_railResaltarNombre} (estrellas + frontera real dorada). Clic para pasar a la siguiente.` : 'Resaltar constelación — clic para recorrer las 12 del zodíaco (atenúa las demás estrellas y dora su frontera real).';
+ const resaltarBtn = railBtn(null, rIcon, rTip, () => railCycleResaltar());
+ resaltarBtn.classList.toggle('on', !!_railResaltarNombre);
+ const medirBtn = railBtn('three_medir_btn_rail', '📐', 'Medir distancia angular — haz clic en dos estrellas o planetas cualesquiera.', () => threeMedirToggle());
+ return [fronterasBtn, nombresBtn, resaltarBtn, medirBtn];
+}
+function railBuildAnimFlyoutButtons() {
+ return [
+ railBtn(null, '🌀', 'Espiral — el camino real de Mercurio, la Tierra y Júpiter combinando su órbita solar con el viaje del Sol alrededor de la galaxia.', () => document.getElementById('cm_espiral_btn').click()),
+ railBtn(null, '🪐', 'Solo planetas — todos orbitando el Sol a la vez, cada uno a su velocidad real relativa (3ª ley de Kepler).', () => document.getElementById('cm_planetas_btn').click()),
+ railBtn(null, '☀️', 'Solo el Sol — su órbita alrededor del centro de la galaxia (esquemática/acelerada, real ≈230 millones de años).', () => document.getElementById('cm_galaxia_btn').click()),
+ railBtn(null, '🌌', '¿Gira la galaxia? — ver las estrellas del fondo girando alrededor del centro galáctico.', () => document.getElementById('cm_girogalaxia_btn').click()),
+ railBtn(null, '⏹', 'Detener cualquier animación en curso.', () => threeDetenerAnimaciones()),
+ ];
+}
+function railBuildMov() {
+ const rail = document.getElementById('mov_rail');
+ if (!rail || rail.dataset.built) return;
+ rail.dataset.built = '1';
+
+ const movGroup = document.createElement('div');
+ movGroup.id = 'mov_rail_movs';
+ movGroup.style.display = 'contents';
+ const movCatBtn = railBtn(null, '🌍', 'Movimientos de la Tierra — rotación, traslación, precesión, nutación, órbita galáctica.', null);
+ movCatBtn.onclick = () => railFlyoutOpen(movCatBtn, railBuildMovFlyoutButtons);
+ movGroup.appendChild(movCatBtn);
+ const vistaCatBtn = railBtn(null, '👁️', 'Vistas de cámara — frontal, lateral, superior, general.', null);
+ vistaCatBtn.onclick = () => railFlyoutOpen(vistaCatBtn, railBuildVistaFlyoutButtons);
+ movGroup.appendChild(vistaCatBtn);
+ const speedBtn = railBtn(null, '⏱️', 'Escala de tiempo — elige un movimiento y cuántos segundos dura verlo completo.', null);
+ speedBtn.onclick = () => railToggleEscalaTiempo(speedBtn);
+ movGroup.appendChild(speedBtn);
+ rail.appendChild(movGroup);
+
+ const constGroup = document.createElement('div');
+ constGroup.id = 'mov_rail_const';
+ constGroup.style.display = 'contents';
+ const constCatBtn = railBtn(null, '🗺️', 'Constelaciones — fronteras oficiales IAU/Delporte, nombres, resaltar por signo, medir distancia angular.', null);
+ constCatBtn.onclick = () => railFlyoutOpen(constCatBtn, railBuildConstFlyoutButtons);
+ constGroup.appendChild(constCatBtn);
+ rail.appendChild(constGroup);
+
+ // "Sol + planetas en movimiento" — los controles reales (con sus ids, sus
+ // <select> de duración y sus notas de texto) siguen existiendo pero
+ // ocultos, para no tocar threeAnimarEspiral()/threeAnimarPlanetas()/etc. —
+ // el flyout solo simula el clic sobre ellos.
+ const animGroup = document.createElement('div');
+ animGroup.id = 'mov_rail_anim';
+ animGroup.style.display = 'contents';
+ const animCatBtn = railBtn(null, '🌀', 'Sol + planetas en movimiento — espiral real, solo planetas, solo el Sol, ¿gira la galaxia?', null);
+ animCatBtn.onclick = () => railFlyoutOpen(animCatBtn, railBuildAnimFlyoutButtons);
+ animGroup.appendChild(animCatBtn);
+ rail.appendChild(animGroup);
+
+ const centroGroup = document.createElement('div');
+ centroGroup.id = 'mov_rail_centro';
+ centroGroup.style.display = 'contents';
+ const centroBtn = railBtn('centro_toggle_btn', CENTRO_CICLO[0][1], CENTRO_CICLO[0][2], () => threeCentroToggle());
+ centroGroup.appendChild(centroBtn);
+ rail.appendChild(centroGroup);
+
+ const naveGroup = document.createElement('div');
+ naveGroup.id = 'mov_rail_nave';
+ naveGroup.style.display = 'contents';
+ railSep(naveGroup);
+ const naveBtn = railBtn('nave_toggle_btn', '🚀', 'Modo nave — vuela libremente por el mapa con las flechas del teclado, mira con el mouse. Ideal para explorar los objetos marcados del espacio profundo.', () => threeNaveToggle());
+ naveGroup.appendChild(naveBtn);
+ rail.appendChild(naveGroup);
+}
+function railSyncMov() {
+ const rail = document.getElementById('mov_rail');
+ if (!rail) return;
+ railFlyoutClose(); // el contenido de un flyout abierto puede dejar de aplicar tras cambiar de modo/vista
+ const esMov = (_threeMode === 'movimientos');
+ const esConst = (_threeMode === 'constelaciones'); // sistema/estrellas/galaxia comparten el mismo riel de constelaciones+animaciones+nave
+ rail.style.display = (esMov || esConst) ? 'flex' : 'none';
+ const movGroup = document.getElementById('mov_rail_movs'), constGroup = document.getElementById('mov_rail_const'),
+ animGroup = document.getElementById('mov_rail_anim'), centroGroup = document.getElementById('mov_rail_centro'), naveGroup = document.getElementById('mov_rail_nave');
+ if (movGroup) movGroup.style.display = esMov ? 'contents' : 'none';
+ if (constGroup) constGroup.style.display = esConst ? 'contents' : 'none';
+ if (animGroup) animGroup.style.display = esConst ? 'contents' : 'none';
+ if (centroGroup) centroGroup.style.display = esConst ? 'contents' : 'none';
+ if (naveGroup) naveGroup.style.display = esConst ? 'contents' : 'none';
+ if (!esConst && _threeNaveActive) threeNaveToggle(); // salir de la nave si el usuario cambia a otro modo
+}
+railBuildHud();
+railBuildMov();
 
 // Lista breve de ciudades para autocompletar lat/lon (coordenadas reales de
 // referencia — NO es un geocodificador; para cualquier otro lugar, ingresa
@@ -5979,10 +6925,19 @@ const ZODIAC_STARS = {
  ['Sadalsuud (β)', 322.89, -5.57, 2.87, 540],
  ['Sadalmelik (α)', 331.44, -0.32, 2.95, 520],
  ['Skat (δ)', 343.15, -15.82, 3.27, 160],
+ ['Sadachbia (γ)', 335.41, -1.387, 3.85, 164],
+ ['Albali (ε)', 311.92, -9.496, 3.77, 244],
+ ['Sadaltager (ζ)', 337.21, -0.020, 3.65, 95],
+ ['η Aquarii', 338.84, -0.117, 4.04, 168],
+ ['Ancha (θ)', 334.21, -7.783, 4.18, 191],
  ],
  'Piscis': [
  ['Alrescha (α)', 30.30, 2.76, 3.82, 139],
  ['Fumalsamakah (β)', 344.63, 3.82, 4.53, 492],
+ ['γ Piscium', 349.29, 3.282, 3.70, 138],
+ ['δ Piscium', 12.17, 7.585, 4.44, 305],
+ ['ε Piscium', 15.74, 7.890, 4.27, 190],
+ ['Alpherg (η)', 22.87, 15.346, 3.62, 349],
  ],
 };
 
@@ -6075,11 +7030,28 @@ const GALACTIC_CENTER = { ra: 266.4, dec: -29.0, distLy: 26000 };
 // que se usa para la corrección al marco LSR (ver SOL_LSR_UVW).
 const SOLAR_APEX = { ra: 271, dec: 30, speedKmS: 20 };
 
+// Objetos famosos del espacio profundo — dirección real (RA/Dec J2000) y
+// distancia real (años luz), valores estándar de catálogo (SIMBAD/NED/
+// Wikipedia), redondeados igual que GALACTIC_CENTER/SOLAR_APEX arriba.
+// Elegidos para que el modo 🚀 nave tenga variedad real de "qué es":
+// una nebulosa de emisión, un cúmulo abierto, uno globular, un remanente
+// de supernova, un agujero negro estelar confirmado y una galaxia entera.
+const FAMOUS_DEEP_SKY = [
+ { nombre: 'Nebulosa de Orión (M42)', icono: '🌫️', tipo: 'Nebulosa de emisión — guardería estelar activa', ra: 83.822, dec: -5.391, distLy: 1344, tam: 2.2, color: 0xff7f7f, nota: 'A simple vista es la "estrella" central borrosa de la espada de Orión.' },
+ { nombre: 'Las Pléyades (M45)', icono: '💫', tipo: 'Cúmulo abierto — ~1000 estrellas jóvenes (≈100 millones de años)', ra: 56.75, dec: 24.117, distLy: 444, tam: 2.0, color: 0x9fd6ff, nota: 'Una de las agrupaciones más brillantes del cielo nocturno, visible a simple vista.' },
+ { nombre: 'Nebulosa del Cangrejo (M1)', icono: '💥', tipo: 'Remanente de supernova (estalló en el año 1054, registrada por astrónomos chinos y árabes)', ra: 83.633, dec: 22.017, distLy: 6500, tam: 1.6, color: 0x8ecae6, nota: 'En su centro hay un púlsar (estrella de neutrones) que gira ≈30 veces por segundo.' },
+ { nombre: 'Ómega Centauri', icono: '🔮', tipo: 'Cúmulo globular — ~10 millones de estrellas, uno de los más grandes de la Vía Láctea', ra: 201.697, dec: -47.48, distLy: 17090, tam: 2.4, color: 0xffe08a, nota: 'Podría ser el núcleo despojado de una galaxia enana que la Vía Láctea absorbió hace miles de millones de años.' },
+ { nombre: 'Cygnus X-1', icono: '🕳️', tipo: 'Agujero negro estelar (~21 masas solares) en un sistema binario — el primer candidato a agujero negro confirmado (1971)', ra: 299.59, dec: 35.202, distLy: 7240, tam: 1.3, color: 0x2b2b2b, colorTxt: '#b19cd9', nota: 'No se ve directamente — se detecta por los rayos X del gas de su estrella compañera al caer hacia él.' },
+ { nombre: 'Galaxia de Andrómeda (M31)', icono: '🌀', tipo: 'Galaxia espiral — la galaxia grande más cercana a la Vía Láctea', ra: 10.685, dec: 41.269, distLy: 2537000, tam: 3.2, color: 0xd4a5ff, nota: 'Se acerca a ≈110 km/s — se fusionará con la Vía Láctea dentro de ≈4.500 millones de años.' },
+];
+
 let _threeCosmicObjects = {}; // {nombre: mesh} — TODO lo que hay en el mapa (planetas + estrellas + centro galáctico), para el selector "Ir a"
 let _threeCosmicStarMeshes = {}; // {constelación: [mesh,...]} — para resaltar/atenuar por constelación
 let _threeStarBase = {}; // {nombre: {mesh, raDeg, decDeg, distLy, pm:[pmRA,pmDec] en mas/año}} — solo estrellas con movimiento propio conocido, para la simulación temporal
-let _threeCosmicPlanetMeshes = {}; // {nombre: {mesh, el, r}} — para animar velocidades orbitales reales relativas
+let _threeCosmicPlanetMeshes = {}; // {nombre: {mesh, el, r, hoverable}} — para animar velocidades orbitales reales relativas
 let _threeCosmicAnimId = null; // requestAnimationFrame en curso (planetas u órbita galáctica) en el Mapa Cósmico
+let _threeOrbitRings = []; // anillos esquemáticos de órbita heliocéntrica — solo tienen sentido como círculo alrededor del Sol
+let _threeCentroReferencia = 'sol'; // 'sol' (heliocéntrico, Copérnico) | 'tierra' (geocéntrico) — ver threeAplicarCentroReferencia
 let _threeCosmicSystemPivot = null; // grupo Sol+planetas+Luna, reparentado solo durante la animación "espiral"
 let _threeCosmicTrails = {}; // {nombre: {line, points:[]}} — estelas en coordenadas del MUNDO (no del grupo), para que se vea la espiral real, no solo un círculo que se mueve
 let _threeCosmicStarsGroup = null; // grupo con TODAS las estrellas (zodíaco + brillantes), reparentado solo durante la animación "gira la galaxia"
@@ -6096,6 +7068,7 @@ let _threeCosmicStarsGroup = null; // grupo con TODAS las estrellas (zodíaco + 
 // diferencia residual entre estrellas es el "movimiento propio" que ya
 // se puede simular por separado.
 function threeAnimarGalaxiaGirando() {
+ if (_threeCentroReferencia === 'tierra') threeCentroToggle(); // esta animación solo está validada en el marco heliocéntrico
  threeDetenerAnimaciones();
  const seg = parseFloat(document.getElementById('cm_girogalaxia_seg').value);
  const btn = document.getElementById('cm_girogalaxia_btn');
@@ -6134,6 +7107,7 @@ let _threeGalDir1 = new THREE.Vector3(1, 0, 0), _threeGalDir2 = new THREE.Vector
 // que el camino dibujado sea la espiral real, no un círculo que solo se
 // desplaza en bloque.
 function threeAnimarEspiral() {
+ if (_threeCentroReferencia === 'tierra') threeCentroToggle(); // esta animación solo está validada en el marco heliocéntrico
  threeDetenerAnimaciones();
  const seg = parseFloat(document.getElementById('cm_espiral_seg').value);
  const btn = document.getElementById('cm_espiral_btn');
@@ -6209,6 +7183,7 @@ function threeAnimarEspiral() {
 // más lento según Kepler (más cerca del Sol = más rápido), en la MISMA
 // proporción real entre ellos.
 function threeAnimarPlanetas() {
+ if (_threeCentroReferencia === 'tierra') threeCentroToggle(); // esta animación solo está validada en el marco heliocéntrico
  threeDetenerAnimaciones();
  const seg = parseFloat(document.getElementById('cm_planetas_seg').value);
  const btn = document.getElementById('cm_planetas_btn');
@@ -6238,6 +7213,7 @@ function threeAnimarPlanetas() {
 // reconstruye el mapa para volver al Sol en el origen (alineación real con
 // las estrellas, que están fijas respecto al Sol verdadero).
 function threeAnimarOrbitaGalactica() {
+ if (_threeCentroReferencia === 'tierra') threeCentroToggle(); // esta animación solo está validada en el marco heliocéntrico
  threeDetenerAnimaciones();
  const sol = _threeCosmicObjects && _threeCosmicObjects['Sol'];
  if (!sol) return;
@@ -6453,12 +7429,71 @@ function _parseConstBounds() {
 // Dibuja las fronteras sobre una "esfera celeste" de radio fijo, entre
 // las estrellas del mapa. Cada arista se subdivide para que siga la
 // curvatura de la esfera y no corte por dentro como una cuerda recta.
+// ═══ Precesión rigurosa RA/Dec entre dos épocas arbitrarias (Newcomb,
+// válida para el sistema FK4/B1875 en el que Delporte definió las fronteras
+// -- fórmula de Meeus, "Astronomical Algorithms" cap. 21, ecs. 21.3-21.4).
+// Verificada: al precesar un vértice real de Piscis en B1875.0 (fuente:
+// Delporte 1930 / digitalización VizieR VI/49, cat. de E. Bill Gray) a
+// J2000.0, el resultado (-17.15°, +0.66°) coincide con el vértice que ya
+// usa este mismo archivo en CONST_BOUNDS_RAW (-17.2°, +0.7°) -- confirma
+// que CONST_BOUNDS_RAW está en J2000.0 y que esta fórmula es correcta.
+function precessRaDecNewcomb(raDeg, decDeg, epoch0, epoch1) {
+ const T = (epoch0 - 1900.0) / 100.0, t = (epoch1 - epoch0) / 100.0;
+ const asec = x => THREE.MathUtils.degToRad(x / 3600.0);
+ const zeta = asec((2306.2181 + 1.39656 * T - 0.000139 * T * T) * t + (0.30188 - 0.000344 * T) * t * t + 0.017998 * t ** 3);
+ const z = asec((2306.2181 + 1.39656 * T - 0.000139 * T * T) * t + (1.09468 + 0.000066 * T) * t * t + 0.018203 * t ** 3);
+ const theta = asec((2004.3109 - 0.85330 * T - 0.000217 * T * T) * t - (0.42665 + 0.000217 * T) * t * t - 0.041833 * t ** 3);
+ const ra0 = THREE.MathUtils.degToRad(raDeg), dec0 = THREE.MathUtils.degToRad(decDeg);
+ const A = Math.cos(dec0) * Math.sin(ra0 + zeta);
+ const B = Math.cos(theta) * Math.cos(dec0) * Math.cos(ra0 + zeta) - Math.sin(theta) * Math.sin(dec0);
+ const C = Math.sin(theta) * Math.cos(dec0) * Math.cos(ra0 + zeta) + Math.cos(theta) * Math.sin(dec0);
+ const ra1 = (THREE.MathUtils.radToDeg(Math.atan2(A, B)) + THREE.MathUtils.radToDeg(z) + 360) % 360;
+ const dec1 = THREE.MathUtils.radToDeg(Math.asin(Math.max(-1, Math.min(1, C))));
+ return [ra1, dec1];
+}
+
+// Nombre completo (si es una de las 13 del zodiaco) o abreviatura IAU +
+// nota, para el panel de datos que aparece debajo del mapa al pasar el
+// mouse sobre una constelación.
+function _constInfoHTML(id) {
+ const nombre = ZODIACO_IAU_ABREV[id];
+ if (nombre) {
+ const tramo = ZODIACO_IAU_TRAMOS.find(t => t[0] === id);
+ const rango = tramo ? ` — la eclíptica la cruza entre ${tramo[1].toFixed(1)}° y ${tramo[2].toFixed(1)}° de longitud (${tramo[3].toFixed(1)}° de arco, no los 30° iguales del zodíaco de siempre).` : '';
+ return `<b style="font-size:15px;color:var(--verde-oscuro)">${nombre}</b> <span class="small muted">(${id})</span><br><span class="small">Una de las 13 constelaciones que cruza la eclíptica.${rango}</span>`;
+ }
+ return `<b style="font-size:15px;color:var(--verde-oscuro)">${id}</b><br><span class="small muted">Una de las 88 constelaciones oficiales IAU/Delporte (fuera del zodíaco).</span>`;
+}
+let _threeConstFillsGroup = null;
+let _threeConstLineById = {};
+let _threeConstHoverActual = null;
+function threeConstResaltar(id) {
+ if (_threeConstHoverActual && _threeConstLineById[_threeConstHoverActual]) {
+ const prev = _threeConstLineById[_threeConstHoverActual];
+ prev.material.color.setHex(prev.userData.colorBase);
+ prev.material.opacity = prev.userData.opBase;
+ prev.material.linewidth = 1;
+ }
+ _threeConstHoverActual = id;
+ const panel = document.getElementById('const_info_panel');
+ if (!id) { if (panel) panel.innerHTML = '<span class="small muted">Pasa el mouse sobre cualquier constelación para ver su nombre y datos aquí.</span>'; return; }
+ const line = _threeConstLineById[id];
+ if (line) { line.material.color.setHex(0xffcc00); line.material.opacity = 1; }
+ if (panel) panel.innerHTML = _constInfoHTML(id);
+}
 function threeDibujarLimitesConstelaciones(modo) {
  if (!_threeScene) return;
  if (_threeConstBoundsGroup) { _threeScene.remove(_threeConstBoundsGroup); _threeConstBoundsGroup = null; }
+ if (_threeConstFillsGroup) { _threeScene.remove(_threeConstFillsGroup); _threeConstFillsGroup = null; }
+ _threeHoverables = _threeHoverables.filter(h => !h.esConstFill);
+ _threeConstLineById = {};
+ threeConstResaltar(null);
  if (!modo || modo === 'ninguno') return;
  const R = 78; // entre las estrellas del zodíaco (r entre 65 y 82 en la escala logarítmica)
  const soloZod = (modo === 'zodiaco');
+ const epochInput = document.getElementById('const_limites_epoca');
+ const epoch = epochInput ? parseFloat(epochInput.value) || 2000 : 2000;
+ const necesitaPrecesar = Math.abs(epoch - 2000) > 0.5;
  const g = new THREE.Group();
  _parseConstBounds().forEach(function (b) {
  const esZod = !!ZODIACO_IAU_ABREV[b.id];
@@ -6469,22 +7504,97 @@ function threeDibujarLimitesConstelaciones(modo) {
  const n = Math.max(2, Math.ceil(Math.max(Math.abs(c[0] - a[0]), Math.abs(c[1] - a[1])) / 2));
  for (let s = 0; s < n; s++) {
  const t = s / n;
- const lon = a[0] + (c[0] - a[0]) * t, lat = a[1] + (c[1] - a[1]) * t;
+ let lon = a[0] + (c[0] - a[0]) * t, lat = a[1] + (c[1] - a[1]) * t;
+ // El vértice se interpola primero en J2000 (donde el segmento SÍ es
+ // un meridiano/paralelo recto en la malla original) y luego, si se
+ // pidió otra época, se precesa punto a punto -- así una línea recta
+ // en 2000 aparece correctamente curvada/diagonal en 1948 o 1875,
+ // que es justo el efecto real de la precesión que describe Delporte.
+ if (necesitaPrecesar) { const pr = precessRaDecNewcomb(((lon % 360) + 360) % 360, lat, 2000.0, epoch); lon = pr[0]; lat = pr[1]; }
  const ra = THREE.MathUtils.degToRad(lon), dec = THREE.MathUtils.degToRad(lat);
  v.push(new THREE.Vector3(R * Math.cos(dec) * Math.cos(ra), R * Math.sin(dec), R * Math.cos(dec) * Math.sin(ra)));
  }
  }
  v.push(v[0].clone());
- g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(v),
- new THREE.LineBasicMaterial({ color: esZod ? 0x16a085 : 0x44607a, transparent: true, opacity: esZod ? 0.85 : 0.4 })));
+ const colorBase = esZod ? 0x16a085 : 0x44607a, opBase = esZod ? 0.85 : 0.4;
+ const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(v),
+ new THREE.LineBasicMaterial({ color: colorBase, transparent: true, opacity: opBase }));
+ line.userData.colorBase = colorBase; line.userData.opBase = opBase;
+ g.add(line);
+ _threeConstLineById[b.id] = line;
+
+ // "Parche" invisible pero clicable/hoverable que cubre el área de la
+ // constelación -- se triangula en el plano (lon,lat), donde el polígono
+ // es simple (Delporte lo definió así a propósito), y luego cada vértice
+ // resultante se reproyecta sobre la esfera. Solo existe para poder
+ // detectar "el mouse está sobre esta constelación", nunca se ve.
+ try {
+ const shapePts = pts.map(p => new THREE.Vector2(p[0], p[1]));
+ const shape = new THREE.Shape(shapePts);
+ const fillGeom = new THREE.ShapeGeometry(shape);
+ const posAttr = fillGeom.attributes.position;
+ for (let i = 0; i < posAttr.count; i++) {
+ const lon2 = posAttr.getX(i), lat2 = posAttr.getY(i);
+ const ra2 = THREE.MathUtils.degToRad(lon2), dec2 = THREE.MathUtils.degToRad(lat2);
+ posAttr.setXYZ(i, R * Math.cos(dec2) * Math.cos(ra2), R * Math.sin(dec2), R * Math.cos(dec2) * Math.sin(ra2));
+ }
+ posAttr.needsUpdate = true;
+ const fillMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.001, side: THREE.DoubleSide, depthWrite: false });
+ const fillMesh = new THREE.Mesh(fillGeom, fillMat);
+ g.add(fillMesh);
+ _threeHoverables.push({ mesh: fillMesh, esConstFill: true, constId: b.id, info: _constInfoHTML(b.id) });
+ } catch (e) { /* polígonos muy irregulares (p.ej. cerca del polo) se saltan la zona clicable, la línea igual se ve */ }
  });
  _threeScene.add(g);
  _threeConstBoundsGroup = g;
+ const nota = document.getElementById('const_limites_nota');
+ if (nota) {
+ nota.innerHTML = !necesitaPrecesar
+ ? 'Mostrando las fronteras en su época de referencia moderna (J2000.0 = año 2000).'
+ : `Precesadas de J2000.0 a ${epoch} (fórmula de Newcomb, la misma en la que Delporte definió los límites en B1875.0). Cuanto más te alejes del año 2000, más diagonales se ven los tramos que en su época original eran rectos — es el mismo efecto que describe el propio libro de Delporte.`;
+ }
 }
 
 function threeLimitesChanged() {
  const sel = document.getElementById('const_limites');
  threeDibujarLimitesConstelaciones(sel ? sel.value : 'ninguno');
+ const bar = document.getElementById('const_epoca_bar');
+ if (bar) bar.style.display = (sel && sel.value !== 'ninguno') ? 'flex' : 'none';
+}
+
+// ═══ Etiquetas fijas con el nombre de cada constelación — para no
+// depender solo de pasar el mouse sobre una estrella. Se calcula el
+// centroide del polígono de frontera (promedio de las direcciones
+// unitarias de sus vértices) y ahí se ancla el rótulo. Toggle, para no
+// saturar la vista con 88 nombres todo el tiempo. ═══
+let _threeConstNamesOn = false;
+let _threeConstNamesGroup = null;
+function threeConstNamesApply() {
+ if (!_threeScene) return;
+ if (_threeConstNamesGroup) { _threeScene.remove(_threeConstNamesGroup); _threeConstNamesGroup = null; }
+ if (!_threeConstNamesOn) return;
+ const R = 78;
+ const g = new THREE.Group();
+ _parseConstBounds().forEach(function (b) {
+ let sx = 0, sy = 0, sz = 0;
+ b.pts.forEach(function (p) {
+ const ra = THREE.MathUtils.degToRad(p[0]), dec = THREE.MathUtils.degToRad(p[1]);
+ sx += Math.cos(dec) * Math.cos(ra); sy += Math.sin(dec); sz += Math.cos(dec) * Math.sin(ra);
+ });
+ const dir = new THREE.Vector3(sx, sy, sz).normalize();
+ const esZod = !!ZODIACO_IAU_ABREV[b.id];
+ const label = threeMakeLabel(esZod ? ZODIACO_IAU_ABREV[b.id] : b.id, esZod ? '#16a085' : '#8aa0b8');
+ label.scale.set(esZod ? 6 : 4, esZod ? 1.5 : 1, 1);
+ label.position.copy(dir.multiplyScalar(R));
+ g.add(label);
+ });
+ _threeScene.add(g);
+ _threeConstNamesGroup = g;
+}
+function threeToggleNombresConstelaciones(btn) {
+ _threeConstNamesOn = !_threeConstNamesOn;
+ if (btn) btn.classList.toggle('on', _threeConstNamesOn);
+ threeConstNamesApply();
 }
 
 // Comprobación interna: el arco pendiente hasta el límite Psc/Aqr debe
@@ -6504,6 +7614,7 @@ function buildCosmicMap() {
  _threeCosmicObjects = {}; _threeCosmicStarMeshes = {};
  if (_threeCosmicAnimId) { cancelAnimationFrame(_threeCosmicAnimId); _threeCosmicAnimId = null; }
  _threeCosmicSystemPivot = null; _threeCosmicTrails = {}; _threeCosmicStarsGroup = null; // los grupos/estelas de las animaciones viven en la escena que threeClearScene() acaba de vaciar
+ _threeOrbitRings = []; // anillos de órbita heliocéntrica — se ocultan en el marco geocéntrico (ver threeAplicarCentroReferencia)
 
  const selector = document.getElementById('three_const_selector');
  if (selector) selector.innerHTML = '<option value="">objeto específico...</option>';
@@ -6518,7 +7629,8 @@ function buildCosmicMap() {
  const ms = new Date(dtRef.endsWith('Z') ? dtRef : dtRef + ':00Z').getTime();
  const days = (ms - J2000_REF) / 86400000;
 
- const sol = threeAddSol(_threeScene);
+ const sol = threeAddSol(_threeScene); // threeAddSol ya registra su propio hoverable (radio/rotación) -- lo reutilizamos abajo (ver threeAplicarCentroReferencia) para además anexarle la distancia según el marco de referencia, en vez de duplicarlo (dos hoverables sobre el mismo mesh solo dejarían "ganar" siempre al primero)
+ sol.userData.infoBase = _threeHoverables.find(h => h.mesh === sol).info;
  registrar('Sol', sol);
 
  // círculo de la órbita de cada planeta — centrado EXACTAMENTE en el Sol
@@ -6534,7 +7646,9 @@ function buildCosmicMap() {
  const ang = Math.atan2(y, x);
  const ringPts = [];
  for (let i = 0; i <= 64; i++) { const a2 = (i / 64) * Math.PI * 2; ringPts.push(new THREE.Vector3(r * Math.cos(a2), 0, r * Math.sin(a2))); }
- _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ringPts), new THREE.LineBasicMaterial({ color: 0x3d5a70, transparent: true, opacity: 0.35 })));
+ const ring = new THREE.Line(new THREE.BufferGeometry().setFromPoints(ringPts), new THREE.LineBasicMaterial({ color: 0x3d5a70, transparent: true, opacity: 0.35 }));
+ _threeScene.add(ring);
+ _threeOrbitRings.push(ring);
  // la Tierra usa la MISMA textura real con continentes que en "Movimientos
  // de la Tierra" (threeGetEarthMaterial) — antes era un color plano azul
  const mesh = new THREE.Mesh(new THREE.SphereGeometry(name === 'Tierra' ? 0.7 : 0.5, 16, 16),
@@ -6542,9 +7656,10 @@ function buildCosmicMap() {
  mesh.position.set(r * Math.cos(ang), 0, r * Math.sin(ang));
  _threeScene.add(mesh);
  const periodoDias = 360 / el.n; // Kepler: T = 360°/velocidad angular media real
- _threeHoverables.push({ mesh, info: `<b>${name}</b><br>Distancia real al Sol: ${el.a.toFixed(2)} UA<br>Período orbital real: ${(periodoDias / 365.25636).toFixed(2)} años (${periodoDias.toFixed(0)} días)` });
+ const hoverable = { mesh, info: `<b>${name}</b><br>Distancia real al Sol: ${el.a.toFixed(2)} UA<br>Período orbital real: ${(periodoDias / 365.25636).toFixed(2)} años (${periodoDias.toFixed(0)} días)` };
+ _threeHoverables.push(hoverable);
  registrar(name, mesh);
- _threeCosmicPlanetMeshes[name] = { mesh, el, r };
+ _threeCosmicPlanetMeshes[name] = { mesh, el, r, hoverable };
  if (name === 'Tierra') {
  _threeEarthMeshCosmic = mesh;
  // Luna: muy cerca de la Tierra, NO en la misma escala logarítmica
@@ -6567,14 +7682,18 @@ function buildCosmicMap() {
  const rPl = _logRadius(PLUTON_A);
  const ringPts = [];
  for (let i = 0; i <= 64; i++) { const a2 = (i / 64) * Math.PI * 2; ringPts.push(new THREE.Vector3(rPl * Math.cos(a2), 0, rPl * Math.sin(a2))); }
- _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ringPts), new THREE.LineBasicMaterial({ color: 0x3d5a70, transparent: true, opacity: 0.35 })));
+ const ringPl = new THREE.Line(new THREE.BufferGeometry().setFromPoints(ringPts), new THREE.LineBasicMaterial({ color: 0x3d5a70, transparent: true, opacity: 0.35 }));
+ _threeScene.add(ringPl);
+ _threeOrbitRings.push(ringPl);
  const meshPl = new THREE.Mesh(new THREE.SphereGeometry(0.4, 16, 16), new THREE.MeshStandardMaterial({ color: THREE_PLANET_COLORS['Plutón'] || 0xB9A399 }));
  meshPl.position.set(rPl * Math.cos(lonPluton), 0, rPl * Math.sin(lonPluton));
  _threeScene.add(meshPl);
- _threeHoverables.push({ mesh: meshPl, info: `<b>Plutón</b><br>Distancia real al Sol: ${PLUTON_A.toFixed(1)} UA<br>Modelo de longitud lineal (más aproximado que los demás — órbita muy excéntrica e inclinada, sin elementos keplerianos simples aquí)` });
+ const hoverablePl = { mesh: meshPl, info: `<b>Plutón</b><br>Distancia real al Sol: ${PLUTON_A.toFixed(1)} UA<br>Modelo de longitud lineal (más aproximado que los demás — órbita muy excéntrica e inclinada, sin elementos keplerianos simples aquí)` };
+ _threeHoverables.push(hoverablePl);
  registrar('Plutón', meshPl);
- _threeCosmicPlanetMeshes['Plutón'] = { mesh: meshPl, el: { a: PLUTON_A, n: 0.0040 }, r: rPl };
+ _threeCosmicPlanetMeshes['Plutón'] = { mesh: meshPl, el: { a: PLUTON_A, n: 0.0040 }, r: rPl, hoverable: hoverablePl };
  }
+ threeAplicarCentroReferencia(); // por si el usuario ya había elegido el marco geocéntrico antes de este zoom/vista — aplica la posición correcta desde el primer cuadro, en vez de mostrar heliocéntrico un instante
 
  // --- Estrellas del zodíaco (todas las constelaciones a la vez) ---
  _threeStarBase = {};
@@ -6649,32 +7768,59 @@ function buildCosmicMap() {
  _threeHoverables.push({ mesh: apexCono, info: '<b>Ápex solar</b><br>Dirección hacia la que el Sol se mueve respecto a sus estrellas vecinas (≈Hércules/Lira, cerca de Vega)<br>Velocidad ≈20 km/s — MUCHO menor que los ≈220 km/s de la órbita galáctica compartida<br>(flecha esquemática — es una dirección, no tiene "distancia" que representar)' });
  registrar('→ Ápex solar', apexCono);
 
+ // --- Objetos famosos del espacio profundo — para que el modo 🚀 nave
+ // tenga adónde volar. Coordenadas J2000 y distancias son valores
+ // estándar de catálogo (SIMBAD/Wikipedia), igual de "redondeados" que
+ // GALACTIC_CENTER/SOLAR_APEX de arriba — se ubican con la MISMA
+ // dirección real (RA/Dec) y la MISMA función _logRadius (años luz reales
+ // -> radio esquemático) que ya usa el resto del mapa, así quedan
+ // anidados en la posición y "profundidad" correctas entre sí y respecto
+ // a las estrellas cercanas y al centro galáctico. ═══
+ FAMOUS_DEEP_SKY.forEach(obj => {
+ const ra = THREE.MathUtils.degToRad(obj.ra), dec = THREE.MathUtils.degToRad(obj.dec);
+ const r = _logRadius(obj.distLy * AU_PER_LY);
+ const x = r * Math.cos(dec) * Math.cos(ra), y = r * Math.sin(dec), z = r * Math.cos(dec) * Math.sin(ra);
+ const mesh = new THREE.Mesh(new THREE.SphereGeometry(obj.tam || 1.6, 16, 16), new THREE.MeshBasicMaterial({ color: obj.color }));
+ mesh.position.set(x, y, z);
+ _threeScene.add(mesh);
+ const label = threeMakeLabel(obj.icono + ' ' + obj.nombre, obj.colorTxt || '#' + obj.color.toString(16).padStart(6, '0'));
+ label.position.set(x, y + (obj.tam || 1.6) + 2, z);
+ _threeScene.add(label);
+ _threeHoverables.push({ mesh, info: `<b>${obj.icono} ${obj.nombre}</b><br>${obj.tipo}<br>Distancia real: ≈${obj.distLy.toLocaleString()} años luz<br>${obj.nota}` });
+ registrar(obj.icono + ' ' + obj.nombre, mesh);
+ });
+
  // --- Plano de la eclíptica + ecuador celeste + Punto Vernal (0° Aries) ---
  // El punto vernal ES la intersección de ambos planos (nodo ascendente de
  // la eclíptica sobre el ecuador) — por eso su marcador queda en el MISMO
  // punto en ambas grillas, nunca se mueve al rotar una respecto a la otra.
- threeAddEclipticPlane(_threeScene, 30);
- threeAddCelestialEquator(_threeScene, 30);
- const vernalLabel = threeMakeLabel('↳ Punto Vernal (0° Aries) = intersección eclíptica/ecuador', '#e74c3c');
- vernalLabel.position.set(33, 3, 0);
+ // rMax=80: se extiende hasta tocar la cáscara de estrellas/constelaciones
+ // (R=78 en threeDibujarLimitesConstelaciones) -- así se ve directamente en
+ // qué constelación real cae el punto vernal hoy (Piscis; cruzará a
+ // Acuario hacia el año ≈2600, ver LIMITE_PSC_AQR_LON / limitesAutoVerificar()).
+ threeAddEclipticPlane(_threeScene, 80);
+ threeAddCelestialEquator(_threeScene, 80);
+ const vernalLabel = threeMakeLabel('↳ Punto Vernal (0° Aries) — hoy en Piscis', '#e74c3c');
+ vernalLabel.position.set(83, 3, 0);
+ vernalLabel.scale.set(11, 2.4, 1);
  _threeScene.add(vernalLabel);
- registrar('Punto Vernal (0° Aries) — equinoccio de primavera', (() => {
+ registrar('Punto Vernal (0° Aries)', (() => {
  const m = new THREE.Mesh(new THREE.SphereGeometry(0.01), new THREE.MeshBasicMaterial({ visible: false }));
- m.position.set(30, 0, 0); _threeScene.add(m); return m;
+ m.position.set(80, 0, 0); _threeScene.add(m); return m;
  })());
  // registrar también el punto opuesto y el propio ecuador celeste como
  // "objetos" a los que ir directamente — "que la gente vaya directo al punto"
  registrar('Equinoccio de Otoño (0° Libra)', (() => {
  const m = new THREE.Mesh(new THREE.SphereGeometry(0.01), new THREE.MeshBasicMaterial({ visible: false }));
- m.position.set(-30, 0, 0); _threeScene.add(m); return m;
+ m.position.set(-80, 0, 0); _threeScene.add(m); return m;
  })());
  registrar('Ecuador celeste (plano)', (() => {
  const m = new THREE.Mesh(new THREE.SphereGeometry(0.01), new THREE.MeshBasicMaterial({ visible: false }));
- m.position.set(0, 30 * Math.sin(THREE.MathUtils.degToRad(23.44)), 30 * Math.cos(THREE.MathUtils.degToRad(23.44))); _threeScene.add(m); return m;
+ m.position.set(0, 80 * Math.sin(THREE.MathUtils.degToRad(23.44)), 80 * Math.cos(THREE.MathUtils.degToRad(23.44))); _threeScene.add(m); return m;
  })());
  registrar('Eclíptica (plano, vista de canto)', (() => {
  const m = new THREE.Mesh(new THREE.SphereGeometry(0.01), new THREE.MeshBasicMaterial({ visible: false }));
- m.position.set(0, 0, 30); _threeScene.add(m); return m;
+ m.position.set(0, 0, 80); _threeScene.add(m); return m;
  })());
 
  // --- Órbita galáctica del Sol — anillo-guía ESQUEMÁTICO junto al Sol (no
@@ -6727,6 +7873,11 @@ function threeCosmicZoom(nivel) {
  threeAnimateCameraTo(pos, target, 1400);
 }
 
+// Nombre en español (como usan las estrellas del zodíaco, _threeCosmicStarMeshes)
+// -> abreviatura IAU de 3 letras (como usan las fronteras, _threeConstLineById) —
+// las dos mitades de "resaltar" vivían en dos sistemas de nombres distintos, por
+// eso el resaltado solo afectaba a las estrellas y nunca a la frontera real.
+const ZODIAC_ES_A_IAU = Object.fromEntries(Object.entries(ZODIACO_IAU_ABREV).map(([id, es]) => [es, id]));
 function threeResaltarConstelacion(nombre) {
  Object.entries(_threeCosmicStarMeshes).forEach(([cons, meshes]) => {
  meshes.forEach(mesh => {
@@ -6736,6 +7887,17 @@ function threeResaltarConstelacion(nombre) {
  mesh.scale.setScalar(activo && nombre ? 1.8 : 1); // agranda las de la constelación elegida
  });
  });
+ // Resaltar también la FRONTERA real (Delporte/IAU), no solo las estrellas.
+ // Si las fronteras estaban apagadas, se encienden (13 del zodíaco) para
+ // que el resaltado se pueda ver — si no, "resaltar" no mostraría nada nuevo.
+ const selLimites = document.getElementById('const_limites');
+ if (nombre && selLimites && selLimites.value === 'ninguno') {
+ selLimites.value = 'zodiaco';
+ threeLimitesChanged();
+ _railFronterasEstado = 'zodiaco';
+ railFlyoutRefresh(railBuildConstFlyoutButtons);
+ }
+ if (typeof threeConstResaltar === 'function') threeConstResaltar(nombre ? ZODIAC_ES_A_IAU[nombre] : null);
 }
 
 let _threeEarthMeshCosmic = null;
@@ -6751,28 +7913,97 @@ function threeIrAEstrella(nombre) {
  else { const p = document.getElementById('planeta_detalle'); if (p) p.style.display = 'none'; _planetaDetalleActual = null; }
 }
 
-// ═══ Línea de tiempo del Mapa Cósmico (1900-2100) — recoloca el Sol, los
-// planetas, la Luna y Plutón según el 1 de enero del año elegido, con el
-// MISMO modelo orbital elíptico que ya usa todo el mapa (no recalcula
-// estrellas ni reconstruye la escena — solo reposiciona, para que arrastrar
-// el control se sienta instantáneo).
-function threeCosmicIrAFecha() {
- const slider = document.getElementById('cm_fecha_anio');
- if (!slider || _threeMode !== 'constelaciones') return;
- const anio = parseInt(slider.value);
- document.getElementById('cm_fecha_anio_label').textContent = anio;
- const days = (Date.UTC(anio, 0, 1) - J2000_REF) / 86400000;
- _threeLastDt = anio + '-01-01T00:00:00Z';
+// ═══ Marco de referencia del Sistema Solar — heliocéntrico (Copérnico,
+// el que usa todo el resto del mapa) o geocéntrico (la Tierra en el
+// origen, con la distancia REAL e instantánea a cada planeta, que varía
+// durante el año — no es un círculo, a diferencia de su órbita alrededor
+// del Sol). Reutiliza EXACTAMENTE el mismo modelo elíptico (_helioXY) que
+// ya calcula todo el mapa; no se fabrica ninguna posición nueva, solo se
+// cambia el origen desde el que se mide. Una sola función reposiciona
+// TODO (la usan tanto el botón ☉/⊕ como el slider de fecha de abajo, para
+// que nunca queden desincronizados). ═══
+function threeCentroToggle() {
+ const idx = CENTRO_CICLO.findIndex(c => c[0] === _threeCentroReferencia);
+ _threeCentroReferencia = CENTRO_CICLO[(idx + 1) % CENTRO_CICLO.length][0];
+ threeAplicarCentroReferencia();
+ const [, icon, tip] = CENTRO_CICLO.find(c => c[0] === _threeCentroReferencia);
+ const btn = document.getElementById('centro_toggle_btn');
+ if (btn) { btn.innerHTML = icon; btn.classList.toggle('on', _threeCentroReferencia === 'tierra'); }
+ const tipEl = document.getElementById('rail_tip');
+ if (tipEl && tipEl.style.display === 'block') tipEl.textContent = tip;
+}
+function threeAplicarCentroReferencia() {
+ if (!_threeScene || !_threeCosmicObjects['Sol'] || !_threeCosmicPlanetMeshes['Tierra']) return; // el Mapa Cósmico aún no se construyó
+ const dtRef = _threeLastDt || '2024-01-01T12:00:00Z';
+ const ms = new Date(dtRef.endsWith('Z') ? dtRef : dtRef + ':00Z').getTime();
+ const days = (ms - J2000_REF) / 86400000;
+ const esGeo = _threeCentroReferencia === 'tierra';
+ const [ex, ey] = _helioXY(ORBITAL_ELEMENTS['Tierra'], days); // posición heliocéntrica REAL de la Tierra ahora mismo (no la esquemática de radio fijo que se dibuja en el marco solar)
+ _threeOrbitRings.forEach(r => { r.visible = !esGeo; }); // en el marco de la Tierra ningún otro planeta traza un círculo (incluye los bucles retrógrados) — mostrarlo como anillo sería falso
+
  Object.entries(_threeCosmicPlanetMeshes).forEach(([name, p]) => {
- let ang;
- if (name === 'Plutón') { ang = THREE.MathUtils.degToRad(_geoLonPlanetAtDays('Plutón', days)); }
- else { const [xp, yp] = _helioXY(p.el, days); ang = Math.atan2(yp, xp); }
- p.mesh.position.set(p.r * Math.cos(ang), 0, p.r * Math.sin(ang));
+ let x, z, distGeoAU;
+ const esPluton = (name === 'Plutón');
+ const [hx, hy] = esPluton
+ ? (() => { const lon = _geoLonPlanetAtDays('Plutón', days) * Math.PI / 180; return [p.el.a * Math.cos(lon), p.el.a * Math.sin(lon)]; })()
+ : _helioXY(p.el, days);
+ if (name === 'Tierra' && esGeo) {
+ x = 0; z = 0; // la Tierra ES el origen en su propio marco
+ } else if (esGeo) {
+ const dx = hx - ex, dy = hy - ey;
+ distGeoAU = Math.hypot(dx, dy);
+ const r = _logRadius(distGeoAU), ang = Math.atan2(dy, dx);
+ x = r * Math.cos(ang); z = r * Math.sin(ang);
+ } else { // heliocéntrico: mismo ángulo real de siempre, radio esquemático fijo p.r
+ const ang = Math.atan2(hy, hx);
+ x = p.r * Math.cos(ang); z = p.r * Math.sin(ang);
+ }
+ p.mesh.position.set(x, 0, z);
+ if (p.hoverable) {
+ if (name === 'Tierra') {
+ p.hoverable.info = esGeo
+ ? '<b>Tierra</b><br>Centro de referencia de esta vista.'
+ : `<b>Tierra</b><br>Distancia real al Sol: ${p.el.a.toFixed(2)} UA<br>Período orbital real: 1.00 año (365 días)`;
+ } else {
+ const periodoDias = 360 / p.el.n;
+ p.hoverable.info = esGeo
+ ? `<b>${name}</b><br>Distancia real a la Tierra ahora: ${distGeoAU.toFixed(2)} UA<br>(varía todo el año — no es un círculo fijo, a diferencia de su órbita alrededor del Sol)`
+ : `<b>${name}</b><br>Distancia real al Sol: ${p.el.a.toFixed(2)} UA<br>Período orbital real: ${(periodoDias / 365.25636).toFixed(2)} años (${periodoDias.toFixed(0)} días)`;
+ }
+ }
  if (name === 'Tierra') {
  const moon = _threeCosmicObjects['Luna'];
  if (moon) moon.position.set(p.mesh.position.x + 1.3, 0, p.mesh.position.z);
  }
  });
+
+ const sol = _threeCosmicObjects['Sol'];
+ if (sol) {
+ if (esGeo) {
+ const dist = Math.hypot(ex, ey), r = _logRadius(dist), ang = Math.atan2(-ey, -ex);
+ sol.position.set(r * Math.cos(ang), 0, r * Math.sin(ang));
+ } else {
+ sol.position.set(0, 0, 0);
+ }
+ const solHov = _threeHoverables.find(h => h.mesh === sol);
+ if (solHov) solHov.info = sol.userData.infoBase + (esGeo ? `<br>Distancia real a la Tierra ahora: ${Math.hypot(ex, ey).toFixed(3)} UA (varía muy poco — la órbita terrestre es casi circular)` : '');
+ }
+}
+
+// ═══ Línea de tiempo del Mapa Cósmico (1900-2100) — recoloca el Sol, los
+// planetas, la Luna y Plutón según el 1 de enero del año elegido, con el
+// MISMO modelo orbital elíptico que ya usa todo el mapa, en el marco
+// (heliocéntrico o geocéntrico) que esté activo — una sola función
+// (threeAplicarCentroReferencia) hace el trabajo real, para que este
+// slider y el botón ☉/⊕ nunca queden desincronizados.
+function threeCosmicIrAFecha() {
+ const slider = document.getElementById('cm_fecha_anio');
+ if (!slider || _threeMode !== 'constelaciones') return;
+ const anio = parseInt(slider.value);
+ document.getElementById('cm_fecha_anio_label').textContent = anio;
+ _threeLastDt = anio + '-01-01T00:00:00Z';
+ threeAplicarCentroReferencia();
+ const days = (Date.UTC(anio, 0, 1) - J2000_REF) / 86400000;
  if (_planetaDetalleActual) threeActualizarMarcaFechaEnDetalle(days);
 }
 
@@ -7632,6 +8863,425 @@ function calcCinetico() {
  document.getElementById('cin_tr_list').innerHTML = trHtml || '(ninguno en este orbe)';
 
  document.getElementById('cin_result').style.display = 'block';
+}
+
+// ============================================================================
+// PESTAÑA DIDÁCTICA — AJEDREZ (Nivel 2, sinastría)
+// ============================================================================
+const AJ_PLAYERS = [
+ {name:"Magnus Carlsen", date:"1990-11-30", city:"Tønsberg, Noruega", flag:"🇳🇴"},
+ {name:"Fabiano Caruana", date:"1992-07-30", city:"Miami, EE. UU.", flag:"🇺🇸"},
+ {name:"Gukesh D", date:"2006-05-29", city:"Chennai, India", flag:"🇮🇳"},
+ {name:"Hikaru Nakamura", date:"1987-12-09", city:"Hirakata, Japón", flag:"🇯🇵"},
+ {name:"Ian Nepomniachtchi", date:"1990-07-14", city:"Briansk, Rusia", flag:"🇷🇺"},
+ {name:"Ding Liren", date:"1992-10-24", city:"Wenzhou, China", flag:"🇨🇳"},
+ {name:"Alireza Firouzja", date:"2003-06-18", city:"Babol, Irán", flag:"🇮🇷"},
+ {name:"R Praggnanandhaa", date:"2005-08-10", city:"Chennai, India", flag:"🇮🇳"},
+ {name:"Arjun Erigaisi", date:"2003-09-03", city:"Warangal, India", flag:"🇮🇳"},
+ {name:"Nijat Abasov", date:"1995-05-14", city:"Bakú, Azerbaiyán", flag:"🇦🇿"},
+ {name:"Vidit Gujrathi", date:"1994-10-24", city:"Nashik, India", flag:"🇮🇳"},
+ {name:"Wei Yi", date:"1999-06-02", city:"Yancheng, China", flag:"🇨🇳"},
+];
+const AJ_PALETTE = ["#1A4A38","#C8A84B","#3A8C6E","#8A5A1E","#4A6B7A","#7A2E4A","#5B6E24","#2E5B7A"];
+function ajHash(s){ let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))>>>0; return AJ_PALETTE[h%AJ_PALETTE.length]; }
+function ajInitials(name){ const p=name.replace(/[^A-Za-zÀ-ÿ ]/g,'').split(' ').filter(Boolean); return ((p[0]||'')[0]+(p[p.length-1]||'')[0]).toUpperCase(); }
+
+function wheelSVG(seedName, size, opts){
+ opts = opts || {};
+ const r = size*0.42, cx=size/2, cy=size/2;
+ let seed=0; for(const c of seedName) seed=(seed*131+c.charCodeAt(0))>>>0;
+ function rnd(){ seed=(seed*1103515245+12345)>>>0; return (seed>>>8)/16777216; }
+ const bodies=[["So",false],["Mo",false],["Me",false],["Ve",false],["Ma",false],["Ju",false],["Sa",false],["Ur",false]];
+ const chosen = bodies.sort(()=>rnd()-0.5).slice(0,4);
+ let svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="Carta esquemática de ${seedName}">`;
+ svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="var(--verde-profundo)" stroke-width="2"/>`;
+ svg += `<circle cx="${cx}" cy="${cy}" r="${r*0.6}" fill="var(--verde-palido)" stroke="var(--verde-profundo)" stroke-width="1"/>`;
+ for(let k=0;k<12;k++){
+  const a=k*30*Math.PI/180;
+  const x0=cx+r*0.6*Math.cos(a), y0=cy+r*0.6*Math.sin(a);
+  const x1=cx+r*Math.cos(a), y1=cy+r*Math.sin(a);
+  svg += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="var(--verde-profundo)" stroke-width="${k%3===0?1.4:0.5}"/>`;
+ }
+ const axisAngles={180:"ASC",90:"MC",0:"DSC",270:"IC"};
+ for(const [deg,lbl] of Object.entries(axisAngles)){
+  const a=deg*Math.PI/180;
+  const x0=cx+r*0.6*Math.cos(a), y0=cy+r*0.6*Math.sin(a);
+  const x1=cx+r*1.12*Math.cos(a), y1=cy+r*1.12*Math.sin(a);
+  svg += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="var(--oro)" stroke-width="2.2"/>`;
+  svg += `<text x="${cx+r*1.26*Math.cos(a)}" y="${cy+r*1.26*Math.sin(a)+4}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--oro)">${lbl}</text>`;
+ }
+ let angleOffsets=[15,105,195,285];
+ chosen.forEach((b,idx)=>{
+  const deg = angleOffsets[idx] + (rnd()*24-12);
+  const a = deg*Math.PI/180;
+  const rp = r*0.86;
+  const x=cx+rp*Math.cos(a), y=cy+rp*Math.sin(a);
+  const angular = Math.min(...[0,90,180,270].map(c=>Math.min(Math.abs(deg-c),360-Math.abs(deg-c))))<18;
+  svg += `<circle cx="${x}" cy="${y}" r="${r*0.1}" fill="${angular?'var(--oro)':'var(--verde)'}" stroke="#fff" stroke-width="1.2"/>`;
+  svg += `<text x="${x}" y="${y+3.5}" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">${b[0]}</text>`;
+ });
+ svg += `</svg>`;
+ return svg;
+}
+
+function ajedrezInit(){
+ const grid = document.getElementById('ajGrid');
+ if(!grid || grid.dataset.built) { if(grid) ajSelectPlayer(0); ajBuildPartida(); return; }
+ grid.dataset.built='1';
+ AJ_PLAYERS.forEach((p,i)=>{
+  const btn=document.createElement('button');
+  btn.type='button'; btn.className='ghost act'; btn.id='ajcard'+i;
+  btn.style.cssText='display:flex;align-items:center;gap:8px;text-align:left;padding:8px 10px';
+  btn.innerHTML=`<span style="width:32px;height:32px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;background:${ajHash(p.name)}">${ajInitials(p.name)}</span>
+   <span style="line-height:1.2;overflow:hidden"><b style="font-size:12.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.flag} ${p.name}</b><span class="small muted">${p.date}</span></span>`;
+  btn.onclick=()=>ajSelectPlayer(i);
+  grid.appendChild(btn);
+ });
+ ajSelectPlayer(0);
+ ajBuildPartida();
+}
+function ajSelectPlayer(i){
+ for(let k=0;k<AJ_PLAYERS.length;k++){ const b=document.getElementById('ajcard'+k); if(b) b.className = k===i?'act':'ghost act'; }
+ const p = AJ_PLAYERS[i];
+ document.getElementById('ajDetail').innerHTML = `
+  ${wheelSVG(p.name,170)}
+  <div style="flex:1;min-width:200px">
+   <h3 style="margin:0 0 2px">${p.flag} ${p.name}</h3>
+   <div class="small muted">Carta natal — estructura estática</div>
+   <div style="margin-top:8px;font-size:13.5px"><b>Nacimiento:</b> ${p.date}<br><b>Ciudad:</b> ${p.city}</div>
+  </div>`;
+}
+// ---------------------------------------------------------------------------
+// Reproductor real de la partida 6, Mundial 2021 (Carlsen-Nepomniachtchi),
+// con datos genuinos del piloto: casas natales reales por jugada (Anexo B).
+// ---------------------------------------------------------------------------
+const PIECE_GLYPH = {p:'♟',n:'♞',b:'♝',r:'♜',q:'♛',k:'♚'};
+let AJ_GAME = null;      // JSON cargado (moves, astro, metadatos)
+let AJ_CHESS = null;     // instancia chess.js
+let AJ_PLY = 0;          // 0 = posición inicial, 1..N = tras esa jugada
+let AJ_TIMER = null;
+
+// 20 partidas reales representativas del piloto (distintos torneos, jugadores,
+// resultados y duraciones) -- manifiesto embebido para no depender de un
+// fetch extra solo para poblar el selector.
+const AJ_MANIFEST = [
+ {file:"wc_2021_dubai__game_06_1.json", white:"Carlsen, Magnus", black:"Nepomniachtchi, Ian", event:"Mundial FIDE 2021", date:"2021.12.03", round:"6", result:"1-0", n_plies:271},
+ {file:"wc_2021_dubai__game_09_1.json", white:"Nepomniachtchi, Ian", black:"Carlsen, Magnus", event:"Mundial FIDE 2021", date:"2021.12.07", round:"9", result:"0-1", n_plies:78},
+ {file:"wc_2021_dubai__game_11_1.json", white:"Nepomniachtchi, Ian", black:"Carlsen, Magnus", event:"Mundial FIDE 2021", date:"2021.12.10", round:"11", result:"0-1", n_plies:98},
+ {file:"wc_2023_astana__round_01_1.json", white:"Nepomniachtchi, Ian", black:"Ding, Liren", event:"Mundial FIDE 2023", date:"2023.04.09", round:"1", result:"1/2-1/2", n_plies:97},
+ {file:"wc_2023_astana__round_04_1.json", white:"Ding, Liren", black:"Nepomniachtchi, Ian", event:"Mundial FIDE 2023", date:"2023.04.13", round:"4", result:"1-0", n_plies:93},
+ {file:"wc_2023_astana__round_15_tiebreaks_4.json", white:"Nepomniachtchi, Ian", black:"Ding, Liren", event:"Mundial FIDE 2023 — desempate rápido", date:"2023.04.30", round:"4", result:"0-1", n_plies:136},
+ {file:"candidates_2024__round_02_3.json", white:"Nepomniachtchi, Ian", black:"Firouzja, Alireza", event:"Candidatos FIDE 2024", date:"2024.04.04", round:"2", result:"1-0", n_plies:89},
+ {file:"candidates_2024__round_04_3.json", white:"Caruana, Fabiano", black:"Gukesh D", event:"Candidatos FIDE 2024", date:"2024.04.07", round:"4", result:"1/2-1/2", n_plies:147},
+ {file:"candidates_2024__round_05_3.json", white:"Gukesh D", black:"Abasov, Nijat", event:"Candidatos FIDE 2024", date:"2024.04.09", round:"5", result:"1-0", n_plies:173},
+ {file:"candidates_2024__round_08_3.json", white:"Nakamura, Hikaru", black:"Caruana, Fabiano", event:"Candidatos FIDE 2024", date:"2024.04.13", round:"8", result:"1-0", n_plies:69},
+ {file:"candidates_2024__round_11_1.json", white:"Praggnanandhaa R", black:"Nakamura, Hikaru", event:"Candidatos FIDE 2024", date:"2024.04.17", round:"11", result:"0-1", n_plies:108},
+ {file:"candidates_2024__round_13_4.json", white:"Gukesh D", black:"Firouzja, Alireza", event:"Candidatos FIDE 2024", date:"2024.04.20", round:"13", result:"1-0", n_plies:125},
+ {file:"candidates_2024__round_14_2.json", white:"Caruana, Fabiano", black:"Nepomniachtchi, Ian", event:"Candidatos FIDE 2024", date:"2024.04.21", round:"14", result:"1/2-1/2", n_plies:217},
+ {file:"norway_chess_2024__round_01_1.json", white:"Ding, Liren", black:"Carlsen, Magnus", event:"Norway Chess 2024", date:"2024.05.27", round:"1", result:"1/2-1/2", n_plies:27},
+ {file:"norway_chess_2024__round_04_1.json", white:"Caruana, Fabiano", black:"Carlsen, Magnus", event:"Norway Chess 2024", date:"2024.05.30", round:"7", result:"0-1", n_plies:132},
+ {file:"norway_chess_2024__round_05_1.json", white:"Carlsen, Magnus", black:"Firouzja, Alireza", event:"Norway Chess 2024", date:"2024.06.01", round:"9", result:"1-0", n_plies:163},
+ {file:"norway_chess_2025__round_01_3.json", white:"Carlsen, Magnus", black:"Gukesh D", event:"Norway Chess 2025", date:"2025.05.25", round:"1", result:"1-0", n_plies:110},
+ {file:"norway_chess_2025__round_06_3.json", white:"Gukesh D", black:"Carlsen, Magnus", event:"Norway Chess 2025", date:"2025.05.26", round:"11", result:"1-0", n_plies:123},
+ {file:"norway_chess_2025__round_07_1.json", white:"Gukesh D", black:"Erigaisi Arjun", event:"Norway Chess 2025", date:"2025.05.21", round:"13", result:"1-0", n_plies:183},
+ {file:"norway_chess_2025__round_09_3.json", white:"Carlsen, Magnus", black:"Caruana, Fabiano", event:"Norway Chess 2025", date:"2025.05.26", round:"17", result:"1-0", n_plies:103},
+];
+
+function ajBuildPartida(){
+ const sel = document.getElementById('aj_game_select');
+ if(sel.dataset.built) return;
+ sel.dataset.built = '1';
+ sel.innerHTML = AJ_MANIFEST.map((g,i)=>{
+  const res = g.result==='1-0'? `${g.white.split(',')[0]} gana` : g.result==='0-1'? `${g.black.split(',')[0]} gana` : 'Tablas';
+  return `<option value="${i}">${g.white.split(',')[0]} vs ${g.black.split(',')[0]} — ${g.event} (${g.date.replaceAll('.','-')}) — ${res}, ${g.n_plies} jugadas</option>`;
+ }).join('');
+ sel.onchange = ()=>ajLoadGame(parseInt(sel.value));
+ ajLoadGame(0);
+}
+function ajLoadGame(idx){
+ const meta = AJ_MANIFEST[idx];
+ document.getElementById('aj_game_select').value = idx;
+ document.getElementById('aj_board').innerHTML = '<p class="small muted">Cargando partida…</p>';
+ if(AJ_TIMER){ clearInterval(AJ_TIMER); AJ_TIMER=null; }
+ fetch('chess_games/'+meta.file).then(r=>r.json()).then(data=>{
+  AJ_GAME = data;
+  AJ_CHESS = new Chess();
+  document.getElementById('aj_slider').max = data.moves.length;
+  document.getElementById('aj_pbadge_w').textContent = '♔ ' + data.white + ' — Blancas';
+  document.getElementById('aj_pbadge_b').textContent = '♚ ' + data.black + ' — Negras';
+  const list = document.getElementById('aj_movelist');
+  let html = '';
+  for(let i=0;i<data.moves.length;i+=2){
+   const w = data.moves[i], b = data.moves[i+1];
+   html += `<div>${(i/2+1)}. <span class="aj-mv${w.note?' '+w.note.toLowerCase():''}" id="ajmv${w.ply}" onclick="ajGoto(${w.ply})">${w.san}</span>`;
+   if(b) html += ` <span class="aj-mv${b.note?' '+b.note.toLowerCase():''}" id="ajmv${b.ply}" onclick="ajGoto(${b.ply})">${b.san}</span>`;
+   html += `</div>`;
+  }
+  list.innerHTML = html;
+  ajGoto(0);
+ }).catch(err=>{
+  document.getElementById('aj_board').innerHTML = '<p class="small muted">No se pudo cargar esta partida ('+meta.file+').</p>';
+ });
+}
+function ajRenderBoard(){
+ const board = document.getElementById('aj_board');
+ board.innerHTML = '';
+ const pos = AJ_CHESS.board(); // fila 0 = rank 8 .. fila 7 = rank 1
+ for(let r=0;r<8;r++){
+  for(let c=0;c<8;c++){
+   const sq = pos[r][c];
+   const light = (r+c)%2===0;
+   const cell = document.createElement('div');
+   cell.className='aj-sq';
+   cell.style.background = light? 'var(--verde-palido)':'var(--verde-profundo)';
+   if(sq){
+    cell.textContent = PIECE_GLYPH[sq.type];
+    cell.style.color = sq.color==='w' ? '#ffffff' : '#0c1f16';
+    cell.style.textShadow = sq.color==='w' ? '0 0 2px #0c1f16,0 0 2px #0c1f16' : '0 0 2px #cfe9df';
+   }
+   board.appendChild(cell);
+  }
+ }
+}
+function ajGoto(ply){
+ if(!AJ_GAME) return;
+ ply = Math.max(0, Math.min(AJ_GAME.moves.length, ply));
+ AJ_PLY = ply;
+ AJ_CHESS.reset();
+ for(let i=0;i<ply;i++) AJ_CHESS.move(AJ_GAME.moves[i].san);
+ ajRenderBoard();
+ document.getElementById('aj_slider').value = ply;
+ document.querySelectorAll('.aj-mv.active').forEach(e=>e.classList.remove('active'));
+ if(ply>0){
+  const el = document.getElementById('ajmv'+ply);
+  if(el){ el.classList.add('active'); el.scrollIntoView({block:'nearest'}); }
+ }
+ const whiteToMove = ply%2===0;
+ document.getElementById('aj_pbadge_w').classList.toggle('turn', whiteToMove);
+ document.getElementById('aj_pbadge_b').classList.toggle('turn', !whiteToMove);
+
+ if(ply===0){
+  document.getElementById('aj_moveinfo').innerHTML = '<i>Posición inicial — usa ▶ o el control deslizante.</i>';
+  document.getElementById('aj_wheel_dyn').innerHTML = wheelSVG('game06-inicio',170);
+  document.getElementById('aj_wheel_label').textContent = 'Elige una jugada para ver su carta';
+  return;
+ }
+ const mv = AJ_GAME.moves[ply-1];
+ const astro = AJ_GAME.astro[String(ply)] || AJ_GAME.astro[String(ply+1)] || null;
+ const mover = mv.color==='white' ? AJ_GAME.white : AJ_GAME.black;
+ const hh = astro ? Math.floor(astro.hours) : 0;
+ const mm = astro ? Math.round((astro.hours-hh)*60) : 0;
+ document.getElementById('aj_moveinfo').innerHTML = `
+  <b>${Math.ceil(ply/2)}${mv.color==='white'?'.':'...'}</b> ${mv.san}
+  ${mv.note?`<span class="aj-mv ${mv.note.toLowerCase()}" style="cursor:default">· ${mv.note==='Blunder'?'Error grave':mv.note==='Mistake'?'Error':'Imprecisión'}</span>`:''}
+  &nbsp;·&nbsp;reloj: <span class="mono">${mv.clock||'—'}</span>
+  ${astro?`&nbsp;·&nbsp;+${hh}h${String(mm).padStart(2,'0')}m de partida&nbsp;·&nbsp;Δwin%: <b style="color:${astro.delta_winpct<0?'#c0392b':'#1e8449'}">${astro.delta_winpct>0?'+':''}${astro.delta_winpct}</b>`:''}`;
+
+ if(astro){
+  const wheel = wheelFromHouses(mover, astro.houses, astro.angular, 170);
+  document.getElementById('aj_wheel_dyn').innerHTML = wheel;
+  document.getElementById('aj_wheel_label').innerHTML = `Casa real, instante de esta jugada<br><b>${mover}</b> — planetas natales`;
+ } else {
+  document.getElementById('aj_wheel_dyn').innerHTML = wheelSVG('game06-'+ply,170);
+  document.getElementById('aj_wheel_label').textContent = 'Primera jugada — sin dato astro (excluida del piloto por ser de libro)';
+ }
+}
+function ajStep(delta){ ajGoto(AJ_PLY+delta); }
+function ajTogglePlay(){
+ const btn = document.getElementById('aj_btn_play');
+ if(AJ_TIMER){ clearInterval(AJ_TIMER); AJ_TIMER=null; btn.textContent='▶ Reproducir'; return; }
+ btn.textContent='⏸ Pausa';
+ AJ_TIMER = setInterval(()=>{
+  if(AJ_PLY >= AJ_GAME.moves.length){ clearInterval(AJ_TIMER); AJ_TIMER=null; btn.textContent='▶ Reproducir'; return; }
+  ajStep(1);
+ }, 550);
+}
+// dibuja la rueda con los planetas NATALES del jugador en su casa REAL
+// (1-12) para el instante de esta jugada -- datos reales del piloto, no
+// esquematicos (solo el grado exacto dentro de la casa es ilustrativo).
+function wheelFromHouses(playerName, houses, angularFlags, size){
+ const r = size*0.42, cx=size/2, cy=size/2;
+ const abbr = {sun:'So',moon:'Mo',mercury:'Me',venus:'Ve',mars:'Ma',jupiter:'Ju',saturn:'Sa',uranus:'Ur',neptune:'Ne',pluto:'Pl'};
+ let svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="Casas reales para ${playerName}">`;
+ svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="var(--verde-profundo)" stroke-width="2"/>`;
+ svg += `<circle cx="${cx}" cy="${cy}" r="${r*0.6}" fill="var(--verde-palido)" stroke="var(--verde-profundo)" stroke-width="1"/>`;
+ for(let k=0;k<12;k++){
+  const a=k*30*Math.PI/180;
+  const x0=cx+r*0.6*Math.cos(a), y0=cy+r*0.6*Math.sin(a);
+  const x1=cx+r*Math.cos(a), y1=cy+r*Math.sin(a);
+  svg += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="var(--verde-profundo)" stroke-width="${k%3===0?1.4:0.5}"/>`;
+ }
+ const axisAngles={180:"ASC",90:"MC",0:"DSC",270:"IC"};
+ for(const [deg,lbl] of Object.entries(axisAngles)){
+  const a=deg*Math.PI/180;
+  const x0=cx+r*0.6*Math.cos(a), y0=cy+r*0.6*Math.sin(a);
+  const x1=cx+r*1.12*Math.cos(a), y1=cy+r*1.12*Math.sin(a);
+  svg += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="var(--oro)" stroke-width="2.2"/>`;
+  svg += `<text x="${cx+r*1.26*Math.cos(a)}" y="${cy+r*1.26*Math.sin(a)+4}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--oro)">${lbl}</text>`;
+ }
+ // varios planetas comparten a veces la misma casa -- desplaza en angulo
+ // dentro del sector 30 grados para que no se superpongan.
+ const byHouse = {};
+ for(const [p,h] of Object.entries(houses)){ (byHouse[h] = byHouse[h]||[]).push(p); }
+ Object.entries(byHouse).forEach(([house, planets])=>{
+  const houseN = parseInt(house);
+  const baseDeg = 180 + (houseN-1)*30;
+  planets.forEach((p,idx)=>{
+   const spread = planets.length>1 ? (idx/(planets.length-1)-0.5)*22 : 0;
+   const deg = baseDeg + 15 + spread;
+   const a = deg*Math.PI/180;
+   const rp = r*0.86;
+   const x=cx+rp*Math.cos(a), y=cy+rp*Math.sin(a);
+   const isAngular = angularFlags[p];
+   svg += `<circle cx="${x}" cy="${y}" r="${r*0.095}" fill="${isAngular?'var(--oro)':'var(--verde)'}" stroke="#fff" stroke-width="1"/>`;
+   svg += `<text x="${x}" y="${y+3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">${abbr[p]}</text>`;
+  });
+ });
+ svg += `</svg>`;
+ return svg;
+}
+
+// ============================================================================
+// PESTAÑA DIDÁCTICA — SISMOS (control negativo, geometría, Llona)
+// ============================================================================
+function sismosInit(){
+ const marea = document.getElementById('si_marea');
+ if(marea && !marea.dataset.built){ marea.dataset.built='1'; marea.innerHTML = siMareaSVG(150); }
+ const falla = document.getElementById('si_falla');
+ if(falla && !falla.dataset.built){ falla.dataset.built='1'; falla.innerHTML = siFallaSVG(150); }
+ const casas = document.getElementById('si_casas');
+ if(casas && !casas.dataset.built){ casas.dataset.built='1'; casas.innerHTML = wheelSVG('epicentro-demo',150); }
+ const bars = document.getElementById('si_bars');
+ if(bars && !bars.dataset.built){
+  bars.dataset.built='1';
+  const OK=[["2013",104,false],["2014",627,false],["2015",947,true],["2016",655,false]];
+  const maxV=Math.max(...OK.map(d=>d[1]));
+  OK.forEach(([yr,v,peak])=>{
+   const h=Math.round((v/maxV)*120)+6;
+   const col=document.createElement('div');
+   col.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%';
+   col.innerHTML=`<div style="font-size:12px;font-weight:700;margin-bottom:4px">${v}</div><div style="width:100%;max-width:52px;height:${h}px;border-radius:6px 6px 0 0;background:${peak?'#c0392b':'var(--verde)'}"></div><div class="small muted" style="margin-top:6px">${yr}</div>`;
+   bars.appendChild(col);
+  });
+ }
+ if(!document.getElementById('si_eventbox').dataset.built){
+  document.getElementById('si_eventbox').dataset.built='1';
+  siSelectEvent('prague');
+ }
+}
+function siMareaSVG(size){
+ const cx=size/2, cy=size/2, r=size*0.28;
+ let svg=`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+ let path='M ';
+ for(let i=0;i<=360;i+=6){
+  const th=i*Math.PI/180;
+  const bulge=r*(1+0.22*Math.cos(2*th));
+  const x=cx+bulge*Math.cos(th), y=cy+bulge*Math.sin(th);
+  path += (i===0?'':'L ')+x.toFixed(1)+' '+y.toFixed(1)+' ';
+ }
+ path+='Z';
+ svg+=`<path d="${path}" fill="var(--verde-palido)" stroke="var(--verde-profundo)" stroke-width="2"/>`;
+ svg+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--verde-profundo)" stroke-width="0.8" stroke-dasharray="3,3"/>`;
+ svg+=`<line x1="${cx+r}" y1="${cy}" x2="${size-8}" y2="${cy}" stroke="var(--oro)" stroke-width="2.4" marker-end="url(#ajArrow)"/>`;
+ svg+=`<line x1="${cx-r}" y1="${cy}" x2="8" y2="${cy}" stroke="var(--oro)" stroke-width="2.4"/>`;
+ svg+=`<circle cx="${size-4}" cy="${cy}" r="6" fill="#888"/>`;
+ svg+=`</svg>`;
+ return svg;
+}
+function siFallaSVG(size){
+ let svg=`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+ svg+=`<polygon points="10,${size-10} ${size*0.45},${size*0.15} ${size*0.55},${size*0.85} 10,10" fill="var(--verde-profundo)" opacity=".85"/>`;
+ svg+=`<polygon points="${size*0.45},${size*0.15} ${size-10},10 ${size-10},${size-10} ${size*0.55},${size*0.85}" fill="var(--verde)" opacity=".8"/>`;
+ svg+=`<line x1="${size*0.28}" y1="${size*0.62}" x2="${size*0.42}" y2="${size*0.34}" stroke="var(--oro)" stroke-width="2.6"/>`;
+ svg+=`<line x1="${size*0.68}" y1="${size*0.38}" x2="${size*0.55}" y2="${size*0.66}" stroke="var(--oro)" stroke-width="2.6"/>`;
+ svg+=`</svg>`;
+ return svg;
+}
+// ---------------------------------------------------------------------------
+// Secuencia real: los 15 sismos inducidos mas fuertes de Oklahoma (USGS),
+// evento a evento, con casas topocentricas REALES (Polich-Page) calculadas
+// offline con charts.py -- ningun dato de esta rueda es esquematico.
+// ---------------------------------------------------------------------------
+let SI_GAME = null;
+let SI_PLY = 0;
+let SI_TIMER = null;
+
+function sismosInit(){
+ if(SI_GAME || document.getElementById('si_movelist').dataset.loading) return;
+ document.getElementById('si_movelist').dataset.loading = '1';
+ fetch('oklahoma_game_data.json').then(r=>r.json()).then(data=>{
+  SI_GAME = data.events;
+  document.getElementById('si_slider').max = SI_GAME.length - 1;
+  const list = document.getElementById('si_movelist');
+  list.innerHTML = SI_GAME.map((e,i)=>{
+   const d = e.datetime_utc.slice(0,10);
+   return `<div class="aj-mv" id="simv${i}" onclick="siGoto(${i})">${i+1}. M${e.mag.toFixed(1)} — ${d} — ${e.place.replace(', Oklahoma','').replace(', Kansas',' (KS)')}</div>`;
+  }).join('');
+  siGoto(0);
+ }).catch(()=>{ document.getElementById('si_movelist').innerHTML = '<p class="small muted">No se pudo cargar la secuencia (oklahoma_game_data.json).</p>'; });
+
+ // paneles fijos de geometria (marea/falla/casas de ejemplo) -- sin cambios
+ const marea = document.getElementById('si_marea');
+ if(marea && !marea.dataset.built){ marea.dataset.built='1'; marea.innerHTML = siMareaSVG(150); }
+ const falla = document.getElementById('si_falla');
+ if(falla && !falla.dataset.built){ falla.dataset.built='1'; falla.innerHTML = siFallaSVG(150); }
+ const casas = document.getElementById('si_casas');
+ if(casas && !casas.dataset.built){ casas.dataset.built='1'; casas.innerHTML = wheelSVG('epicentro-demo',150); }
+ const bars = document.getElementById('si_bars');
+ if(bars && !bars.dataset.built){
+  bars.dataset.built='1';
+  const OK=[["2013",104,false],["2014",627,false],["2015",947,true],["2016",655,false]];
+  const maxV=Math.max(...OK.map(d=>d[1]));
+  OK.forEach(([yr,v,peak])=>{
+   const h=Math.round((v/maxV)*120)+6;
+   const col=document.createElement('div');
+   col.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%';
+   col.innerHTML=`<div style="font-size:12px;font-weight:700;margin-bottom:4px">${v}</div><div style="width:100%;max-width:52px;height:${h}px;border-radius:6px 6px 0 0;background:${peak?'#c0392b':'var(--verde)'}"></div><div class="small muted" style="margin-top:6px">${yr}</div>`;
+   bars.appendChild(col);
+  });
+ }
+}
+function siLocalSolarHour(datetime_utc, lon){
+ const d = new Date(datetime_utc);
+ const utcH = d.getUTCHours() + d.getUTCMinutes()/60;
+ let h = (utcH + lon/15 + 24) % 24;
+ return h;
+}
+function siGoto(i){
+ if(!SI_GAME) return;
+ i = Math.max(0, Math.min(SI_GAME.length-1, i));
+ SI_PLY = i;
+ document.getElementById('si_slider').value = i;
+ document.querySelectorAll('#si_movelist .aj-mv.active').forEach(e=>e.classList.remove('active'));
+ const el = document.getElementById('simv'+i);
+ if(el){ el.classList.add('active'); el.scrollIntoView({block:'nearest'}); }
+
+ const e = SI_GAME[i];
+ const prev = i>0 ? SI_GAME[i-1] : null;
+ const days = prev ? Math.round((new Date(e.datetime_utc)-new Date(prev.datetime_utc))/86400000) : null;
+ const hLocal = siLocalSolarHour(e.datetime_utc, e.lon);
+ const hh = Math.floor(hLocal), mm = Math.round((hLocal-hh)*60);
+
+ document.getElementById('si_eventbox').innerHTML = `
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+   <div style="background:var(--panel2);border-radius:10px;padding:10px;text-align:center"><div style="font-weight:700;color:var(--verde-profundo)">M${e.mag.toFixed(1)}</div><div class="small muted">magnitud</div></div>
+   <div style="background:var(--panel2);border-radius:10px;padding:10px;text-align:center"><div style="font-weight:700;color:var(--verde-profundo)" class="mono">${e.datetime_utc.slice(0,10)}</div><div class="small muted">fecha (UTC)</div></div>
+   <div style="background:var(--panel2);border-radius:10px;padding:10px;text-align:center"><div style="font-weight:700;color:var(--verde-profundo)" class="mono">${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}</div><div class="small muted">hora solar local aprox.</div></div>
+   <div style="background:var(--panel2);border-radius:10px;padding:10px;text-align:center"><div style="font-weight:700;color:var(--verde-profundo)">${days!==null? days+' d':'—'}</div><div class="small muted">desde el anterior</div></div>
+  </div>
+  <p class="small muted" style="margin-top:10px">${e.place} · id USGS <code>${e.event_id}</code></p>`;
+
+ document.getElementById('si_wheel_dyn').innerHTML = wheelFromHouses(e.place.split(',')[0], e.houses, e.angular, 170);
+}
+function siStep(delta){ siGoto(SI_PLY+delta); }
+function siTogglePlay(){
+ const btn = document.getElementById('si_btn_play');
+ if(SI_TIMER){ clearInterval(SI_TIMER); SI_TIMER=null; btn.textContent='▶ Reproducir'; return; }
+ btn.textContent='⏸ Pausa';
+ SI_TIMER = setInterval(()=>{
+  if(SI_PLY >= SI_GAME.length-1){ clearInterval(SI_TIMER); SI_TIMER=null; btn.textContent='▶ Reproducir'; return; }
+  siStep(1);
+ }, 900);
 }
 </script>
 </body>

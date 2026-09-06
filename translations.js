@@ -12,17 +12,24 @@ window.I18N = {
 
     // ── NAV ──
     nav_guia: "❓ Empieza aquí",
+    navgroup_investigacion: "I. Investigación",
     nav_captura: "📝 Captura de eventos",
     nav_tablero: "📊 Tablero estadístico",
     nav_mapa: "🗺 Mapa y grilla",
     nav_hipotesis: "🔭 Hipótesis y expansión",
     nav_fuentes: "🌍 Fuentes de datos",
+    navgroup_asistencia: "II. Asistencia social",
+    nav_epidemiologia: "Epidemiología",
+    nav_historia_social: "📜 Casos y estudios históricos",
+    navgroup_didactica: "III. Didáctica",
     nav_ayuda: "📖 Metodología",
+    nav_ajedrez: "♟ Ajedrez",
+    nav_sismos: "🌍 Sismos",
 
     // ── HERO ──
     hero_h2: "¿Hay patrones astronómicos en los grandes eventos del planeta?",
     hero_p: "Esta plataforma permite <b>poner a prueba esa pregunta con rigor estadístico</b>, usando más de <b id=\"hero_n_events\">34.000</b> eventos reales de <b id=\"hero_n_domains\">11</b> dominios — sismos, huracanes, tormentas solares, desastres, inundaciones y más — comparados contra un <span style=\"border-bottom:1px dashed #adf;cursor:help\" data-glos=\"modelo nulo\">modelo nulo emparejado</span>. No necesitas instalar nada ni saber programar.",
-    hero_confirmed: "🟡 <b>Primer resultado positivo (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano. Sobrevive 522 pruebas simultáneas y replica en la validación cruzada 50/50 del catálogo USGS. <b>Todavía no es un resultado confirmado:</b> falta replicarlo en un catálogo externo (GCMT) y estratificarlo por tipo de falla y profundidad focal, como exige el propio diseño que publicamos en la <i>Circular Astronómica RAC</i> 1027 (sept. 2026).",
+    hero_confirmed: "🟡 <b>Primer resultado positivo (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano. Sobrevive 398 pruebas simultáneas y replica en la validación cruzada 50/50 del catálogo USGS. <b>Todavía no es un resultado confirmado:</b> falta replicarlo en un catálogo externo (GCMT) y estratificarlo por tipo de falla y profundidad focal, como exige el propio diseño que publicamos en la <i>Circular Astronómica RAC</i> 1027 (sept. 2026).",
     hero_btn_tablero: "📊 Explorar resultados",
     hero_btn_mapa: "🗺 Ver el mapa",
     hero_btn_fuentes: "🌍 Datos disponibles",
@@ -36,14 +43,14 @@ window.I18N = {
     como_step2_title: "Calcular la carta astronómica",
     como_step2_p: "Para cada evento real, el programa calcula automáticamente las posiciones de 10 planetas (según la NASA/JPL) y genera 200 \"eventos ficticios\" en fechas cercanas (±30 días) como referencia del azar.",
     como_step3_title: "Comparar: ¿algo sobresale?",
-    como_step3_p: "Se prueban 522 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class=\"glos\" data-glos=\"FDR\">FDR</span>).",
+    como_step3_p: "Se prueban 398 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class=\"glos\" data-glos=\"FDR\">FDR</span>).",
     como_warning: "⚠ <b>Asociación, no causalidad.</b> Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas \"causan\" los eventos. La física que explicaría el mecanismo, si existe, es un paso ulterior.",
 
     // ── RESULTADO CONFIRMADO ──
     confirmed_h2: "🟡 El primer resultado positivo: Mercurio–Urano y los sismos M≥6",
     confirmed_p1: "En los <b>3.730 terremotos de magnitud ≥6</b> ocurridos entre 2000 y 2024, encontramos que la conjunción Mercurio–Urano (cuando ambos planetas están alineados a menos de 8°, lo que ocurre unas <b>~100 veces en 24 años</b> — cada ~88 días, durante ~16 días) coincide con un <b>32% más de sismos de lo esperado por azar</b>.",
     confirmed_p2: "El resultado pasó tres filtros de rigor:",
-    confirmed_li1: "<b>Corrección por 522 pruebas simultáneas</b> (FDR q = 0,000047) — descarta que sea suerte entre muchos intentos.",
+    confirmed_li1: "<b>Corrección por 398 pruebas simultáneas</b> (FDR q = 0,000047) — descarta que sea suerte entre muchos intentos.",
     confirmed_li2: "<b>Validación cruzada</b> — dividimos los datos en dos mitades independientes: la señal apareció en ambas, con la misma dirección.",
     confirmed_li3: "<b>Libre del artefacto principal</b> — Mercurio se mueve ~1°/día, así que el modelo nulo ±30 días captura variación real, no un efecto estático de planetas lentos.",
     confirmed_next: "¿Qué sigue? Tres pasos, y hasta que se den <b>este resultado no debe llamarse confirmado</b>: (1) <b>estratificar por tipo de falla y profundidad focal</b> — sin esto, según el criterio que publicamos en la Circular RAC 1027, la hipótesis no queda correctamente puesta a prueba; (2) pre-registro en OSF y replicación en el catálogo histórico GCMT 1976–1999 (datos que no se usaron para el descubrimiento); (3) búsqueda de un mecanismo físico. Ver <a style=\"color:var(--oro);cursor:pointer\" onclick=\"document.querySelector('[data-tab=ayuda]').click()\">📖 Metodología → Artefactos</a> para entender qué podría falsificar este resultado.",
@@ -75,8 +82,8 @@ window.I18N = {
     faq_h2: "Preguntas frecuentes",
     faq_q1: "¿Qué es un \"modelo nulo\" y para qué sirve?",
     faq_a1: "Es la <b>vara de medir del azar</b>. Por cada evento real, generamos 200 eventos ficticios en fechas cercanas (±30 días) y el mismo lugar. Si Mercurio-Urano aparece igual de seguido en los reales que en los ficticios, el resultado es cero. Si aparece significativamente más, hay una pista. Sin este paso, cualquier análisis daría resultados engañosos — los planetas lentos (Neptuno, Plutón) están en la misma posición durante décadas enteras y falsearían los resultados.",
-    faq_q2: "¿Por qué se prueban 522 configuraciones a la vez? ¿No aumenta los falsos positivos?",
-    faq_a2: "Sí, y por eso aplicamos la corrección <span class=\"glos\" data-glos=\"FDR\">FDR de Benjamini-Hochberg</span>. Si pruebas 522 cosas al 5% de confianza, esperarías ~26 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class=\"glos\" data-glos=\"split validation\">validación cruzada</span>).",
+    faq_q2: "¿Por qué se prueban 398 configuraciones a la vez? ¿No aumenta los falsos positivos?",
+    faq_a2: "Sí, y por eso aplicamos la corrección <span class=\"glos\" data-glos=\"FDR\">FDR de Benjamini-Hochberg</span>. Si pruebas 398 cosas al 5% de confianza, esperarías ~20 falsos positivos por azar. La corrección FDR controla eso: solo reporta como significativo lo que sobrepase el umbral ajustado. Adicionalmente, los candidatos se prueban en una muestra independiente (<span class=\"glos\" data-glos=\"split validation\">validación cruzada</span>).",
     faq_q3: "¿Los datos astronómicos se calculan automáticamente?",
     faq_a3: "Sí. Tú solo das <b>fecha, hora y lugar</b> del evento. El programa usa la efeméride JPL DE421 (NASA) para calcular las posiciones exactas de 10 planetas. No se necesita saber nada de astrología para ingresar datos.",
     faq_q4: "¿Se puede usar para eventos médicos o sociales, sin lat/lon precisa?",
@@ -302,7 +309,7 @@ window.I18N = {
     glos_modelo_nulo_title: "Modelo nulo — ¿qué esperaríamos por puro azar?",
     glos_modelo_nulo_body: "Para cada evento real generamos K eventos ficticios en fechas cercanas (±30 días) y el mismo lugar. Luego preguntamos: ¿los eventos reales tienen algún patrón astrológico que NO tienen los ficticios? Sin esto, cualquier análisis daría resultados engañosos porque los planetas lentos (Neptuno, Plutón) están en la misma posición durante décadas enteras.",
     glos_fdr_title: "FDR — Tasa de Falsos Descubrimientos",
-    glos_fdr_body: "Cuando hacemos 522 pruebas estadísticas a la vez, esperamos que ~26 salgan 'significativas' solo por azar. FDR (método Benjamini-Hochberg) ajusta cada resultado teniendo en cuenta que estamos probando muchas cosas simultáneamente. Es el estándar internacional para estudios de este tipo.",
+    glos_fdr_body: "Cuando hacemos 398 pruebas estadísticas a la vez, esperamos que ~20 salgan 'significativas' solo por azar. FDR (método Benjamini-Hochberg) ajusta cada resultado teniendo en cuenta que estamos probando muchas cosas simultáneamente. Es el estándar internacional para estudios de este tipo.",
     glos_bh_title: "Benjamini-Hochberg — corrección por comparaciones múltiples",
     glos_bh_body: "Método matemático que ordena los p-valores de menor a mayor y ajusta el umbral de significancia para cada uno según su posición en la lista. Garantiza que la proporción esperada de falsos positivos entre todos los resultados significativos sea menor al 5%.",
     glos_pvalor_title: "p-valor — probabilidad de que sea azar",
@@ -327,6 +334,16 @@ window.I18N = {
     glos_skyfield_body: "Biblioteca Python que calcula posiciones planetarias precisas usando las efemérides JPL DE421 de la NASA. Es el mismo estándar que usan astrónomos profesionales. Citable en publicaciones científicas. Reemplaza a la efemériedes suiza (Swiss Ephemeris) que requería compilación y tenía problemas en Windows.",
     glos_supabase_title: "Supabase — base de datos compartida en la nube",
     glos_supabase_body: "Plataforma gratuita (hasta 500 MB) de base de datos Postgres con API REST. Permite que múltiples investigadores suban y consulten eventos sin conflictos. Usa upsert por event_id único: si dos investigadores suben el mismo evento, no se duplica. Alternativa a Google Sheets que escala a millones de eventos.",
+
+    // ── ASISTENCIA SOCIAL: Epidemiología ──
+    epi_h2: "Epidemiología Cosmobiológica",
+    epi_codigos: "<code>TCC 411</code> Medicina Preventiva y Salud Pública · <code>TCC 411.1</code> Planificación de servicios de salud · <code>TCC 411.4</code> Nutrología · <code>TCC 437.2</code> Asistencia Social — Prontuario I, Parte II, cap. 5 y 18.",
+    epi_intro: "La TCC plantea la epidemiología no como un recuento de casos, sino como el análisis de si un fenómeno clínico aparece <em>\"con más frecuencia bajo ciertas condiciones climáticas o cósmicas de lo que sería de esperar estadísticamente\"</em>. Esta sección aplica el mismo motor estadístico ya validado para sismos (modelo nulo emparejado, Test de Von Neumann, corrección FDR) a datos de salud colectiva.",
+    epi_estado: "<b>Estado del módulo:</b> el motor estadístico (<code>epidemiology.py</code>) está implementado y validado con 5 tests unitarios. Los datasets reales (admisiones hospitalarias, número de Wolf, índice geomagnético Kp, series meteorológicas) deben ser aportados por el investigador — esta plataforma no fabrica ni simula datos epidemiológicos o de actividad solar/geomagnética.",
+
+    // ── ASISTENCIA SOCIAL: Casos y estudios históricos ──
+    hist_h2: "📜 Casos y estudios históricos citados en la TCC",
+    hist_intro: "La Teoría Científica de la Cosmobiología de David Ferriz no es solo el marco teórico detrás del instrumento de captura — dedica capítulos enteros a resumir estudios reales, con sus cifras, sus autores y sus revistas, sobre ritmos biológicos, geomagnetismo y salud, y criminalidad. Esta pestaña reúne los más citables, tal como aparecen en el libro.",
   },
 
   en: {
@@ -339,17 +356,24 @@ window.I18N = {
 
     // ── NAV ──
     nav_guia: "❓ Start here",
+    navgroup_investigacion: "I. Research",
     nav_captura: "📝 Event capture",
     nav_tablero: "📊 Statistical dashboard",
     nav_mapa: "🗺 Map & grid",
     nav_hipotesis: "🔭 Hypotheses & expansion",
     nav_fuentes: "🌍 Data sources",
+    navgroup_asistencia: "II. Social outreach",
+    nav_epidemiologia: "Epidemiology",
+    nav_historia_social: "📜 Historical cases & studies",
+    navgroup_didactica: "III. Learning modules",
     nav_ayuda: "📖 Methodology",
+    nav_ajedrez: "♟ Chess",
+    nav_sismos: "🌍 Earthquakes",
 
     // ── HERO ──
     hero_h2: "Are there astronomical patterns in major planetary events?",
     hero_p: "This platform lets you <b>test that question with statistical rigor</b>, using more than <b id=\"hero_n_events\">34,000</b> real events from <b id=\"hero_n_domains\">11</b> domains — earthquakes, hurricanes, solar storms, disasters, floods and more — compared against a <span style=\"border-bottom:1px dashed #adf;cursor:help\" data-glos=\"modelo nulo\">matched null model</span>. No installation or programming knowledge needed.",
-    hero_confirmed: "🟡 <b>First positive result (Jun 2026):</b> M≥6 earthquakes occur <b>32% more</b> than expected when Mercury is in conjunction with Uranus. It survives 522 simultaneous tests and replicates in the 50/50 cross-validation of the USGS catalog. <b>This is not yet a confirmed result:</b> it still needs replication in an external catalog (GCMT) and stratification by fault type and focal depth, as required by our own study design published in <i>Circular Astronómica RAC</i> 1027 (Sept. 2026).",
+    hero_confirmed: "🟡 <b>First positive result (Jun 2026):</b> M≥6 earthquakes occur <b>32% more</b> than expected when Mercury is in conjunction with Uranus. It survives 398 simultaneous tests and replicates in the 50/50 cross-validation of the USGS catalog. <b>This is not yet a confirmed result:</b> it still needs replication in an external catalog (GCMT) and stratification by fault type and focal depth, as required by our own study design published in <i>Circular Astronómica RAC</i> 1027 (Sept. 2026).",
     hero_btn_tablero: "📊 Explore results",
     hero_btn_mapa: "🗺 View the map",
     hero_btn_fuentes: "🌍 Available data",
@@ -363,14 +387,14 @@ window.I18N = {
     como_step2_title: "Calculate the astronomical chart",
     como_step2_p: "For each real event, the program automatically calculates the positions of 10 planets (using NASA/JPL data) and generates 200 \"fictional events\" on nearby dates (±30 days) as a random baseline.",
     como_step3_title: "Compare: does anything stand out?",
-    como_step3_p: "522 planetary configurations are tested simultaneously. Only those that appear significantly more (or less) in real events than in fictional ones are reported, corrected for multiple comparisons (<span class=\"glos\" data-glos=\"FDR\">FDR</span>).",
+    como_step3_p: "398 planetary configurations are tested simultaneously. Only those that appear significantly more (or less) in real events than in fictional ones are reported, corrected for multiple comparisons (<span class=\"glos\" data-glos=\"FDR\">FDR</span>).",
     como_warning: "⚠ <b>Association, not causation.</b> A positive result indicates a statistical relationship worth investigating — it does not imply that planets \"cause\" events. The physics that would explain the mechanism, if it exists, is a further step.",
 
     // ── RESULTADO CONFIRMADO ──
     confirmed_h2: "🟡 The first positive result: Mercury–Uranus and M≥6 earthquakes",
     confirmed_p1: "Among the <b>3,730 earthquakes of magnitude ≥6</b> occurring between 2000 and 2024, we found that the Mercury–Uranus conjunction (when both planets align to within 8°, which happens about <b>~100 times in 24 years</b> — every ~88 days, for ~16 days) coincides with <b>32% more earthquakes than expected by chance</b>.",
     confirmed_p2: "The result passed three rigor filters:",
-    confirmed_li1: "<b>Correction for 522 simultaneous tests</b> (FDR q = 0.000047) — rules out that it's luck among many attempts.",
+    confirmed_li1: "<b>Correction for 398 simultaneous tests</b> (FDR q = 0.000047) — rules out that it's luck among many attempts.",
     confirmed_li2: "<b>Cross-validation</b> — we split the data into two independent halves: the signal appeared in both, with the same direction.",
     confirmed_li3: "<b>Free of the main artifact</b> — Mercury moves ~1°/day, so the ±30-day null model captures real variation, not a static effect of slow planets.",
     confirmed_next: "What's next? Three steps, and until they are taken <b>this result should not be called confirmed</b>: (1) <b>stratify by fault type and focal depth</b> — without this, by the very criterion we published in Circular RAC 1027, the hypothesis is not properly tested; (2) pre-registration at OSF and replication in the GCMT 1976–1999 historical catalog (data not used for the discovery); (3) search for a physical mechanism. See <a style=\"color:var(--oro);cursor:pointer\" onclick=\"document.querySelector('[data-tab=ayuda]').click()\">📖 Methodology → Artifacts</a> to understand what could falsify this result.",
@@ -402,8 +426,8 @@ window.I18N = {
     faq_h2: "Frequently asked questions",
     faq_q1: "What is a \"null model\" and what is it for?",
     faq_a1: "It's the <b>yardstick for randomness</b>. For each real event, we generate 200 fictional events on nearby dates (±30 days) at the same location. If Mercury-Uranus appears equally often in the real events as in the fictional ones, the result is zero. If it appears significantly more often, there's a clue. Without this step, any analysis would give misleading results — slow planets (Neptune, Pluto) remain in the same position for decades and would falsify the results.",
-    faq_q2: "Why are 522 configurations tested simultaneously? Doesn't that increase false positives?",
-    faq_a2: "Yes, which is why we apply the <span class=\"glos\" data-glos=\"FDR\">Benjamini-Hochberg FDR</span> correction. If you test 522 things at 5% confidence, you'd expect ~26 false positives by chance. The FDR correction controls that: it only reports as significant what exceeds the adjusted threshold. Additionally, candidates are tested in an independent sample (<span class=\"glos\" data-glos=\"split validation\">cross-validation</span>).",
+    faq_q2: "Why are 398 configurations tested simultaneously? Doesn't that increase false positives?",
+    faq_a2: "Yes, which is why we apply the <span class=\"glos\" data-glos=\"FDR\">Benjamini-Hochberg FDR</span> correction. If you test 398 things at 5% confidence, you'd expect ~20 false positives by chance. The FDR correction controls that: it only reports as significant what exceeds the adjusted threshold. Additionally, candidates are tested in an independent sample (<span class=\"glos\" data-glos=\"split validation\">cross-validation</span>).",
     faq_q3: "Are astronomical data calculated automatically?",
     faq_a3: "Yes. You only provide the <b>date, time and location</b> of the event. The program uses the JPL DE421 ephemeris (NASA) to calculate the exact positions of 10 planets. No knowledge of astrology is needed to enter data.",
     faq_q4: "Can it be used for medical or social events, without precise lat/lon?",
@@ -629,7 +653,7 @@ window.I18N = {
     glos_modelo_nulo_title: "Null model — what would we expect by pure chance?",
     glos_modelo_nulo_body: "For each real event we generate K fictional events on nearby dates (±30 days) at the same location. Then we ask: do the real events have any astrological pattern that the fictional ones do NOT? Without this, any analysis would give misleading results because slow planets (Neptune, Pluto) remain in the same position for decades.",
     glos_fdr_title: "FDR — False Discovery Rate",
-    glos_fdr_body: "When we perform 522 statistical tests at once, we expect ~26 to come out 'significant' by chance alone. FDR (Benjamini-Hochberg method) adjusts each result taking into account that we are testing many things simultaneously. It is the international standard for studies of this type.",
+    glos_fdr_body: "When we perform 398 statistical tests at once, we expect ~20 to come out 'significant' by chance alone. FDR (Benjamini-Hochberg method) adjusts each result taking into account that we are testing many things simultaneously. It is the international standard for studies of this type.",
     glos_bh_title: "Benjamini-Hochberg — correction for multiple comparisons",
     glos_bh_body: "Mathematical method that sorts p-values from smallest to largest and adjusts the significance threshold for each one based on its position in the list. Guarantees that the expected proportion of false positives among all significant results is less than 5%.",
     glos_pvalor_title: "p-value — probability that it's chance",
@@ -654,5 +678,15 @@ window.I18N = {
     glos_skyfield_body: "Python library that calculates precise planetary positions using NASA's JPL DE421 ephemerides. It is the same standard used by professional astronomers. Citable in scientific publications. Replaces the Swiss Ephemeris which required compilation and had problems on Windows.",
     glos_supabase_title: "Supabase — shared cloud database",
     glos_supabase_body: "Free platform (up to 500 MB) of Postgres database with REST API. Allows multiple researchers to upload and query events without conflicts. Uses upsert by unique event_id: if two researchers upload the same event, it is not duplicated. Alternative to Google Sheets that scales to millions of events.",
+
+    // ── SOCIAL OUTREACH: Epidemiology ──
+    epi_h2: "Cosmobiological Epidemiology",
+    epi_codigos: "<code>TCC 411</code> Preventive Medicine and Public Health · <code>TCC 411.1</code> Health services planning · <code>TCC 411.4</code> Nutrology · <code>TCC 437.2</code> Social Assistance — Prontuario I, Part II, ch. 5 and 18.",
+    epi_intro: "The TCC frames epidemiology not as a case count, but as the analysis of whether a clinical phenomenon appears <em>\"more frequently under certain climatic or cosmic conditions than would be statistically expected\"</em>. This section applies the same statistical engine already validated for earthquakes (matched null model, Von Neumann test, FDR correction) to collective health data.",
+    epi_estado: "<b>Module status:</b> the statistical engine (<code>epidemiology.py</code>) is implemented and validated with 5 unit tests. Real datasets (hospital admissions, Wolf sunspot number, geomagnetic Kp index, weather series) must be supplied by the researcher — this platform does not fabricate or simulate epidemiological or solar/geomagnetic activity data.",
+
+    // ── SOCIAL OUTREACH: Historical cases & studies ──
+    hist_h2: "📜 Historical cases and studies cited in the TCC",
+    hist_intro: "David Ferriz's Scientific Theory of Cosmobiology is not just the theoretical framework behind the capture instrument — it devotes entire chapters to summarizing real studies, with their figures, authors and journals, on biological rhythms, geomagnetism and health, and criminality. This tab gathers the most citable ones, exactly as they appear in the book.",
   }
 };

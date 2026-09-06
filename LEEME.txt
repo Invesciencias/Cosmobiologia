@@ -1,0 +1,40 @@
+Cómo subir esto a GitHub
+=========================
+
+Esta carpeta ya tiene TODO lo que index.html necesita para funcionar
+completo en GitHub Pages (nav en inglés/español, ajedrez, sismos, tablero
+precargado, logo). Contenido:
+
+  index.html
+  translations.js
+  data.js
+  features.js
+  logo.jpg
+  resultados_estadisticos.csv
+  oklahoma_game_data.json
+  chess_games/            (20 partidas .json + manifest.json)
+
+Pasos (interfaz web de GitHub, sin usar la terminal):
+
+1. Entra a https://github.com/Invesciencias/Cosmobiologia
+2. Botón "Add file" -> "Upload files"
+3. Arrastra TODO el contenido de esta carpeta (los archivos sueltos Y la
+   carpeta chess_games completa) a la ventana de GitHub -- arrastra desde
+   adentro de "para_github", no la carpeta "para_github" misma, para que
+   los archivos queden en la raíz del repo y no dentro de una subcarpeta
+   "para_github/" extra.
+4. Al final de la página, escribe un mensaje de commit (p.ej. "Actualiza
+   sitio: inglés, casos históricos, mapa cósmico") y confirma "Commit
+   directly to the main branch".
+5. Espera 1-2 minutos y recarga https://invesciencias.github.io/Cosmobiologia/
+   (a veces conviene Ctrl+Shift+R para forzar que el navegador no use una
+   copia vieja en caché).
+
+Si GitHub se queja de que chess_games ya existe con archivos distintos:
+sube esa carpeta por separado (Add file -> Upload files -> arrastra solo
+chess_games) y confirma que reemplace/agregue los 20 archivos.
+
+No necesitas instalar nada para que esto funcione en GitHub Pages -- el
+problema de "no me salían los tableros" solo pasa al abrir index.html
+haciendo doble clic en tu computadora (los navegadores bloquean fetch()
+de archivos locales). En GitHub Pages, servido por https://, no ocurre.

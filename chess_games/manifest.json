@@ -1,0 +1,222 @@
+[
+ {
+  "file": "wc_2021_dubai__game_06_1.json",
+  "white": "Carlsen, Magnus",
+  "black": "Nepomniachtchi, Ian",
+  "event": "FIDE World Championship Match 2021",
+  "date": "2021.12.03",
+  "round": "6",
+  "result": "1-0",
+  "n_plies": 271,
+  "n_astro": 270
+ },
+ {
+  "file": "wc_2021_dubai__game_09_1.json",
+  "white": "Nepomniachtchi, Ian",
+  "black": "Carlsen, Magnus",
+  "event": "FIDE World Championship Match 2021",
+  "date": "2021.12.07",
+  "round": "9",
+  "result": "0-1",
+  "n_plies": 78,
+  "n_astro": 77
+ },
+ {
+  "file": "wc_2021_dubai__game_11_1.json",
+  "white": "Nepomniachtchi, Ian",
+  "black": "Carlsen, Magnus",
+  "event": "FIDE World Championship Match 2021",
+  "date": "2021.12.10",
+  "round": "11",
+  "result": "0-1",
+  "n_plies": 98,
+  "n_astro": 97
+ },
+ {
+  "file": "wc_2023_astana__round_01_1.json",
+  "white": "Nepomniachtchi, Ian",
+  "black": "Ding, Liren",
+  "event": "FIDE World Championship Match 2023",
+  "date": "2023.04.09",
+  "round": "1",
+  "result": "1/2-1/2",
+  "n_plies": 97,
+  "n_astro": 96
+ },
+ {
+  "file": "wc_2023_astana__round_04_1.json",
+  "white": "Ding, Liren",
+  "black": "Nepomniachtchi, Ian",
+  "event": "FIDE World Championship Match 2023",
+  "date": "2023.04.13",
+  "round": "4",
+  "result": "1-0",
+  "n_plies": 93,
+  "n_astro": 92
+ },
+ {
+  "file": "wc_2023_astana__round_15_tiebreaks_4.json",
+  "white": "Nepomniachtchi, Ian",
+  "black": "Ding, Liren",
+  "event": "FIDE World Championship Match 2023 Rapid Tie-break",
+  "date": "2023.04.30",
+  "round": "4",
+  "result": "0-1",
+  "n_plies": 136,
+  "n_astro": 134
+ },
+ {
+  "file": "candidates_2024__round_02_3.json",
+  "white": "Nepomniachtchi, Ian",
+  "black": "Firouzja, Alireza",
+  "event": "FIDE Candidates 2024",
+  "date": "2024.04.04",
+  "round": "2",
+  "result": "1-0",
+  "n_plies": 89,
+  "n_astro": 87
+ },
+ {
+  "file": "candidates_2024__round_04_3.json",
+  "white": "Caruana, Fabiano",
+  "black": "Gukesh D",
+  "event": "FIDE Candidates 2024",
+  "date": "2024.04.07",
+  "round": "4",
+  "result": "1/2-1/2",
+  "n_plies": 147,
+  "n_astro": 145
+ },
+ {
+  "file": "candidates_2024__round_05_3.json",
+  "white": "Gukesh D",
+  "black": "Abasov, Nijat",
+  "event": "FIDE Candidates 2024",
+  "date": "2024.04.09",
+  "round": "5",
+  "result": "1-0",
+  "n_plies": 173,
+  "n_astro": 170
+ },
+ {
+  "file": "candidates_2024__round_08_3.json",
+  "white": "Nakamura, Hikaru",
+  "black": "Caruana, Fabiano",
+  "event": "FIDE Candidates 2024",
+  "date": "2024.04.13",
+  "round": "8",
+  "result": "1-0",
+  "n_plies": 69,
+  "n_astro": 68
+ },
+ {
+  "file": "candidates_2024__round_11_1.json",
+  "white": "Praggnanandhaa R",
+  "black": "Nakamura, Hikaru",
+  "event": "FIDE Candidates 2024",
+  "date": "2024.04.17",
+  "round": "11",
+  "result": "0-1",
+  "n_plies": 108,
+  "n_astro": 105
+ },
+ {
+  "file": "candidates_2024__round_13_4.json",
+  "white": "Gukesh D",
+  "black": "Firouzja, Alireza",
+  "event": "FIDE Candidates 2024",
+  "date": "2024.04.20",
+  "round": "13",
+  "result": "1-0",
+  "n_plies": 125,
+  "n_astro": 123
+ },
+ {
+  "file": "candidates_2024__round_14_2.json",
+  "white": "Caruana, Fabiano",
+  "black": "Nepomniachtchi, Ian",
+  "event": "FIDE Candidates 2024",
+  "date": "2024.04.21",
+  "round": "14",
+  "result": "1/2-1/2",
+  "n_plies": 217,
+  "n_astro": 213
+ },
+ {
+  "file": "norway_chess_2024__round_01_1.json",
+  "white": "Ding, Liren",
+  "black": "Carlsen, Magnus",
+  "event": "Norway Chess",
+  "date": "2024.05.27",
+  "round": "1.1",
+  "result": "1/2-1/2",
+  "n_plies": 27,
+  "n_astro": 26
+ },
+ {
+  "file": "norway_chess_2024__round_04_1.json",
+  "white": "Caruana, Fabiano",
+  "black": "Carlsen, Magnus",
+  "event": "Norway Chess",
+  "date": "2024.05.30",
+  "round": "7.1",
+  "result": "0-1",
+  "n_plies": 132,
+  "n_astro": 131
+ },
+ {
+  "file": "norway_chess_2024__round_05_1.json",
+  "white": "Carlsen, Magnus",
+  "black": "Firouzja, Alireza",
+  "event": "Norway Chess",
+  "date": "2024.06.01",
+  "round": "9.1",
+  "result": "1-0",
+  "n_plies": 163,
+  "n_astro": 162
+ },
+ {
+  "file": "norway_chess_2025__round_01_3.json",
+  "white": "Carlsen, Magnus",
+  "black": "Gukesh D",
+  "event": "Norway Chess 2025",
+  "date": "2025.05.25",
+  "round": "1.3",
+  "result": "1-0",
+  "n_plies": 110,
+  "n_astro": 108
+ },
+ {
+  "file": "norway_chess_2025__round_06_3.json",
+  "white": "Gukesh D",
+  "black": "Carlsen, Magnus",
+  "event": "Norway Chess 2025",
+  "date": "2025.05.26",
+  "round": "11.3",
+  "result": "1-0",
+  "n_plies": 123,
+  "n_astro": 121
+ },
+ {
+  "file": "norway_chess_2025__round_07_1.json",
+  "white": "Gukesh D",
+  "black": "Erigaisi Arjun",
+  "event": "Norway Chess 2025",
+  "date": "2025.05.21",
+  "round": "13.1",
+  "result": "1-0",
+  "n_plies": 183,
+  "n_astro": 181
+ },
+ {
+  "file": "norway_chess_2025__round_09_3.json",
+  "white": "Carlsen, Magnus",
+  "black": "Caruana, Fabiano",
+  "event": "Norway Chess 2025",
+  "date": "2025.05.26",
+  "round": "17.3",
+  "result": "1-0",
+  "n_plies": 103,
+  "n_astro": 102
+ }
+]
