@@ -356,8 +356,14 @@
  </div>
  </div>
  <div class="map-rail rail-right" id="mov_rail"></div>
- </div>
+ <!-- #rail_tip vive DENTRO de #map_shell (no como hermano suyo) por la
+ misma razón que el flyout (#rail_flyout, ver railFlyoutEl()): en pantalla
+ completa real, el navegador solo pinta el subárbol de #map_shell -- fuera
+ de ese subárbol, aunque display se ponga en 'block' y la posición se
+ calcule bien, el tooltip queda invisible (bug real, reportado: "no marca
+ los nombres al pasar el mouse en pantalla completa"). -->
  <div class="rail-tip" id="rail_tip"></div>
+ </div>
  <p class="small muted" style="margin-top:8px">Distancias esquemáticas, no a escala real — el objetivo es la geometría angular (qué tan alineados están los planetas), no la distancia física. Posiciones planetarias: modelo kepleriano simplificado para el navegador (la plataforma usa Skyfield + JPL DE421 para los cálculos reales).</p>
 
  <!-- ═══ Detalle — cambia según el botón del HUD que elegiste arriba ═══ -->
@@ -6858,7 +6864,16 @@ function railFlyoutEl() {
  el = document.createElement('div');
  el.id = 'rail_flyout';
  el.className = 'rail-flyout';
- document.body.appendChild(el);
+ // Se cuelga de #map_shell, NO de document.body -- en pantalla completa
+ // real (Fullscreen API) el elemento fullscreen es #map_shell, y el
+ // navegador solo pinta SU subárbol: cualquier cosa colgada de body queda
+ // fuera de ese subárbol y no se ve, aunque display:flex y las
+ // coordenadas se calculen bien (bug real, reportado: "los botones de la
+ // derecha no funcionan en pantalla completa" -- en realidad sí abrían el
+ // flyout, solo que invisible). position:fixed sigue funcionando igual
+ // aquí porque #map_shell no tiene transform/filter que le cree su propio
+ // contenedor de posicionamiento.
+ (document.getElementById('map_shell') || document.body).appendChild(el);
  document.addEventListener('click', (e) => {
  if (!_railFlyoutAnchor || el.style.display === 'none') return;
  if (_railFlyoutAnchor.contains(e.target)) return; // el propio botón de categoría ya se encarga de abrir/cerrar
