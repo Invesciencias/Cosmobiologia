@@ -84,11 +84,15 @@
  .map-rail{gap:3px;padding:5px}
  .rail-sep{margin:1px 3px}
  }
- .rail-tip{position:fixed;pointer-events:none;background:rgba(10,20,32,.96);color:#fff;padding:7px 11px;border-radius:8px;font-size:12px;line-height:1.5;z-index:9999;max-width:220px;border:1px solid rgba(255,255,255,.2);display:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+ .rail-tip{position:fixed;pointer-events:none;background:rgba(10,20,32,.96);color:#fff;padding:7px 11px;border-radius:8px;font-size:12px;line-height:1.5;z-index:100001;max-width:220px;border:1px solid rgba(255,255,255,.2);display:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
  /* Flyout — el panel de "sub-botones" que se abre junto al icono de
  categoría que lo invocó (Movimientos, Vistas, Constelaciones, Animación),
  en vez de tener las ~19 opciones sueltas y siempre visibles en el riel. */
- .rail-flyout{position:fixed;display:none;flex-direction:column;gap:6px;background:rgba(10,20,32,.97);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:8px;z-index:9997;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+ /* z-index por encima de .map-shell.mc-fullscreen (99999) -- si no, el
+ flyout SÍ se abre pero queda dibujado detrás del mapa en pantalla
+ completa (ambos son position:fixed añadidos fuera de la escena 3D, así
+ que el que tenga menor z-index simplemente no se ve). */
+ .rail-flyout{position:fixed;display:none;flex-direction:column;gap:6px;background:rgba(10,20,32,.97);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:8px;z-index:100000;box-shadow:0 6px 20px rgba(0,0,0,.5)}
  .map-canvas-wrap{flex:1;position:relative;min-width:0}
  .map-bottombar{position:absolute;left:0;right:0;bottom:0;z-index:15;display:none;align-items:center;gap:14px;padding:8px 14px;background:linear-gradient(0deg,rgba(6,12,20,.88),rgba(6,12,20,.35));backdrop-filter:blur(2px)}
  .bb-play{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
