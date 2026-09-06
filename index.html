@@ -63,13 +63,27 @@
  /* ═══ Rediseño del Mapa Cósmico: rieles de iconos con tooltip propio,
  en vez de filas de botones/checkboxes con texto largo debajo del mapa. ═══ */
  .map-shell{display:flex;gap:0;border-radius:12px;overflow:hidden;background:#0a1420}
- .map-rail{display:flex;flex-direction:column;gap:6px;padding:8px;background:rgba(10,20,32,.55);backdrop-filter:blur(2px)}
+ /* overflow-y:auto -- SIN esto, si los íconos de un riel (sobre todo el
+ izquierdo, con 7-8 botones) no caben en el alto disponible (celular en
+ horizontal, poca altura), el riel se estira más allá del alto real del
+ mapa y en vez de mostrar scroll empuja/oculta la columna del OTRO lado
+ (el usuario deja de ver el riel derecho, con el ✕ de salir incluido).
+ Con scroll interno, cada riel se queda contenido en su propio alto. */
+ .map-rail{display:flex;flex-direction:column;gap:6px;padding:8px;background:rgba(10,20,32,.55);backdrop-filter:blur(2px);overflow-y:auto;overflow-x:hidden;flex-shrink:0}
  .map-rail.rail-right{border-left:1px solid rgba(255,255,255,.08)}
  .rail-btn{width:44px;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s;position:relative}
  .rail-btn:hover{background:rgba(255,255,255,.16);transform:scale(1.06)}
  .rail-btn.on{background:var(--accent);border-color:var(--accent)}
  .rail-btn.toggle-off{opacity:.45}
  .rail-sep{height:1px;background:rgba(255,255,255,.12);margin:2px 4px}
+ /* Celular en horizontal (poca altura): botones e íconos más chicos para
+ que los 7-8 del riel izquierdo quepan sin scroll casi siempre -- el
+ overflow-y:auto de arriba sigue de respaldo para el resto de los casos. */
+ @media (max-height:420px){
+ .rail-btn{width:34px;height:34px;font-size:15px;border-radius:8px}
+ .map-rail{gap:3px;padding:5px}
+ .rail-sep{margin:1px 3px}
+ }
  .rail-tip{position:fixed;pointer-events:none;background:rgba(10,20,32,.96);color:#fff;padding:7px 11px;border-radius:8px;font-size:12px;line-height:1.5;z-index:9999;max-width:220px;border:1px solid rgba(255,255,255,.2);display:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
  /* Flyout — el panel de "sub-botones" que se abre junto al icono de
  categoría que lo invocó (Movimientos, Vistas, Constelaciones, Animación),
@@ -84,8 +98,6 @@
  el mapa normal mide 380px de alto entre botones y texto de la página;
  en pantalla completa se ve el mapa solo, mucho más grande, con los
  mismos rieles/botones (siguen funcionando ahí dentro). */
- .mc-fullscreen-btn{position:absolute;top:8px;right:8px;z-index:18;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(10,20,32,.65);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
- .mc-fullscreen-btn:hover{background:rgba(255,255,255,.25)}
  .mc-rotate-hint{position:absolute;top:52px;right:8px;z-index:18;display:none;background:rgba(10,20,32,.88);color:#fff;padding:7px 11px;border-radius:9px;font-size:12px;max-width:150px;text-align:center;line-height:1.4;animation:mcRotatePulse 1.6s ease-in-out infinite;pointer-events:none}
  @keyframes mcRotatePulse{0%,100%{opacity:.65}50%{opacity:1}}
  .map-shell.mc-fullscreen{position:fixed;inset:0;z-index:99999;border-radius:0;background:#0a1420}
@@ -248,7 +260,6 @@
  <div id="three_canvas" style="width:100%;height:100%"></div>
  <svg id="chart_wheel_svg" viewBox="0 0 400 400" style="display:none;width:100%;height:100%;background:#fff"></svg>
  <div id="three_tooltip" style="display:none;position:absolute;pointer-events:none;background:rgba(10,20,32,.92);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;line-height:1.5;z-index:20;white-space:nowrap;border:1px solid rgba(255,255,255,.2)"></div>
- <button class="mc-fullscreen-btn" id="mc_fullscreen_btn" onclick="threeToggleFullscreen()" title="Pantalla completa">⛶</button>
  <div class="mc-rotate-hint" id="mc_rotate_hint">🔄 Gira tu teléfono para verlo mejor</div>
  <div class="map-bottombar" id="map_bottombar">
  <div id="bb_movs" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
@@ -282,6 +293,13 @@
  </div>
  </div>
  <div class="map-rail rail-right" id="mov_rail"></div>
+ <!-- Tercera columna, siempre visible y separada de mov_rail -- así el
+ botón de pantalla completa nunca queda tapado por (ni tapa a) los
+ flyouts que se abren desde la columna de en medio, y siempre está en
+ el mismo lugar sin importar el modo/vista activa. -->
+ <div class="map-rail rail-right" id="exit_rail">
+ <button class="rail-btn" id="mc_fullscreen_btn" onclick="threeToggleFullscreen()" title="Pantalla completa">⛶</button>
+ </div>
  </div>
  <div class="rail-tip" id="rail_tip"></div>
  <p class="small muted" style="margin-top:8px">Distancias esquemáticas, no a escala real — el objetivo es la geometría angular (qué tan alineados están los planetas), no la distancia física. Posiciones planetarias: modelo kepleriano simplificado para el navegador (la plataforma usa Skyfield + JPL DE421 para los cálculos reales).</p>
