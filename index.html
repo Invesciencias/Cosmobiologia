@@ -6776,18 +6776,44 @@ function threeHudSync() {
 // ═══ Rieles de iconos del Mapa Cósmico — reemplazan las filas de botones
 // con texto largo y la lista de casillas debajo del mapa. Cada botón lleva
 // su descripción en un tooltip propio (#rail_tip), no en texto visible. ═══
-function railTip(btn, text) {
- btn.addEventListener('mouseenter', () => {
+let _railTipHideTimer = null;
+function railTipShow(btn, text) {
  const tip = document.getElementById('rail_tip');
  tip.textContent = text;
  tip.style.display = 'block';
  const r = btn.getBoundingClientRect();
  const onRight = btn.closest('.rail-right');
- if (onRight) { tip.style.left = 'auto'; tip.style.right = (window.innerWidth - r.left + 8) + 'px'; }
- else { tip.style.right = 'auto'; tip.style.left = (r.right + 8) + 'px'; }
+ // En pantallas angostas, "al lado" del botón (izquierda o derecha según
+ // el riel) puede no caber -- se recorta contra el viewport para que en
+ // celular el texto no quede cortado ni fuera de pantalla.
+ const anchoTip = 220, margen = 6;
+ if (onRight) {
+ let right = window.innerWidth - r.left + 8;
+ if (window.innerWidth - right - anchoTip < margen) right = window.innerWidth - anchoTip - margen;
+ tip.style.left = 'auto'; tip.style.right = Math.max(margen, right) + 'px';
+ } else {
+ let left = r.right + 8;
+ if (left + anchoTip > window.innerWidth - margen) left = window.innerWidth - anchoTip - margen;
+ tip.style.right = 'auto'; tip.style.left = Math.max(margen, left) + 'px';
+ }
  tip.style.top = Math.max(6, r.top - 4) + 'px';
- });
- btn.addEventListener('mouseleave', () => { document.getElementById('rail_tip').style.display = 'none'; });
+}
+function railTipHide() { const tip = document.getElementById('rail_tip'); if (tip) tip.style.display = 'none'; }
+// ═══ Rieles de iconos del Mapa Cósmico — reemplazan las filas de botones
+// con texto largo y la lista de casillas debajo del mapa. Cada botón lleva
+// su descripción en un tooltip propio (#rail_tip), no en texto visible. ═══
+function railTip(btn, text) {
+ btn.addEventListener('mouseenter', () => railTipShow(btn, text));
+ btn.addEventListener('mouseleave', railTipHide);
+ // En táctil no hay mouseenter/mouseleave -- sin esto, en celular NUNCA se
+ // veía el nombre del botón (bug real, reportado). Al tocar, se muestra el
+ // nombre un momento (900ms) y luego se oculta solo, dejando pasar el clic
+ // normal (no se llama preventDefault: el botón sigue reaccionando igual).
+ btn.addEventListener('touchstart', () => {
+ clearTimeout(_railTipHideTimer);
+ railTipShow(btn, text);
+ _railTipHideTimer = setTimeout(railTipHide, 900);
+ }, { passive: true });
 }
 function railBtn(id, icon, tip, onclick) {
  const b = document.createElement('button');
