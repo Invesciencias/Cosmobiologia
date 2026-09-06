@@ -80,6 +80,15 @@
  .bb-play{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
  .bb-play:hover{background:rgba(255,255,255,.24)}
  .map-bottombar input[type=range]{accent-color:var(--accent);cursor:pointer}
+ /* Botón de pantalla completa del Mapa Cósmico — sobre todo para celular:
+ el mapa normal mide 380px de alto entre botones y texto de la página;
+ en pantalla completa se ve el mapa solo, mucho más grande, con los
+ mismos rieles/botones (siguen funcionando ahí dentro). */
+ .mc-fullscreen-btn{position:absolute;top:8px;right:8px;z-index:18;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(10,20,32,.65);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+ .mc-fullscreen-btn:hover{background:rgba(255,255,255,.25)}
+ .mc-rotate-hint{position:absolute;top:52px;right:8px;z-index:18;display:none;background:rgba(10,20,32,.88);color:#fff;padding:7px 11px;border-radius:9px;font-size:12px;max-width:150px;text-align:center;line-height:1.4;animation:mcRotatePulse 1.6s ease-in-out infinite;pointer-events:none}
+ @keyframes mcRotatePulse{0%,100%{opacity:.65}50%{opacity:1}}
+ .map-shell.mc-fullscreen{position:fixed;inset:0;z-index:99999;border-radius:0;background:#0a1420}
  .bb-chip{flex:0 0 auto;padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:12px;cursor:pointer}
  .bb-chip:hover{background:rgba(255,255,255,.22)}
  .bb-speedgroup{flex:0 0 auto;display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:16px;padding:2px}
@@ -230,7 +239,7 @@
 
  <p class="small muted" style="margin:-4px 0 8px">👈 Pasa el mouse sobre cualquier botón del mapa para ver qué hace. Rota con el mouse, haz zoom con la rueda.</p>
 
- <div class="map-shell">
+ <div class="map-shell" id="map_shell">
  <div class="map-rail" id="hud_rail">
  <!-- se llena por JS (railBuild) para poder mostrar tooltip propio sin depender de title nativo -->
  </div>
@@ -239,6 +248,8 @@
  <div id="three_canvas" style="width:100%;height:100%"></div>
  <svg id="chart_wheel_svg" viewBox="0 0 400 400" style="display:none;width:100%;height:100%;background:#fff"></svg>
  <div id="three_tooltip" style="display:none;position:absolute;pointer-events:none;background:rgba(10,20,32,.92);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;line-height:1.5;z-index:20;white-space:nowrap;border:1px solid rgba(255,255,255,.2)"></div>
+ <button class="mc-fullscreen-btn" id="mc_fullscreen_btn" onclick="threeToggleFullscreen()" title="Pantalla completa">⛶</button>
+ <div class="mc-rotate-hint" id="mc_rotate_hint">🔄 Gira tu teléfono para verlo mejor</div>
  <div class="map-bottombar" id="map_bottombar">
  <div id="bb_movs" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
  <button class="bb-play" id="three_play_btn" onclick="threePlayToggle()" title="Reproducir">▶</button>
@@ -5625,6 +5636,66 @@ function threeOnResize() {
  _threeCamera.aspect = w / h; _threeCamera.updateProjectionMatrix();
  _threeRenderer.setSize(w, h);
 }
+
+// ═══ Pantalla completa del Mapa Cósmico — sobre todo pensado para
+// celular: el mapa normal mide ~380px de alto entre el resto de la
+// página; en pantalla completa ocupa toda la pantalla y se sugiere girar
+// el teléfono a horizontal para verlo más grande. Usa un modo "falso"
+// (position:fixed cubriendo todo el viewport) como base — funciona en
+// TODOS los navegadores, incluido Safari de iPhone, que no implementa la
+// Fullscreen API estándar para elementos cualesquiera — y además intenta
+// la Fullscreen API real cuando existe (Android/Chrome/desktop), que de
+// paso oculta la barra del navegador. ═══
+let _mcFullscreenActive = false;
+function threeMostrarPistaGiro() {
+ const hint = document.getElementById('mc_rotate_hint');
+ if (!hint) return;
+ const esVertical = window.innerHeight > window.innerWidth;
+ hint.style.display = (_mcFullscreenActive && esVertical) ? 'block' : 'none';
+}
+function threeToggleFullscreen() {
+ const shell = document.getElementById('map_shell');
+ const container = document.getElementById('three_canvas_container');
+ const btn = document.getElementById('mc_fullscreen_btn');
+ if (!shell || !container) return;
+ _mcFullscreenActive = !_mcFullscreenActive;
+ if (_mcFullscreenActive) {
+ shell.classList.add('mc-fullscreen');
+ if (container.dataset.origHeight === undefined) container.dataset.origHeight = container.style.height;
+ container.style.height = '100%';
+ if (btn) { btn.textContent = '✕'; btn.title = 'Salir de pantalla completa'; }
+ const req = shell.requestFullscreen || shell.webkitRequestFullscreen;
+ if (req) { try { const p = req.call(shell); if (p && p.catch) p.catch(() => {}); } catch (e) {} }
+ // Girar a horizontal automáticamente solo funciona (cuando funciona) DENTRO
+ // de la Fullscreen API real y solo en algunos navegadores (sobre todo
+ // Android/Chrome) — por eso además se muestra la pista visual de abajo,
+ // que funciona siempre, sea cual sea el navegador.
+ if (screen.orientation && screen.orientation.lock) { screen.orientation.lock('landscape').catch(() => {}); }
+ threeMostrarPistaGiro();
+ window.addEventListener('resize', threeMostrarPistaGiro);
+ } else {
+ shell.classList.remove('mc-fullscreen');
+ container.style.height = container.dataset.origHeight || '380px';
+ if (btn) { btn.textContent = '⛶'; btn.title = 'Pantalla completa'; }
+ if (document.fullscreenElement || document.webkitFullscreenElement) {
+ const exit = document.exitFullscreen || document.webkitExitFullscreen;
+ if (exit) { try { exit.call(document); } catch (e) {} }
+ }
+ if (screen.orientation && screen.orientation.unlock) { try { screen.orientation.unlock(); } catch (e) {} }
+ const hint = document.getElementById('mc_rotate_hint');
+ if (hint) hint.style.display = 'none';
+ window.removeEventListener('resize', threeMostrarPistaGiro);
+ }
+ // el layout tarda un instante en asentarse (más en iOS) -- se recalcula
+ // el tamaño del renderer dos veces para no dejar el mapa mal recortado
+ setTimeout(threeOnResize, 60);
+ setTimeout(threeOnResize, 350);
+}
+// si el usuario sale de la Fullscreen API real con Esc o el gesto "atrás"
+// del celular, hay que sincronizar el modo "falso" — si no, el botón se
+// quedaría en "✕" con el mapa ya fuera de pantalla completa real
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && _mcFullscreenActive) threeToggleFullscreen(); });
+document.addEventListener('webkitfullscreenchange', () => { if (!document.webkitFullscreenElement && _mcFullscreenActive) threeToggleFullscreen(); });
 
 // ═══ Transición animada de cámara — "que se vea cómo va pasando de una
 // escala a otra", en vez de un salto instantáneo ═══
