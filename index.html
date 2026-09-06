@@ -71,17 +71,24 @@
  Con scroll interno, cada riel se queda contenido en su propio alto. */
  .map-rail{display:flex;flex-direction:column;gap:6px;padding:8px;background:rgba(10,20,32,.55);backdrop-filter:blur(2px);overflow-y:auto;overflow-x:hidden;flex-shrink:0}
  .map-rail.rail-right{border-left:1px solid rgba(255,255,255,.08)}
- .rail-btn{width:44px;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s;position:relative}
+ /* touch-action:manipulation -- SIN esto, en celular cada toque espera
+ ~300ms para descartar un doble-tap (zoom) antes de disparar el clic, y
+ dentro de un contenedor con scroll (overflow-y:auto de .map-rail) el
+ navegador además puede interpretar el toque inicial como el comienzo de
+ un gesto de scroll y cancelar el clic -- exactamente el síntoma de
+ "los botones no dejan oprimirse" en celular horizontal. */
+ .rail-btn{width:44px;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s;position:relative;touch-action:manipulation}
  .rail-btn:hover{background:rgba(255,255,255,.16);transform:scale(1.06)}
  .rail-btn.on{background:var(--accent);border-color:var(--accent)}
  .rail-btn.toggle-off{opacity:.45}
  .rail-sep{height:1px;background:rgba(255,255,255,.12);margin:2px 4px}
- /* Celular en horizontal (poca altura): botones e íconos más chicos para
- que los 7-8 del riel izquierdo quepan sin scroll casi siempre -- el
- overflow-y:auto de arriba sigue de respaldo para el resto de los casos. */
+ /* Celular en horizontal (poca altura): el riel se comprime un poco (gap y
+ relleno más chicos) pero los botones NO se achican por debajo de 44px
+ (el tamaño táctil mínimo recomendado) -- antes bajaban a 34px, que junto
+ al scroll interno hacía más fácil fallar el toque. El overflow-y:auto de
+ .map-rail sigue de respaldo si aun así no caben todos. */
  @media (max-height:420px){
- .rail-btn{width:34px;height:34px;font-size:15px;border-radius:8px}
- .map-rail{gap:3px;padding:5px}
+ .map-rail{gap:4px;padding:6px}
  .rail-sep{margin:1px 3px}
  }
  .rail-tip{position:fixed;pointer-events:none;background:rgba(10,20,32,.96);color:#fff;padding:7px 11px;border-radius:8px;font-size:12px;line-height:1.5;z-index:100001;max-width:220px;border:1px solid rgba(255,255,255,.2);display:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
@@ -95,7 +102,7 @@
  .rail-flyout{position:fixed;display:none;flex-direction:column;gap:6px;background:rgba(10,20,32,.97);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:8px;z-index:100000;box-shadow:0 6px 20px rgba(0,0,0,.5)}
  .map-canvas-wrap{flex:1;position:relative;min-width:0}
  .map-bottombar{position:absolute;left:0;right:0;bottom:0;z-index:15;display:none;align-items:center;gap:14px;padding:8px 14px;background:linear-gradient(0deg,rgba(6,12,20,.88),rgba(6,12,20,.35));backdrop-filter:blur(2px)}
- .bb-play{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+ .bb-play{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;touch-action:manipulation}
  .bb-play:hover{background:rgba(255,255,255,.24)}
  .map-bottombar input[type=range]{accent-color:var(--accent);cursor:pointer}
  /* Botón de pantalla completa del Mapa Cósmico — sobre todo para celular:
@@ -105,10 +112,10 @@
  .mc-rotate-hint{position:absolute;top:52px;right:8px;z-index:18;display:none;background:rgba(10,20,32,.88);color:#fff;padding:7px 11px;border-radius:9px;font-size:12px;max-width:150px;text-align:center;line-height:1.4;animation:mcRotatePulse 1.6s ease-in-out infinite;pointer-events:none}
  @keyframes mcRotatePulse{0%,100%{opacity:.65}50%{opacity:1}}
  .map-shell.mc-fullscreen{position:fixed;inset:0;z-index:99999;border-radius:0;background:#0a1420}
- .bb-chip{flex:0 0 auto;padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:12px;cursor:pointer}
+ .bb-chip{flex:0 0 auto;padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:12px;cursor:pointer;touch-action:manipulation}
  .bb-chip:hover{background:rgba(255,255,255,.22)}
  .bb-speedgroup{flex:0 0 auto;display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:16px;padding:2px}
- .bb-speed{border:none;background:transparent;color:#cfe0da;font-size:11px;padding:4px 9px;border-radius:14px;cursor:pointer}
+ .bb-speed{border:none;background:transparent;color:#cfe0da;font-size:11px;padding:4px 9px;border-radius:14px;cursor:pointer;touch-action:manipulation}
  .bb-speed.on{background:var(--accent);color:#fff}
  .map-bottombar kbd{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:1px 5px;font-family:inherit;font-size:11px}
  details.tccinfo{margin-top:6px}
@@ -164,7 +171,7 @@
  <div class="logo-badge"><img src="logo.jpg" alt="Fundación Invesciencias"></div>
  <div>
  <h1 data-i18n="header_h1">Cosmobiología — Fundación Invesciencias</h1>
- <p data-i18n-html="header_subtitle">Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">Primer resultado positivo: Mercurio–Urano en sismos M≥6 — replicación externa pendiente</b></p>
+ <p data-i18n-html="header_subtitle">Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">hacia el principio de investigación de la causalidad por relación estadística</b></p>
  </div>
  <button id="lang-toggle" onclick="toggleLang()" style="margin-left:auto;padding:7px 16px;border-radius:20px;border:1.5px solid var(--oro);background:transparent;color:var(--oro);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">English</button>
 
@@ -221,9 +228,10 @@
 <div class="nav-group">
 <span class="nav-group-label" data-i18n="navgroup_didactica">III. Didáctica</span>
 <div class="nav-group-buttons">
-<button data-tab="ayuda" data-i18n="nav_ayuda">Metodología</button>
+<button data-tab="ayuda" data-i18n="nav_ayuda">Principios y Métodos</button>
 <button data-tab="ajedrez" data-i18n="nav_ajedrez">♟ Ajedrez</button>
 <button data-tab="sismos" data-i18n="nav_sismos">🌍 Sismos</button>
+<button data-tab="eras_precesionales">♒ Eras precesionales</button>
 </div>
 </div>
 </div>
@@ -255,6 +263,23 @@
 
  <p class="small muted" style="margin:-4px 0 8px">👈 Pasa el mouse sobre cualquier botón del mapa para ver qué hace. Rota con el mouse, haz zoom con la rueda.</p>
 
+ <div class="hint" style="margin:0 0 10px;font-size:13px">
+ <b>🕰️ La barra de tiempo de abajo del mapa cambia según lo que elijas a la izquierda</b> — no es siempre la misma barra. Cada vista tiene su propio control porque cada una avanza en una unidad de tiempo distinta:
+ <ul style="margin:6px 0 4px 20px;padding:0">
+ <li><b>🌍 Tierra: sus movimientos</b> — un slider de 0 a 1.000 días, con casillas para aislar rotación (24 h reales), traslación (1 año real), nutación y precesión (estas dos, muy aceleradas — sus ciclos reales duran ≈18,6 años y ≈25.772 años).</li>
+ <li><b>☀️✨🌌 Sistema Solar / Estrellas / Galaxia</b> — recorre años calendario reales, de 1900 a 2100.</li>
+ <li><b>🔮 Carta astral</b> — recorre la fecha exacta del evento que estés viendo (años o días de un año, según el modo).</li>
+ <li><b>🏛️ Topocentrismo (esfera de casas 3D)</b> — recorre minutos alrededor del instante exacto del evento (±12 horas).</li>
+ <li><b>🌀 Cicloide de Llona</b> — no avanza fecha real: reproduce, a una velocidad esquemática que tú eliges (0.1× a 2×), el trazo completo de la curva.</li>
+ </ul>
+ Si una barra no parece corresponder a lo que estás viendo, cambia de vista y vuelve — cada botón de la izquierda activa su propia barra y apaga las demás.
+ </div>
+
+ <div class="hint" style="margin:0 0 10px;font-size:13px">
+ <b>➡️ La columna de íconos a la <u>derecha</u> del mapa</b> es un riel de accesos rápidos a controles extra — distinto del riel de la izquierda (que cambia de vista) y de la barra de tiempo de abajo (que mueve el reloj). El ⛶ (pantalla completa) siempre está ahí; los demás íconos cambian según la vista activa.
+ <p style="margin:8px 0 0">Casi ningún ícono de este riel hace algo directamente al pulsarlo — en vez de eso, <b>abre un pequeño menú flotante ("flyout") justo al lado</b>, con las opciones concretas de ese grupo (por ejemplo, 🌍 abre rotación/traslación/precesión/nutación; 👁️ abre las vistas de cámara; ➰, cuando estás en la Cicloide de Llona, abre Caso/Latitud φ/Curvas Rdr'). Es la misma lógica en toda la plataforma: un ícono = una categoría, un clic = ver sus opciones sin bajar al panel de detalle. Pulsa cualquier otro ícono, o fuera del menú, para cerrarlo.</p>
+ </div>
+
  <div class="map-shell" id="map_shell">
  <div class="map-rail" id="hud_rail">
  <!-- se llena por JS (railBuild) para poder mostrar tooltip propio sin depender de title nativo -->
@@ -279,10 +304,44 @@
  </span>
  </div>
  <div id="bb_time" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
+ <button class="bb-play" id="cm_fecha_play_btn" onclick="threeCosmicFechaPlayToggle()" title="Reproducir — recorre 1900-2100 solo (para ver moverse los planetas lentos, p.ej. Plutón, sin arrastrar el control a mano).">▶</button>
  <span style="font-size:15px">🕰️</span>
  <input type="range" id="cm_fecha_anio" min="1900" max="2100" step="1" value="2026" style="flex:1" oninput="threeCosmicIrAFecha()">
  <span id="cm_fecha_anio_label" class="small" style="color:#fff;font-weight:700;min-width:38px">2026</span>
  <button class="bb-chip" onclick="document.getElementById('cm_fecha_anio').value=new Date().getFullYear();threeCosmicIrAFecha()">Hoy</button>
+ </div>
+ <div id="bb_topo_time" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
+ <button class="bb-play" id="topo_play_btn" onclick="threeTopoPlayToggle()" title="Reproducir">▶</button>
+ <span style="font-size:15px" title="La esfera entera gira alrededor del eje del mundo -- la misma rotación real de la Tierra (1° cada ≈4 minutos) -- sin recalcular nada, solo gira lo ya calculado.">🌐↻</span>
+ <input type="range" id="topo_minuto_slider" min="-720" max="720" step="1" value="0" style="flex:1" oninput="threeTopoIrAMinuto(parseInt(this.value))">
+ <span id="topo_minuto_label" class="small" style="color:#fff;font-weight:700;min-width:150px;text-align:right;white-space:nowrap"></span>
+ <span class="bb-speedgroup">
+ <button class="bb-speed" onclick="threeTopoSetSpeed(0.5,this)" title="Velocidad 0.5×">0.5×</button>
+ <button class="bb-speed on" onclick="threeTopoSetSpeed(1,this)" title="Velocidad normal">1×</button>
+ <button class="bb-speed" onclick="threeTopoSetSpeed(2,this)" title="Velocidad 2×">2×</button>
+ <button class="bb-speed" onclick="threeTopoSetSpeed(4,this)" title="Velocidad 4×">4×</button>
+ </span>
+ <button class="bb-chip" onclick="document.getElementById('topo_minuto_slider').value=0;threeTopoIrAMinuto(0)">Ahora</button>
+ </div>
+ <div id="bb_evento_time" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
+ <button class="bb-play" id="evt_fecha_play_btn" onclick="threeEventoPlayToggle()" title="Reproducir — recorre el control solo (años o días, según el modo elegido), sin tener que arrastrarlo a mano.">▶</button>
+ <button class="bb-chip" id="evt_modo_btn" onclick="threeEventoToggleModo()" title="Cambia entre recorrer años (bueno para planetas lentos como Plutón) o días de un mismo año (bueno para ver al Sol y la Luna moverse por el zodíaco).">📅 Año</button>
+ <span style="font-size:15px" title="Esta es la longitud geocéntrica real (vista desde la Tierra) -- por eso, a diferencia del Sistema Solar heliocéntrico, aquí SÍ se ve la retrogradación aparente de los planetas al mover el control.">🪐↩️</span>
+ <input type="range" id="evt_fecha_slider" min="1900" max="2100" step="1" value="2026" style="flex:1" oninput="threeEventoSliderInput()">
+ <span id="evt_fecha_slider_label" class="small" style="color:#fff;font-weight:700;min-width:70px;text-align:right">2026</span>
+ <button class="bb-chip" onclick="threeEventoIrAHoy()">Hoy</button>
+ </div>
+ <div id="bb_llona" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
+ <button class="bb-play" id="llona_bb_play_btn" onclick="threeLlonaAnimar()" title="Dibujar / reanudar la curva — la Tierra gira y se traslada de verdad mientras se traza.">▶</button>
+ <span style="font-size:15px" title="Esta barra NO recorre una fecha real -- la velocidad (0.1×-2×) es puramente esquemática, para poder ver la curva formarse. La proporción Vt/Vr (Caso A/B/C) sí es real o ilustrativa según el caso elegido, pero el tiempo que tarda en dibujarse en pantalla no corresponde a ningún tiempo real.">🌀 esquemático</span>
+ <span id="llona_bb_nota" class="small" style="color:#cfe0da;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Escena lista</span>
+ <span class="bb-speedgroup">
+ <button class="bb-speed" onclick="threeLlonaSetSpeed(0.1,this)" title="Velocidad 0.1× (muy lenta)">0.1×</button>
+ <button class="bb-speed on" onclick="threeLlonaSetSpeed(0.3,this)" title="Velocidad 0.3× (por defecto — para poder seguir la curva y detenerla a tiempo)">0.3×</button>
+ <button class="bb-speed" onclick="threeLlonaSetSpeed(1,this)" title="Velocidad normal">1×</button>
+ <button class="bb-speed" onclick="threeLlonaSetSpeed(2,this)" title="Velocidad 2×">2×</button>
+ </span>
+ <button class="bb-chip" onclick="threeDetenerAnimaciones()" style="margin-left:auto">⏹ Detener</button>
  </div>
  <div id="bb_nave" style="display:none;align-items:center;gap:10px;flex:1;min-width:0;color:#cfe0da;font-size:12px">
  <span>🚀 <b>Modo nave</b> — <kbd>↑↓←→</kbd> mover · mouse (clic y arrastra) mirar</span>
@@ -297,13 +356,6 @@
  </div>
  </div>
  <div class="map-rail rail-right" id="mov_rail"></div>
- <!-- Tercera columna, siempre visible y separada de mov_rail -- así el
- botón de pantalla completa nunca queda tapado por (ni tapa a) los
- flyouts que se abren desde la columna de en medio, y siempre está en
- el mismo lugar sin importar el modo/vista activa. -->
- <div class="map-rail rail-right" id="exit_rail">
- <button class="rail-btn" id="mc_fullscreen_btn" onclick="threeToggleFullscreen()" title="Pantalla completa">⛶</button>
- </div>
  </div>
  <div class="rail-tip" id="rail_tip"></div>
  <p class="small muted" style="margin-top:8px">Distancias esquemáticas, no a escala real — el objetivo es la geometría angular (qué tan alineados están los planetas), no la distancia física. Posiciones planetarias: modelo kepleriano simplificado para el navegador (la plataforma usa Skyfield + JPL DE421 para los cálculos reales).</p>
@@ -384,8 +436,18 @@
  <button class="ghost act" onclick="threeBuildMovimientosScene()">↩ Volver a movimientos</button>
  </div>
  <div id="llona_nota" class="small muted" style="margin-top:6px"></div>
- <p class="small muted" style="margin:4px 0 0">Nota: esta curva es una escena <b>aparte</b> de los movimientos de arriba (rotación/traslación/precesión) — no es la Tierra interactiva moviéndose sobre su propia cicloide, es el trazo geométrico completo de la fórmula. Tocar cualquier casilla o el slider de arriba te devuelve automáticamente a la vista normal.</p>
+ <p class="small muted" style="margin:4px 0 0">Nota: esta curva es una escena <b>aparte</b> de los movimientos de arriba (precesión/nutación/órbita galáctica) — pero, a diferencia de antes, la Tierra <b>sí gira y se traslada de verdad</b> al pulsar "▶ Dibujar": el punto verde marcado a latitud φ viaja pegado a la esfera, y su camino resultante (visto desde afuera) es exactamente la curva cicloidal que se traza. Tocar cualquier casilla o el slider de arriba te devuelve automáticamente a la vista normal.</p>
  <details class="tccinfo"><summary>¿Qué es exactamente y qué es esquemático?</summary><p class="tccinfo-body small muted">Real: la combinación rotación+traslación con el eje inclinado ε≈23.44° SÍ produce geométricamente una curva cicloidal, no un círculo — eso es trigonometría, no una interpretación TCC. Esquemático: aquí <b>Vt/Vr es una relación adimensional que tú eliges</b> para poder VER los tres casos (la Tierra real siempre está en el caso "Normal" con Vt≈29.78 km/s ≫ Vr≈0.46 km/s en el ecuador — el caso "Regresivo" no ocurre en la Tierra real, se muestra solo para comparar, como pide el guion, con lo que sí ocurriría en cuerpos como Urano). Los "Puntos Singulares" cada 30° y las curvas Rdr' (conos hacia el Sol/Luna) son la representación gráfica de la hipótesis de Llona — no hay, dentro de esta plataforma, una prueba estadística independiente de que esos puntos coincidan con sismos reales (ver <a href="#" onclick="return irA('guia','')">Metodología → Geodinámica de Llona</a> para lo que sí se ha probado).</p></details>
+ </div>
+
+ <div id="eras_diluvios_panel" style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-top:10px">
+ <div style="font-weight:700;font-size:13px;margin-bottom:8px">♒ Eras precesionales y el eje inclinado — ¿por qué se hablan de "diluvios"?</div>
+ <p class="small muted" style="margin:0 0 8px">El mismo barrido de precesión del eje (arriba) es lo que, a lo largo de miles de años, desplaza al punto vernal de una constelación a otra. Este botón aísla ese movimiento y agrega la lectura que hace la TCC de ese barrido: qué hemisferio recibe el sol más directo en cada solsticio, y por qué eso importa para la hipótesis de los diluvios prolongados.</p>
+ <div class="row" style="align-items:center;gap:8px">
+ <button class="act" onclick="threeVerErasDiluvios()">🌊 Ver barrido del eje + eras y diluvios</button>
+ <button class="ghost act" onclick="return irA('eras_precesionales','')" style="padding:8px 12px">📖 Explicación completa</button>
+ </div>
+ <div id="eras_diluvios_nota" class="small muted" style="margin-top:8px"></div>
  </div>
  </div>
 
@@ -416,6 +478,8 @@
  <label class="small" style="margin:0">Ir directo a:</label>
  <select id="three_evento_selector" onchange="threeIrAEvento(this.value)" style="max-width:150px"><option value="">Ir a...</option></select>
  <button class="ghost act" id="three_toggle_2d" onclick="threeToggle2D()">Ver como carta astral (2D)</button>
+ <button class="ghost act zodiaco-modo-btn" onclick="threeToggleZodiacoModo()" title="Alterna entre los límites reales IAU/Delporte (desiguales, 6°-44°) y los 12 signos tropicales de 30° iguales que usa la astrología occidental para signo solar/casas -- ninguno es 'más correcto', miden cosas distintas.">♈ Ver signos iguales (30°)</button>
+ <button class="ghost act figuras-btn" id="three_figuras_evento_btn" onclick="threeToggleFiguras()">⭐ Figuras del zodíaco</button>
  <button class="ghost act" id="three_toggle_esfera" onclick="threeToggleEsferaTopocentrica()">🌐 Ver esfera de casas (3D)</button>
  <button class="ghost act" onclick="threeAbrirEsferaEnPestana()">🔗 Abrir en pestaña nueva (fondo claro)</button>
  </div>
@@ -464,12 +528,19 @@
  <option value="todas">Las 88 constelaciones</option>
  </select>
  </div>
- <div id="const_epoca_bar" style="display:none;align-items:center;gap:8px;margin-bottom:8px;background:var(--panel2);border-radius:10px;padding:8px 12px">
+ <div id="const_epoca_bar" style="display:none;flex-direction:column;gap:8px;margin-bottom:8px;background:var(--panel2);border-radius:10px;padding:8px 12px">
+ <div class="row" style="align-items:center;gap:8px;margin:0">
  <span class="small" style="font-weight:700">📜 Época de las fronteras (precesión):</span>
- <input type="number" id="const_limites_epoca" value="1948" step="1" style="max-width:80px" onchange="threeLimitesChanged()" title="Año al que se precesan las fronteras. Delporte las definió en B1875.0; 2000 = sin precesar (J2000.0).">
- <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=1875;threeLimitesChanged()" title="B1875.0 — el año exacto en que Delporte trazó las fronteras como meridianos y paralelos rectos">B1875 original</button>
- <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=2000;threeLimitesChanged()" title="J2000.0 — la época de referencia moderna, la que usa el resto de esta plataforma">J2000</button>
+ <input type="number" id="const_limites_epoca" value="1948" step="1" style="max-width:80px" onchange="threeEpocaDesdeAnio()" title="Año al que se precesan las fronteras. Delporte las definió en B1875.0; 2000 = sin precesar (J2000.0).">
+ <span class="small muted">o fecha exacta:</span>
+ <input type="date" id="const_limites_fecha" style="max-width:145px" onchange="threeEpocaDesdeFecha()" title="Fecha exacta (para casos como un equinoccio concreto, p.ej. 21 de marzo de 1948) -- se convierte a año fraccionario para la misma fórmula de precesión.">
+ <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=1875;threeEpocaDesdeAnio()" title="B1875.0 — el año exacto en que Delporte trazó las fronteras como meridianos y paralelos rectos">B1875 original</button>
+ <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=2000;threeEpocaDesdeAnio()" title="J2000.0 — la época de referencia moderna, la que usa el resto de esta plataforma">J2000</button>
+ </div>
+ <div class="row" style="align-items:center;gap:8px;margin:0">
  <span id="const_limites_nota" class="small muted"></span>
+ </div>
+ <div id="const_vernal_separacion" class="small" style="color:var(--verde-oscuro);font-weight:600"></div>
  </div>
  <div id="const_info_panel" style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-bottom:10px;min-height:20px"><span class="small muted">Activa las fronteras (○ en el mapa) y pasa el mouse sobre cualquier constelación para ver su nombre y datos aquí — se resalta en dorado sobre el mapa.</span></div>
 
@@ -1778,6 +1849,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p style="margin:0 0 8px;font-weight:600" data-i18n="met_index_title">Secciones de esta página:</p>
  <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px">
  <a href="#met_marco" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Marco científico</a>
+ <a href="#met_principios" style="color:var(--oro);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px;font-weight:600">★ Los 5 principios de la TCC</a>
  <a href="#met_nulo" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Modelo nulo</a>
  <a href="#met_fdr" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">FDR + Von Neumann</a>
  <a href="#met_split" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Split validation</a>
@@ -1882,7 +1954,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--verde)">
  <b>Dr. David Juan Ferríz Olivares</b><br>
  <span class="small muted">Kobe, Japón, 12 jun 1921 — Caracas, Venezuela, 22 oct 1992</span>
- <p class="small" style="margin-top:8px">Nació en la legación diplomática mexicana en Japón. Filósofo, científico, compositor y orador — más de 7.000 conferencias y 10.000 horas grabadas a lo largo de su vida. Doctor en Filosofía y Letras. El 3 de diciembre de 1953 conoció la obra del Dr. Serge Raynaud de la Ferrière, a quien dedicó el resto de su vida como discípulo predilecto, prologuista-traductor y coordinador de obra, siendo calificado como <em>Apóstol del Saber</em>. Mantuvieron una correspondencia de 2 cartas semanales durante 7 años. En <b>1975 fundó Invesciencias</b> (Instituto de Investigaciones y Aplicaciones Científicas y Tecnológicas) en Venezuela. Es autor de la <em>Teoría Científica de la Cosmobiología</em> (TCC, 1.064 pp.) — la sistematización estadística más extensa de la cosmobiología iberoamericana, con los métodos de Von Neumann, Wilcoxon y correlación serial que implementa esta plataforma. Su sinfonía "Oriente y Occidente" se estrenó en el Teatro Teresa Carreño de Caracas el 14 de octubre de 1990. "Soy sudamericano de cuna mexicana nacido en Japón."</p>
+ <p class="small" style="margin-top:8px">Nació en la legación diplomática mexicana en Japón. Filósofo, científico, compositor y orador — más de 7.000 conferencias y 10.000 horas grabadas a lo largo de su vida. Doctor en Filosofía y Letras. El 3 de diciembre de 1953 conoció la obra del Dr. Serge Raynaud de la Ferrière, a quien dedicó el resto de su vida como discípulo predilecto, prologuista-traductor y coordinador de obra. Mantuvieron una correspondencia de 2 cartas semanales durante 7 años. En <b>1975 fundó Invesciencias</b> (Instituto de Investigaciones y Aplicaciones Científicas y Tecnológicas) en Venezuela. Es autor de la <em>Teoría Científica de la Cosmobiología</em> (TCC, 1.064 pp.) — la sistematización estadística más extensa de la cosmobiología iberoamericana, con los métodos de Von Neumann, Wilcoxon y correlación serial que implementa esta plataforma. Su sinfonía "Oriente y Occidente" se estrenó en el Teatro Teresa Carreño de Caracas el 14 de octubre de 1990. "Soy sudamericano de cuna mexicana nacido en Japón."</p>
  </div>
 
  </div>
@@ -1894,6 +1966,36 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div class="hint" style="border-left-color:var(--accent2)" data-i18n-html="met_reviewer_hint">
  <b>Para el revisor de revista:</b> los datos de entrada son coordenadas eclípticas JPL; las variables son separaciones angulares en grados; la estadística es z-score de proporciones con corrección FDR; la validación es split 50/50. El marco conceptual es exploración empírica de covarianza. El lenguaje astrológico es solo nomenclatura histórica del sistema de coordenadas, no una afirmación sobre mecanismos.
  </div>
+ </div>
+
+ <div id="met_principios" class="card" style="border-left:4px solid var(--oro);background:linear-gradient(135deg,var(--panel2),rgba(200,168,75,.08))">
+ <h2>★ Los principios de la TCC — el marco antes que el procedimiento</h2>
+ <p>Todo lo demás en esta pestaña (modelo nulo, FDR, Von Neumann, split 50/50...) son <b>procedimientos</b>. Pero el Cap. 10 de la TCC (Ferríz Olivares, 1976) los sitúa dentro de algo más amplio: tres <b>principios fundamentales</b> —el dialéctico alternalizado bajo controles, el de ubicación en el ámbito biocéntrico, y el de investigación de la causalidad por relación estadística— de los que se derivan otros cuatro: sinergia, isomorfía, sincronización y enfocamiento para la interpretación diversificada. El propio texto los llama "principios que hacen unidad": no una lista de requisitos sueltos, sino un solo sistema de control de exactitud visto desde cinco ángulos.</p>
+
+ <h3 style="margin-top:16px">El tercer principio — donde está enfocado el trabajo actual</h3>
+ <div class="hint" style="border-left-color:var(--oro)">
+ <p style="margin:0 0 8px"><b>Investigación de la causalidad por relación estadística.</b> El punto que el Dr. Ferríz Olivares subraya —y que esta plataforma trata de honrar en cada módulo— es que lo presenta como <b>principio, no como procedimiento</b>. Como señala el Lic. José Miguel Esborronda Andrade, esto constituye <b>un aporte de fondo a la epistemología de la ciencia</b>: no presupone que exista una ley oculta de causa-efecto a la cual la estadística simplemente "sirve" de evidencia indirecta. La relación estadística, depurada de artefactos, <i>realiza</i> a la causalidad en el dominio donde ocurre — opera en un plano previo al surgimiento mismo de esa ley de causa a efecto, no como un sustituto provisional de ella.</p>
+ <p style="margin:0">Es, con diferencia, el principio más consistentemente implementado en todo el programa: modelo nulo emparejado, corrección FDR (ver <a href="#met_nulo">abajo</a>), declustering, distinción confusor/mediador declarada antes de ver resultados, controles negativos con sismicidad de origen humano conocido. Cada módulo de esta plataforma lo aplica sin excepción — incluida la comparación de modelos de eras precesionales (ver <a href="#" onclick="return irA('eras_precesionales','')">Didáctica → Eras precesionales</a>), donde precisamente investigar la causalidad detrás de una fecha, en vez de darla por sentada, es el punto de partida.</p>
+ </div>
+
+ <h3 style="margin-top:16px">Los otros dos principios fundamentales</h3>
+ <table style="margin-top:6px">
+ <tbody>
+ <tr><td style="width:32%"><b>Dialéctico alternalizado bajo controles</b></td><td>El razonamiento avanza por contraste sistemático de hipótesis (real vs. modelo nulo, real vs. control negativo) bajo condiciones controladas — no por afirmación directa. Es la lógica detrás de cada comparación real-vs-nulo de esta plataforma.</td></tr>
+ <tr><td><b>Ubicación en el ámbito biocéntrico</b></td><td>El fenómeno se estudia siempre situado en relación con lo vivo — el sismo importa en la medida en que afecta a seres humanos, el ritmo planetario en la medida en que se cruza con fisiología o conducta — nunca como geometría celeste aislada de sus efectos.</td></tr>
+ </tbody>
+ </table>
+
+ <h3 style="margin-top:16px">Los cuatro principios derivados</h3>
+ <table style="margin-top:6px;font-size:13px">
+ <thead><tr><th>Principio</th><th>Qué dice</th><th>Dónde se ve en esta plataforma</th></tr></thead>
+ <tbody>
+ <tr><td><b>Sincronización</b></td><td>Precisión al segundo y coincidencia exacta en el tiempo absoluto (Bridgman, simultaneidad de Einstein).</td><td>Mejor cubierto de los cinco — cada carta se calcula al instante UTC exacto y en coordenadas topocéntricas, no geocéntricas.</td></tr>
+ <tr><td><b>Sinergia</b></td><td>La influencia cósmica no viene de un cuerpo aislado sino del "caleidoscopio planetario" combinado.</td><td>Puesto a prueba con pares de cuerpos en ajedrez y sismos — resultado nulo pero genuinamente probado, no solo señalado.</td></tr>
+ <tr><td><b>Isomorfía</b></td><td>La analogía de los dos grifos: estructura estática (carta natal) + dinamismo cinético (tránsitos) deben activarse a la vez.</td><td>Probado en ajedrez (carta del jugador + carta de la jugada) y en sismos (carta fundacional de zona).</td></tr>
+ <tr><td><b>Enfocamiento</b></td><td>El mapa celeste, pura geometría, debe traducirse a los datos y requisitos concretos de cada ciencia aplicada.</td><td>Bien cubierto en ajedrez (Δwin%) y sismos (magnitud declusterizada) — pendiente en medicina/biología/psicología, el hueco más grande.</td></tr>
+ </tbody>
+ </table>
  </div>
 
  <div class="card">
@@ -3674,6 +3776,84 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
 </section>
 
+<!-- ===================== DIDÁCTICA: Eras precesionales ===================== -->
+<section id="eras_precesionales" style="display:none">
+
+ <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
+ <h2 style="font-size:22px;color:#fff;margin-bottom:6px">♒ Eras precesionales — dos formas de calcularlas, una tabla para comparar</h2>
+ <p style="font-size:15px;margin-bottom:0">¿Cuándo "empieza" la Era de Acuario? Esta pestaña reúne, en un solo lugar, el cálculo <b>real</b> que usa el resto de esta plataforma (fronteras oficiales IAU/Delporte + precesión de Newcomb) y el cálculo del <b>Dr. Serge Raynaud de la Ferrière</b> citado en la TCC (cap. 41) — con su fórmula completa, paso a paso, y una tabla que compara ambos en varias fechas.</p>
+ </div>
+
+ <div class="card">
+ <h2>¿Qué es exactamente una "Era Precesional"?</h2>
+ <p>El eje de la Tierra no apunta siempre al mismo lugar del cielo: describe un lento círculo completo cada <b>≈25.772 años</b> (precesión de los equinoccios, ya descrita por Hiparco en el siglo II a.C.). Por eso el <b>punto vernal</b> — la intersección entre el ecuador celeste y la eclíptica, el 0° de las longitudes astronómicas — recorre lentamente las 12 constelaciones del zodíaco, tardando en promedio unos 2.150 años en cada una. A ese tránsito de ≈2.150 años por constelación se le llama, en astrología, una "Era" (de Piscis, de Acuario, etc.).</p>
+ <p class="small muted">El problema —y la razón de que existan varias respuestas distintas a "¿cuándo empieza la Era de Acuario?"— es que <b>no hay una única definición acordada</b> de dónde traza uno los límites de esa constelación, ni de qué tan preciso hay que ser con la tasa de precesión. Las dos secciones de abajo muestran dos respuestas serias, con su método completo a la vista, para que la diferencia quede clara en vez de escondida.</p>
+ </div>
+
+ <div class="hint" style="border-left:4px solid #e67e22">
+ <h2 style="margin-top:0">⚠️ Esto sigue siendo un tema de estudio abierto — no una respuesta cerrada</h2>
+ <p>Es tentador leer el cálculo de la sección siguiente como "la respuesta correcta" solo porque usa datos oficiales de la UAI. Pero conviene ser honestos sobre qué son en realidad esas 88 fronteras: Eugène Delporte las trazó en 1930 <b>siguiendo la cuadrícula de coordenadas</b> (segmentos de ascensión recta y declinación constantes, en la época B1875.0) — es decir, son <b>líneas rectas verticales y horizontales sobre un mapa de coordenadas</b>, elegidas por conveniencia administrativa y cartográfica para repartir todo el cielo sin dejar huecos ni superposiciones. No fueron trazadas para marcar dónde "empieza" o "termina" una influencia astronómica o energética real, ni existe una única forma astronómicamente obligada de dibujarlas.</p>
+ <p>Si esas fronteras hubieran seguido, por ejemplo, la forma real de las figuras mitológicas o algún otro criterio (líneas diagonales, la posición de las estrellas más brillantes de cada constelación, un reparto proporcional al recorrido del Sol), la fecha de cruce Piscis/Acuario que calcula esta plataforma cambiaría — quizás varios siglos en cualquier dirección. Eso no invierte el cálculo de Newcomb (la <i>tasa</i> de precesión sí está bien establecida), pero sí significa que <b>dónde exactamente se traza el límite</b> es, en el fondo, una convención, no un hecho fijo grabado en el cielo.</p>
+ <p>Visto así, el enfoque del Dr. Raynaud de la Ferrière —anclar la Era de Piscis en un evento histórico concreto (el Año 1) y usar su propio ancho de Piscis— no es menos legítimo que usar Delporte: es simplemente <b>otra convención</b>, con otro criterio de partida. Y el Dr. Raynaud de la Ferrière no se apoyó solo en la geometría del cielo: la TCC y la tradición cosmobiológica también señalan <b>marcadores sociales e históricos</b> del cambio de Era (transformaciones profundas en comunicación, ciencia, movimientos sociales y conciencia colectiva a mediados del siglo XX) como otra línea de evidencia, complementaria a la astronómica, para ubicar ese tránsito. Esta plataforma todavía no tiene ese análisis hecho, pero es un tema pendiente distinto del cálculo astronómico: la idea es, más adelante, reunir esos marcadores sociales (eventos, cambios de tendencia, indicadores históricos alrededor de mediados del siglo XX) y revisarlos con el mismo rigor estadístico que ya se aplica al resto de esta plataforma —modelo nulo, significancia, corrección por comparaciones múltiples— para ver si hay algo verificable ahí, en vez de asumir de entrada que sí o que no lo hay. Se presentan aquí junto al cálculo astronómico como una línea de investigación futura, no como un resultado ya obtenido ni como algo que se pueda descartar sin revisar.</p>
+ </div>
+
+ <div class="card" style="border-left:4px solid var(--oro)">
+ <h2>📐 Cálculo "de referencia" — fronteras IAU/Delporte + precesión de Newcomb</h2>
+ <p>Esta plataforma usa como referencia las <b>88 fronteras oficiales</b> que Eugène Delporte trazó en 1930 para la Unión Astronómica Internacional (sobre coordenadas de la época B1875.0, verificadas aquí contra la fuente original) y la <b>fórmula rigurosa de precesión de Newcomb</b> (Meeus, <i>Astronomical Algorithms</i>, cap. 21) para expresarlas en cualquier época. La tasa de precesión real <b>no es constante</b> — varía ligeramente con el tiempo — así que este cálculo usa su valor exacto para cada fecha, no un promedio redondeado.</p>
+ <table style="margin-top:10px">
+ <tbody>
+ <tr><td style="width:40%"><b>Ancho real de Piscis</b></td><td>37,06° (varía de constelación a constelación — de 6° a 44° — porque sigue la forma real del cielo, no un reparto parejo)</td></tr>
+ <tr><td><b>Tasa de precesión</b></td><td>≈50,29″/año (varía con el tiempo, fórmula de Newcomb)</td></tr>
+ <tr><td><b>Punto vernal hoy</b></td><td>dentro de Piscis, a pocos grados del límite con Acuario</td></tr>
+ <tr><td><b>Cruce estimado a Acuario</b></td><td>≈año 2598</td></tr>
+ </tbody>
+ </table>
+ <button class="ghost act" style="margin-top:10px" onclick="return irA('guia','')">🗺️ Ver el cálculo en vivo (Mapa Cósmico → Estrellas → Límites oficiales)</button>
+ </div>
+
+ <div class="card" style="border-left:4px solid #9b59b6">
+ <h2>🔮 El cálculo del Dr. Serge Raynaud de la Ferrière</h2>
+ <p class="small muted"><code>TCC, cap. 41</code> — "El valor expresado por el Dr. R. de la Ferrière"</p>
+ <p>El Dr. Raynaud de la Ferrière ancló el inicio de la Era de Piscis en el <b>Año 1 de la Era Cristiana</b>, y calculó cuánto tiempo tardaría el punto vernal en atravesar por completo la constelación de Piscis usando una tasa de precesión <b>fija</b>, redondeada a <b>1° cada 72 años</b> (72×360° = 25.920 años el ciclo completo — el "Año Platónico" clásico). Con su propio valor del ancho de Piscis, <b>27,06°</b>, su cuenta fue:</p>
+ <div class="hint" style="font-size:15px;text-align:center;font-weight:700">27,06° × 72 años/° = 1.948,32 años → <span style="color:var(--oro)">21 de marzo de 1948</span></div>
+ <p class="small muted" style="margin-top:8px">Es un cálculo hecho enteramente a mano, con las tablas de precesión disponibles en su época — un trabajo pionero, considerando que no tenía acceso a la precesión variable de Newcomb ni a fronteras IAU digitalizadas, herramientas que solo se volvieron accesibles décadas después. Justamente por eso es, en rigor, una <b>aproximación</b> y no un cálculo equivalente al de arriba: se apoya en una tasa fija (en vez de la tasa real, que varía con el tiempo) y en su propio valor del ancho de Piscis (27,06°, en vez del 37,06° que miden hoy las fronteras oficiales Delporte/IAU) — dos simplificaciones necesarias sin las herramientas modernas, y la razón concreta por la que su fecha (1948) se aleja tanto del cruce real estimado (≈2598).</p>
+ <h3 style="margin-top:14px">Tabla comparativa — mismos años, los dos métodos</h3>
+ <div style="overflow-x:auto"><table id="tabla_eras" style="font-size:13px">
+ <thead><tr><th>Año</th><th>Real (IAU/Delporte + Newcomb)</th><th>Modelo Raynaud de la Ferrière</th></tr></thead>
+ <tbody id="tabla_eras_body"><tr><td colspan="3" class="small muted">Calculando…</td></tr></tbody>
+ </table></div>
+ </div>
+
+ <div class="card" style="border-left:4px solid #e67e22">
+ <h2>🔬 Una pregunta de investigación abierta: ¿qué frontera pondría el cruce justo en 1948?</h2>
+ <p>Esto es lo que hace valioso el cálculo del Dr. Raynaud de la Ferrière más allá de su resultado: en vez de tomar la clasificación de Delporte como un dato cerrado, se puede usar el motor de precesión de esta misma plataforma <b>al revés</b> — preguntando qué límite Piscis/Acuario haría que el cruce real coincidiera con el 21 de marzo de 1948, en lugar de partir de un límite fijo y calcular la fecha.</p>
+ <p>La respuesta, calculada con el mismo motor de Newcomb ya validado: el punto vernal de 1948 estaba en la longitud eclíptica <b>≈0,72°</b> (frame J2000), mientras que el límite de Delporte está en <b>351,64°</b> — es decir, para que 1948 fuera el cruce exacto, la frontera tendría que estar dibujada <b>≈9,08° más adelante en la eclíptica</b> de donde la trazó Delporte. Delporte, siguiendo la cuadrícula de ascensión recta/declinación, no tenía ninguna razón para poner el límite ahí: su criterio era puramente cartográfico, no eclíptico. Esa diferencia de ≈9° es, en sí misma, una pista concreta y verificable de por dónde empezar a investigar.</p>
+ <p>Esto abre varias líneas de trabajo matemático genuino, ninguna resuelta todavía en esta plataforma:</p>
+ <ul style="margin:6px 0 10px 20px;padding:0">
+ <li><b>Fronteras basadas en la eclíptica</b> en vez de en el ecuador celeste — un criterio distinto al de Delporte, que sí seguiría de forma natural el propio recorrido del punto vernal en vez de una cuadrícula ajena a él.</li>
+ <li><b>Fronteras diagonales o curvas</b>, trazadas por ejemplo siguiendo la posición real de las estrellas más brillantes de cada figura (en vez de segmentos rectos de RA/Dec constante) — lo que daría un límite con otra geometría y, por tanto, otra fecha de cruce.</li>
+ <li><b>Fronteras dinámicas</b>, que no sean una sola línea fija sino que se ajusten con el tiempo según algún criterio físico (brillo estelar, densidad de estrellas, el propio recorrido eclíptico) — reconociendo que ni siquiera el cielo real reparte el zodíaco en compartimentos parejos y estáticos.</li>
+ </ul>
+ <div class="hint">Esta plataforma ya tiene las piezas para probar cualquiera de esas tres ideas (el motor de precesión de Newcomb, el test punto-en-polígono sobre las fronteras, y ahora esta comparación) — lo que falta es definir con rigor un criterio alternativo de frontera y correrlo contra los mismos datos. Se deja planteado aquí como invitación a investigarlo científicamente, no como una forma de "ajustar" el cálculo para que dé 1948: el objetivo es ver si <i>algún</i> criterio geométrico razonable, distinto al de Delporte, ubica el cruce cerca de esa fecha — y si no lo hace, eso también es un resultado válido.</div>
+ </div>
+
+ <div class="card" style="border-left:4px solid var(--verde)">
+ <h2>📈 El recorrido del punto vernal, cada 2.000 años</h2>
+ <p>Este gráfico usa el mismo cálculo real (IAU/Delporte + precesión de Newcomb) del panel de arriba, muestreado cada 2.000 años, para mostrar cuántos grados separan al punto vernal del límite Piscis/Acuario a lo largo del tiempo. La línea baja de forma suave — la tasa de precesión real varía poco de siglo a siglo — y cruza el cero cerca del año 2598, que es donde esta plataforma ubica el paso real a la Era de Acuario.</p>
+ <div id="chart_eras_vernal" style="width:100%;overflow-x:auto"></div>
+ <div class="hint" style="margin-top:10px"><b>¿Qué podría significar esto para la Cosmobiología?</b> La idea central de la Cosmobiología —ya presente en la TCC— es que la orientación del eje terrestre y la posición del punto vernal no son solo una referencia geométrica: son el marco de fondo sobre el que se leen los ciclos energéticos largos (climáticos, geológicos, y según la TCC también sutiles) que afectan a la Tierra y a quienes la habitan. Un cambio de Era, en ese marco, no es un evento puntual sino un tránsito lentísimo (~2.150 años) durante el cual esa influencia de fondo se va desplazando de una constelación a otra — de ahí que el "diluvio prolongado" de la tarjeta siguiente se plantee como algo gradual, ligado al paso por Leo, y no como un evento súbito. Esta lectura energética es una hipótesis de la TCC, no algo que esta plataforma pueda medir o confirmar con datos.</div>
+ </div>
+
+ <div class="card" style="border-left:4px solid #2980b9">
+ <h2>🌊 El fenómeno de los diluvios prolongados</h2>
+ <p class="small muted"><code>TCC, Parte XI</code> — "El fenómeno de los diluvios prolongados"</p>
+ <p>La TCC plantea una hipótesis a escala mucho mayor que cualquier cosa que esta plataforma pueda poner a prueba con su catálogo moderno: que el paso del punto vernal por <b>Leo</b> (constelación opuesta a Acuario en el zodíaco, un tránsito de ≈2.160 años que ocurriría, según el libro, dentro de unos 13.000 años) podría desplazar las líneas isotérmicas y de precipitación lo suficiente como para producir <b>diluvios prolongados de cientos de años</b> — capaces de sedimentar y borrar buena parte de las huellas de una civilización.</p>
+ <p>Como corroboración histórica, la TCC cita que la historia del diluvio aparece independientemente en culturas muy distintas y sin contacto entre sí — la Biblia y el Popol Vuh maya, entre otras — y señala restos como <b>Sacsahuamán</b> (Perú) como posible vestigio de una civilización anterior que el agua no alcanzó a borrar del todo. Cita además al propio Dr. Raynaud de la Ferrière (<i>Medicina Universal</i>, 1956).</p>
+ <div class="hint">Esta hipótesis opera en una escala de <b>miles de años</b> — muy distinta de los ≈100 años que cubre el catálogo real de inundaciones de esta plataforma (dominio "Inundaciones", ver <a href="#" onclick="return irA('fuentes','')">Fuentes de datos</a>). Es un tema activo de investigación: por ahora se presenta aquí como el planteamiento original de la TCC, y la idea es seguir ampliando el horizonte de datos y de método hasta poder ponerlo a prueba con algo más que el catálogo moderno — no como un resultado ya cerrado de esta plataforma.</div>
+ </div>
+
+</section>
+
 </main>
 
 <!-- Tooltip flotante del glosario -->
@@ -3807,7 +3987,7 @@ document.addEventListener('click',e=>{
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
  b.classList.add('active');
- ['guia','captura','tablero','mapa','hipotesis','fuentes','ayuda','epidemiologia','historia_social','ajedrez','sismos'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
+ ['guia','captura','tablero','mapa','hipotesis','fuentes','ayuda','epidemiologia','historia_social','ajedrez','sismos','eras_precesionales'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
  if(b.dataset.tab==='tablero'&&results.length){renderCharts();renderTable();renderCompare();
  setTimeout(()=>{try{Plotly.Plots.resize('volcano');Plotly.Plots.resize('bar');Plotly.Plots.resize('compare');}catch(e){}},60);}
  if(b.dataset.tab==='mapa'){populateDomainFilter();renderMap();
@@ -3816,6 +3996,7 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  if(b.dataset.tab==='ayuda'){setTimeout(renderDensidadHallazgo,50);setTimeout(llonaSimular,50);setTimeout(precesionSimular,50);setTimeout(actualizarEraPrecesional,50);setTimeout(potenciaGrafico,60);setTimeout(potenciaCalcular,60);}
  if(b.dataset.tab==='ajedrez'){setTimeout(ajedrezInit,30);}
  if(b.dataset.tab==='sismos'){setTimeout(sismosInit,30);}
+ if(b.dataset.tab==='eras_precesionales'){setTimeout(erasPrecesionalesInit,30);}
 });
 
 // Enlaces a anclas que viven en OTRA pestaña (p.ej. desde "Empieza aquí" hacia
@@ -5910,6 +6091,7 @@ function threeAddStarfield(scene) {
 
 function threeBuildMovimientosScene() {
  _threeLlonaActiva = false; // salir de la vista "Cicloide de Llona" (si estaba activa) al reconstruir la escena normal
+ if (typeof railSyncLlonaGroup === 'function') railSyncLlonaGroup(); // oculta el grupo de controles de Llona del riel, si estaba visible
  threeClearScene();
  _threeSolMovimientos = threeAddSol(_threeScene); // en el origen (por defecto) — este ES el Sol que se desplaza si activas "galáctico", no un doble
 
@@ -6099,7 +6281,53 @@ function threeDetenerAnimaciones() {
  if (_threePlayInterval) { clearInterval(_threePlayInterval); _threePlayInterval = null; const b = document.getElementById('three_play_btn'); if (b) { b.textContent = '▶'; b.title = 'Reproducir'; } }
  if (_threeCicloAnimId) { cancelAnimationFrame(_threeCicloAnimId); _threeCicloAnimId = null; }
  if (_threeCosmicAnimId) { cancelAnimationFrame(_threeCosmicAnimId); _threeCosmicAnimId = null; }
- ['three_ciclo_btn', 'cm_espiral_btn', 'cm_planetas_btn', 'cm_galaxia_btn', 'cm_girogalaxia_btn', 'llona_play_btn'].forEach(id => { const b = document.getElementById(id); if (b) b.disabled = false; });
+ ['three_ciclo_btn', 'cm_espiral_btn', 'cm_planetas_btn', 'cm_galaxia_btn', 'cm_girogalaxia_btn', 'llona_play_btn', 'llona_bb_play_btn'].forEach(id => { const b = document.getElementById(id); if (b) b.disabled = false; });
+ threeCosmicFechaDetener();
+ threeEventoDetener();
+}
+
+// ═══ Reproducir la línea de tiempo de "Estrellas/Sistema/Galaxia" sola
+// (1900-2100) -- antes solo se podía arrastrar el slider a mano; ahora
+// también se puede ver avanzar sin tocarlo, igual que ya pasa en "Tierra"
+// (rotación) y en la esfera de casas. ═══
+let _threeCosmicFechaPlayInterval = null;
+function threeCosmicFechaDetener() {
+ if (_threeCosmicFechaPlayInterval) { clearInterval(_threeCosmicFechaPlayInterval); _threeCosmicFechaPlayInterval = null; }
+ const b = document.getElementById('cm_fecha_play_btn'); if (b) { b.textContent = '▶'; b.title = 'Reproducir'; }
+}
+function threeCosmicFechaPlayToggle() {
+ if (_threeCosmicFechaPlayInterval) { threeCosmicFechaDetener(); return; }
+ threeDetenerAnimaciones();
+ const btn = document.getElementById('cm_fecha_play_btn'), slider = document.getElementById('cm_fecha_anio');
+ btn.textContent = '⏸'; btn.title = 'Pausar';
+ _threeCosmicFechaPlayInterval = setInterval(() => {
+ let v = parseInt(slider.value) + 1;
+ if (v > 2100) v = 1900;
+ slider.value = v;
+ threeCosmicIrAFecha();
+ }, 90);
+}
+
+// ═══ Reproducir la línea de tiempo de la Carta astral sola -- funciona en
+// los dos modos (año o día del año), respetando el rango actual de cada
+// uno. Antes en Carta astral solo se podía mover el tiempo a mano. ═══
+let _threeEventoPlayInterval = null;
+function threeEventoDetener() {
+ if (_threeEventoPlayInterval) { clearInterval(_threeEventoPlayInterval); _threeEventoPlayInterval = null; }
+ const b = document.getElementById('evt_fecha_play_btn'); if (b) { b.textContent = '▶'; b.title = 'Reproducir'; }
+}
+function threeEventoPlayToggle() {
+ if (_threeEventoPlayInterval) { threeEventoDetener(); return; }
+ threeDetenerAnimaciones();
+ const btn = document.getElementById('evt_fecha_play_btn'), slider = document.getElementById('evt_fecha_slider');
+ btn.textContent = '⏸'; btn.title = 'Pausar';
+ _threeEventoPlayInterval = setInterval(() => {
+ const min = parseFloat(slider.min), max = parseFloat(slider.max);
+ let v = parseFloat(slider.value) + 1;
+ if (v > max) v = min;
+ slider.value = v;
+ threeEventoSliderInput();
+ }, 90);
 }
 
 function threePlayToggle() {
@@ -6172,11 +6400,30 @@ function threeReproducirCicloCompleto() {
  _threeCicloAnimId = requestAnimationFrame(frame);
 }
 
+// ═══ Botón "Eras y diluvios" — reusa el mismo ciclo de precesión ya
+// validado (aísla mov_precesion y barre _threePrecPivot un ciclo completo)
+// y le agrega la lectura de la TCC: qué hemisferio queda favorecido en
+// cada solsticio mientras el eje barre esa dirección, y el enlace con la
+// hipótesis de los diluvios prolongados (Parte XI) cuando, dentro de unos
+// 13.000 años, el punto vernal pase por Leo. ═══
+function threeVerErasDiluvios() {
+ document.getElementById('three_ciclo_mov').value = 'precesion';
+ document.getElementById('three_ciclo_seg').value = '9';
+ threeReproducirCicloCompleto();
+ const hoy = new Date();
+ const hemisferioJunio = 'Norte'; // real: el solsticio de junio SIEMPRE inclina el polo norte hacia el Sol — geometría fija de la inclinación axial, no depende de la época
+ const nota = document.getElementById('eras_diluvios_nota');
+ if (nota) {
+ nota.innerHTML = `El eje (línea roja) ahora barre un cono completo alrededor de la vertical en 9 s — así se ve, comprimido a escala humana, el ciclo real de ≈25.772 años. En <b>cada</b> vuelta de ese cono, el solsticio de junio sigue inclinando el hemisferio <b>${hemisferioJunio}</b> hacia el Sol (eso no cambia con la precesión: depende solo del ≈23,4° de inclinación, no de hacia dónde apunta el eje). Lo que sí cambia con la precesión es <b>qué constelación queda detrás del punto vernal</b> — y es ese desplazamiento lento el que la TCC liga, en su Parte XI, al planteamiento de que el paso por Leo (dentro de ≈13.000 años) podría favorecer condiciones de <b>diluvios prolongados</b> en el hemisferio sur. Es la hipótesis de la TCC, no algo que el barrido del eje por sí solo demuestre — ver "📖 Explicación completa" para el planteamiento íntegro.`;
+ }
+ document.getElementById('eras_diluvios_panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
 // ═══ Vistas de cámara preestablecidas — sin tener que arrastrar el mouse ═══
 function threeFocusEarth(view) {
  if (!_threeCamera) return;
  const target = new THREE.Vector3();
- if (_threeEarthMesh && view !== 'general' && view !== 'galactico') _threeEarthMesh.getWorldPosition(target);
+ if (_threeEarthMesh && view !== 'general' && view !== 'galactico' && view !== 'cenital') _threeEarthMesh.getWorldPosition(target);
  let camPos;
  // IMPORTANTE: la línea Tierra-Sol va a lo largo del eje X del mundo
  // (earthSystem está en (20,0,0), el Sol en el origen). Las vistas de
@@ -6186,6 +6433,13 @@ function threeFocusEarth(view) {
  else if (view === 'lateral') camPos = target.clone().add(new THREE.Vector3(0, 1.5, -7));
  else if (view === 'superior') camPos = target.clone().add(new THREE.Vector3(0.2, 8, 0.2));
  else if (view === 'galactico') { target.set(-27, 0, 0); camPos = new THREE.Vector3(-27, 60, 70); } // ve el sistema solar Y el anillo galáctico completos (anclado para que el Sol en v=0 quede en el origen)
+ // "cenital" -- vista de pájaro para la Carta astral: mira derecho hacia
+ // abajo desde arriba del origen (la Tierra, en evento SIEMPRE está en el
+ // origen) para que el anillo de planetas + zodiaco se lea como una
+ // rueda de carta astral real, no como un sistema solar visto de lado.
+ // El pequeño offset en x/z evita la cámara mirando EXACTAMENTE hacia
+ // abajo (up-vector indefinido/tembloroso en ese caso exacto).
+ else if (view === 'cenital') { target.set(0, 0, 0); camPos = new THREE.Vector3(0.01, 60, 0.01); }
  else { camPos = new THREE.Vector3(0, 22, 40); target.set(0, 0, 0); } // general: todo el sistema, sin acercarse a nada
  _threeCamera.position.copy(camPos);
  _threeCamera.lookAt(target);
@@ -6286,6 +6540,7 @@ function threeLlonaConstruirEscena() {
  threeClearScene();
  _threeScene.add(new THREE.AmbientLight(0xffffff, 0.9));
  _threeLlonaActiva = true;
+ if (typeof railSyncLlonaGroup === 'function') railSyncLlonaGroup(); // muestra el grupo de controles de Llona (➰) en el riel, sin cerrar un flyout que pudiera estar abierto
  document.getElementById('chart_wheel_svg').style.display = 'none';
  document.getElementById('three_canvas').style.display = '';
 
@@ -6298,14 +6553,36 @@ function threeLlonaConstruirEscena() {
  const epsRad = THREE.MathUtils.degToRad(23.44);
  const mostrarRdr = document.getElementById('llona_mostrar_rdr').checked;
 
- // Tierra centrada en el origen de la curva (t=0), eje inclinado ε visible
+ // Tierra centrada en el origen de la curva (t=0). GIRA de verdad (spin) +
+ // SE TRASLADA de verdad (avanza en x) al reproducir con threeLlonaAnimar()
+ // -- antes la esfera se quedaba quieta y solo se veía crecer una curva
+ // abstracta, sin mostrar QUÉ movimiento la produce. El eje de giro real
+ // que hace que un punto de la superficie trace exactamente _llonaPunto(t)
+ // se DERIVÓ de la propia fórmula (no es el mismo eje "decorativo" que
+ // había antes, que en realidad no coincidía con la curva): si
+ // v(t)=cosφ·(-sen t, cos t·cos ε, cos t·sen ε) es la parte rotacional de
+ // _llonaPunto, su eje de rotación real (v×v' normalizado) resulta ser
+ // A=(0, -sen ε, cos ε), constante en t — se comprobó analíticamente.
+ const ejeGiro = new THREE.Vector3(0, -Math.sin(epsRad), Math.cos(epsRad));
  const tierra = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), threeGetEarthMaterial());
- const poleVec = new THREE.Vector3(0, 1, 0).applyAxisAngle(new THREE.Vector3(0, 0, 1), epsRad);
- tierra.rotation.z = epsRad;
  _threeScene.add(tierra);
- _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([poleVec.clone().multiplyScalar(-1.6), poleVec.clone().multiplyScalar(1.6)]),
+ _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([ejeGiro.clone().multiplyScalar(-1.6), ejeGiro.clone().multiplyScalar(1.6)]),
  new THREE.LineBasicMaterial({ color: 0xff4444 })));
- _threeHoverables.push({ mesh: tierra, info: `<b>Tierra</b><br>Eje inclinado ε≈23.44°<br>Curva: Caso ${modo === 'normal' ? 'A (Normal)' : modo === 'cero' ? 'B (Cero)' : 'C (Regresivo)'}, φ=${phiDeg}°` });
+ _threeHoverables.push({ mesh: tierra, info: `<b>Tierra</b><br>Gira (spin) alrededor de su eje real Y se traslada en x al reproducir -- la combinación exacta de ambos movimientos es la curva que ves.<br>Curva: Caso ${modo === 'normal' ? 'A (Normal)' : modo === 'cero' ? 'B (Cero)' : 'C (Regresivo)'}, φ=${phiDeg}°` });
+ // Punto marcado sobre la superficie (a latitud φ) que SÍ viaja pegado a
+ // la Tierra -- posición local fija v0=v(0); al rotar tierra por ángulo t
+ // alrededor de ejeGiro, su posición en el mundo es tierra.position + t
+ // exactamente _llonaPunto(t) (sin el pequeño bamboleo zOsc N-S que Llona
+ // agrega aparte, ver comentario en _llonaPunto) -- la prueba de que
+ // rotación + traslación reales SÍ combinan para dar esa curva.
+ const cosPhi0 = Math.cos(THREE.MathUtils.degToRad(phiDeg));
+ const v0 = new THREE.Vector3(0, cosPhi0 * Math.cos(epsRad), cosPhi0 * Math.sin(epsRad));
+ const marcaEnTierra = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 10), new THREE.MeshBasicMaterial({ color: 0x2ecc71 }));
+ marcaEnTierra.position.copy(v0);
+ tierra.add(marcaEnTierra);
+ _threeHoverables.push({ mesh: marcaEnTierra, info: `<b>Punto a latitud φ=${phiDeg}°</b><br>Este es el punto de la corteza cuya trayectoria real (vista desde fuera de la Tierra) es la curva cicloidal -- viaja pegado a la Tierra, girando y trasladándose con ella.` });
+ tierra.userData.ejeGiro = ejeGiro;
+ _threeLlonaTierra = tierra;
 
  // Puntos Singulares cada 30° de traslación — donde Llona sitúa los nodos
  // de máxima deformación elástica de la corteza
@@ -6355,31 +6632,60 @@ function threeLlonaConstruirEscena() {
  _threeCamera.lookAt(xExtent * 0.5, 0, 0);
  if (_threeControls) { _threeControls.target.set(xExtent * 0.5, 0, 0); _threeControls.update(); }
 
- document.getElementById('llona_nota').textContent = 'Escena lista — pulsa "▶ Dibujar" para trazar la curva.';
+ llonaSetNota('Escena lista — pulsa ▶ para trazar la curva.');
 }
 
-let _threeLlonaTraza = null, _threeLlonaParams = null;
+// Refleja la nota de estado de Llona en los DOS lugares donde puede verse
+// el control -- el panel de detalle de abajo (llona_nota) y el ▶ de la
+// barra horizontal del mapa (llona_bb_nota), que es el que de verdad se
+// nota a simple vista sin tener que abrir el riel ➰.
+function llonaSetNota(texto) {
+ const nota = document.getElementById('llona_nota'); if (nota) nota.textContent = texto;
+ const bbNota = document.getElementById('llona_bb_nota'); if (bbNota) bbNota.textContent = texto;
+}
+
+// Velocidad de dibujo de Llona -- separada de _threePlaySpeed (la de
+// "Tierra: sus movimientos") porque son grupos de botones .bb-speed
+// distintos; si compartieran variable, cambiar la velocidad en una vista
+// desincronizaría el botón resaltado de la otra.
+let _threeLlonaTraza = null, _threeLlonaParams = null, _threeLlonaTierra = null, _threeLlonaPlaySpeed = 0.3;
+function threeLlonaSetSpeed(v, btn) {
+ _threeLlonaPlaySpeed = parseFloat(v);
+ document.querySelectorAll('#bb_llona .bb-speed').forEach(b => b.classList.remove('on'));
+ if (btn) btn.classList.add('on');
+}
 function threeLlonaAnimar() {
  threeDetenerAnimaciones();
  if (!_threeLlonaActiva || !_threeLlonaTraza) threeLlonaConstruirEscena();
  const { ratio, phiDeg, epsRad, tMax } = _threeLlonaParams;
  const nSteps = 800;
  const puntos = [];
- const nota = document.getElementById('llona_nota');
- let i = 0;
- const btn = document.getElementById('llona_play_btn');
- btn.disabled = true;
+ let iFloat = 0;
+ const btn = document.getElementById('llona_play_btn'), bbBtn = document.getElementById('llona_bb_play_btn');
+ btn.disabled = true; if (bbBtn) bbBtn.disabled = true;
  function frame() {
- const pasos = 6; // varios puntos por frame para que termine en tiempo razonable incluso con muchas vueltas
- for (let k = 0; k < pasos && i <= nSteps; k++, i++) {
- const t = (i / nSteps) * tMax;
- puntos.push(_llonaPunto(t, ratio, phiDeg, epsRad));
+ const pasosBase = 6; // puntos/frame a velocidad 1x -- a 0.1x avanza 10 veces más lento, a 4x diez veces más rápido
+ iFloat = Math.min(nSteps, iFloat + pasosBase * _threeLlonaPlaySpeed);
+ const iHasta = Math.floor(iFloat);
+ let tUltimo = 0;
+ for (let i = puntos.length; i <= iHasta; i++) {
+ tUltimo = (i / nSteps) * tMax;
+ puntos.push(_llonaPunto(tUltimo, ratio, phiDeg, epsRad));
  }
+ if (puntos.length) tUltimo = ((puntos.length - 1) / nSteps) * tMax;
  _threeLlonaTraza.geometry.setFromPoints(puntos);
- if (i <= nSteps) { _threeCosmicAnimId = requestAnimationFrame(frame); }
- else { btn.disabled = false; nota.textContent = `Curva completa — ${document.getElementById('llona_vueltas').value} vueltas, φ=${phiDeg}°, Vt/Vr=${ratio}.`; }
+ // la Tierra gira (spin, ángulo=t alrededor de su eje real) y se
+ // traslada (avanza ratio·t en x) EN VIVO, sincronizada con la misma t
+ // que ya traza la curva -- así se ve la combinación real de los dos
+ // movimientos, no solo su resultado abstracto.
+ if (_threeLlonaTierra) {
+ _threeLlonaTierra.position.x = ratio * tUltimo;
+ _threeLlonaTierra.quaternion.setFromAxisAngle(_threeLlonaTierra.userData.ejeGiro, tUltimo);
  }
- nota.textContent = 'Dibujando la curva...';
+ if (iFloat < nSteps) { _threeCosmicAnimId = requestAnimationFrame(frame); }
+ else { btn.disabled = false; if (bbBtn) bbBtn.disabled = false; llonaSetNota(`Curva completa — ${document.getElementById('llona_vueltas').value} vueltas, φ=${phiDeg}°, Vt/Vr=${ratio}.`); }
+ }
+ llonaSetNota('Dibujando la curva...');
  frame();
 }
 
@@ -6404,11 +6710,17 @@ function threeSetMode(mode) {
  document.getElementById('three_panel_const').style.display = mode === 'constelaciones' ? '' : 'none';
  document.getElementById('chart_wheel_svg').style.display = 'none';
  document.getElementById('three_canvas').style.display = '';
- const bbMovs = document.getElementById('bb_movs'), bbTime = document.getElementById('bb_time'), bb = document.getElementById('map_bottombar');
+ const bbMovs = document.getElementById('bb_movs'), bbTime = document.getElementById('bb_time'), bbEvento = document.getElementById('bb_evento_time'), bbLlona = document.getElementById('bb_llona'), bbTopo = document.getElementById('bb_topo_time'), bb = document.getElementById('map_bottombar');
  if (bb) {
- bb.style.display = (mode === 'movimientos' || mode === 'constelaciones') ? 'flex' : 'none';
+ bb.style.display = (mode === 'movimientos' || mode === 'constelaciones' || mode === 'evento') ? 'flex' : 'none';
  if (bbMovs) bbMovs.style.display = mode === 'movimientos' ? 'flex' : 'none';
  if (bbTime) bbTime.style.display = mode === 'constelaciones' ? 'flex' : 'none';
+ if (bbEvento) bbEvento.style.display = mode === 'evento' ? 'flex' : 'none';
+ if (bbLlona) bbLlona.style.display = 'none'; // se reactiva desde railSyncLlonaGroup si se entra a la Cicloide de Llona
+ // bb_topo_time (esfera de casas 3D) solo se activa desde threeToggleEsferaTopocentrica(),
+ // nunca desde aquí -- si se venía de ahí y no se ocultara, se veía mezclada
+ // con la barra de Llona/movimientos al cambiar de vista.
+ if (bbTopo) bbTopo.style.display = 'none';
  }
  const btnEsfera = document.getElementById('three_toggle_esfera'); if (btnEsfera) btnEsfera.textContent = '🌐 Ver esfera de casas (3D)';
  if (mode === 'movimientos') {
@@ -6605,6 +6917,36 @@ function railBuildMovFlyoutButtons() {
 function railBuildVistaFlyoutButtons() {
  return VISTA_RAIL_ITEMS.map(([icon, tip, fn]) => railBtn(null, icon, tip, fn));
 }
+// ═══ Controles de la Cicloide de Llona en el riel — simulan el clic o el
+// cambio de valor sobre los controles reales del panel de abajo (mismo
+// patrón que "Sol + planetas en movimiento"), para no duplicar lógica ya
+// validada (threeLlonaAnimar, threeLlonaActualizar, etc.). ═══
+const LLONA_CASOS = [['normal', '🅰️', 'Caso A — Normal (Vt>Vr, la Tierra real)'], ['cero', '🅱️', 'Caso B — Cero (Vt=Vr, cúspides exactas)'], ['regresivo', '🅲', 'Caso C — Regresivo (Vt<Vr, forma bucles)']];
+const LLONA_PHIS = [0, 20, 45, 60, 80];
+function railBuildLlonaFlyoutButtons() {
+ const modoSel = document.getElementById('llona_modo'), phiInput = document.getElementById('llona_phi'), rdrChk = document.getElementById('llona_mostrar_rdr');
+ const casoActual = LLONA_CASOS.find(c => c[0] === (modoSel ? modoSel.value : 'normal'));
+ const casoBtn = railBtn(null, casoActual[1], casoActual[2] + ' — clic para pasar al siguiente caso.', () => {
+ const idx = LLONA_CASOS.findIndex(c => c[0] === modoSel.value);
+ modoSel.value = LLONA_CASOS[(idx + 1) % LLONA_CASOS.length][0];
+ threeLlonaActualizar();
+ railFlyoutRefresh(railBuildLlonaFlyoutButtons);
+ });
+ const phiActual = phiInput ? parseFloat(phiInput.value) : 20;
+ const phiBtn = railBtn(null, `φ${phiActual}°`, `Latitud φ=${phiActual}° del punto marcado en la Tierra — clic para recorrer valores típicos (0°, 20°, 45°, 60°, 80°).`, () => {
+ const idx = LLONA_PHIS.findIndex(p => p >= parseFloat(phiInput.value));
+ phiInput.value = LLONA_PHIS[(idx + 1) % LLONA_PHIS.length];
+ threeLlonaActualizar();
+ railFlyoutRefresh(railBuildLlonaFlyoutButtons);
+ });
+ phiBtn.style.fontSize = '12px';
+ const rdrBtn = railBtn(null, '🌙', "Curvas Rdr' (Sol/Luna) — muestra/oculta los conos esquemáticos de marea.", () => { rdrChk.checked = !rdrChk.checked; threeLlonaActualizar(); railFlyoutRefresh(railBuildLlonaFlyoutButtons); });
+ rdrBtn.classList.toggle('on', !!(rdrChk && rdrChk.checked));
+ // ▶/⏹ ya NO van aquí -- se movieron a la barra horizontal (bb_llona),
+ // igual que en el resto de vistas, porque escondidos en este riel nadie
+ // los encontraba.
+ return [casoBtn, phiBtn, rdrBtn];
+}
 const ZODIAC_CICLO = [
  ['', '✨'], ['Aries', '♈'], ['Tauro', '♉'], ['Géminis', '♊'], ['Cáncer', '♋'], ['Leo', '♌'], ['Virgo', '♍'],
  ['Libra', '♎'], ['Escorpio', '♏'], ['Sagitario', '♐'], ['Capricornio', '♑'], ['Acuario', '♒'], ['Piscis', '♓'],
@@ -6652,7 +6994,11 @@ function railBuildConstFlyoutButtons() {
  const resaltarBtn = railBtn(null, rIcon, rTip, () => railCycleResaltar());
  resaltarBtn.classList.toggle('on', !!_railResaltarNombre);
  const medirBtn = railBtn('three_medir_btn_rail', '📐', 'Medir distancia angular — haz clic en dos estrellas o planetas cualesquiera.', () => threeMedirToggle());
- return [fronterasBtn, nombresBtn, resaltarBtn, medirBtn];
+ const figurasBtn = railBtn(null, '⭐', 'Figuras de las constelaciones del zodíaco — dibuja/oculta las líneas que conectan sus estrellas reales, una figura simplificada (no el atlas artístico completo).', null);
+ figurasBtn.classList.add('figuras-btn');
+ figurasBtn.classList.toggle('on', _threeFigurasOn);
+ figurasBtn.onclick = () => threeToggleFiguras();
+ return [fronterasBtn, nombresBtn, resaltarBtn, medirBtn, figurasBtn];
 }
 function railBuildAnimFlyoutButtons() {
  return [
@@ -6667,6 +7013,18 @@ function railBuildMov() {
  const rail = document.getElementById('mov_rail');
  if (!rail || rail.dataset.built) return;
  rail.dataset.built = '1';
+
+ // Pantalla completa — SIEMPRE visible en esta única columna derecha, sin
+ // importar el modo/vista (Tierra, Sistema Solar, Carta astral...). Antes
+ // vivía en una tercera columna aparte, siempre negra, solo para esto —
+ // aquí es simplemente el primer botón de la misma columna.
+ const fsGroup = document.createElement('div');
+ fsGroup.id = 'mov_rail_fullscreen';
+ fsGroup.style.display = 'contents';
+ const fsBtn = railBtn('mc_fullscreen_btn', '⛶', 'Pantalla completa.', () => threeToggleFullscreen());
+ fsGroup.appendChild(fsBtn);
+ railSep(fsGroup);
+ rail.appendChild(fsGroup);
 
  const movGroup = document.createElement('div');
  movGroup.id = 'mov_rail_movs';
@@ -6716,6 +7074,18 @@ function railBuildMov() {
  const naveBtn = railBtn('nave_toggle_btn', '🚀', 'Modo nave — vuela libremente por el mapa con las flechas del teclado, mira con el mouse. Ideal para explorar los objetos marcados del espacio profundo.', () => threeNaveToggle());
  naveGroup.appendChild(naveBtn);
  rail.appendChild(naveGroup);
+
+ // Controles de Llona — solo aparecen cuando esa vista está activa
+ // (_threeLlonaActiva), para que el riel no se llene de botones que no
+ // aplican al resto del modo "Tierra".
+ const llonaGroup = document.createElement('div');
+ llonaGroup.id = 'mov_rail_llona';
+ llonaGroup.style.display = 'none';
+ railSep(llonaGroup);
+ const llonaCatBtn = railBtn(null, '➰', 'Cicloide de Llona — caso, latitud φ, curvas Rdr\' y reproducir, sin bajar al panel.', null);
+ llonaCatBtn.onclick = () => railFlyoutOpen(llonaCatBtn, railBuildLlonaFlyoutButtons);
+ llonaGroup.appendChild(llonaCatBtn);
+ rail.appendChild(llonaGroup);
 }
 function railSyncMov() {
  const rail = document.getElementById('mov_rail');
@@ -6723,15 +7093,41 @@ function railSyncMov() {
  railFlyoutClose(); // el contenido de un flyout abierto puede dejar de aplicar tras cambiar de modo/vista
  const esMov = (_threeMode === 'movimientos');
  const esConst = (_threeMode === 'constelaciones'); // sistema/estrellas/galaxia comparten el mismo riel de constelaciones+animaciones+nave
- rail.style.display = (esMov || esConst) ? 'flex' : 'none';
+ // el riel derecho ahora SIEMPRE se muestra (aunque sea solo con ⛶) --
+ // antes desaparecía entero en "Carta astral", que era la única forma de
+ // llegar a pantalla completa desde ese modo y se perdía por completo.
+ rail.style.display = 'flex';
  const movGroup = document.getElementById('mov_rail_movs'), constGroup = document.getElementById('mov_rail_const'),
- animGroup = document.getElementById('mov_rail_anim'), centroGroup = document.getElementById('mov_rail_centro'), naveGroup = document.getElementById('mov_rail_nave');
+ animGroup = document.getElementById('mov_rail_anim'), centroGroup = document.getElementById('mov_rail_centro'), naveGroup = document.getElementById('mov_rail_nave'),
+ llonaGroup = document.getElementById('mov_rail_llona');
  if (movGroup) movGroup.style.display = esMov ? 'contents' : 'none';
  if (constGroup) constGroup.style.display = esConst ? 'contents' : 'none';
  if (animGroup) animGroup.style.display = esConst ? 'contents' : 'none';
  if (centroGroup) centroGroup.style.display = esConst ? 'contents' : 'none';
  if (naveGroup) naveGroup.style.display = esConst ? 'contents' : 'none';
+ if (llonaGroup) llonaGroup.style.display = (esMov && _threeLlonaActiva) ? 'contents' : 'none';
  if (!esConst && _threeNaveActive) threeNaveToggle(); // salir de la nave si el usuario cambia a otro modo
+}
+// Versión mínima de lo anterior, SOLO para el grupo de Llona y SIN cerrar
+// el flyout -- railSyncMov() completo cierra cualquier flyout abierto (para
+// no dejar uno viejo colgado al cambiar de modo), pero threeLlonaConstruirEscena()
+// se vuelve a llamar cada vez que CUALQUIER control de Llona cambia
+// (incluidos los del propio flyout) — usar railSyncMov() ahí se cerraría
+// a sí mismo en cada clic.
+function railSyncLlonaGroup() {
+ const g = document.getElementById('mov_rail_llona');
+ if (g) g.style.display = (_threeMode === 'movimientos' && _threeLlonaActiva) ? 'contents' : 'none';
+ // la barra inferior de "rotación" (bb_movs) no aplica mientras se ve la
+ // Cicloide de Llona -- dejarla visible confundía: el usuario presionaba
+ // SU ▶ (pensando que repetía la curva) y eso sí cambia la escena de
+ // vuelta a la Tierra rotando normal. En su lugar se muestra bb_llona,
+ // con SU PROPIO ▶/⏹ en la barra horizontal -- antes solo estaba en el
+ // riel ➰, muy escondido para algo tan central como reproducir/detener.
+ const bbMovs = document.getElementById('bb_movs'), bbLlona = document.getElementById('bb_llona');
+ if (_threeMode === 'movimientos') {
+ if (bbMovs) bbMovs.style.display = _threeLlonaActiva ? 'none' : 'flex';
+ if (bbLlona) bbLlona.style.display = _threeLlonaActiva ? 'flex' : 'none';
+ }
 }
 railBuildHud();
 railBuildMov();
@@ -6812,6 +7208,59 @@ function threeGetMoonMaterial() {
  if (!_threeMoonTexture) _threeMoonTexture = new THREE.TextureLoader().load(THREE_MOON_TEX_URL);
  return new THREE.MeshStandardMaterial({ map: _threeMoonTexture, roughness: 1.0 });
 }
+// Textura procedural para las galaxias del Mapa Cósmico (ver FAMOUS_DEEP_SKY)
+// — mismo espíritu que threeGetSunTexture de abajo: sin una foto real que
+// citar con confianza para cada una, un canvas 2D dibuja un remolino
+// esquemático en vez de dejarlas como una esfera lisa de un color, que no
+// se lee como galaxia. "espiral" traza brazos logarítmicos (Andrómeda, M33,
+// M81 — galaxias espirales de verdad); "irregular" es solo una nube difusa
+// sin brazos (Nubes de Magallanes — son irregulares, no espirales; darles
+// brazos habría sido incorrecto).
+let _threeGalaxiaTexCache = {};
+function threeGetGalaxiaTexture(colorHex, forma) {
+ const key = colorHex + '_' + forma;
+ if (_threeGalaxiaTexCache[key]) return _threeGalaxiaTexCache[key];
+ const size = 128, cx = size / 2, cy = size / 2;
+ const canvas = document.createElement('canvas');
+ canvas.width = canvas.height = size;
+ const ctx = canvas.getContext('2d');
+ const colorCss = '#' + colorHex.toString(16).padStart(6, '0');
+ if (forma === 'irregular') {
+ // nube difusa sin estructura -- varios manchones superpuestos, no brazos
+ for (let i = 0; i < 5; i++) {
+ const ang = Math.random() * Math.PI * 2, rr = Math.random() * size * 0.18;
+ const bx = cx + Math.cos(ang) * rr, by = cy + Math.sin(ang) * rr;
+ const g = ctx.createRadialGradient(bx, by, 0, bx, by, size * (0.22 + Math.random() * 0.1));
+ g.addColorStop(0, colorCss); g.addColorStop(1, 'rgba(0,0,0,0)');
+ ctx.globalAlpha = 0.35;
+ ctx.fillStyle = g;
+ ctx.fillRect(0, 0, size, size);
+ }
+ } else {
+ // brillo central + 2 brazos espirales logarítmicos
+ const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, size * 0.16);
+ core.addColorStop(0, 'rgba(255,255,255,0.95)'); core.addColorStop(1, 'rgba(255,255,255,0)');
+ ctx.fillStyle = core; ctx.fillRect(0, 0, size, size);
+ ctx.strokeStyle = colorCss; ctx.lineCap = 'round'; ctx.lineWidth = size * 0.08; ctx.globalAlpha = 0.55;
+ for (let b = 0; b < 2; b++) {
+ ctx.beginPath();
+ for (let i = 0; i <= 50; i++) {
+ const t = i / 50, rr = t * size * 0.46, th = b * Math.PI + t * Math.PI * 2.3;
+ const x = cx + rr * Math.cos(th), y = cy + rr * Math.sin(th);
+ if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+ }
+ ctx.stroke();
+ }
+ }
+ ctx.globalAlpha = 1;
+ const halo = ctx.createRadialGradient(cx, cy, size * 0.05, cx, cy, size * 0.5);
+ halo.addColorStop(0, 'rgba(255,255,255,0.12)'); halo.addColorStop(1, 'rgba(255,255,255,0)');
+ ctx.fillStyle = halo; ctx.fillRect(0, 0, size, size);
+ const tex = new THREE.CanvasTexture(canvas);
+ _threeGalaxiaTexCache[key] = tex;
+ return tex;
+}
+
 // Textura del Sol — NO es una foto real (sigue sin existir una fuente
 // fotográfica verificada, ver nota de threeGetEarthMaterial arriba: no se
 // fabrica una URL sin confirmar que existe). Es una textura PROCEDURAL
@@ -6854,13 +7303,13 @@ function threeGetSunTexture() {
 // threeAnimate() — así la rotación se ve en cualquier vista, sin depender
 // del slider de "Movimientos".
 let _threeSolMeshes = [];
-function threeAddSol(scene, position) {
- const sol = new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32),
+function threeAddSol(scene, position, radio, girar) {
+ const sol = new THREE.Mesh(new THREE.SphereGeometry(radio || 3, 32, 32),
  new THREE.MeshBasicMaterial({ map: threeGetSunTexture() }));
  if (position) sol.position.copy(position);
  scene.add(sol);
  _threeHoverables.push({ mesh: sol, info: '<b>Sol</b><br>Radio real: 696.000 km (tamaño aquí esquemático)<br>Rotación real: ≈25 días en el ecuador, ≈35 días cerca de los polos (diferencial, por ser gas/plasma) — aquí se muestra una rotación uniforme esquemática y acelerada, sin diferencia por latitud' });
- _threeSolMeshes.push(sol);
+ if (girar !== false) _threeSolMeshes.push(sol); // girar=false -- en la Carta astral, quieto: siendo el único cuerpo animado, se llevaba toda la atención de la carta
  return sol;
 }
 
@@ -6874,6 +7323,7 @@ function threeCalcularEvento() {
  const lat = parseFloat(document.getElementById('three_evento_lat').value) || 0;
  const lon = parseFloat(document.getElementById('three_evento_lon').value) || 0;
  if (!fecha || typeof approxLons !== 'function') return;
+ threeEventoSyncSlider(fecha); // mantiene la barra de línea de tiempo de abajo sincronizada con la fecha actual, la haya cambiado el slider o el campo de fecha de arriba
  // Conversión real de hora LOCAL + zona horaria a UTC (misma función que
  // usa el formulario de captura) — antes había que convertir a mano, y un
  // error de unas pocas horas desvía el Ascendente varios signos.
@@ -6916,7 +7366,7 @@ function threeCalcularEvento() {
  // Luna: cerca de la Tierra (radio propio, mucho menor), con textura real
  if ('Luna' in lons) {
  const lonRad = THREE.MathUtils.degToRad(lons['Luna']);
- const moonMesh = new THREE.Mesh(new THREE.SphereGeometry(0.4, 16, 16), threeGetMoonMaterial());
+ const moonMesh = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 16), threeGetMoonMaterial());
  moonMesh.position.set(Math.cos(lonRad) * THREE_MOON_R, 0, Math.sin(lonRad) * THREE_MOON_R);
  _threeScene.add(moonMesh);
  _threeHoverables.push({ mesh: moonMesh, info: `<b>Luna</b><br>Longitud: ${lons['Luna'].toFixed(1)}°<br>Distancia media real: 384.400 km` });
@@ -6930,10 +7380,10 @@ function threeCalcularEvento() {
  const x = Math.cos(lonRad) * r, z = Math.sin(lonRad) * r;
  let mesh;
  if (name === 'Sol') {
- mesh = threeAddSol(_threeScene, new THREE.Vector3(x, 0, z));
+ mesh = threeAddSol(_threeScene, new THREE.Vector3(x, 0, z), 1.1, false); // más chico y quieto -- en la carta no debe tapar a los demás ni ser el único cuerpo animado
  } else {
  const color = THREE_PLANET_COLORS[name] || 0xffffff;
- mesh = new THREE.Mesh(new THREE.SphereGeometry(0.6, 16, 16), new THREE.MeshStandardMaterial({ color }));
+ mesh = new THREE.Mesh(new THREE.SphereGeometry(THREE_PLANET_TAM[name] || 0.6, 16, 16), new THREE.MeshStandardMaterial({ color }));
  mesh.position.set(x, 0, z);
  _threeScene.add(mesh);
  _threeHoverables.push({ mesh, info: `<b>${name}</b><br>Longitud: ${lons[name].toFixed(1)}°` });
@@ -6951,7 +7401,170 @@ function threeCalcularEvento() {
  threeAddCelestialEquator(_threeScene, 20);
  leyenda.innerHTML += `<span style="color:#2A6BD8;font-weight:700">▸ Ecuador celeste (inclinado 23.44°)</span>`;
  }
- threeFocusEarth('general');
+ // Anillo con las 12 constelaciones del zodíaco, para que la Carta astral
+ // se sienta como una carta de verdad (planetas ubicados dentro de su
+ // constelación real) sin dejar de ser el mismo mapa 3D animado.
+ threeDibujarZodiacoEclipticoPlano(22);
+ threeDibujarFigurasEvento(); // si ya estaban activadas, se re-dibujan sobre la escena recién recalculada (threeClearScene() la vació)
+ threeFocusEarth('cenital');
+}
+
+// Tamaño de cada esfera EN LA CARTA ASTRAL (evento), pensado para que se
+// lea bien como carta (jerarquía visual: gigantes gaseosos > terrestres >
+// Plutón) -- NO es una escala de tamaño real entre planetas (eso rompería
+// la legibilidad: Júpiter real mide ~11x la Tierra) ni tampoco es la
+// misma convención del Mapa Cósmico (Sistema Solar), que usa esferas casi
+// iguales a propósito para no competir visualmente con las órbitas.
+const THREE_PLANET_TAM = {
+ Mercurio: 0.5, Venus: 0.62, Marte: 0.58,
+ Júpiter: 0.95, Saturno: 0.9, Urano: 0.75, Neptuno: 0.72, Plutón: 0.4,
+};
+
+// ═══ Anillo zodiacal PLANO de la Carta astral — a propósito NO reutiliza
+// threeDibujarLimitesConstelaciones() (fronteras reales IAU/Delporte en
+// coordenadas ECUATORIALES RA/Dec, 3D completo, para el Mapa Cósmico):
+// aquí los planetas se ubican solo por su LONGITUD ECLÍPTICA geocéntrica
+// en un plano (y=0), un sistema de referencia distinto e inclinado
+// ~23.44° (la oblicuidad) respecto al ecuatorial. Mezclar los dos habría
+// dibujado un anillo mal rotado que pareciera real sin serlo. En su lugar
+// se usan los tramos de longitud eclíptica REALES (ZODIACO_IAU_TRAMOS,
+// ya calculados recorriendo las fronteras oficiales, ver su propio
+// comentario) directamente en este mismo plano.
+// Los 12 signos tropicales de 30° iguales, en orden desde 0° Aries (el
+// punto vernal, por definición) — la convención que usa la astrología
+// occidental de "carta astral" para signo solar/casas, DISTINTA de los
+// límites reales IAU/Delporte (que son desiguales, de 6° a 44° de ancho,
+// porque siguen la forma real de cada constelación en el cielo, no un
+// reparto parejo). Ninguna es "más correcta" que la otra -- miden cosas
+// distintas: una es una convención de calendario solar, la otra es dónde
+// está de verdad cada constelación.
+const SIGNOS_TROPICALES_30 = ['Aries', 'Tauro', 'Géminis', 'Cáncer', 'Leo', 'Virgo', 'Libra', 'Escorpio', 'Sagitario', 'Capricornio', 'Acuario', 'Piscis'];
+let _threeZodiacoModo = 'real'; // 'real' (límites IAU/Delporte) | 'signos' (30° iguales, sin estrellas)
+function threeToggleZodiacoModo() {
+ _threeZodiacoModo = _threeZodiacoModo === 'real' ? 'signos' : 'real';
+ if (_threeZodiacoModo === 'signos' && _threeFigurasOn) threeToggleFiguras(); // las figuras de estrellas solo tienen sentido junto a los límites reales
+ document.querySelectorAll('.zodiaco-modo-btn').forEach(b => {
+ b.textContent = _threeZodiacoModo === 'real' ? '♈ Ver signos iguales (30°)' : '🗺️ Ver límites reales (IAU)';
+ b.className = 'zodiaco-modo-btn ' + (_threeZodiacoModo === 'signos' ? 'act' : 'ghost act');
+ });
+ const figurasBtn = document.getElementById('three_figuras_evento_btn');
+ if (figurasBtn) figurasBtn.style.display = _threeZodiacoModo === 'signos' ? 'none' : '';
+ threeCalcularEvento();
+}
+function threeDibujarZodiacoEclipticoPlano(R) {
+ if (!_threeScene) return;
+ const tramos = _threeZodiacoModo === 'signos'
+ ? SIGNOS_TROPICALES_30.map((nombre, i) => [nombre, i * 30, (i + 1) * 30, 30])
+ : ZODIACO_IAU_TRAMOS.map(([id, a, b, span]) => [ZODIACO_IAU_ABREV[id] || id, a, b, span]);
+ const color = _threeZodiacoModo === 'signos' ? 0xc9a0e0 : 0x16a085; // morado para distinguir de un vistazo el modo "signos" del modo "límites reales"
+ tramos.forEach(([nombre, lonA, lonB, span]) => {
+ const tramo = ((lonB - lonA) + 360) % 360;
+ const nSeg = Math.max(4, Math.round(span / 3));
+ const pts = [];
+ for (let i = 0; i <= nSeg; i++) {
+ const lon = (lonA + tramo * (i / nSeg)) % 360;
+ const rad = THREE.MathUtils.degToRad(lon);
+ pts.push(new THREE.Vector3(R * Math.cos(rad), 0, R * Math.sin(rad)));
+ }
+ _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.85 })));
+ // marca radial en el límite de entrada de cada tramo (el "portal" de un signo al siguiente)
+ const radA = THREE.MathUtils.degToRad(lonA);
+ _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+ new THREE.Vector3(R * 0.92 * Math.cos(radA), 0, R * 0.92 * Math.sin(radA)),
+ new THREE.Vector3(R * 1.06 * Math.cos(radA), 0, R * 1.06 * Math.sin(radA)),
+ ]), new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.55 })));
+ const midLon = (lonA + tramo / 2) % 360;
+ const midRad = THREE.MathUtils.degToRad(midLon);
+ const label = threeMakeLabel(nombre, '#' + color.toString(16).padStart(6, '0'));
+ label.position.set(R * 1.1 * Math.cos(midRad), 0.6, R * 1.1 * Math.sin(midRad));
+ label.scale.set(3, 0.85, 1);
+ _threeScene.add(label);
+ });
+}
+
+// ═══ Línea de tiempo de la Carta astral (1900-2100) — reutiliza el mismo
+// motor (approxLons, geocéntrico real) que ya calcula la carta, solo
+// cambiando el AÑO de la fecha (mismo mes/día/hora/lugar). A diferencia
+// de la línea de tiempo del Sistema Solar heliocéntrico (que mueve los
+// planetas en círculos limpios), aquí SÍ se ve la retrogradación aparente
+// real: la longitud geocéntrica de un planeta exterior no avanza parejo
+// año a año, a veces retrocede unos grados antes de seguir — es el mismo
+// fenómeno real que documenta como "fase" el resto de la plataforma.
+// Dos modos para el mismo control: "anio" recorre 1900-2100 en el MISMO
+// mes/día (bueno para planetas lentos -- Plutón se mueve un montón en 200
+// años) y "dia" recorre los ~366 días de UN mismo año, fecha fija (bueno
+// para el Sol y la Luna -- el Sol completa TODO el zodíaco en un año, así
+// que en modo "año" apenas se mueve, siempre en la misma fecha real).
+let _threeEventoModoTiempo = 'anio';
+const MESES_DIAS_ACUM = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365];
+function threeEventoToggleModo() {
+ _threeEventoModoTiempo = _threeEventoModoTiempo === 'anio' ? 'dia' : 'anio';
+ const btn = document.getElementById('evt_modo_btn');
+ const slider = document.getElementById('evt_fecha_slider');
+ const fecha = document.getElementById('three_evento_fechad').value || '2000-01-01';
+ const [y, m, d] = fecha.split('-').map(Number);
+ if (_threeEventoModoTiempo === 'dia') {
+ if (btn) { btn.textContent = '☀️ Día del año'; btn.title = 'Volver a recorrer años (misma fecha, distinto año) -- mejor para planetas lentos como Plutón.'; }
+ slider.min = 1; slider.max = 366; slider.step = 1;
+ slider.value = (MESES_DIAS_ACUM[m - 1] || 0) + d;
+ } else {
+ if (btn) { btn.textContent = '📅 Año'; btn.title = 'Recorrer días de este mismo año -- mejor para ver al Sol y la Luna moverse por el zodíaco.'; }
+ slider.min = 1900; slider.max = 2100; slider.step = 1;
+ slider.value = y;
+ }
+ threeEventoSliderInput();
+}
+function threeEventoSliderInput() {
+ const slider = document.getElementById('evt_fecha_slider');
+ if (!slider) return;
+ if (_threeEventoModoTiempo === 'dia') threeEventoIrADia(parseInt(slider.value));
+ else threeEventoIrAAnio(parseInt(slider.value));
+}
+function threeEventoIrAAnio(anioForzado) {
+ if (_threeMode !== 'evento') return;
+ const anio = anioForzado !== undefined ? anioForzado : new Date().getFullYear();
+ const fechaInput = document.getElementById('three_evento_fechad');
+ if (fechaInput) {
+ const partes = (fechaInput.value || '2000-01-01').split('-');
+ fechaInput.value = anio + '-' + (partes[1] || '01') + '-' + (partes[2] || '01');
+ }
+ threeCalcularEvento();
+}
+function threeEventoIrADia(diaDelAnioForzado) {
+ if (_threeMode !== 'evento') return;
+ const fechaInput = document.getElementById('three_evento_fechad');
+ if (!fechaInput) return;
+ const anio = parseInt((fechaInput.value || '2000-01-01').split('-')[0]) || new Date().getFullYear();
+ const dia = diaDelAnioForzado !== undefined ? diaDelAnioForzado : 1;
+ // Date.UTC con día=1 + N ya hace el acarreo de mes correctamente (incluye años bisiestos)
+ const d = new Date(Date.UTC(anio, 0, dia));
+ fechaInput.value = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
+ threeCalcularEvento();
+}
+function threeEventoIrAHoy() {
+ // Sin importar el modo (año o día), "Hoy" siempre lleva a la fecha real
+ // de hoy -- fijar solo el campo de fecha y recalcular ya sincroniza el
+ // slider (vía threeEventoSyncSlider) sin duplicar la lógica de fechas.
+ const hoy = new Date();
+ const fechaInput = document.getElementById('three_evento_fechad');
+ if (fechaInput) fechaInput.value = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
+ threeCalcularEvento();
+}
+// Sincroniza el slider/etiqueta de abajo con la fecha real que se acaba de
+// calcular (la haya cambiado el propio slider, el campo de fecha de
+// arriba, o cualquier otro botón) -- para que nunca queden desincronizados.
+function threeEventoSyncSlider(fechaStr) {
+ const slider = document.getElementById('evt_fecha_slider'), lbl = document.getElementById('evt_fecha_slider_label');
+ if (!slider || !fechaStr) return;
+ const [y, m, d] = fechaStr.split('-').map(Number);
+ if (_threeEventoModoTiempo === 'dia') {
+ const diaDelAnio = (MESES_DIAS_ACUM[m - 1] || 0) + d;
+ slider.value = diaDelAnio;
+ if (lbl) lbl.textContent = fechaStr; // en modo día, mejor mostrar la fecha completa que el número de día
+ } else {
+ slider.value = y;
+ if (lbl) lbl.textContent = y;
+ }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -6961,59 +7574,90 @@ function threeCalcularEvento() {
 // aparente y distancia (años luz) de las estrellas principales de cada
 // constelación zodiacal. Son valores astronómicos estándar, ampliamente
 // documentados (catálogos como Hipparcos/Yale Bright Star) — REDONDEADOS
-// y NO verificados contra un catálogo en vivo para esta plataforma. Es
-// un catálogo reducido (3-4 estrellas principales por constelación), no
-// todas las estrellas visibles de cada una.
+// y NO verificados contra un catálogo en vivo para esta plataforma. Ya
+// trae suficientes estrellas por constelación (4-8) para dibujar una
+// figura simplificada reconocible (ver ZODIAC_LINEAS) — sigue sin ser el
+// catálogo completo de cada una.
 const ZODIAC_STARS = {
  'Aries': [
  ['Hamal (α)', 31.79, 23.46, 2.01, 66],
  ['Sheratan (β)', 28.66, 20.81, 2.64, 60],
  ['Mesarthim (γ)', 30.02, 19.29, 3.86, 164],
+ ['Bharani (41, c)', 44.14, 27.26, 3.63, 166],
  ],
  'Tauro': [
  ['Aldebarán (α)', 68.98, 16.51, 0.87, 65],
  ['Elnath (β)', 81.57, 28.61, 1.65, 131],
  ['Alcyone (η, Pléyades)', 56.87, 24.10, 2.87, 440],
+ ['Zeta Tauri (ζ)', 84.41, 21.14, 3.00, 440],
+ ['Ain (ε)', 67.15, 19.18, 3.53, 155],
+ ['Hyadum I (γ)', 65.72, 15.63, 3.65, 154],
  ],
  'Géminis': [
  ['Pólux (β)', 116.33, 28.03, 1.14, 34],
  ['Cástor (α)', 113.65, 31.89, 1.58, 51],
  ['Alhena (γ)', 99.43, 16.40, 1.93, 109],
+ ['Mebsuta (ε)', 100.98, 25.13, 3.06, 900],
+ ['Tejat (μ)', 93.72, 22.51, 2.88, 230],
+ ['Alzirr (ξ)', 104.09, 12.90, 3.36, 58],
  ],
  'Cáncer': [
  ['Al Tarf (β)', 124.13, 9.19, 3.53, 290],
  ['Asellus Australis (δ)', 131.17, 18.15, 3.94, 136],
  ['Acubens (α)', 134.62, 11.86, 4.26, 174],
+ ['Asellus Borealis (γ)', 124.94, 21.47, 4.66, 158],
+ ['Iota Cancri', 130.68, 28.76, 4.02, 330],
  ],
  'Leo': [
  ['Régulo (α)', 152.09, 11.97, 1.35, 79],
  ['Denébola (β)', 177.26, 14.57, 2.14, 36],
  ['Algieba (γ)', 154.99, 19.84, 2.08, 130],
+ ['Zosma (δ)', 168.53, 20.52, 2.56, 58],
+ ['Chertan (θ)', 168.56, 15.43, 3.34, 165],
+ ['Adhafera (ζ)', 154.17, 23.42, 3.44, 274],
+ ['Eta Leonis (η)', 152.10, 16.76, 3.52, 2000],
  ],
  'Virgo': [
  ['Spica (α)', 201.30, -11.16, 0.97, 250],
  ['Zavijava (β)', 177.67, 1.76, 3.60, 36],
  ['Porrima (γ)', 190.42, -1.45, 2.74, 38],
+ ['Vindemiatrix (ε)', 195.54, 10.96, 2.83, 110],
+ ['Auva (δ)', 193.90, 3.40, 3.38, 202],
+ ['Heze (ζ)', 201.90, -0.60, 3.37, 74],
  ],
  'Libra': [
  ['Zubenelgenubi (α)', 222.72, -16.04, 2.75, 77],
  ['Zubeneschamali (β)', 229.25, -9.38, 2.61, 185],
+ ['Zubenelakrab (γ)', 234.55, -14.79, 3.91, 152],
+ ['Brachium (σ)', 238.19, -25.28, 3.29, 288],
  ],
  'Escorpio': [
  ['Antares (α)', 247.35, -26.43, 0.96, 550],
  ['Shaula (λ)', 263.40, -37.10, 1.62, 570],
  ['Dschubba (δ)', 240.08, -22.62, 2.29, 400],
+ ['Graffias (β1)', 241.36, -19.81, 2.56, 530],
+ ['Wei (ε)', 252.54, -34.29, 2.29, 65],
+ ['Sargas (θ)', 264.33, -42.99, 1.87, 272],
+ ['Lesath (υ)', 265.62, -37.30, 2.70, 580],
  ],
  'Sagitario': [
  ['Kaus Australis (ε)', 276.04, -34.38, 1.85, 143],
  ['Nunki (σ)', 283.82, -26.30, 2.05, 224],
  ['Kaus Media (δ)', 275.25, -29.83, 2.70, 350],
+ ['Alnasl (γ2)', 271.45, -30.42, 2.98, 96],
+ ['Ascella (ζ)', 285.65, -29.88, 2.60, 89],
+ ['Phi Sagittarii (φ)', 280.60, -26.99, 3.17, 235],
  ],
  'Capricornio': [
  ['Deneb Algedi (δ)', 326.76, -16.13, 2.87, 39],
  ['Dabih (β)', 305.25, -14.78, 3.05, 330],
  ['Algedi (α²)', 304.51, -12.54, 3.58, 109],
+ ['Nashira (γ)', 324.83, -16.66, 3.68, 139],
  ],
+ // Acuario tiene 15 estrellas (en vez de las 8 originales) a propósito:
+ // es, junto con Piscis, la constelación de la transición precesional
+ // actual del punto vernal (ver el marcador "Punto Vernal" del Mapa
+ // Cósmico) -- vale la pena verla con más detalle real que las demás.
  'Acuario': [
  ['Sadalsuud (β)', 322.89, -5.57, 2.87, 540],
  ['Sadalmelik (α)', 331.44, -0.32, 2.95, 520],
@@ -7023,7 +7667,17 @@ const ZODIAC_STARS = {
  ['Sadaltager (ζ)', 337.21, -0.020, 3.65, 95],
  ['η Aquarii', 338.84, -0.117, 4.04, 168],
  ['Ancha (θ)', 334.21, -7.783, 4.18, 191],
+ ['88 Aquarii', 334.90, -21.17, 3.66, 133],
+ ['Hydor (λ)', 343.35, -7.58, 3.74, 392],
+ ['μ Aquarii', 315.94, -9.03, 4.73, 232],
+ ['ν Aquarii', 317.35, -11.37, 4.51, 145],
+ ['τ² Aquarii', 343.87, -13.59, 4.05, 200],
+ ['π Aquarii', 340.86, 1.37, 4.66, 780],
+ ['φ Aquarii', 350.60, -6.05, 4.22, 220],
  ],
+ // Piscis también con 15 (en vez de 6) -- la otra mitad de la transición
+ // precesional: el punto vernal está hoy AQUÍ, entrando a Acuario hacia
+ // el año ≈2600 (ver LIMITE_PSC_AQR_LON más abajo).
  'Piscis': [
  ['Alrescha (α)', 30.30, 2.76, 3.82, 139],
  ['Fumalsamakah (β)', 344.63, 3.82, 4.53, 492],
@@ -7031,8 +7685,148 @@ const ZODIAC_STARS = {
  ['δ Piscium', 12.17, 7.585, 4.44, 305],
  ['ε Piscium', 15.74, 7.890, 4.27, 190],
  ['Alpherg (η)', 22.87, 15.346, 3.62, 349],
+ ['ι Piscium', 27.29, 5.62, 4.13, 45],
+ ['θ Piscium', 23.47, 6.38, 4.28, 147],
+ ['κ Piscium', 21.36, 1.26, 4.94, 188],
+ ['λ Piscium', 23.18, 1.78, 4.50, 128],
+ ['ω Piscium', 6.14, 6.86, 4.03, 106],
+ ['μ Piscium', 15.05, 6.14, 4.84, 250],
+ ['ν Piscium', 24.14, 5.49, 4.44, 276],
+ ['ζ Piscium', 17.13, 7.58, 5.21, 151],
+ ['TX Piscium (estrella de carbono, muy roja)', 5.85, 18.53, 4.79, 900],
  ],
 };
+
+// ═══ Líneas de figura (asterismo simplificado) por constelación — qué
+// estrella se conecta con cuál, para dibujar el "palito" reconocible en
+// vez de solo puntos sueltos. NO son las 88 fronteras oficiales (eso ya
+// existe aparte, ver threeDibujarLimitesConstelaciones) ni pretenden ser
+// el trazo artístico completo de un atlas estelar — son las conexiones
+// tradicionales más comunes entre las estrellas reales que sí tenemos en
+// ZODIAC_STARS (mismo criterio de fuente que el resto de esta lista:
+// estándar, ampliamente documentado, no verificado en vivo). Los nombres
+// deben coincidir EXACTO con la primera columna de ZODIAC_STARS.
+const ZODIAC_LINEAS = {
+ 'Aries': [['Bharani (41, c)', 'Hamal (α)'], ['Hamal (α)', 'Sheratan (β)'], ['Sheratan (β)', 'Mesarthim (γ)']],
+ 'Tauro': [['Zeta Tauri (ζ)', 'Aldebarán (α)'], ['Aldebarán (α)', 'Elnath (β)'], ['Aldebarán (α)', 'Ain (ε)'], ['Ain (ε)', 'Hyadum I (γ)'], ['Hyadum I (γ)', 'Alcyone (η, Pléyades)']],
+ 'Géminis': [['Cástor (α)', 'Pólux (β)'], ['Cástor (α)', 'Mebsuta (ε)'], ['Mebsuta (ε)', 'Tejat (μ)'], ['Pólux (β)', 'Alhena (γ)'], ['Alhena (γ)', 'Alzirr (ξ)']],
+ 'Cáncer': [['Iota Cancri', 'Asellus Borealis (γ)'], ['Asellus Borealis (γ)', 'Asellus Australis (δ)'], ['Asellus Australis (δ)', 'Acubens (α)'], ['Asellus Australis (δ)', 'Al Tarf (β)']],
+ 'Leo': [['Eta Leonis (η)', 'Régulo (α)'], ['Régulo (α)', 'Adhafera (ζ)'], ['Adhafera (ζ)', 'Algieba (γ)'], ['Algieba (γ)', 'Zosma (δ)'], ['Zosma (δ)', 'Denébola (β)'], ['Zosma (δ)', 'Chertan (θ)'], ['Chertan (θ)', 'Denébola (β)']],
+ 'Virgo': [['Zavijava (β)', 'Porrima (γ)'], ['Porrima (γ)', 'Auva (δ)'], ['Auva (δ)', 'Vindemiatrix (ε)'], ['Auva (δ)', 'Heze (ζ)'], ['Heze (ζ)', 'Spica (α)']],
+ 'Libra': [['Zubenelgenubi (α)', 'Zubeneschamali (β)'], ['Zubeneschamali (β)', 'Zubenelakrab (γ)'], ['Zubenelakrab (γ)', 'Brachium (σ)']],
+ 'Escorpio': [['Graffias (β1)', 'Dschubba (δ)'], ['Dschubba (δ)', 'Antares (α)'], ['Antares (α)', 'Wei (ε)'], ['Wei (ε)', 'Shaula (λ)'], ['Shaula (λ)', 'Lesath (υ)'], ['Lesath (υ)', 'Sargas (θ)']],
+ 'Sagitario': [['Alnasl (γ2)', 'Kaus Media (δ)'], ['Kaus Media (δ)', 'Kaus Australis (ε)'], ['Kaus Australis (ε)', 'Phi Sagittarii (φ)'], ['Phi Sagittarii (φ)', 'Nunki (σ)'], ['Nunki (σ)', 'Ascella (ζ)']],
+ 'Capricornio': [['Algedi (α²)', 'Dabih (β)'], ['Dabih (β)', 'Nashira (γ)'], ['Nashira (γ)', 'Deneb Algedi (δ)']],
+ 'Acuario': [['Sadalmelik (α)', 'Sadalsuud (β)'], ['Sadalsuud (β)', 'Skat (δ)'], ['Sadalsuud (β)', 'Sadachbia (γ)'], ['Sadachbia (γ)', 'Sadaltager (ζ)'], ['Sadaltager (ζ)', 'η Aquarii'], ['η Aquarii', 'Ancha (θ)'], ['Ancha (θ)', 'Albali (ε)'],
+ ['Albali (ε)', 'μ Aquarii'], ['μ Aquarii', 'ν Aquarii'], ['Skat (δ)', '88 Aquarii'], ['88 Aquarii', 'Hydor (λ)'], ['Hydor (λ)', 'τ² Aquarii'], ['Sadaltager (ζ)', 'π Aquarii'], ['η Aquarii', 'φ Aquarii']],
+ 'Piscis': [['Alrescha (α)', 'ε Piscium'], ['ε Piscium', 'δ Piscium'], ['δ Piscium', 'Alpherg (η)'], ['Alrescha (α)', 'γ Piscium'], ['γ Piscium', 'Fumalsamakah (β)'],
+ // el "Círculo" (Circlet) -- asterismo real y muy conocido del pez occidental de Piscis
+ ['γ Piscium', 'θ Piscium'], ['θ Piscium', 'ι Piscium'], ['ι Piscium', 'λ Piscium'], ['λ Piscium', 'κ Piscium'], ['κ Piscium', 'μ Piscium'], ['μ Piscium', 'γ Piscium'],
+ ['ε Piscium', 'ω Piscium'], ['ν Piscium', 'δ Piscium']],
+};
+
+// ═══ Botón único "Figuras" — dibuja/oculta las líneas de ZODIAC_LINEAS,
+// tanto en el Mapa Cósmico 3D (conectando las posiciones reales ya
+// ubicadas por RA/Dec/distancia) como en la Carta astral 2D (mismo
+// principio que threeDibujarZodiacoEclipticoPlano: convierte cada
+// estrella a longitud eclíptica real -- fórmula estándar de rotación por
+// la oblicuidad, ε=23.4393° -- y la dibuja en el plano de la carta, radio
+// fijo ilustrativo porque en la carta NO importa la distancia real de la
+// estrella, solo su dirección/signo). Un solo estado, dos formas de
+// dibujarlo según el modo activo. ═══
+let _threeFigurasOn = false;
+let _threeZodiacStarPos = {}; // 3D: {constelacion: {nombre: Vector3}}, se llena en buildCosmicMap()
+let _threeFigurasGroup = null; // grupo 3D actual (para poder quitarlo)
+const OBLICUIDAD_DEG = 23.4393;
+function _raDecAEclipticaLon(raDeg, decDeg) {
+ const ra = THREE.MathUtils.degToRad(raDeg), dec = THREE.MathUtils.degToRad(decDeg), eps = THREE.MathUtils.degToRad(OBLICUIDAD_DEG);
+ const y = Math.sin(ra) * Math.cos(eps) + Math.tan(dec) * Math.sin(eps);
+ const x = Math.cos(ra);
+ return (THREE.MathUtils.radToDeg(Math.atan2(y, x)) + 360) % 360;
+}
+function threeToggleFiguras() {
+ _threeFigurasOn = !_threeFigurasOn;
+ // sincroniza los dos botones "gemelos" (el del riel 3D usa .on, el del
+ // panel de Carta astral usa el mismo patrón act/ghost que "Medir")
+ document.querySelectorAll('.figuras-btn').forEach(b => {
+ b.classList.toggle('on', _threeFigurasOn);
+ if (b.id === 'three_figuras_evento_btn') b.className = 'figuras-btn ' + (_threeFigurasOn ? 'act' : 'ghost act');
+ });
+ if (_threeMode === 'evento') threeDibujarFigurasEvento();
+ else threeDibujarFiguras3D();
+}
+function threeDibujarFiguras3D() {
+ if (_threeFigurasGroup) { _threeScene.remove(_threeFigurasGroup); _threeFigurasGroup = null; }
+ if (!_threeFigurasOn || !_threeScene) return;
+ const g = new THREE.Group();
+ Object.entries(ZODIAC_LINEAS).forEach(([cons, pares]) => {
+ const posMap = _threeZodiacStarPos[cons];
+ if (!posMap) return;
+ pares.forEach(([a, b]) => {
+ if (!posMap[a] || !posMap[b]) return;
+ g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([posMap[a], posMap[b]]), new THREE.LineBasicMaterial({ color: 0x9fd6ff, transparent: true, opacity: 0.7 })));
+ });
+ });
+ _threeScene.add(g);
+ _threeFigurasGroup = g;
+}
+// ¿Cae "lon" dentro del tramo [inicio,fin] (que puede cruzar 0°/360°)?
+function _lonEnTramo(lon, inicio, fin) {
+ const span = (fin - inicio + 360) % 360;
+ const rel = (lon - inicio + 360) % 360;
+ return rel <= span;
+}
+function threeDibujarFigurasEvento() {
+ if (_threeFigurasGroup) { _threeScene.remove(_threeFigurasGroup); _threeFigurasGroup = null; }
+ _threeHoverables = _threeHoverables.filter(h => !h.esFiguraCruzada); // sin esto, prender/apagar el botón varias veces sin recalcular la carta iría acumulando hoverables "fantasma" de estrellas ya quitadas de la escena
+ if (!_threeFigurasOn || !_threeScene || _threeMode !== 'evento') return;
+ const R = 20; // dentro del anillo zodiacal (R=22, ver threeDibujarZodiacoEclipticoPlano) -- las estrellas "decoran" el borde de la rueda, no representan su distancia real aquí
+ // Rango real (tramo sobre la eclíptica) de cada constelación -- para
+ // detectar (no ocultar) a las estrellas "cruzadas": ver el porqué justo
+ // abajo, antes de necesitarlo.
+ const tramoPorId = {}; ZODIACO_IAU_TRAMOS.forEach(([id, a, b]) => { tramoPorId[id] = [a, b]; });
+ const idPorNombre = {}; Object.entries(ZODIACO_IAU_ABREV).forEach(([id, nom]) => { idPorNombre[nom] = id; });
+ const g = new THREE.Group();
+ Object.entries(ZODIAC_LINEAS).forEach(([cons, pares]) => {
+ const stars = ZODIAC_STARS[cons];
+ const tramo = tramoPorId[idPorNombre[cons]];
+ if (!stars || !tramo) return;
+ const posPorNombre = {}, cruzadaPorNombre = {};
+ stars.forEach(([nom, raDeg, decDeg]) => {
+ const lonEcl = _raDecAEclipticaLon(raDeg, decDeg);
+ const rad = THREE.MathUtils.degToRad(lonEcl);
+ posPorNombre[nom] = new THREE.Vector3(R * Math.cos(rad), 0, R * Math.sin(rad));
+ // Esta carta es un plano (latitud eclíptica = 0 para todo, planetas
+ // incluidos) -- pero una estrella REAL puede estar varios grados
+ // arriba o abajo de la eclíptica (latitud eclíptica ≠ 0). Al
+ // aplanarla aquí, su longitud puede caer fuera del propio tramo real
+ // de su constelación (ZODIACO_IAU_TRAMOS) — es decir, en el tramo de
+ // la constelación VECINA. Lejos de ocultarlo, se marca en dorado: es
+ // justo el mismo fenómeno, a escala de una sola estrella, que hace
+ // que el punto vernal esté HOY en Piscis pero cada vez más cerca del
+ // límite con Acuario (ver el marcador "Punto Vernal" del mapa).
+ cruzadaPorNombre[nom] = !_lonEnTramo(lonEcl, tramo[0], tramo[1]);
+ });
+ pares.forEach(([a, b]) => {
+ if (!posPorNombre[a] || !posPorNombre[b]) return;
+ const cruza = cruzadaPorNombre[a] || cruzadaPorNombre[b];
+ const linea = new THREE.Line(new THREE.BufferGeometry().setFromPoints([posPorNombre[a], posPorNombre[b]]),
+ new THREE.LineBasicMaterial({ color: cruza ? 0xffb347 : 0x9fd6ff, transparent: true, opacity: cruza ? 0.9 : 0.8 }));
+ g.add(linea);
+ });
+ Object.entries(posPorNombre).forEach(([nom, pos]) => {
+ const cruza = cruzadaPorNombre[nom];
+ const star = new THREE.Mesh(new THREE.SphereGeometry(cruza ? 0.26 : 0.18, 8, 8), new THREE.MeshBasicMaterial({ color: cruza ? 0xffb347 : 0xFFF6E0 }));
+ star.position.copy(pos);
+ g.add(star);
+ if (cruza) {
+ _threeHoverables.push({ mesh: star, esFiguraCruzada: true, info: `<b>${nom}</b> (${cons})<br><span style="color:#ffb347">⚠ Cruzada</span>: por su latitud eclíptica real, su proyección en este plano cae en el tramo de la constelación vecina — el mismo fenómeno (a otra escala) que trae al punto vernal desde Piscis hacia Acuario.` });
+ }
+ });
+ });
+ _threeScene.add(g);
+ _threeFigurasGroup = g;
+}
 
 // Las estrellas más brillantes vistas desde la Tierra en TODO el cielo —
 // no solo las del zodíaco. Son las que de verdad "más se ven" a simple
@@ -7129,13 +7923,27 @@ const SOLAR_APEX = { ra: 271, dec: 30, speedKmS: 20 };
 // Elegidos para que el modo 🚀 nave tenga variedad real de "qué es":
 // una nebulosa de emisión, un cúmulo abierto, uno globular, un remanente
 // de supernova, un agujero negro estelar confirmado y una galaxia entera.
+// imgArchivo -- nombre EXACTO del archivo en Wikimedia Commons (dominio
+// público NASA/ESA/ESO en todos los casos). Cada uno se verificó cargando
+// de verdad https://commons.wikimedia.org/wiki/Special:FilePath/<archivo>
+// antes de agregarlo aquí -- ninguna URL se puso "a ojo".
 const FAMOUS_DEEP_SKY = [
- { nombre: 'Nebulosa de Orión (M42)', icono: '🌫️', tipo: 'Nebulosa de emisión — guardería estelar activa', ra: 83.822, dec: -5.391, distLy: 1344, tam: 2.2, color: 0xff7f7f, nota: 'A simple vista es la "estrella" central borrosa de la espada de Orión.' },
- { nombre: 'Las Pléyades (M45)', icono: '💫', tipo: 'Cúmulo abierto — ~1000 estrellas jóvenes (≈100 millones de años)', ra: 56.75, dec: 24.117, distLy: 444, tam: 2.0, color: 0x9fd6ff, nota: 'Una de las agrupaciones más brillantes del cielo nocturno, visible a simple vista.' },
- { nombre: 'Nebulosa del Cangrejo (M1)', icono: '💥', tipo: 'Remanente de supernova (estalló en el año 1054, registrada por astrónomos chinos y árabes)', ra: 83.633, dec: 22.017, distLy: 6500, tam: 1.6, color: 0x8ecae6, nota: 'En su centro hay un púlsar (estrella de neutrones) que gira ≈30 veces por segundo.' },
- { nombre: 'Ómega Centauri', icono: '🔮', tipo: 'Cúmulo globular — ~10 millones de estrellas, uno de los más grandes de la Vía Láctea', ra: 201.697, dec: -47.48, distLy: 17090, tam: 2.4, color: 0xffe08a, nota: 'Podría ser el núcleo despojado de una galaxia enana que la Vía Láctea absorbió hace miles de millones de años.' },
- { nombre: 'Cygnus X-1', icono: '🕳️', tipo: 'Agujero negro estelar (~21 masas solares) en un sistema binario — el primer candidato a agujero negro confirmado (1971)', ra: 299.59, dec: 35.202, distLy: 7240, tam: 1.3, color: 0x2b2b2b, colorTxt: '#b19cd9', nota: 'No se ve directamente — se detecta por los rayos X del gas de su estrella compañera al caer hacia él.' },
- { nombre: 'Galaxia de Andrómeda (M31)', icono: '🌀', tipo: 'Galaxia espiral — la galaxia grande más cercana a la Vía Láctea', ra: 10.685, dec: 41.269, distLy: 2537000, tam: 3.2, color: 0xd4a5ff, nota: 'Se acerca a ≈110 km/s — se fusionará con la Vía Láctea dentro de ≈4.500 millones de años.' },
+ { nombre: 'Nebulosa de Orión (M42)', icono: '🌫️', tipo: 'Nebulosa de emisión — guardería estelar activa', ra: 83.822, dec: -5.391, distLy: 1344, tam: 2.2, color: 0xff7f7f, nota: 'A simple vista es la "estrella" central borrosa de la espada de Orión.', imgArchivo: 'Orion Nebula - Hubble 2006 mosaic 18000.jpg', imgCredito: 'NASA/ESA Hubble' },
+ { nombre: 'Las Pléyades (M45)', icono: '💫', tipo: 'Cúmulo abierto — ~1000 estrellas jóvenes (≈100 millones de años)', ra: 56.75, dec: 24.117, distLy: 444, tam: 2.0, color: 0x9fd6ff, nota: 'Una de las agrupaciones más brillantes del cielo nocturno, visible a simple vista.', imgArchivo: 'Pleiades large.jpg', imgCredito: 'NASA/ESA/AURA' },
+ { nombre: 'Nebulosa del Cangrejo (M1)', icono: '💥', tipo: 'Remanente de supernova (estalló en el año 1054, registrada por astrónomos chinos y árabes)', ra: 83.633, dec: 22.017, distLy: 6500, tam: 1.6, color: 0x8ecae6, nota: 'En su centro hay un púlsar (estrella de neutrones) que gira ≈30 veces por segundo.', imgArchivo: 'Crab Nebula.jpg', imgCredito: 'NASA/ESA Hubble' },
+ { nombre: 'Ómega Centauri', icono: '🔮', tipo: 'Cúmulo globular — ~10 millones de estrellas, uno de los más grandes de la Vía Láctea', ra: 201.697, dec: -47.48, distLy: 17090, tam: 2.4, color: 0xffe08a, nota: 'Podría ser el núcleo despojado de una galaxia enana que la Vía Láctea absorbió hace miles de millones de años.', imgArchivo: 'Omega Centauri by ESO.jpg', imgCredito: 'ESO' },
+ { nombre: 'Cygnus X-1', icono: '🕳️', tipo: 'Agujero negro estelar (~21 masas solares) en un sistema binario — el primer candidato a agujero negro confirmado (1971)', ra: 299.59, dec: 35.202, distLy: 7240, tam: 1.3, color: 0x2b2b2b, colorTxt: '#b19cd9', nota: 'No se ve directamente — se detecta por los rayos X del gas de su estrella compañera al caer hacia él.', imgArchivo: 'Cygnus X-1.jpg', imgCredito: 'Concepto artístico, NASA/CXC/M.Weiss (no es una foto real -- un agujero negro estelar como este no se puede fotografiar directamente)' },
+ { nombre: 'Galaxia de Andrómeda (M31)', icono: '🌀', tipo: 'Galaxia espiral — la galaxia grande más cercana a la Vía Láctea', ra: 10.685, dec: 41.269, distLy: 2537000, tam: 3.2, color: 0xd4a5ff, nota: 'Se acerca a ≈110 km/s — se fusionará con la Vía Láctea dentro de ≈4.500 millones de años.', galaxiaForma: 'espiral', imgArchivo: 'Andromeda Galaxy (with h-alpha).jpg', imgCredito: 'Adam Evans (CC BY 2.0)' },
+ // Galaxias vecinas — para que la vista "Galaxia" no se sienta como si la
+ // Vía Láctea estuviera sola: las dos Nubes de Magallanes son galaxias
+ // enanas satélite (visibles a simple vista desde el hemisferio sur), M33
+ // es la tercera galaxia grande del Grupo Local (junto a la Vía Láctea y
+ // Andrómeda), y M81 ya está bien fuera del Grupo Local — para dar noción
+ // real de escala hasta dónde llega esta muestra.
+ { nombre: 'Gran Nube de Magallanes', icono: '☁️', tipo: 'Galaxia enana irregular — satélite de la Vía Láctea', ra: 80.894, dec: -69.756, distLy: 163000, tam: 2.6, color: 0xc2e0ff, nota: 'Visible a simple vista desde el hemisferio sur — parece un trozo desprendido de la Vía Láctea.', galaxiaForma: 'irregular', imgArchivo: 'Large Magellanic Cloud.jpg', imgCredito: 'ESO/VMC Survey' },
+ { nombre: 'Pequeña Nube de Magallanes', icono: '☁️', tipo: 'Galaxia enana irregular — otro satélite de la Vía Láctea', ra: 13.158, dec: -72.800, distLy: 200000, tam: 2.0, color: 0xb8d4f0, nota: 'Compañera de la Gran Nube — juntas orbitan la Vía Láctea y algún día se fusionarán con ella.', galaxiaForma: 'irregular', imgArchivo: 'Small Magellanic Cloud.jpg', imgCredito: 'ESO' },
+ { nombre: 'Galaxia del Triángulo (M33)', icono: '🌌', tipo: 'Galaxia espiral — la tercera más grande del Grupo Local', ra: 23.462, dec: 30.660, distLy: 2730000, tam: 2.4, color: 0xe0c4ff, nota: 'Junto a la Vía Láctea y Andrómeda, forma el trío grande del Grupo Local (~54 galaxias conocidas).', galaxiaForma: 'espiral', imgArchivo: 'M33 - Triangulum Galaxy.jpg', imgCredito: 'Locutus Borg (CC BY-SA)' },
+ { nombre: 'Galaxia de Bode (M81)', icono: '🌀', tipo: 'Galaxia espiral — ya fuera del Grupo Local', ra: 148.888, dec: 69.065, distLy: 11800000, tam: 2.8, color: 0xffd4a0, nota: 'A casi 12 millones de años luz — mucho más allá del Grupo Local, para dar noción de que las galaxias siguen y siguen.', galaxiaForma: 'espiral', imgArchivo: 'Messier 81 HST.jpg', imgCredito: 'NASA/ESA Hubble' },
 ];
 
 let _threeCosmicObjects = {}; // {nombre: mesh} — TODO lo que hay en el mapa (planetas + estrellas + centro galáctico), para el selector "Ir a"
@@ -7653,6 +8461,174 @@ function threeLimitesChanged() {
  threeDibujarLimitesConstelaciones(sel ? sel.value : 'ninguno');
  const bar = document.getElementById('const_epoca_bar');
  if (bar) bar.style.display = (sel && sel.value !== 'ninguno') ? 'flex' : 'none';
+ threeActualizarSeparacionVernal();
+}
+
+// ═══ Fecha exacta <-> año fraccionario, y separación angular del punto
+// vernal al límite real Piscis/Acuario para la época elegida — responde
+// con un número lo que antes solo se podía estimar mirando el mapa (p.ej.
+// para reconstruir un equinoccio histórico concreto, como el del 21 de
+// marzo de 1948). Mismo motor de precesión de Newcomb ya validado, solo
+// que ahora también se usa para calcular, no solo para dibujar. ═══
+function threeEpocaDesdeAnio() {
+ const anioInput = document.getElementById('const_limites_epoca');
+ const fechaInput = document.getElementById('const_limites_fecha');
+ const anio = Math.floor(parseFloat(anioInput.value));
+ if (fechaInput && !isNaN(anio)) fechaInput.value = anio + '-01-01'; // sincroniza la fecha visualmente al 1 de enero del año elegido
+ threeLimitesChanged();
+}
+function threeEpocaDesdeFecha() {
+ const fechaInput = document.getElementById('const_limites_fecha');
+ const anioInput = document.getElementById('const_limites_epoca');
+ if (!fechaInput.value) return;
+ const [y, m, d] = fechaInput.value.split('-').map(Number);
+ const inicioAnio = Date.UTC(y, 0, 1), diasDelAnio = (Date.UTC(y + 1, 0, 1) - inicioAnio) / 86400000;
+ const diaActual = (Date.UTC(y, m - 1, d) - inicioAnio) / 86400000;
+ anioInput.value = (y + diaActual / diasDelAnio).toFixed(3);
+ threeLimitesChanged();
+}
+// point-in-polygon (ray casting) que "desenrolla" el polígono siguiendo su
+// propia secuencia de vértices (no comparando cada uno contra el punto de
+// consulta) — así no falla con polígonos lejos de la costura 0°/360°.
+function _pointInPolyUnwrapped(lon, lat, ptsRaw) {
+ const out = [ptsRaw[0].slice()];
+ for (let i = 1; i < ptsRaw.length; i++) {
+ let [x, y] = ptsRaw[i]; const prevX = out[i - 1][0];
+ while (x - prevX > 180) x -= 360;
+ while (x - prevX < -180) x += 360;
+ out.push([x, y]);
+ }
+ for (const offset of [0, 360, -360]) {
+ const L = lon + offset; let dentro = false;
+ for (let i = 0, j = out.length - 1; i < out.length; j = i++) {
+ const [xi, yi] = out[i], [xj, yj] = out[j];
+ if (((yi > lat) !== (yj > lat)) && (L < (xj - xi) * (lat - yi) / (yj - yi) + xi)) dentro = !dentro;
+ }
+ if (dentro) return true;
+ }
+ return false;
+}
+let _limitePscAqrRaDec = null; // dirección FIJA en el espacio (J2000) del límite real Piscis/Acuario -- no depende de la época elegida, se calcula una sola vez
+function threeActualizarSeparacionVernal() {
+ const div = document.getElementById('const_vernal_separacion');
+ const bar = document.getElementById('const_epoca_bar');
+ if (!div || !bar || bar.style.display === 'none') { if (div) div.textContent = ''; return; }
+ const epoch = parseFloat(document.getElementById('const_limites_epoca').value);
+ if (isNaN(epoch)) { div.textContent = ''; return; }
+ if (!_limitePscAqrRaDec) _limitePscAqrRaDec = _eclToEqDeg(LIMITE_PSC_AQR_LON, 23.4392911);
+ const [raLimite, decLimite] = _limitePscAqrRaDec;
+ const [raV, decV] = precessRaDecNewcomb(0, 0, epoch, 2000.0); // dirección del punto vernal DE ESA ÉPOCA, expresada en J2000 (mismo marco fijo que el límite, para comparar en igualdad de condiciones)
+ const r1 = THREE.MathUtils.degToRad(raV), d1 = THREE.MathUtils.degToRad(decV);
+ const r2 = THREE.MathUtils.degToRad(raLimite), d2 = THREE.MathUtils.degToRad(decLimite);
+ const cosc = Math.sin(d1) * Math.sin(d2) + Math.cos(d1) * Math.cos(d2) * Math.cos(r1 - r2);
+ const dist = THREE.MathUtils.radToDeg(Math.acos(Math.min(1, Math.max(-1, cosc))));
+ const psc = _parseConstBounds().find(b => b.id === 'Psc');
+ const enPiscis = psc ? _pointInPolyUnwrapped(raV, decV, psc.pts) : null;
+ const ladoTxt = enPiscis === null ? '' : enPiscis ? ' (dentro de Piscis)' : ' (ya del lado de Acuario)';
+ const real = `📐 <b>Real</b> (fronteras IAU/Delporte + precesión de Newcomb, tasa variable ≈50,29″/año): separación de <b>${dist.toFixed(2)}°</b> al límite Piscis/Acuario${ladoTxt}. Al ritmo actual, cruzaría hacia el año ≈2598.`;
+ div.innerHTML = real + '<br>' + threeModeloRaynaudTexto(epoch);
+}
+
+// ═══ Modelo del Dr. Serge Raynaud de la Ferrière (citado en la TCC, cap.
+// 41 "El valor expresado por el Dr. R. de la Ferrière") — reproducido
+// EXACTO como aparece en el libro, no una versión inventada por nosotros:
+// ancla el inicio de la Era de Piscis en el año 1 d.C., y usa una tasa
+// FIJA de precesión de 1° cada 72 años (72×360=25.920 años el ciclo
+// completo -- el "Año Platónico" clásico redondo, distinto de los
+// ≈25.772 años reales que mide la astronomía moderna). Con su propio
+// valor del ancho de Piscis (27,06° -- NO el 37,06° real de IAU/Delporte
+// que usa el resto de esta plataforma, es un número distinto que él mismo
+// cita), su cuenta da 27,06×72 = 1948,32 años → 21 de marzo de 1948. Es
+// un cálculo hecho a mano, con las herramientas y tablas de su época —
+// sin la precesión variable de Newcomb ni límites IAU digitalizados, que
+// solo se volvieron computacionalmente accesibles décadas después. Se
+// muestra aquí junto al cálculo real, con el mismo respeto por su trabajo
+// pionero, como un modelo alternativo citado en la TCC.
+const RAYNAUD_ANCHO_PISCIS_DEG = 27.06; // su propio valor citado -- distinto del 37.06° real de ZODIACO_IAU_TRAMOS
+const RAYNAUD_ANIOS_POR_GRADO = 72;
+const RAYNAUD_ANIO_FIN_PISCIS = RAYNAUD_ANCHO_PISCIS_DEG * RAYNAUD_ANIOS_POR_GRADO; // = 1948.32 (año 1 d.C. como origen)
+function threeModeloRaynaudTexto(epoch) {
+ const restante = (RAYNAUD_ANIO_FIN_PISCIS - epoch) / RAYNAUD_ANIOS_POR_GRADO; // grados restantes (negativo = ya cruzado)
+ const estado = restante > 0
+ ? `${restante.toFixed(2)}° restantes dentro de "su" Piscis (27,06°)`
+ : `ya en la Era de Acuario desde hace ${Math.abs(epoch - RAYNAUD_ANIO_FIN_PISCIS).toFixed(1)} años`;
+ return `🔮 <b>Modelo del Dr. Raynaud de la Ferrière</b> (TCC, cap. 41 — tasa fija 1°/72 años, Piscis=27,06°, ancla año 1 d.C.): ${estado} — su cálculo, hecho a mano con las tablas de precesión de su época, ubica el cruce en el <b>21 de marzo de 1948</b>.`;
+}
+
+// ═══ Pestaña didáctica "Eras precesionales" — la tabla comparativa reusa
+// EXACTAMENTE el mismo motor ya validado (precessRaDecNewcomb, las
+// fronteras reales de _parseConstBounds, el modelo de Raynaud de arriba)
+// en vez de copiar números a mano, para que nunca pueda desalinearse del
+// cálculo en vivo del Mapa Cósmico. ═══
+function erasPrecesionalesInit() {
+ const tbody = document.getElementById('tabla_eras_body');
+ if (!tbody || tbody.dataset.built) return;
+ if (typeof precessRaDecNewcomb !== 'function' || typeof _eclToEqDeg !== 'function' || typeof THREE === 'undefined') {
+ tbody.innerHTML = '<tr><td colspan="3" class="small muted">No se pudo cargar el motor de cálculo — visita "Empieza aquí" y vuelve a intentar.</td></tr>';
+ return;
+ }
+ tbody.dataset.built = '1';
+ const epsJ2000 = 23.4392911;
+ const [raLimite, decLimite] = _eclToEqDeg(LIMITE_PSC_AQR_LON, epsJ2000);
+ const psc = _parseConstBounds().find(b => b.id === 'Psc');
+ const anios = [1, 1948.32, 2000, 2026, 2100, 2300, 2600, 3000];
+ tbody.innerHTML = anios.map(anio => {
+ const [raV, decV] = precessRaDecNewcomb(0, 0, anio, 2000.0);
+ const r1 = THREE.MathUtils.degToRad(raV), d1 = THREE.MathUtils.degToRad(decV);
+ const r2 = THREE.MathUtils.degToRad(raLimite), d2 = THREE.MathUtils.degToRad(decLimite);
+ const cosc = Math.sin(d1) * Math.sin(d2) + Math.cos(d1) * Math.cos(d2) * Math.cos(r1 - r2);
+ const dist = THREE.MathUtils.radToDeg(Math.acos(Math.min(1, Math.max(-1, cosc))));
+ const enPiscis = psc ? _pointInPolyUnwrapped(raV, decV, psc.pts) : null;
+ const realTxt = enPiscis ? `${dist.toFixed(2)}° dentro de Piscis` : `${dist.toFixed(2)}° ya en Acuario`;
+ const restanteRaynaud = (RAYNAUD_ANIO_FIN_PISCIS - anio) / RAYNAUD_ANIOS_POR_GRADO;
+ const raynaudTxt = restanteRaynaud > 0 ? `${restanteRaynaud.toFixed(2)}° restantes en "su" Piscis` : `Era de Acuario, +${Math.abs(anio - RAYNAUD_ANIO_FIN_PISCIS).toFixed(0)} años`;
+ const etiquetaAnio = anio === 1948.32 ? '1948 (21 mar)' : Math.round(anio);
+ return `<tr><td><b>${etiquetaAnio}</b></td><td>${realTxt}</td><td>${raynaudTxt}</td></tr>`;
+ }).join('');
+ dibujarGraficoErasVernal(epsJ2000, raLimite, decLimite, psc);
+}
+
+// ═══ Gráfico SVG del recorrido del punto vernal — separación (con signo)
+// al límite real Piscis/Acuario cada 2.000 años, mismo motor de precesión
+// de Newcomb ya validado arriba. Positivo = todavía dentro de Piscis,
+// negativo = ya del lado de Acuario (cruce real ≈año 2598). ═══
+function dibujarGraficoErasVernal(epsJ2000, raLimite, decLimite) {
+ const cont = document.getElementById('chart_eras_vernal');
+ if (!cont) return;
+ const psc = _parseConstBounds().find(b => b.id === 'Psc');
+ const anios = [];
+ for (let a = -2000; a <= 6000; a += 2000) anios.push(a);
+ const puntos = anios.map(anio => {
+ const [raV, decV] = precessRaDecNewcomb(0, 0, anio, 2000.0);
+ const r1 = THREE.MathUtils.degToRad(raV), d1 = THREE.MathUtils.degToRad(decV);
+ const r2 = THREE.MathUtils.degToRad(raLimite), d2 = THREE.MathUtils.degToRad(decLimite);
+ const cosc = Math.sin(d1) * Math.sin(d2) + Math.cos(d1) * Math.cos(d2) * Math.cos(r1 - r2);
+ const dist = THREE.MathUtils.radToDeg(Math.acos(Math.min(1, Math.max(-1, cosc))));
+ const enPiscis = psc ? _pointInPolyUnwrapped(raV, decV, psc.pts) : null;
+ return { anio, valor: enPiscis ? dist : -dist };
+ });
+ const W = 720, H = 260, padL = 46, padR = 16, padT = 16, padB = 34;
+ const minA = anios[0], maxA = anios[anios.length - 1];
+ const vals = puntos.map(p => p.valor);
+ const minV = Math.min(-5, ...vals), maxV = Math.max(5, ...vals);
+ const x = a => padL + (a - minA) / (maxA - minA) * (W - padL - padR);
+ const y = v => padT + (1 - (v - minV) / (maxV - minV)) * (H - padT - padB);
+ const path = puntos.map((p, i) => `${i === 0 ? 'M' : 'L'}${x(p.anio).toFixed(1)},${y(p.valor).toFixed(1)}`).join(' ');
+ const y0 = y(0);
+ const ejesAnios = [-2000, 0, 2598, 4000, 6000];
+ const ticks = ejesAnios.map(a => `<line x1="${x(a).toFixed(1)}" y1="${padT}" x2="${x(a).toFixed(1)}" y2="${H - padB}" stroke="var(--border)" stroke-width="1" opacity="0.5"/><text x="${x(a).toFixed(1)}" y="${H - padB + 14}" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">${a}</text>`).join('');
+ const puntosCirculos = puntos.map(p => `<circle cx="${x(p.anio).toFixed(1)}" cy="${y(p.valor).toFixed(1)}" r="3.5" fill="var(--verde-oscuro)"/>`).join('');
+ const cruceX = x(2598);
+ cont.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;height:auto;color:var(--texto)">
+ ${ticks}
+ <line x1="${padL}" y1="${y0.toFixed(1)}" x2="${W - padR}" y2="${y0.toFixed(1)}" stroke="var(--oro)" stroke-width="1.5" stroke-dasharray="4,3"/>
+ <text x="${W - padR}" y="${y0 - 4}" font-size="10" text-anchor="end" fill="var(--oro)">límite Piscis/Acuario (0°)</text>
+ <line x1="${cruceX.toFixed(1)}" y1="${padT}" x2="${cruceX.toFixed(1)}" y2="${H - padB}" stroke="#9b59b6" stroke-width="1" stroke-dasharray="2,3"/>
+ <text x="${cruceX.toFixed(1)}" y="${padT + 10}" font-size="10" text-anchor="middle" fill="#9b59b6">≈2598</text>
+ <path d="${path}" fill="none" stroke="var(--verde-oscuro)" stroke-width="2.5"/>
+ ${puntosCirculos}
+ <text x="${padL}" y="${padT - 2}" font-size="10" fill="currentColor" opacity="0.75">grados de separación (+Piscis / −Acuario)</text>
+ </svg>`;
 }
 
 // ═══ Etiquetas fijas con el nombre de cada constelación — para no
@@ -7790,7 +8766,9 @@ function buildCosmicMap() {
 
  // --- Estrellas del zodíaco (todas las constelaciones a la vez) ---
  _threeStarBase = {};
+ _threeZodiacStarPos = {}; // {constelacion: {nombre: THREE.Vector3}} -- para poder dibujar/quitar las líneas de figura (ver threeToggleFiguras)
  Object.entries(ZODIAC_STARS).forEach(([constelacion, stars]) => {
+ _threeZodiacStarPos[constelacion] = {};
  stars.forEach(([nom, raDeg, decDeg, mag, distLy]) => {
  const ra = THREE.MathUtils.degToRad(raDeg), dec = THREE.MathUtils.degToRad(decDeg);
  const r = _logRadius(distLy * AU_PER_LY);
@@ -7799,6 +8777,7 @@ function buildCosmicMap() {
  const mesh = new THREE.Mesh(new THREE.SphereGeometry(size, 12, 12), new THREE.MeshBasicMaterial({ color: 0xFFF6E0 }));
  mesh.position.set(x, y, z);
  _threeScene.add(mesh);
+ _threeZodiacStarPos[constelacion][nom] = mesh.position.clone();
  const pm = STAR_PROPER_MOTION[nom];
  const pmInfo = pm ? `<br>Movimiento propio real: ${(Math.hypot(pm[0], pm[1]) / 1000).toFixed(3)}"/año (tarda ≈${Math.round(3600000 / Math.hypot(pm[0], pm[1]))} años en desplazarse 1° en el cielo)` : '';
  _threeHoverables.push({ mesh, info: `<b>${nom}</b> (${constelacion})<br>Magnitud: ${mag}<br>Distancia real: ${distLy.toLocaleString()} años luz${pmInfo}` });
@@ -7806,6 +8785,7 @@ function buildCosmicMap() {
  if (pm) _threeStarBase[nom] = { mesh, raDeg, decDeg, distLy, pm };
  });
  });
+ if (_threeFigurasOn) threeDibujarFiguras3D(); // si ya estaban activadas, se re-dibujan sobre la escena recién construida (buildCosmicMap reconstruye todo al cambiar de zoom)
 
  // --- Estrellas más brillantes vistas desde la Tierra (todo el cielo) ---
  BRIGHT_STARS.forEach(([nom, raDeg, decDeg, mag, distLy, nota]) => {
@@ -7873,13 +8853,31 @@ function buildCosmicMap() {
  const ra = THREE.MathUtils.degToRad(obj.ra), dec = THREE.MathUtils.degToRad(obj.dec);
  const r = _logRadius(obj.distLy * AU_PER_LY);
  const x = r * Math.cos(dec) * Math.cos(ra), y = r * Math.sin(dec), z = r * Math.cos(dec) * Math.sin(ra);
- const mesh = new THREE.Mesh(new THREE.SphereGeometry(obj.tam || 1.6, 16, 16), new THREE.MeshBasicMaterial({ color: obj.color }));
+ let mesh, tamVisual = obj.tam || 1.6;
+ if (obj.galaxiaForma) {
+ // Sprite (siempre de cara a la cámara) con una textura procedural de
+ // remolino -- una esfera lisa de un solo color no se lee como galaxia.
+ // "espiral" para las de brazos reales (Andrómeda, M33, M81); "irregular"
+ // para las Nubes de Magallanes, que NO tienen brazos espirales de
+ // verdad -- usar la misma textura de remolino ahí habría sido incorrecto.
+ tamVisual = (obj.tam || 1.6) * 3.4;
+ mesh = new THREE.Sprite(new THREE.SpriteMaterial({ map: threeGetGalaxiaTexture(obj.color, obj.galaxiaForma), transparent: true, depthWrite: false }));
+ mesh.scale.set(tamVisual, tamVisual, 1);
+ } else {
+ mesh = new THREE.Mesh(new THREE.SphereGeometry(tamVisual, 16, 16), new THREE.MeshBasicMaterial({ color: obj.color }));
+ }
  mesh.position.set(x, y, z);
  _threeScene.add(mesh);
  const label = threeMakeLabel(obj.icono + ' ' + obj.nombre, obj.colorTxt || '#' + obj.color.toString(16).padStart(6, '0'));
- label.position.set(x, y + (obj.tam || 1.6) + 2, z);
+ label.position.set(x, y + tamVisual * 0.5 + 2, z);
  _threeScene.add(label);
- _threeHoverables.push({ mesh, info: `<b>${obj.icono} ${obj.nombre}</b><br>${obj.tipo}<br>Distancia real: ≈${obj.distLy.toLocaleString()} años luz<br>${obj.nota}` });
+ // Foto real (NASA/ESA/ESO vía Wikimedia Commons, dominio público) --
+ // para que pasar el mouse por un punto en el modo nave sea de verdad
+ // ver algo, no solo un texto. Cada URL se verificó una por una (que
+ // exista y cargue) antes de usarla, mismo criterio que el resto del
+ // sitio para nunca inventar una URL sin confirmar que existe.
+ const foto = obj.imgArchivo ? `<br><img src="https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(obj.imgArchivo)}?width=260" style="max-width:220px;border-radius:6px;margin-top:6px;display:block" onerror="this.style.display='none'"><span class="small" style="opacity:.7">${obj.imgCredito || ''}</span>` : '';
+ _threeHoverables.push({ mesh, info: `<div style="white-space:normal;max-width:230px"><b>${obj.icono} ${obj.nombre}</b><br>${obj.tipo}<br>Distancia real: ≈${obj.distLy.toLocaleString()} años luz<br>${obj.nota}${foto}</div>` });
  registrar(obj.icono + ' ' + obj.nombre, mesh);
  });
 
@@ -8332,10 +9330,14 @@ function threeToggleEsferaTopocentrica() {
  const canvas3d = document.getElementById('three_canvas');
  const svg = document.getElementById('chart_wheel_svg');
  const btn = document.getElementById('three_toggle_esfera');
+ const bbTopo = document.getElementById('bb_topo_time'), bbEvento = document.getElementById('bb_evento_time');
  if (_threeMode === 'topocentrica') {
+ threeTopoDetener();
  _threeMode = 'evento';
  svg.style.display = 'none'; canvas3d.style.display = '';
  btn.textContent = '🌐 Ver esfera de casas (3D)';
+ if (bbTopo) bbTopo.style.display = 'none';
+ if (bbEvento) bbEvento.style.display = 'flex';
  threeCalcularEvento();
  return;
  }
@@ -8346,6 +9348,8 @@ function threeToggleEsferaTopocentrica() {
  svg.style.display = 'none'; canvas3d.style.display = '';
  _threeMode = 'topocentrica';
  btn.textContent = '↩ Volver a las órbitas';
+ if (bbEvento) bbEvento.style.display = 'none';
+ if (bbTopo) { bbTopo.style.display = 'flex'; document.getElementById('topo_minuto_slider').value = 0; }
 
  const fecha = document.getElementById('three_evento_fechad').value;
  const hora = document.getElementById('three_evento_horal').value;
@@ -8355,6 +9359,19 @@ function threeToggleEsferaTopocentrica() {
  const dt = toUTC(fecha, hora, tz);
  const { ramc, eps } = realAscMc(dt, lat, lon);
  const cusps = topocentricHouseCusps(dt, lat, lon);
+
+ // ═══ Grupo "cielo" — todo lo que depende del tiempo (ARMC): la
+ // eclíptica, sus 12 signos, los círculos/cúspides de casas y ASC/DSC/MC/
+ // IC. El horizonte local y el ecuador celeste NO dependen del tiempo
+ // (están fijos al observador/latitud) y se quedan fuera de este grupo.
+ // El botón ▶ de abajo gira este grupo entero alrededor del eje del
+ // mundo (ncp) — la MISMA rotación real de la Tierra, aplicada de una
+ // sola vez a todo el grupo en lugar de recalcular cada punto: es
+ // exactamente equivalente a recalcular con un ARMC distinto (ver
+ // threeTopoIrAMinuto), pero muchísimo más barato de animar cuadro a
+ // cuadro.
+ _threeTopoCeleste = new THREE.Group();
+ _threeTopoBase = { dtISO: dt, lat, lon, ramc, eps };
 
  // 1) esfera celeste (R=1)
  _threeScene.add(new THREE.Mesh(new THREE.SphereGeometry(1, 48, 24),
@@ -8414,8 +9431,9 @@ function threeToggleEsferaTopocentrica() {
  // abajo) — normal = dirección real hacia el Polo Norte Eclíptico
  // (RA=270°, Dec=90°-ε) vista desde este observador y este ARMC
  const nepXYZ = _eqToHorizonXYZ(270, 90 - eps, ramc, lat);
- _planoConGrilla(0xdaa520, nepXYZ,
+ const eclipGrid = _planoConGrilla(0xdaa520, nepXYZ,
  `<b>Eclíptica</b><br>Plano de la órbita Tierra-Sol, inclinado ε≈${eps.toFixed(2)}° respecto al Ecuador Celeste<br>Aquí se ve dividida en 12 sectores de 30° (no son los signos — esos van marcados con etiquetas doradas)`);
+ _threeScene.remove(eclipGrid.grid, eclipGrid.disco); _threeTopoCeleste.add(eclipGrid.grid, eclipGrid.disco); // esta cuadrícula SÍ depende del ARMC (gira con el cielo) -- _planoConGrilla la agrega directo a _threeScene, se reubica aquí
 
  // 4) círculos de posición de las 6 casas independientes (las otras 6 son
  // el mismo círculo, opuesto 180°) — únicos círculos que pasan por N/S
@@ -8425,7 +9443,7 @@ function threeToggleEsferaTopocentrica() {
  const [ra, dec] = _eclToEqDeg(cusps[h], eps);
  const cuspXYZ = _eqToHorizonXYZ(ra, dec, ramc, lat);
  const pts = _housePositionCircle3D(cuspXYZ);
- _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
+ _threeTopoCeleste.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
  new THREE.LineBasicMaterial({ color: coloresCasa[h] })));
  });
  // marcador + tooltip de las 12 cúspides (cada casa usa el color de su
@@ -8436,7 +9454,7 @@ function threeToggleEsferaTopocentrica() {
  const p = _eqToHorizonXYZ(ra, dec, ramc, lat);
  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 8), new THREE.MeshBasicMaterial({ color: coloresCasa[casaBase[h]] }));
  mesh.position.copy(p);
- _threeScene.add(mesh);
+ _threeTopoCeleste.add(mesh);
  const signo = CHART_SIGNS[Math.floor(cusps[h] / 30)];
  _threeHoverables.push({ mesh, info: `<b>Casa ${h}</b> — cúspide ${(cusps[h] % 30).toFixed(1)}° ${signo}` });
  }
@@ -8448,14 +9466,14 @@ function threeToggleEsferaTopocentrica() {
  const [ra, dec] = _eclToEqDeg(lonDeg, eps);
  eclPts.push(_eqToHorizonXYZ(ra, dec, ramc, lat));
  }
- _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(eclPts),
+ _threeTopoCeleste.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(eclPts),
  new THREE.LineBasicMaterial({ color: 0xffd166 })));
  for (let i = 0; i < 12; i++) {
  const [ra, dec] = _eclToEqDeg(i * 30, eps);
  const p = _eqToHorizonXYZ(ra, dec, ramc, lat).multiplyScalar(1.05);
  const lbl = threeMakeLabel(CHART_SIGNS[i], '#ffe066');
  lbl.position.copy(p); lbl.scale.set(0.35, 0.09, 1);
- _threeScene.add(lbl);
+ _threeTopoCeleste.add(lbl);
  }
 
  // 6) ángulos cardinales ASC/DSC/MC/IC — colores de MARCADOR saturados
@@ -8467,17 +9485,86 @@ function threeToggleEsferaTopocentrica() {
  const p = _eqToHorizonXYZ(ra, dec, ramc, lat).multiplyScalar(1.12);
  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 12), new THREE.MeshBasicMaterial({ color }));
  mesh.position.copy(p);
- _threeScene.add(mesh);
+ _threeTopoCeleste.add(mesh);
  const lbl = threeMakeLabel(nombre, '#ffffff');
  lbl.position.copy(p).add(new THREE.Vector3(0, 0.12, 0)); lbl.scale.set(0.3, 0.08, 1);
- _threeScene.add(lbl);
+ _threeTopoCeleste.add(lbl);
  const signo = CHART_SIGNS[Math.floor(lonC / 30)];
  _threeHoverables.push({ mesh, info: `<b>${nombre}</b><br>${(lonC % 30).toFixed(2)}° ${signo}` });
  });
 
+ _threeScene.add(_threeTopoCeleste);
+ _threeTopoNcp = ncp.clone();
+ _threeTopoRefVec0 = _eqToHorizonXYZ(0, 0, ramc, lat); // vector de referencia (dirección RA=0,Dec=0) al momento base -- ancla para medir el giro
+ threeTopoActualizarEtiqueta(0, cusps[1]);
+
  _threeCamera.position.set(2.2, 1.6, 2.2);
  _threeCamera.lookAt(0, 0, 0);
  if (_threeControls) { _threeControls.target.set(0, 0, 0); _threeControls.update(); }
+}
+
+// ═══ Animación de la esfera de casas: gira el grupo "cielo" alrededor
+// del eje del mundo, en vez de recalcular cada punto — matemáticamente
+// es EXACTAMENTE lo mismo que recalcular con un ARMC distinto (ambos son
+// la misma rotación rígida alrededor del mismo eje), pero muchísimo más
+// barato: un solo quaternion por cuadro en vez de decenas de llamadas
+// trigonométricas. Para no arriesgar el signo/sentido de esa rotación
+// "a mano", se DERIVA cada vez de dos posiciones reales calculadas con
+// _eqToHorizonXYZ (antes y después) de un punto de referencia fijo
+// (RA=0°, Dec=0°) — así el ángulo de giro sale garantizado correcto sin
+// asumir la convención interna de esa función. ═══
+let _threeTopoCeleste = null, _threeTopoNcp = null, _threeTopoRefVec0 = null, _threeTopoBase = null;
+let _threeTopoPlayInterval = null, _threeTopoSpeed = 1;
+const GRADOS_SIDERAL_POR_MIN = 360 / 1436.0704; // día sideral real = 23h56m04s -- por eso "1° cada ~3.98 min", no exactamente 4
+function _anguloRotacionEje(v0, v1, eje) {
+ // ángulo firmado (rad) que rota v0 hasta v1 alrededor de "eje" (unitario)
+ const proy = v => v.clone().sub(eje.clone().multiplyScalar(v.dot(eje)));
+ const p0 = proy(v0).normalize(), p1 = proy(v1).normalize();
+ const cosA = THREE.MathUtils.clamp(p0.dot(p1), -1, 1);
+ const sinA = new THREE.Vector3().crossVectors(p0, p1).dot(eje);
+ return Math.atan2(sinA, cosA);
+}
+function threeTopoActualizarEtiqueta(minutos, ascLonReal) {
+ const lbl = document.getElementById('topo_minuto_label');
+ if (!lbl) return;
+ const signoH = minutos >= 0 ? '+' : '−';
+ const abs = Math.abs(minutos), h = Math.floor(abs / 60), m = abs % 60;
+ const signo = CHART_SIGNS[Math.floor(((ascLonReal % 360) + 360) % 360 / 30)];
+ lbl.textContent = `${signoH}${h}h${String(m).padStart(2, '0')} · ASC ${(ascLonReal % 30).toFixed(1)}° ${signo}`;
+}
+function threeTopoIrAMinuto(minutos) {
+ if (_threeMode !== 'topocentrica' || !_threeTopoCeleste || !_threeTopoBase) return;
+ const { dtISO, lat, lon, ramc } = _threeTopoBase;
+ const ramcNuevo = ramc + minutos * GRADOS_SIDERAL_POR_MIN;
+ const v1 = _eqToHorizonXYZ(0, 0, ramcNuevo, lat);
+ const ang = _anguloRotacionEje(_threeTopoRefVec0, v1, _threeTopoNcp);
+ _threeTopoCeleste.quaternion.setFromAxisAngle(_threeTopoNcp, ang);
+ // el ASC real del instante desplazado, para la etiqueta (cálculo real,
+ // no leído de la rotación) -- confirma además que la rotación geométrica
+ // y el recálculo coinciden, que es justo la garantía de este método
+ const dtNuevo = new Date(new Date(dtISO.endsWith('Z') ? dtISO : dtISO + 'Z').getTime() + minutos * 60000).toISOString();
+ const { asc } = realAscMc(dtNuevo, lat, lon);
+ threeTopoActualizarEtiqueta(minutos, asc);
+}
+function threeTopoSetSpeed(v, btn) {
+ _threeTopoSpeed = parseFloat(v);
+ document.querySelectorAll('#bb_topo_time .bb-speed').forEach(b => b.classList.remove('on'));
+ if (btn) btn.classList.add('on');
+}
+function threeTopoDetener() {
+ if (_threeTopoPlayInterval) { clearInterval(_threeTopoPlayInterval); _threeTopoPlayInterval = null; }
+ const btn = document.getElementById('topo_play_btn'); if (btn) { btn.textContent = '▶'; btn.title = 'Reproducir'; }
+}
+function threeTopoPlayToggle() {
+ if (_threeTopoPlayInterval) { threeTopoDetener(); return; }
+ const btn = document.getElementById('topo_play_btn'), slider = document.getElementById('topo_minuto_slider');
+ btn.textContent = '⏸'; btn.title = 'Pausar';
+ _threeTopoPlayInterval = setInterval(() => {
+ let m = parseFloat(slider.value) + 3 * _threeTopoSpeed; // ~3 min de carta por cuadro a 1× -- recorre las ±12h del slider en unos 20s
+ if (m > 720) m = -720;
+ slider.value = m;
+ threeTopoIrAMinuto(m);
+ }, 40);
 }
 
 // ═══ Abrir en pestaña nueva — la MISMA geometría, pero como página Plotly

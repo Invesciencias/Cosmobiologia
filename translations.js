@@ -8,7 +8,7 @@ window.I18N = {
 
     // ── HEADER ──
     header_h1: "Cosmobiología — Fundación Invesciencias",
-    header_subtitle: "Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style=\"color:var(--oro)\">Primer resultado positivo: Mercurio–Urano en sismos M≥6 — replicación externa pendiente</b>",
+    header_subtitle: "Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style=\"color:var(--oro)\">hacia el principio de investigación de la causalidad por relación estadística</b>",
 
     // ── NAV ──
     nav_guia: "❓ Empieza aquí",
@@ -22,7 +22,7 @@ window.I18N = {
     nav_epidemiologia: "Epidemiología",
     nav_historia_social: "📜 Casos y estudios históricos",
     navgroup_didactica: "III. Didáctica",
-    nav_ayuda: "📖 Metodología",
+    nav_ayuda: "📖 Principios y Métodos",
     nav_ajedrez: "♟ Ajedrez",
     nav_sismos: "🌍 Sismos",
 
@@ -352,7 +352,7 @@ window.I18N = {
 
     // ── HEADER ──
     header_h1: "Cosmobiology — Fundación Invesciencias",
-    header_subtitle: "Matched null model · FDR · Cross-validation · 34,503 events · 11 domains · <b style=\"color:var(--oro)\">First positive result: Mercury–Uranus in M≥6 earthquakes — external replication pending</b>",
+    header_subtitle: "Matched null model · FDR · Cross-validation · 34,503 events · 11 domains · <b style=\"color:var(--oro)\">toward the principle of investigating causality through statistical relation</b>",
 
     // ── NAV ──
     nav_guia: "❓ Start here",
@@ -366,7 +366,7 @@ window.I18N = {
     nav_epidemiologia: "Epidemiology",
     nav_historia_social: "📜 Historical cases & studies",
     navgroup_didactica: "III. Learning modules",
-    nav_ayuda: "📖 Methodology",
+    nav_ayuda: "📖 Principles & Methods",
     nav_ajedrez: "♟ Chess",
     nav_sismos: "🌍 Earthquakes",
 
