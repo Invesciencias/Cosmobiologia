@@ -39,17 +39,23 @@
  header h1{margin:0;font-size:20px;letter-spacing:.3px;color:#fff}
  header p{margin:4px 0 0;color:var(--verde-palido);font-size:13px}
  nav{background:var(--panel);border-bottom:1px solid var(--line)}
- nav .nav-inner{display:flex;align-items:stretch;justify-content:flex-start;gap:2px;padding:0 28px;flex-wrap:wrap;max-width:1200px;margin:0 auto}
- nav button{background:none;border:none;color:var(--muted);padding:14px 16px;cursor:pointer;font-size:14px;border-bottom:3px solid transparent;font-weight:500}
- nav button:hover{color:var(--verde-oscuro)}
- nav button.active{color:var(--verde-oscuro);border-bottom-color:var(--accent);font-weight:600}
+ nav .nav-inner{display:flex;align-items:stretch;justify-content:flex-start;gap:6px;padding:10px 28px;flex-wrap:wrap;max-width:1200px;margin:0 auto}
+ nav button{background:none;border:1.5px solid var(--line);color:var(--muted);padding:9px 15px;cursor:pointer;font-size:14px;border-radius:9px;font-weight:500;transition:border-color .15s,color .15s,background .15s}
+ nav button:hover{color:var(--verde-oscuro);border-color:var(--accent2)}
+ nav button.active{color:#fff;background:var(--verde-oscuro);border-color:var(--verde-oscuro);font-weight:600}
  nav .nav-entry{display:flex;align-items:center}
  nav .nav-group{display:flex;flex-direction:column;align-items:flex-start}
- nav .nav-group-label{font-size:10px;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);padding:8px 16px 0;font-weight:700;opacity:.75}
- nav .nav-group-buttons{display:flex}
+ nav .nav-group-label{font-size:10px;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);padding:0 4px 5px;font-weight:700;opacity:.75}
+ nav .nav-group-buttons{display:flex;gap:6px;flex-wrap:wrap}
  nav .nav-sep{width:1px;background:var(--line);margin:10px 6px;align-self:stretch}
  main{padding:24px 28px;max-width:1200px;margin:0 auto}
  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(26,74,56,.05)}
+ .navquick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:12px}
+ .navquick-card{cursor:pointer;background:var(--panel2);border:2px solid var(--line);border-radius:14px;padding:16px;transition:box-shadow .18s,transform .12s,border-color .18s}
+ .navquick-card:hover{box-shadow:0 6px 16px rgba(26,74,56,.13);transform:translateY(-2px)}
+ .navquick-card .nq-icon{font-size:26px;margin-bottom:8px}
+ .navquick-card .nq-title{font-weight:700;color:var(--verde-oscuro);margin-bottom:4px;font-size:14.5px}
+ .navquick-card .nq-desc{color:var(--muted);font-size:12.5px;line-height:1.35}
  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
  label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
  input,select,textarea{width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 11px;font-size:14px}
@@ -180,7 +186,7 @@
 <!-- ===== ENGLISH SUMMARY BANNER ===== -->
 <div id="en-banner" style="display:none;background:linear-gradient(135deg,#1a3a2e,#2d6a4f);color:#fff;padding:18px 28px;font-size:14px;line-height:1.7;border-bottom:2px solid var(--oro)">
  <div style="max-width:900px;margin:0 auto">
- <h2 style="color:#a8d5b5;font-size:18px;margin:0 0 10px">Cosmobiology Statistical Platform — Fundación Invesciencias</h2>
+ <h2 style="color:#a8d5b5;font-size:18px;margin:0 0 10px">Cosmobiology Statistical Platform</h2>
  <p style="margin:0 0 10px"><b>What this platform does:</b>Tests whether planetary configurations (aspects, lunar phases, tidal forces) are statistically associated with natural extreme events — earthquakes, hurricanes, volcanic eruptions, floods, and other disasters — using a rigorous matched null model and pre-registered hypotheses.</p>
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0">
  <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
@@ -221,7 +227,7 @@
 <span class="nav-group-label" data-i18n="navgroup_asistencia">II. Asistencia social</span>
 <div class="nav-group-buttons">
 <button data-tab="epidemiologia" data-i18n="nav_epidemiologia">Epidemiología</button>
-<button data-tab="historia_social" data-i18n="nav_historia_social">📜 Casos y estudios históricos</button>
+<button data-tab="historia_social" data-i18n="nav_historia_social">Casos y estudios históricos</button>
 </div>
 </div>
 <div class="nav-sep"></div>
@@ -229,9 +235,9 @@
 <span class="nav-group-label" data-i18n="navgroup_didactica">III. Didáctica</span>
 <div class="nav-group-buttons">
 <button data-tab="ayuda" data-i18n="nav_ayuda">Principios y Métodos</button>
-<button data-tab="ajedrez" data-i18n="nav_ajedrez">♟ Ajedrez</button>
-<button data-tab="sismos" data-i18n="nav_sismos">🌍 Sismos</button>
-<button data-tab="eras_precesionales">♒ Eras precesionales</button>
+<button data-tab="ajedrez" data-i18n="nav_ajedrez">Ajedrez</button>
+<button data-tab="sismos" data-i18n="nav_sismos">Sismos</button>
+<button data-tab="eras_precesionales">Eras precesionales</button>
 </div>
 </div>
 </div>
@@ -255,29 +261,106 @@
  </div>
  </div>
 
+ <!-- NAVEGACIÓN RÁPIDA — tarjetas clicables, arriba del todo para que se
+ vea de una vez qué se puede hacer, antes de llegar al Mapa Cósmico. -->
+ <div class="card">
+ <h2 data-i18n="nav_quick_h2">¿Por dónde quieres empezar, según tu perfil?</h2>
+ <div class="navquick-grid">
+ <div class="navquick-card" style="border-color:var(--accent2)" onclick="document.querySelector('[data-tab=tablero]').click()">
+ <div class="nq-title" data-i18n="nav_quick_ver">Ver resultados</div>
+ <div class="nq-desc" data-i18n="nav_quick_tablero_desc">Tablero — elige un dominio, explora el volcano plot</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--verde)" onclick="document.querySelector('[data-tab=mapa]').click()">
+ <div class="nq-title" data-i18n="nav_quick_mapa">Ver los datos en el mapa</div>
+ <div class="nq-desc" data-i18n="nav_quick_mapa_desc">Mapa y grilla — filtra por dominio y zona geográfica</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--oro)" onclick="document.querySelector('[data-tab=captura]').click()">
+ <div class="nq-title" data-i18n="nav_quick_agregar">Agregar mis datos</div>
+ <div class="nq-desc" data-i18n="nav_quick_captura_desc">Captura — ingreso manual, CSV, o nube compartida</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--accent2)" onclick="document.querySelector('[data-tab=hipotesis]').click()">
+ <div class="nq-title" data-i18n="nav_quick_hipotesis">Formular una hipótesis</div>
+ <div class="nq-desc" data-i18n="nav_quick_hip_desc">Hipótesis — redacta, guarda y pre-registra en OSF</div>
+ </div>
+ <div class="navquick-card" style="border-color:#8e44ad" onclick="threeIrACartaAstral()">
+ <div class="nq-title">Carta astral</div>
+ <div class="nq-desc">La tuya, la de alguien más, o la de un evento ya registrado (sismos, huracanes...)</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--verde)" onclick="document.querySelector('[data-tab=ayuda]').click()">
+ <div class="nq-title" data-i18n="nav_quick_estadistica">Entender la estadística</div>
+ <div class="nq-desc" data-i18n="nav_quick_met_desc">Metodología — modelo nulo, FDR, artefactos</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--oro)" onclick="document.querySelector('[data-tab=fuentes]').click()">
+ <div class="nq-title" data-i18n="nav_quick_datos">Más datos gratis</div>
+ <div class="nq-desc" data-i18n="nav_quick_fuentes_desc">Fuentes — catálogos públicos por ciencia</div>
+ </div>
+ <div class="navquick-card" style="border-color:#9b59b6" onclick="document.querySelector('[data-tab=eras_precesionales]').click()">
+ <div class="nq-title">¿Cuándo empieza la Era de Acuario?</div>
+ <div class="nq-desc">Eras precesionales — el cálculo real (IAU/Newcomb) vs. el del Dr. Raynaud de la Ferrière, con el mapa de estrellas y 5 culturas del cielo en vivo</div>
+ </div>
+ </div>
+ </div>
+
  <!-- ═══ MAPA CÓSMICO — un solo escenario, un HUD lateral corto, un panel
  de detalle abajo que cambia según lo que elijas. ═══ -->
  <div class="card">
- <h2>Mapa Cósmico — mira lo que estamos calculando</h2>
- <p class="small muted" style="margin-bottom:10px">Elige una vista. Rota con el mouse, haz zoom con la rueda — el detalle de cada vista aparece debajo del mapa.</p>
+ <h2>Mapa Cósmico</h2>
+ <p class="small muted" style="margin-bottom:12px">Así está organizado el mapa de abajo — mismo esquema, con lo que hace cada parte. Rota con el mouse, haz zoom con la rueda.</p>
 
- <p class="small muted" style="margin:-4px 0 8px">👈 Pasa el mouse sobre cualquier botón del mapa para ver qué hace. Rota con el mouse, haz zoom con la rueda.</p>
+ <!-- Diagrama esquemático: misma forma que el mapa real (riel izq. / canvas /
+ riel der. / barra de tiempo), para explicar con símbolos en vez de párrafos. -->
+ <div style="display:flex;border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-bottom:6px;min-height:150px">
+ <div style="background:#0a1420;padding:10px 6px;display:flex;flex-direction:column;gap:7px;align-items:center;width:58px;flex:none">
+ <span style="font-size:18px">🌍</span><span style="font-size:18px">☀️</span><span style="font-size:18px">✨</span><span style="font-size:18px">🔮</span><span style="font-size:18px">🏛️</span>
+ </div>
+ <div style="flex:1;background:radial-gradient(ellipse at center,#13233a,#0a1420);display:flex;align-items:center;justify-content:center;color:#cfe0da;font-size:12.5px;text-align:center;padding:10px">
+ 🖱️ rota · 🔍 zoom<br><span style="opacity:.7">(el detalle de la vista elegida aparece debajo del mapa)</span>
+ </div>
+ <div style="background:#0a1420;padding:10px 6px;display:flex;flex-direction:column;gap:7px;align-items:center;width:58px;flex:none">
+ <span style="font-size:16px">⛶</span><span style="font-size:16px">🌍</span><span style="font-size:16px">👁️</span><span style="font-size:16px">⏱️</span>
+ </div>
+ </div>
+ <div style="display:flex;font-size:11px;color:var(--muted);margin-bottom:4px">
+ <div style="width:58px;flex:none;text-align:center">↑<br><b>Elige vista</b></div>
+ <div style="flex:1;text-align:center">↑ <b>rota / haz zoom aquí</b></div>
+ <div style="width:58px;flex:none;text-align:center">↑<br><b>Controles extra</b></div>
+ </div>
+ <div style="background:#0a1420;color:#cfe0da;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:10px;font-size:12px;margin-bottom:4px">
+ <span>▶</span><span style="flex:1;height:3px;background:linear-gradient(90deg,var(--accent),rgba(255,255,255,.15));border-radius:2px;position:relative"><span style="position:absolute;left:35%;top:-4px;width:11px;height:11px;border-radius:50%;background:#fff"></span></span><span>🕰️</span>
+ </div>
+ <p class="small muted" style="margin:0 0 14px">↑ <b>La barra de tiempo</b> — cambia según la vista elegida a la izquierda; cada una avanza en una unidad de tiempo distinta (ver tarjetas debajo). Si no parece corresponder a lo que ves, cambia de vista y vuelve.</p>
 
- <div class="hint" style="margin:0 0 10px;font-size:13px">
- <b>🕰️ La barra de tiempo de abajo del mapa cambia según lo que elijas a la izquierda</b> — no es siempre la misma barra. Cada vista tiene su propio control porque cada una avanza en una unidad de tiempo distinta:
- <ul style="margin:6px 0 4px 20px;padding:0">
- <li><b>🌍 Tierra: sus movimientos</b> — un slider de 0 a 1.000 días, con casillas para aislar rotación (24 h reales), traslación (1 año real), nutación y precesión (estas dos, muy aceleradas — sus ciclos reales duran ≈18,6 años y ≈25.772 años).</li>
- <li><b>☀️✨🌌 Sistema Solar / Estrellas / Galaxia</b> — recorre años calendario reales, de 1900 a 2100.</li>
- <li><b>🔮 Carta astral</b> — recorre la fecha exacta del evento que estés viendo (años o días de un año, según el modo).</li>
- <li><b>🏛️ Topocentrismo (esfera de casas 3D)</b> — recorre minutos alrededor del instante exacto del evento (±12 horas).</li>
- <li><b>🌀 Cicloide de Llona</b> — no avanza fecha real: reproduce, a una velocidad esquemática que tú eliges (0.1× a 2×), el trazo completo de la curva.</li>
- </ul>
- Si una barra no parece corresponder a lo que estás viendo, cambia de vista y vuelve — cada botón de la izquierda activa su propia barra y apaga las demás.
+ <p class="small muted" style="margin:0 0 6px"><b>🕰️ Qué mueve cada barra de tiempo, según la vista:</b></p>
+ <div class="navquick-grid" style="margin-top:0;margin-bottom:14px">
+ <div class="navquick-card" style="border-color:var(--accent2)" onclick="threeCardGo('tierra')">
+ <div class="nq-icon">🌍</div>
+ <div class="nq-title">Tierra: sus movimientos</div>
+ <div class="nq-desc">0 a 1.000 días — con casillas para aislar rotación (24h reales), traslación (1 año real), nutación y precesión (aceleradas: ≈18,6 y ≈25.772 años reales).</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--oro)" onclick="threeCardGo('sistema')">
+ <div class="nq-icon">☀️✨🌌</div>
+ <div class="nq-title">Sistema Solar / Estrellas / Galaxia</div>
+ <div class="nq-desc">Años calendario reales, de 1900 a 2100.</div>
+ </div>
+ <div class="navquick-card" style="border-color:#8e44ad" onclick="threeCardGo('carta')">
+ <div class="nq-icon">🔮</div>
+ <div class="nq-title">Carta astral</div>
+ <div class="nq-desc">La fecha exacta del evento que estés viendo (años o días de un año, según el modo).</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--verde)" onclick="threeCardGo('topocentrismo')">
+ <div class="nq-icon">🏛️</div>
+ <div class="nq-title">Topocentrismo (esfera de casas 3D)</div>
+ <div class="nq-desc">Minutos alrededor del instante exacto del evento (±12 horas).</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--accent2)" onclick="threeCardGo('llona')">
+ <div class="nq-icon">🌀</div>
+ <div class="nq-title">Cicloide de Llona</div>
+ <div class="nq-desc">No avanza fecha real: reproduce el trazo completo de la curva a la velocidad esquemática que elijas (0.1× a 2×).</div>
+ </div>
  </div>
 
  <div class="hint" style="margin:0 0 10px;font-size:13px">
- <b>➡️ La columna de íconos a la <u>derecha</u> del mapa</b> es un riel de accesos rápidos a controles extra — distinto del riel de la izquierda (que cambia de vista) y de la barra de tiempo de abajo (que mueve el reloj). El ⛶ (pantalla completa) siempre está ahí; los demás íconos cambian según la vista activa.
- <p style="margin:8px 0 0">Casi ningún ícono de este riel hace algo directamente al pulsarlo — en vez de eso, <b>abre un pequeño menú flotante ("flyout") justo al lado</b>, con las opciones concretas de ese grupo (por ejemplo, 🌍 abre rotación/traslación/precesión/nutación; 👁️ abre las vistas de cámara; ➰, cuando estás en la Cicloide de Llona, abre Caso/Latitud φ/Curvas Rdr'). Es la misma lógica en toda la plataforma: un ícono = una categoría, un clic = ver sus opciones sin bajar al panel de detalle. Pulsa cualquier otro ícono, o fuera del menú, para cerrarlo.</p>
+ <b>➡️ El riel de la derecha</b> son accesos rápidos a controles extra. Casi ningún ícono hace algo al pulsarlo directamente — abre un pequeño menú flotante justo al lado con las opciones de ese grupo (🌍 = rotación/traslación/precesión/nutación; 👁️ = vistas de cámara; ➰, en la Cicloide de Llona, = Caso/Latitud φ/Curvas Rdr'). Un ícono = una categoría, un clic = ver sus opciones. El ⛶ (pantalla completa) es el único que siempre está ahí.
  </div>
 
  <div class="map-shell" id="map_shell">
@@ -285,10 +368,11 @@
  <!-- se llena por JS (railBuild) para poder mostrar tooltip propio sin depender de title nativo -->
  </div>
  <div class="map-canvas-wrap">
- <div id="three_canvas_container" style="width:100%;height:380px;position:relative">
+ <div id="three_canvas_container" style="width:100%;height:480px;position:relative">
  <div id="three_canvas" style="width:100%;height:100%"></div>
- <svg id="chart_wheel_svg" viewBox="0 0 400 400" style="display:none;width:100%;height:100%;background:#fff"></svg>
+ <svg id="chart_wheel_svg" viewBox="-20 0 420 430" style="display:none;width:100%;height:100%;background:#fff"></svg>
  <div id="three_tooltip" style="display:none;position:absolute;pointer-events:none;background:rgba(10,20,32,.92);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;line-height:1.5;z-index:20;white-space:nowrap;border:1px solid rgba(255,255,255,.2)"></div>
+ <div id="three_medir_label" style="display:none;position:absolute;pointer-events:none;background:rgba(255,85,85,.92);color:#fff;padding:4px 10px;border-radius:14px;font-size:13px;font-weight:700;z-index:21;white-space:nowrap;transform:translate(-50%,-50%)"></div>
  <div class="mc-rotate-hint" id="mc_rotate_hint">🔄 Gira tu teléfono para verlo mejor</div>
  <div class="map-bottombar" id="map_bottombar">
  <div id="bb_movs" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
@@ -458,6 +542,20 @@
  </div>
 
  <div id="three_panel_evento" style="display:none">
+ <div class="row" style="margin-bottom:8px;align-items:center;background:var(--panel2);border-radius:10px;padding:8px 12px">
+ <label class="small" style="margin:0;font-weight:700">💾 Mis cartas guardadas:</label>
+ <select id="three_cartas_select" onchange="threeCargarCartaGuardada()" style="max-width:180px"><option value="">— ninguna guardada —</option></select>
+ <input type="text" id="three_carta_nombre" placeholder="nombre (ej. 'yo', 'mamá')" style="max-width:150px">
+ <button class="ghost act" style="font-size:12px" onclick="threeGuardarCartaActual()">💾 Guardar esta carta</button>
+ <button class="ghost act" style="font-size:12px;border-color:#c0392b;color:#c0392b" onclick="threeBorrarCartaGuardada()">🗑️ Borrar</button>
+ </div>
+ <div class="small muted" style="margin-bottom:10px">Se guarda solo en <b>este navegador, en tu computadora</b> (localStorage) — nunca se envía a ningún servidor ni lo ve nadie más. Si cambias de navegador o de dispositivo, no vas a verla ahí; hay que guardarla de nuevo.</div>
+ <div class="row" style="margin-bottom:10px;align-items:center;background:var(--panel2);border-radius:10px;padding:8px 12px">
+ <label class="small" style="margin:0;font-weight:700">📊 Ver la carta de un evento ya registrado:</label>
+ <select id="three_evento_dominio_sel" onchange="threePoblarEventosDominio()" style="max-width:220px"><option value="">— tipo de evento —</option></select>
+ <select id="three_evento_registrado_sel" onchange="threeCargarEventoRegistrado()" style="max-width:280px"><option value="">— elegir evento —</option></select>
+ </div>
+ <div class="small muted" id="three_evento_registrado_nota" style="margin-bottom:10px"></div>
  <div class="hint" style="margin-bottom:10px"><b>Importante:</b> escribe tu hora <b>local</b> (la del reloj en ese momento y lugar) — la página convierte a UTC. <details class="tccinfo" style="display:inline"><summary style="display:inline">¿Por qué importa?</summary><p class="tccinfo-body small">Si escribes la hora ya convertida a UTC a mano, o eliges una ciudad distinta a tu lugar real, el Ascendente sale mal — puede desviarse varios signos con solo un par de horas de error. El Ascendente y las casas dependen del lugar, no solo de la fecha.</p></details></div>
  <div class="row" style="margin-bottom:8px;align-items:center">
  <label class="small" style="margin:0">Fecha:</label>
@@ -479,6 +577,16 @@
  <label class="small" style="margin:0">Longitud:</label>
  <input type="number" id="three_evento_lon" step="0.0001" value="142.4" style="max-width:110px">
  <button class="act" onclick="threeCalcularEvento()">Calcular carta</button>
+ <button class="ghost act" onclick="threeActualizarAhora()" title="Agrega al mapa (sin tocar tu carta) un segundo anillo con las posiciones reales del cielo en este momento -- para comparar tu carta natal contra ahora mismo, como un tránsito.">🕐 + Cielo de ahora</button>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_ahora_on" onchange="threeToggleAhoraOn()"> Mostrar</label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_ahora_auto" onchange="threeToggleAutoAhora()"> 🔴 en vivo (cada 30s)</label>
+ </div>
+ <div class="row" style="margin-bottom:8px;align-items:center">
+ <label class="small" style="margin:0">Progresión secundaria a la fecha:</label>
+ <input type="date" id="three_prog_fecha" style="max-width:145px">
+ <button class="ghost act" onclick="threeActualizarProgresion()" title="Progresiones secundarias (1 día tras el nacimiento = 1 año de vida): recalcula las posiciones en la fecha progresada equivalente y las agrega como un tercer anillo, sin tocar tu carta natal. Deja la fecha vacía para progresar a hoy.">📈 + Progresión secundaria</button>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_prog_on" onchange="threeToggleProgOn()"> Mostrar</label>
+ <span id="three_prog_edad" class="small muted"></span>
  </div>
  <div class="row" style="margin-bottom:8px;align-items:center">
  <label class="small" style="margin:0">Ir directo a:</label>
@@ -490,12 +598,18 @@
  <button class="ghost act" onclick="threeAbrirEsferaEnPestana()">🔗 Abrir en pestaña nueva (fondo claro)</button>
  </div>
  <div class="row" style="margin:0 0 6px;gap:14px">
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_casas" onchange="threeCalcularEvento()"> Casas topocéntricas</label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_casas" checked onchange="threeCalcularEvento()"> Casas topocéntricas</label>
  <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_eclip" onchange="threeCalcularEvento()"> Plano eclíptica + punto vernal</label>
  <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_ecuador" onchange="threeCalcularEvento()"> Ecuador celeste</label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_aspectos" checked onchange="threeCalcularEvento()"> Aspectos (líneas + grilla)</label>
  </div>
  <details class="tccinfo"><summary>¿Qué son estas 3 casillas?</summary><p class="tccinfo-body small muted"><b>Casas topocéntricas</b> (Polich-Page): cúspides desiguales, dependen de tu latitud real. <b>Plano eclíptica + punto vernal</b>: marca el 0° Aries, origen de las longitudes. <b>Ecuador celeste</b>: su intersección con la eclíptica ES el punto vernal.</p></details>
+ <div style="margin-bottom:6px"><button class="ghost act" style="font-size:11px;padding:4px 9px" onclick="threeToggleLeyendaGrados()" id="three_leyenda_modo_btn">🔄 Ver en grados 0-360°</button></div>
  <div id="three_evento_leyenda" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;font-size:12px"></div>
+ <div id="chart_aspects_wrap" style="display:none">
+ <div style="font-weight:700;font-size:13px;margin:10px 0 6px;color:var(--verde-oscuro)">🔗 Aspectos</div>
+ <div id="chart_aspects_grid" style="overflow-x:auto"></div>
+ </div>
  </div>
 
  <div id="three_panel_const" style="display:none">
@@ -833,7 +947,7 @@
 
  <!-- RESULTADO DESTACADO -->
  <div class="card" style="border-left:4px solid #C8A84B">
- <h2>Resultados del primer paper — Sismos M≥6 (Fundación Invesciencias)</h2>
+ <h2>Resultados del primer paper</h2>
  <p class="small muted">Análisis sobre 3.730 terremotos M≥6 (USGS, 2000–2024) y 6.169 mainshocks GCMT (1976–2024, declustered Gardner-Knopoff). Metodología: modelo nulo emparejado ±30 días · Von Neumann · FDR Benjamini-Hochberg · validación split 50/50 · pre-registro OSF.</p>
 
  <!-- CONFIRMADO -->
@@ -908,7 +1022,7 @@
 
  <!-- SINTESIS: QUE HACER CON UN RESULTADO QUE NO REPLICA -->
  <div id="met_sintesis_replica" class="card" style="border-left:4px solid var(--accent2);margin-top:16px">
- <h2>Ninguno de estos casos replicó — ¿y ahora qué? Cuatro palancas, no una</h2>
+ <h2>Ninguno de estos casos replicó</h2>
  <p class="small muted">Todos los casos de esta página comparten el mismo patrón: un hallazgo exploratorio fuerte que se diluye o desaparece al exigirle independencia real. Antes de descartar la hipótesis, hay cuatro preguntas distintas que conviene separar — confundirlas es la forma más común de tirar una hipótesis viva a la basura, o de insistir en una que ya está muerta.</p>
 
  <div style="overflow-x:auto;margin:12px 0">
@@ -970,39 +1084,6 @@
  </tbody>
  </table>
  <p class="small muted" style="margin-top:10px">Los datos ya cargados incluyen <b id="hero_n_events2">34.503</b> eventos de <b id="hero_n_domains2">11</b> dominios. Ver la pestaña <b>Fuentes</b> para saber cómo añadir los tuyos.</p>
- </div>
-
- <!-- NAVEGACIÓN RÁPIDA -->
- <div class="card">
- <h2 data-i18n="nav_quick_h2">¿Por dónde empezar según tu perfil?</h2>
- <table>
- <tbody>
- <tr>
- <td style="white-space:nowrap"><b data-i18n="nav_quick_ver">Quiero ver resultados</b></td>
- <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=tablero]').click()">Tablero</button> <span data-i18n="nav_quick_tablero_desc">— elige un dominio, explora el volcano plot</span></td>
- </tr>
- <tr>
- <td style="white-space:nowrap"><b data-i18n="nav_quick_mapa">Quiero ver los datos en el mapa</b></td>
- <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=mapa]').click()">Mapa y grilla</button> <span data-i18n="nav_quick_mapa_desc">— filtra por dominio y zona geográfica</span></td>
- </tr>
- <tr>
- <td style="white-space:nowrap"><b data-i18n="nav_quick_agregar">Quiero agregar mis datos</b></td>
- <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=captura]').click()">Captura</button> <span data-i18n="nav_quick_captura_desc">— ingreso manual, CSV, o nube compartida</span></td>
- </tr>
- <tr>
- <td style="white-space:nowrap"><b data-i18n="nav_quick_hipotesis">Quiero formular una hipótesis</b></td>
- <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=hipotesis]').click()">Hipótesis</button> <span data-i18n="nav_quick_hip_desc">— redacta, guarda y pre-registra en OSF</span></td>
- </tr>
- <tr>
- <td style="white-space:nowrap"><b data-i18n="nav_quick_estadistica">Quiero entender la estadística</b></td>
- <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=ayuda]').click()">Metodología</button> <span data-i18n="nav_quick_met_desc">— modelo nulo, FDR, artefactos</span></td>
- </tr>
- <tr>
- <td style="white-space:nowrap"><b data-i18n="nav_quick_datos">Quiero más datos gratis</b></td>
- <td>→ <button class="ghost act" style="font-size:13px;padding:3px 10px" onclick="document.querySelector('[data-tab=fuentes]').click()">Fuentes</button> <span data-i18n="nav_quick_fuentes_desc">— catálogos públicos por ciencia</span></td>
- </tr>
- </tbody>
- </table>
  </div>
 
  <!-- FAQ ESENCIAL -->
@@ -1248,7 +1329,7 @@
  </div>
 
  <div class="card">
- <h2 data-i18n="tablero_volcano_h2">Volcano plot — efecto vs. significancia</h2>
+ <h2 data-i18n="tablero_volcano_h2">Volcano plot</h2>
  <div class="hint" data-i18n-html="tablero_volcano_hint">Cada punto es una configuración astrológica. <b>Eje X</b>: tamaño de efecto (log₂ del riesgo relativo; derecha = exceso sobre el azar, izquierda = déficit). <b>Eje Y</b>: significancia (−log₁₀ p). Lo <span class="sig">verde</span> sobrevive la corrección por comparaciones múltiples (FDR&lt;0.05): ahí está la ciencia.</div>
  <div class="row">
  <select id="filterType" onchange="renderCharts()">
@@ -1475,7 +1556,7 @@
  </div>
 
  <div class="card">
- <h2 data-i18n="mapa_grilla_h2">Grilla espacial — similitudes por zona</h2>
+ <h2 data-i18n="mapa_grilla_h2">Grilla espacial</h2>
  <div id="grid" style="height:460px"></div>
  </div>
 
@@ -1493,7 +1574,7 @@
  </div>
 
  <div class="card">
- <h2 data-i18n="mapa_astro_h2">Astrología de la selección — zona vs. resto del mundo</h2>
+ <h2 data-i18n="mapa_astro_h2">Astrología de la selección</h2>
  <div class="hint" data-i18n-html="mapa_astro_hint">Selecciona una <b>celda</b> en la grilla de arriba (y opcionalmente un rango de años). Aquí se comparan las configuraciones astrológicas de esa zona contra el <b>resto</b> de los eventos, con prueba z de proporciones y corrección FDR. Lo <span class="sig">verde</span> es significativo. <b>Exploratorio</b>: las diferencias entre zonas también pueden reflejar cuándo se registró cada zona, así que esto <i>genera</i> hipótesis para confirmar después con el modelo nulo emparejado.</div>
  <div class="row">
  <select id="astro_filter" onchange="renderAstro()">
@@ -1513,7 +1594,7 @@
 <!-- ===================== HIPÓTESIS Y EXPANSIÓN ===================== -->
 <section id="hipotesis" style="display:none">
  <div class="card" style="border-left:4px solid var(--ok)">
- <h2 data-i18n="hip_ejemplo_h2">Ejemplo de hipótesis confirmada — úsala como plantilla</h2>
+ <h2 data-i18n="hip_ejemplo_h2">Ejemplo de hipótesis confirmada</h2>
  <p class="small muted" data-i18n="hip_ejemplo_subtitle">Esta es la primera hipótesis confirmada del proyecto. Sirve como modelo para entender cómo se formula, pre-registra y valida una hipótesis en esta plataforma.</p>
  <div style="background:var(--panel2);border-radius:8px;padding:14px 16px;margin:12px 0;font-size:14px;line-height:1.7">
  <span data-i18n-html="hip_ejemplo_dominio"><b>Dominio:</b>Sismos M≥6 (USGS 2000–2024, n=3.730)</span><br>
@@ -1607,7 +1688,7 @@
  </div>
 
  <div class="card" style="border-left:4px solid var(--accent2)">
- <h2>Hipótesis históricas — Raynaud de la Ferrière y Llona</h2>
+ <h2>Hipótesis históricas</h2>
  <p class="small muted">Estas hipótesis fueron formuladas cualitativamente por los fundadores de la cosmobiología. Esta plataforma permite someterlas por primera vez a prueba cuantitativa rigurosa con datos globales y modelo nulo emparejado.</p>
 
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px">
@@ -1658,7 +1739,7 @@
 <!-- ===================== FUENTES ===================== -->
 <section id="fuentes" style="display:none">
  <div class="card" style="border-left:4px solid var(--oro)">
- <h2>📦 El repositorio del proyecto — qué hay y para qué sirve cada cosa</h2>
+ <h2>📦 El repositorio del proyecto</h2>
  <p class="small muted">Todo el código, los catálogos y esta misma página viven en un repositorio público. No hace falta descargar nada para usar la plataforma — es para quien quiera reproducir un análisis, auditar un resultado, o construir un módulo nuevo.</p>
  <p style="margin:10px 0"><a class="act" style="text-decoration:none;display:inline-block" href="https://github.com/Invesciencias/Cosmobiologia" target="_blank" rel="noopener">↗ github.com/Invesciencias/Cosmobiologia</a></p>
  <div style="overflow-x:auto;margin-top:8px">
@@ -1706,7 +1787,7 @@
  </div>
 
  <div class="card">
- <h2 data-i18n="fuentes_eonet_h2">Inundaciones y sequías — NASA EONET</h2>
+ <h2 data-i18n="fuentes_eonet_h2">Inundaciones y sequías</h2>
  <p class="small muted" data-i18n-html="fuentes_eonet_p">EONET (Earth Observatory Natural Event Tracker) reúne eventos naturales con fecha y coordenadas, <b>gratis y sin clave</b>. Ya descargamos 743 inundaciones y 7 sequías.</p>
  <div class="hint">
  <b>Descarga automática (1 comando):</b><br>
@@ -1723,7 +1804,7 @@
  </div>
 
  <div class="card">
- <h2 data-i18n="fuentes_emdat_h2">Sequías y desastres con impacto poblacional — EM-DAT</h2>
+ <h2 data-i18n="fuentes_emdat_h2">Sequías y desastres con impacto poblacional</h2>
  <p class="small muted" data-i18n-html="fuentes_emdat_p">EM-DAT es la base de referencia para el <b>impacto en la población</b>: muertos, afectados y daños económicos de desastres de todo tipo, incluidas las sequías. Requiere registro académico gratis.</p>
  <div class="hint">1. Crea cuenta en <a href="https://public.emdat.be" target="_blank" style="color:var(--accent2)">public.emdat.be</a><br>2. Filtra y exporta a CSV (guárdalo como <code>emdat.csv</code>)<br>3. <code>python convertir_emdat.py --local emdat.csv</code> → <code>eventos_emdat.csv</code> (con muertos/afectados/daños en <code>extra_json</code>)
  </div>
@@ -1867,31 +1948,76 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <b>Haz clic en cualquier término subrayado</b> para ver su definición completa. Los términos en <span class="glos">color verde</span> abren una explicación detallada.
  </div>
 
- <!-- ÍNDICE RÁPIDO -->
- <div class="card" style="padding:14px 18px">
- <p style="margin:0 0 8px;font-weight:600" data-i18n="met_index_title">Secciones de esta página:</p>
- <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px">
- <a href="#met_marco" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Marco científico</a>
- <a href="#met_principios" style="color:var(--oro);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px;font-weight:600">★ Los 5 principios de la TCC</a>
- <a href="#met_nulo" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Modelo nulo</a>
- <a href="#met_fdr" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">FDR + Von Neumann</a>
- <a href="#met_split" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Split validation</a>
- <a href="#met_artefactos" style="color:var(--oro);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Artefactos ← leer primero</a>
- <a href="#met_estrat" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Estratificación</a>
- <a href="#met_rasgos" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Grupos de rasgos</a>
- <a href="#met_flujo" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Flujo de trabajo</a>
- <a href="#met_duplas" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Duplas / Tripletas</a>
- <a href="#met_cineticos" style="color:#e67e22;text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Factores Cinéticos</a>
- <a href="#met_precesion" style="color:#8e44ad;text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Coordenadas Precesionales</a>
- <a href="#met_lmm" style="color:#2980b9;text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Modelos Mixtos (LMM/GLMM)</a>
- <a href="#met_diversificada" style="color:#d35400;text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Interpretación Diversificada</a>
- <a href="#met_llona" style="color:#16a085;text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Geodinámica de Llona</a>
- <a href="#met_tcc_expertos" style="color:var(--oro);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Para conocedores de la TCC</a>
- <a href="#met_gauquelin" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Gauquelin</a>
- <a href="#met_codigos" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Clasificación decimal</a>
- <a href="#met_notacion" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Notación y símbolos</a>
- <a href="#met_glosario" style="color:var(--accent2);text-decoration:none;background:var(--panel2);padding:4px 12px;border-radius:16px">Glosario</a>
+ <!-- ÍNDICE — reorganizado en 4 categorías con tarjetas (antes era una sola
+ lista plana de 20 píldoras iguales, donde cosas importantes como la
+ calculadora de Direcciones Primarias o la de Duplas/Tripletas quedaban
+ perdidas entre el resto sin ninguna jerarquía visual). -->
+ <div class="card">
+ <p style="margin:0 0 4px;font-weight:700;font-size:16px" data-i18n="met_index_title">¿Qué hay en esta pestaña?</p>
+ <p class="small muted" style="margin-bottom:12px">20 secciones, organizadas en 4 grupos. Incluye dos calculadoras interactivas reales (no solo texto) que son fáciles de pasar por alto más abajo en la página.</p>
+ <div class="navquick-grid">
+ <div class="navquick-card" style="border-color:var(--accent2)" onclick="location.hash='met_marco'">
+ <div class="nq-icon">🔭</div>
+ <div class="nq-title">Marco científico (astronomía)</div>
+ <div class="nq-desc">Qué calculamos, aspectos, signos, distancias a las estrellas, eras precesionales, notación, glosario</div>
  </div>
+ <div class="navquick-card" style="border-color:#8e44ad" onclick="location.hash='met_principios'">
+ <div class="nq-icon">★</div>
+ <div class="nq-title">Principios de la Cosmobiología</div>
+ <div class="nq-desc">Los principios de la TCC, Geodinámica de Llona, Gauquelin, para conocedores de la TCC</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--verde)" onclick="location.hash='met_nulo'">
+ <div class="nq-icon">📐</div>
+ <div class="nq-title">Estadística (matemática)</div>
+ <div class="nq-desc">Modelo nulo, FDR, Von Neumann, validación cruzada, artefactos, estratificación, modelos mixtos</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--oro)" onclick="location.hash='met_duplas'">
+ <div class="nq-icon">🧮</div>
+ <div class="nq-title">Herramientas interactivas</div>
+ <div class="nq-desc">Calculadora de Duplas/Tripletas y de Direcciones Primarias — cálculos reales, no solo lectura</div>
+ </div>
+ </div>
+
+ <details class="tccinfo" style="margin-top:14px">
+ <summary>Ver el índice completo, sección por sección</summary>
+ <div class="small" style="margin-top:10px">
+ <p style="margin:0 0 4px"><b style="color:var(--accent2)">🔭 Marco científico</b></p>
+ <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+ <a href="#met_marco" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Astronomía de posición</a>
+ <a href="#met_distancias" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Distancias a las estrellas (paralaje)</a>
+ <a href="#" onclick="document.querySelector('[data-tab=eras_precesionales]').click();return false" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Eras precesionales (Piscis/Acuario)</a>
+ <a href="#met_codigos" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Clasificación decimal</a>
+ <a href="#met_notacion" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Notación y símbolos</a>
+ <a href="#met_glosario" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Glosario</a>
+ </div>
+ <p style="margin:0 0 4px"><b style="color:#8e44ad">★ Principios de la Cosmobiología</b></p>
+ <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+ <a href="#met_principios" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Los 5 principios de la TCC</a>
+ <a href="#met_llona" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Geodinámica de Llona</a>
+ <a href="#met_gauquelin" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Efecto Gauquelin</a>
+ <a href="#met_diversificada" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Interpretación diversificada</a>
+ <a href="#met_tcc_expertos" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Para conocedores de la TCC</a>
+ </div>
+ <p style="margin:0 0 4px"><b style="color:var(--verde)">📐 Estadística</b></p>
+ <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+ <a href="#met_nulo" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Modelo nulo</a>
+ <a href="#met_fdr" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">FDR + Von Neumann</a>
+ <a href="#met_split" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Validación cruzada</a>
+ <a href="#met_artefactos" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none;border-color:var(--oro)">Artefactos ← leer primero</a>
+ <a href="#met_estrat" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Estratificación</a>
+ <a href="#met_rasgos" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Grupos de rasgos</a>
+ <a href="#met_flujo" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Flujo de trabajo</a>
+ <a href="#met_lmm" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Modelos mixtos (LMM/GLMM)</a>
+ <a href="#met_potencia" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Curva de potencia</a>
+ </div>
+ <p style="margin:0 0 4px"><b style="color:var(--oro)">🧮 Herramientas interactivas</b></p>
+ <div style="display:flex;flex-wrap:wrap;gap:6px">
+ <a href="#met_duplas" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Calculadora de Duplas/Tripletas</a>
+ <a href="#met_cineticos" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Calculadora de Direcciones Primarias</a>
+ <a href="#met_precesion" class="ghost act" style="font-size:12px;padding:3px 10px;text-decoration:none">Simulador de precesión</a>
+ </div>
+ </div>
+ </details>
  </div>
 
  <!-- PARA PROFUNDIZAR — apoyo para quien no domina un concepto, en vez de
@@ -1955,6 +2081,14 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p>Para los <b>aspectos planeta–planeta</b> (las separaciones angulares entre dos planetas) la distinción tropical/sidéreo <b>no importa</b>: si Mercurio y Urano están a 3° de separación, lo están en cualquier sistema de coordenadas. La diferencia solo afecta la posición absoluta de un planeta en su sector de la eclíptica, no la geometría relativa entre planetas.</p>
  <p>En este proyecto <b>no analizamos signos zodiacales como variable</b>. La unidad de análisis es la separación angular entre pares de planetas y la posición relativa de planetas respecto al horizonte local (casas). Los signos son solo una convención de nomenclatura para describir en qué parte de la eclíptica está cada planeta.</p>
 
+ <h3 id="met_distancias">¿Cómo se miden las distancias a las estrellas?</h3>
+ <p>Las posiciones planetarias de esta plataforma son <b>direcciones</b> (longitud eclíptica), no distancias — para los aspectos y las casas solo importa el ángulo. Pero el mapa 3D sí necesita una distancia real para dibujar cada estrella en su sitio, y esa distancia se mide por <b>paralaje</b>: el pequeño desplazamiento aparente de una estrella cercana contra el fondo de estrellas lejanas, visto desde dos puntos separados por el diámetro de la órbita terrestre (enero vs. julio). Cuanto más lejos está la estrella, más pequeño ese ángulo — por eso la distancia (en pársecs) es, en el fondo, simplemente <b>1 ÷ paralaje</b> (paralaje en segundos de arco) — 1 pársec ≈ 3,26 años luz.</p>
+ <p class="small muted">Las estrellas y sus distancias que usa este mapa vienen de catálogos estándar (<b>Yale Bright Star</b> / <b>Hipparcos</b>), redondeadas a mano para un mapa reducido — un catálogo profesional moderno (<b>Gaia</b>) mide paralajes de más de mil millones de estrellas con precisión de micro-arco-segundos. El cálculo de precesión (Eras precesionales) usa este mismo tipo de geometría angular, solo que a otra escala.</p>
+ <div class="row" style="margin-top:8px;gap:8px">
+ <button class="ghost act" onclick="threeIrAMedirDistancia()">📐 Probar "Medir distancia angular" en el mapa</button>
+ <button class="ghost act" style="border-color:#9b59b6;color:#9b59b6" onclick="document.querySelector('[data-tab=eras_precesionales]').click()">♒ Ver Eras precesionales</button>
+ </div>
+
  <h3 data-i18n="met_cosmo_h3">¿Por qué "cosmobiología" y no "astronomía estadística"?</h3>
  <p>"Cosmobiología" es el término académico establecido para la investigación empírica de posibles relaciones entre posiciones astronómicas y fenómenos terrestres — introducido por el médico suizo Karl Ernst Krafft en los años 1920–30 y retomado por Michel Gauquelin en trabajos que generaron debate científico durante décadas. Usamos ese término por rigor histórico, no para validar las afirmaciones de la astrología popular.</p>
  <p>La distinción clave: la astrología predictiva tradicional <b>interpreta</b> posiciones planetarias como portadoras de significado simbólico. Este proyecto <b>mide</b> posiciones planetarias como variables numéricas y pregunta si alguna covaria con eventos, sin asumir ninguna interpretación simbólica.</p>
@@ -1992,7 +2126,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div id="met_principios" class="card" style="border-left:4px solid var(--oro);background:linear-gradient(135deg,var(--panel2),rgba(200,168,75,.08))">
- <h2>★ Los principios de la TCC — el marco antes que el procedimiento</h2>
+ <h2 id="met_principios">★ Los principios de la TCC</h2>
  <p>Todo lo demás en esta pestaña (modelo nulo, FDR, Von Neumann, split 50/50...) son <b>procedimientos</b>. Pero el Cap. 10 de la TCC (Ferríz Olivares, 1976) los sitúa dentro de algo más amplio: tres <b>principios fundamentales</b> —el dialéctico alternalizado bajo controles, el de ubicación en el ámbito biocéntrico, y el de investigación de la causalidad por relación estadística— de los que se derivan otros cuatro: sinergia, isomorfía, sincronización y enfocamiento para la interpretación diversificada. El propio texto los llama "principios que hacen unidad": no una lista de requisitos sueltos, sino un solo sistema de control de exactitud visto desde cinco ángulos.</p>
 
  <h3 style="margin-top:16px">El tercer principio — donde está enfocado el trabajo actual</h3>
@@ -2094,7 +2228,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <!-- ═══════ CALCULADORA DE DUPLAS / TRIPLETAS ═══════ -->
  <div id="met_duplas" class="card" style="border-left:4px solid var(--accent2)">
- <h2>Calculadora de duplas y tripletas (TCC cap. 16)</h2>
+ <h2 id="met_duplas">Calculadora de duplas y tripletas (TCC cap. 16)</h2>
  <p class="small muted">Selecciona 2 o 3 rasgos simultáneos y calcula cuántos eventos los presentan todos a la vez — comparado con lo que se esperaría si fueran independientes. Método de Ferríz Olivares para "duplas de parámetros" (estudio de 58 casos, TCC p. 371).</p>
 
  <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin:14px 0">
@@ -2200,7 +2334,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  FACTORES CINÉTICOS — Punto 2 de mejoras TCC (cap. 46-47)
  ═══════════════════════════════════════════════════════════ -->
  <div id="met_cineticos" class="card" style="border-left:4px solid #e67e22;background:linear-gradient(135deg,var(--panel2),rgba(230,126,34,.05))">
- <h2>Factores Cinéticos — Direcciones Primarias (Naibod)</h2>
+ <h2 id="met_cineticos">Factores Cinéticos</h2>
  <p style="margin-bottom:12px">El "mapa estático" describe <em>potencialidades</em>; los eventos son <strong>gatillados</strong>
  por movimientos cinéticos. La TCC (cap. 46-47) identifica tres factores
  desencadenantes que actúan sobre los puntos del mapa base:
@@ -2437,7 +2571,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  COORDENADAS PRECESIONALES Y DEFLEXIÓN DEL PUNTO VERNAL — Acta de Ciencias II
  ═══════════════════════════════════════════════════════════ -->
  <div id="met_precesion" class="card" style="border-left:4px solid #8e44ad;background:linear-gradient(135deg,var(--panel2),rgba(142,68,173,.05))">
- <h2>Coordenadas Precesionales y Deflexión del Punto Vernal</h2>
+ <h2 id="met_precesion">Coordenadas Precesionales y Deflexión del Punto Vernal</h2>
  <p style="margin-bottom:14px">El punto vernal (intersección eclíptica-ecuador, 0° Aries) no es fijo:
  retrocede lentamente por <b>precesión</b> y oscila en periodos cortos por <b>nutación</b> — la
  dinámica de "oscilación y deflexión del eje terrestre" a la que se refiere la segunda parte de la obra.</p>
@@ -2595,7 +2729,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  MODELOS JERÁRQUICOS MIXTOS (LMM/GLMM) — Acta de Ciencias II
  ═══════════════════════════════════════════════════════════ -->
  <div id="met_lmm" class="card" style="border-left:4px solid #2980b9;background:linear-gradient(135deg,var(--panel2),rgba(41,128,185,.05))">
- <h2>Modelos Jerárquicos Mixtos (LMM/GLMM)</h2>
+ <h2 id="met_lmm">Modelos Jerárquicos Mixtos (LMM/GLMM)</h2>
  <p style="margin-bottom:14px">Todo el motor anterior compara <b>proporciones binarias</b> (¿el rasgo está presente
  o no?) contra un modelo nulo. Para variables <b>continuas</b> (magnitud, admisiones, puntaje) con datos que NO
  son independientes entre sí (varios sismos de la misma región, varios pacientes del mismo hospital), se necesita
@@ -2643,7 +2777,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  INTERPRETACIÓN DIVERSIFICADA APLICADA — Acta de Ciencias II
  ═══════════════════════════════════════════════════════════ -->
  <div id="met_diversificada" class="card" style="border-left:4px solid #d35400;background:linear-gradient(135deg,var(--panel2),rgba(211,84,0,.05))">
- <h2>Interpretación Diversificada Aplicada</h2>
+ <h2 id="met_diversificada">Interpretación Diversificada Aplicada</h2>
  <p style="margin-bottom:14px">El mismo "horizonte biocéntrico" (fecha, hora y lugar de un evento) se traduce en
  tablas de requisición distintas según la disciplina — sin recalcular nada ni fabricar asociaciones nuevas por
  campo. Es una capa de <b>presentación</b>, no de evidencia: cualquier afirmación de asociación sigue necesitando
@@ -2683,7 +2817,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  GEODINÁMICA CICLOIDAL (Scipión Llona) — Punto 3 de mejoras TCC
  ═══════════════════════════════════════════════════════════ -->
  <div id="met_llona" class="card" style="border-left:4px solid #16a085;background:linear-gradient(135deg,var(--panel2),rgba(22,160,133,.05))">
- <h2>Geodinámica Cicloidal — Teoría de Scipión Llona</h2>
+ <h2 id="met_llona">Geodinámica Cicloidal</h2>
  <p style="margin-bottom:14px">Llona propone que los sismos no son eventos aislados
  sino el resultado de la <strong>trayectoria cicloidal real</strong> de la Tierra:
  la combinación de rotación, traslación, marea terrestre lunar y solar, y otros catorce movimientos de
@@ -3044,7 +3178,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card">
- <h2 id="met_gauquelin" data-i18n="met_gauquelin_h2">Efecto Gauquelin — natalidad y posición diurna</h2>
+ <h2 id="met_gauquelin" data-i18n="met_gauquelin_h2">Efecto Gauquelin</h2>
  <p>El estudio estadístico más famoso en cosmobiología. Entre 1950 y 1991, Michel y Françoise Gauquelin analizaron los nacimientos de miles de profesionales europeos y encontraron una anomalía reproducible: ciertos planetas aparecen más frecuentemente <b>saliendo o culminando</b> en el horizonte en el momento del nacimiento de personas destacadas en su profesión.</p>
 
  <h3>El hallazgo central</h3>
@@ -3111,7 +3245,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <!-- ═══ ANOTACIONES PARA CONOCEDORES DE LA TCC ═══ -->
  <div class="card" id="met_tcc_expertos" style="border-left:4px solid var(--oro);background:linear-gradient(135deg,var(--panel2),rgba(212,175,55,.06))">
- <h2>Para quienes conocen la TCC — cómo se continúa el legado</h2>
+ <h2 id="met_tcc_expertos">Para quienes conocen la TCC</h2>
  <p class="small muted">Esta sección es para lectores familiarizados con la <em>Teoría Científica de la Cosmobiología</em> de David Juan Ferríz Olivares. Muestra cómo cada pieza de la plataforma corresponde a un imperativo de la obra.</p>
 
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:16px">
@@ -3182,7 +3316,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <!-- Enlace al nuevo card en el índice de métodos -->
 
  <div class="card" id="met_potencia" style="border-left:4px solid #2980b9">
-  <h2>¿Qué puede ver este método? La curva de potencia</h2>
+  <h2 id="met_potencia">¿Qué puede ver este método? La curva de potencia</h2>
   <p class="small muted" style="margin-bottom:12px">Todo instrumento tiene un límite de sensibilidad. Un telescopio no ve
   estrellas más débiles que cierta magnitud; este método no detecta efectos más pequeños que cierto tamaño. Saber cuál es
   ese límite es lo que separa un resultado negativo <b>informativo</b> ("no hay efectos grandes") de uno <b>vacío</b>
@@ -3304,7 +3438,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card" id="ref_ferriz" style="border-left:4px solid var(--oro)">
- <h2>Referencias clave</h2>
+ <h2 id="met_referencias">Referencias clave</h2>
  <ul class="small" style="line-height:1.9">
  <li><b>Raynaud de la Ferrière, S.</b> (1950–1962). <em>Grandes Mensajes</em> y correspondencia científica. Gran Fraternidad Universal. — Observó la asociación de Plutón con terremotos y erupciones volcánicas; formuló la interrelación cosmobiológica entre personas. Predecesor directo de David Ferríz Olivares.</li>
  <li><b>Llona, S. E.</b> (~1941). <em>Teoría Cicloidal</em> [manuscrito / publicaciones en La Prensa, Lima]. — Propone que los movimientos astronómicos (rotación, traslación, mareas terrestres) son la fuerza motriz de la sismicidad y los fenómenos geodinámicos. Citado extensamente en Ferríz Olivares, TCC cap. 36.</li>
@@ -3384,7 +3518,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card">
- <h2 id="met_glosario" data-i18n="met_glosario_h2">Glosario completo — haz clic para definición</h2>
+ <h2 id="met_glosario" data-i18n="met_glosario_h2">Glosario completo</h2>
  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
  <span class="glos" data-glos="modelo nulo" style="padding:6px 14px;background:var(--panel2);border-radius:20px">Modelo nulo</span>
  <span class="glos" data-glos="fdr" style="padding:6px 14px;background:var(--panel2);border-radius:20px">FDR</span>
@@ -3609,7 +3743,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <!-- Historia Clínica Cosmobiológica — formulario de captura -->
  <div class="card">
- <h2>Historia Clínica Cosmobiológica — captura de evento médico</h2>
+ <h2>Historia Clínica Cosmobiológica</h2>
  <p class="small muted">Los campos siguen el modelo de historia clínica de la TCC. Se almacena con el mismo esquema de eventos del resto de la plataforma (<code>domain=medico_411</code>).</p>
 
  <div class="grid" style="margin-top:12px">
@@ -3719,7 +3853,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card" style="border-left:4px solid var(--oro)">
- <h2>¿De dónde sale todo esto? — antecedentes reales citados en la TCC</h2>
+ <h2>¿De dónde sale todo esto?</h2>
  <p>El instrumento de captura de arriba no nace de la nada: reproduce, campo por campo, la <b>Historia Clínica Cosmobiológica</b> del propio Prontuario I (biotipo, laboratorio sincrónico, ciclo anual) y responde a una tradición de más de un siglo de estudios reales — algunos publicados en revistas médicas serias, otros con resultados nulos igual de honestos — que la TCC recopila en los capítulos <code>11. Acta médica de ritmos biológicos</code>, <code>13. Trabajos cosmobiomédicos y prospectiva</code> y <code>20. Observaciones de Jung y Barbault</code>. Van aquí, con sus cifras y su cita tal como aparecen en el libro, para que quien entra a Asistencia Social vea el contexto histórico completo — <b>no son resultados de esta plataforma</b> (que solo valida lo que aparece en Investigación → Tablero), son los antecedentes que la propia TCC reconoce.</p>
  <button class="ghost act small" style="font-size:12px;padding:3px 10px;margin-top:6px" onclick="document.querySelector('[data-tab=epidemiologia]').click()">↑ Ir al instrumento de captura</button>
  </div>
@@ -3741,7 +3875,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card">
- <h2>Geomagnetismo y salud — tres estudios reales de los años 1959–1963</h2>
+ <h2>Geomagnetismo y salud</h2>
  <p class="small muted"><code>TCC, cap. 13</code></p>
  <table>
  <thead><tr><th>Estudio</th><th>Qué midió</th><th>Fuente citada en la TCC</th></tr></thead>
@@ -3755,7 +3889,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card">
- <h2>Biotipo humano — por qué el formulario de arriba lo pregunta</h2>
+ <h2>Biotipo humano</h2>
  <p class="small muted"><code>TCC, cap. 18</code> — Historia Clínica Cosmobiológica, ítem 13</p>
  <p>El campo "Biotipología humana" del instrumento de captura reproduce dos clasificaciones clásicas de la constitución humana que la TCC cruza con el análisis cosmobiológico — ninguna de las dos nació con la cosmobiología, pero la TCC las incorpora como variable de estratificación:</p>
  <div style="overflow-x:auto"><table>
@@ -3769,14 +3903,14 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card">
- <h2>Laboratorio sincrónico — qué hay detrás de la "Reacción de Takata"</h2>
+ <h2>Laboratorio sincrónico</h2>
  <p class="small muted"><code>TCC, cap. 13</code> — el mismo campo que aparece en "Laboratorio sincrónico" del formulario de arriba</p>
  <p>En 1941, el científico japonés Maki Takata describió que el <b>índice de floculación de la albúmina en suero sanguíneo</b> varía con el ritmo menstrual y — más llamativo — empieza a subir pocos minutos antes del amanecer, "como si la sangre previese la aparición del sol" (M. Takata y T. Murasugi, <i>Bioklimat. Beibl.</i>, VII, 1941). El propio Takata documentó en 1951 que esa reacción presenta variaciones marcadas y reproducibles. Un fenómeno análogo — cambios en la estabilidad de soluciones coloidales (oxicloruro de bismuto) correlacionados con factores atmosféricos/cósmicos — fue estudiado por Giorgio Piccardi, director del Instituto Físico-Químico de Florencia.</p>
  <div class="hint">Ninguno de los dos fenómenos se mide en esta plataforma (no fabricamos datos de laboratorio) — el campo "Reacción de Takata" del formulario existe para que, si tú o tu institución <i>sí</i> tienen esa medición real, quede registrada junto con el resto del evento y pueda cruzarse después con el motor estadístico.</div>
  </div>
 
  <div class="card">
- <h2>Criminalidad y estación del año — más de 150 años de "calendarios"</h2>
+ <h2>Criminalidad y estación del año</h2>
  <p class="small muted"><code>TCC, cap. 20</code> — vía Durkheim, <i>El Suicidio</i> (1897), cap. II "Los factores extrasociales"</p>
  <p>Alexandre Lacassagne publicó su <i>"calendario de la criminalidad"</i> (<i>Revue Scientifique</i>, 1881) sobre datos franceses de 1827–1870: los <b>delitos contra la propiedad</b> tienen su máximo en <b>invierno</b>, mientras los <b>delitos contra las personas</b> tienen su máximo a <b>fines de primavera/inicios de verano</b> — patrón que Quetelet (1835), Guerry, Ferri y Corre confirmaron después con series propias. Durkheim, en el mismo capítulo, tabuló la proporción estacional del suicidio en 7 países europeos (cuadro XI, sobre 1.000 casos/año) — el patrón se repite casi idéntico de un país a otro:</p>
  <div style="overflow-x:auto"><table style="font-size:12px">
@@ -3803,7 +3937,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 <section id="eras_precesionales" style="display:none">
 
  <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
- <h2 style="font-size:22px;color:#fff;margin-bottom:6px">♒ Eras precesionales — dos formas de calcularlas, una tabla para comparar</h2>
+ <h2 style="font-size:22px;color:#fff;margin-bottom:6px">♒ Eras precesionales</h2>
  <p style="font-size:15px;margin-bottom:0">¿Cuándo "empieza" la Era de Acuario? Esta pestaña reúne, en un solo lugar, el cálculo <b>real</b> que usa el resto de esta plataforma (fronteras oficiales IAU/Delporte + precesión de Newcomb) y el cálculo del <b>Dr. Serge Raynaud de la Ferrière</b> citado en la TCC (cap. 41) — con su fórmula completa, paso a paso, y una tabla que compara ambos en varias fechas.</p>
  </div>
 
@@ -3814,14 +3948,14 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="hint" style="border-left:4px solid #e67e22">
- <h2 style="margin-top:0">⚠️ Esto sigue siendo un tema de estudio abierto — no una respuesta cerrada</h2>
+ <h2 style="margin-top:0">⚠️ Esto sigue siendo un tema de estudio abierto</h2>
  <p>Es tentador leer el cálculo de la sección siguiente como "la respuesta correcta" solo porque usa datos oficiales de la UAI. Pero conviene ser honestos sobre qué son en realidad esas 88 fronteras: Eugène Delporte las trazó en 1930 <b>siguiendo la cuadrícula de coordenadas</b> (segmentos de ascensión recta y declinación constantes, en la época B1875.0) — es decir, son <b>líneas rectas verticales y horizontales sobre un mapa de coordenadas</b>, elegidas por conveniencia administrativa y cartográfica para repartir todo el cielo sin dejar huecos ni superposiciones. No fueron trazadas para marcar dónde "empieza" o "termina" una influencia astronómica o energética real, ni existe una única forma astronómicamente obligada de dibujarlas.</p>
  <p>Si esas fronteras hubieran seguido, por ejemplo, la forma real de las figuras mitológicas o algún otro criterio (líneas diagonales, la posición de las estrellas más brillantes de cada constelación, un reparto proporcional al recorrido del Sol), la fecha de cruce Piscis/Acuario que calcula esta plataforma cambiaría — quizás varios siglos en cualquier dirección. Eso no invierte el cálculo de Newcomb (la <i>tasa</i> de precesión sí está bien establecida), pero sí significa que <b>dónde exactamente se traza el límite</b> es, en el fondo, una convención, no un hecho fijo grabado en el cielo.</p>
  <p>Visto así, el enfoque del Dr. Raynaud de la Ferrière —anclar la Era de Piscis en un evento histórico concreto (el Año 1) y usar su propio ancho de Piscis— no es menos legítimo que usar Delporte: es simplemente <b>otra convención</b>, con otro criterio de partida. Y el Dr. Raynaud de la Ferrière no se apoyó solo en la geometría del cielo: la TCC y la tradición cosmobiológica también señalan <b>marcadores sociales e históricos</b> del cambio de Era (transformaciones profundas en comunicación, ciencia, movimientos sociales y conciencia colectiva a mediados del siglo XX) como otra línea de evidencia, complementaria a la astronómica, para ubicar ese tránsito. Esta plataforma todavía no tiene ese análisis hecho, pero es un tema pendiente distinto del cálculo astronómico: la idea es, más adelante, reunir esos marcadores sociales (eventos, cambios de tendencia, indicadores históricos alrededor de mediados del siglo XX) y revisarlos con el mismo rigor estadístico que ya se aplica al resto de esta plataforma —modelo nulo, significancia, corrección por comparaciones múltiples— para ver si hay algo verificable ahí, en vez de asumir de entrada que sí o que no lo hay. Se presentan aquí junto al cálculo astronómico como una línea de investigación futura, no como un resultado ya obtenido ni como algo que se pueda descartar sin revisar.</p>
  </div>
 
  <div class="card" style="border-left:4px solid var(--oro)">
- <h2>📐 Cálculo "de referencia" — fronteras IAU/Delporte + precesión de Newcomb</h2>
+ <h2>📐 Cálculo "de referencia"</h2>
  <p>Esta plataforma usa como referencia las <b>88 fronteras oficiales</b> que Eugène Delporte trazó en 1930 para la Unión Astronómica Internacional (sobre coordenadas de la época B1875.0, verificadas aquí contra la fuente original) y la <b>fórmula rigurosa de precesión de Newcomb</b> (Meeus, <i>Astronomical Algorithms</i>, cap. 21) para expresarlas en cualquier época. La tasa de precesión real <b>no es constante</b> — varía ligeramente con el tiempo — así que este cálculo usa su valor exacto para cada fecha, no un promedio redondeado.</p>
  <table style="margin-top:10px">
  <tbody>
@@ -3831,12 +3965,16 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <tr><td><b>Cruce estimado a Acuario</b></td><td>≈año 2598</td></tr>
  </tbody>
  </table>
- <button class="ghost act" style="margin-top:10px" onclick="return irA('guia','')">🗺️ Ver el cálculo en vivo (Mapa Cósmico → Estrellas → Límites oficiales)</button>
+ <div class="row" style="margin-top:10px;gap:8px">
+ <button class="ghost act" onclick="threeIrALimitesPiscisAcuario(false)">🗺️ Ver el cálculo en vivo (Mapa Cósmico → Estrellas → Límites oficiales)</button>
+ <button class="ghost act" style="border-color:#9b59b6;color:#9b59b6" onclick="threeIrALimitesPiscisAcuario(true)">🌍 Comparar Piscis/Acuario en 5 culturas del cielo</button>
+ </div>
  </div>
 
  <div class="card" style="border-left:4px solid #9b59b6">
  <h2>🔮 El cálculo del Dr. Serge Raynaud de la Ferrière</h2>
  <p class="small muted"><code>TCC, cap. 41</code> — "El valor expresado por el Dr. R. de la Ferrière"</p>
+ <p class="small muted">La TCC llama a esto la <b>"Era del Aquarius"</b> (forma latina, tal como la escribe el propio texto — no "Era de Acuario"): <i>"Estamos matemáticamente en la Era del Aquarius"</i>. Aquí se respeta esa grafía cuando se cita su modelo directamente; "Acuario" se sigue usando para el nombre de la constelación/signo en el resto de la plataforma.</p>
  <p>El Dr. Raynaud de la Ferrière ancló el inicio de la Era de Piscis en el <b>Año 1 de la Era Cristiana</b>, y calculó cuánto tiempo tardaría el punto vernal en atravesar por completo la constelación de Piscis usando una tasa de precesión <b>fija</b>, redondeada a <b>1° cada 72 años</b> (72×360° = 25.920 años el ciclo completo — el "Año Platónico" clásico). Con su propio valor del ancho de Piscis, <b>27,06°</b>, su cuenta fue:</p>
  <div class="hint" style="font-size:15px;text-align:center;font-weight:700">27,06° × 72 años/° = 1.948,32 años → <span style="color:var(--oro)">21 de marzo de 1948</span></div>
  <p class="small muted" style="margin-top:8px">Es un cálculo hecho enteramente a mano, con las tablas de precesión disponibles en su época — un trabajo pionero, considerando que no tenía acceso a la precesión variable de Newcomb ni a fronteras IAU digitalizadas, herramientas que solo se volvieron accesibles décadas después. Justamente por eso es, en rigor, una <b>aproximación</b> y no un cálculo equivalente al de arriba: se apoya en una tasa fija (en vez de la tasa real, que varía con el tiempo) y en su propio valor del ancho de Piscis (27,06°, en vez del 37,06° que miden hoy las fronteras oficiales Delporte/IAU) — dos simplificaciones necesarias sin las herramientas modernas, y la razón concreta por la que su fecha (1948) se aleja tanto del cruce real estimado (≈2598).</p>
@@ -3858,6 +3996,9 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <li><b>Fronteras dinámicas</b>, que no sean una sola línea fija sino que se ajusten con el tiempo según algún criterio físico (brillo estelar, densidad de estrellas, el propio recorrido eclíptico) — reconociendo que ni siquiera el cielo real reparte el zodíaco en compartimentos parejos y estáticos.</li>
  </ul>
  <div class="hint">Esta plataforma ya tiene las piezas para probar cualquiera de esas tres ideas (el motor de precesión de Newcomb, el test punto-en-polígono sobre las fronteras, y ahora esta comparación) — lo que falta es definir con rigor un criterio alternativo de frontera y correrlo contra los mismos datos. Se deja planteado aquí como invitación a investigarlo científicamente, no como una forma de "ajustar" el cálculo para que dé 1948: el objetivo es ver si <i>algún</i> criterio geométrico razonable, distinto al de Delporte, ubica el cruce cerca de esa fecha — y si no lo hace, eso también es un resultado válido.</div>
+ <div class="hint" style="margin-top:10px;border-left:4px solid #9b59b6">
+ <b>Convergencia con una fuente primaria distinta:</b> el informe de investigación aparte sobre este mismo límite (<code>Limites/Fronteras_Piscis_Acuario_tres_metodos.docx</code>) encontró, revisando una tabla de anchos zodiacales citada por el propio Dr. Raynaud de la Ferrière (Aries 27°, Tauro 37°, Géminis 29°, Piscis 27°06′, Acuario 35°), que esa fuente <b>redistribuye ≈10° de Piscis hacia Acuario</b> respecto a los anchos reales IAU/Delporte, aunque el ancho combinado Piscis+Acuario le sale casi correcto. Es un método totalmente distinto (comparar una tabla de anchos citada en la tradición, no invertir el motor de precesión) llegando a un número muy cercano a los <b>≈9,08°</b> de aquí — dos caminos independientes señalando la misma magnitud de desplazamiento.
+ </div>
  </div>
 
  <div class="card" style="border-left:4px solid var(--verde)">
@@ -5783,6 +5924,26 @@ function threeMedirReset() {
  _threeMedirMarkers = [];
  const res = document.getElementById('three_medir_resultado');
  if (res) res.innerHTML = '';
+ const lbl = document.getElementById('three_medir_label');
+ if (lbl) lbl.style.display = 'none';
+}
+// El número (el ángulo) queda pegado a la MITAD de la línea, directo sobre
+// el mapa -- antes solo aparecía en el texto de abajo (#three_medir_resultado)
+// y había que bajar a buscarlo. Se recalcula en cada cuadro (threeAnimate)
+// para que la etiqueta siga la línea aunque el usuario rote/haga zoom.
+function threeMedirActualizarEtiqueta() {
+ const lbl = document.getElementById('three_medir_label');
+ if (!lbl || _threeMedirPuntos.length < 2 || !_threeCamera || !_threeRenderer) { if (lbl) lbl.style.display = 'none'; return; }
+ const [a, b] = _threeMedirPuntos;
+ const medio = a.pos.clone().add(b.pos).multiplyScalar(0.5);
+ const ndc = medio.project(_threeCamera);
+ if (ndc.z > 1) { lbl.style.display = 'none'; return; } // punto medio detrás de la cámara
+ const rect = _threeRenderer.domElement.getBoundingClientRect();
+ const contRect = document.getElementById('three_canvas_container').getBoundingClientRect();
+ const x = (ndc.x * 0.5 + 0.5) * rect.width + (rect.left - contRect.left);
+ const y = (-ndc.y * 0.5 + 0.5) * rect.height + (rect.top - contRect.top);
+ lbl.style.left = x + 'px'; lbl.style.top = y + 'px';
+ lbl.style.display = 'block';
 }
 function _xyzToRaDec(pos) {
  const r = pos.length();
@@ -5824,6 +5985,9 @@ function threeOnClickMedir(ev) {
  res.innerHTML = `<b>${a.label}</b> (AR ${(ca.ra / 15).toFixed(2)}h, Dec ${ca.dec >= 0 ? '+' : ''}${ca.dec.toFixed(2)}°) ↔ <b>${b.label}</b> (AR ${(cb.ra / 15).toFixed(2)}h, Dec ${cb.dec >= 0 ? '+' : ''}${cb.dec.toFixed(2)}°)<br><span style="font-size:16px;font-weight:700;color:var(--accent2)">Distancia angular: ${ang.toFixed(2)}°</span> — haz clic en cualquier punto para empezar de nuevo.`;
  _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a.pos, b.pos]),
  new THREE.LineDashedMaterial({ color: 0xff5555, dashSize: 2, gapSize: 1 })).computeLineDistances());
+ const lbl = document.getElementById('three_medir_label');
+ if (lbl) lbl.textContent = `${ang.toFixed(2)}°`;
+ threeMedirActualizarEtiqueta();
  }
 }
 
@@ -6032,6 +6196,7 @@ function threeNaveUpdate() {
 
 function threeAnimate() {
  _threeAnimId = requestAnimationFrame(threeAnimate);
+ if (_threeMedirPuntos.length === 2) threeMedirActualizarEtiqueta();
  threeGirarSoles();
  threeNaveUpdate();
  if (_threeTween) {
@@ -6762,6 +6927,23 @@ function threeSetMode(mode) {
 // niveles de zoom DENTRO del mismo Mapa Cósmico. El panel de detalle debajo
 // del mapa siempre corresponde al botón activo — ese es el "todo con sus
 // partes" que se pidió: una sola navegación, un solo lugar de detalle.
+// ═══ Puerta de entrada directa a "Carta astral" desde Empieza aquí ═══
+// El motor y la rueda viven adentro de Metodología (ahí es donde se
+// construyeron y validaron), pero nadie que solo quiera ver su carta va a
+// buscarla ahí. En vez de mover o duplicar el código, un solo botón hace el
+// salto completo: cambia de pestaña, activa el modo, y desplaza la pantalla
+// hasta el mapa -- mismo patrón que ya usan "Quiero formular una hipótesis"
+// y el resto de la navegación rápida de esta tarjeta.
+function threeIrACartaAstral() {
+ const tabBtn = document.querySelector('[data-tab=guia]');
+ if (tabBtn) tabBtn.click();
+ setTimeout(() => {
+ if (typeof threeHudGo === 'function') threeHudGo('carta');
+ const el = document.getElementById('three_canvas_container');
+ if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ }, 60);
+}
+
 function threeHudGo(view) {
  if (view === 'tierra') threeSetMode('movimientos');
  else if (view === 'carta') threeSetMode('evento');
@@ -6859,6 +7041,57 @@ function threeAtajoLlona() {
 function threeAtajoPage() {
  threeHudGo('carta');
  setTimeout(() => { threeToggleEsferaTopocentrica(); document.getElementById('three_detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 80);
+}
+// Lleva de "Eras precesionales" (texto/tablas) directo al mapa 3D → Estrellas,
+// con las fronteras reales y/o las 5 culturas del cielo ya activadas -- antes
+// solo había un botón genérico que cambiaba de pestaña sin dejar nada
+// configurado, y había que buscar estos controles a mano dentro del mapa.
+// Salta directo a Estrellas y activa la herramienta "📐 Medir distancia
+// angular" que ya existe en el mapa -- mide el ÁNGULO entre dos estrellas
+// (no su distancia real en años luz, que es lo que mide el paralaje
+// explicado en Principios y Métodos); quedan enlazadas porque ambas
+// respuestas usan el mismo tipo de geometría angular, a escalas distintas.
+function threeIrAMedirDistancia() {
+ document.querySelector('[data-tab=guia]').click();
+ setTimeout(() => {
+ threeHudGo('estrellas');
+ if (!_threeMedirActivo) threeMedirToggle();
+ document.getElementById('map_shell').scrollIntoView({ behavior: 'smooth', block: 'start' });
+ }, 60);
+}
+function threeIrALimitesPiscisAcuario(conCulturas) {
+ document.querySelector('[data-tab=guia]').click();
+ setTimeout(() => {
+ threeHudGo('estrellas');
+ const selLim = document.getElementById('const_limites');
+ if (selLim) { selLim.value = 'zodiaco'; threeLimitesChanged(); }
+ if (conCulturas) {
+ const selCult = document.getElementById('culturas_cielo_sel');
+ if (selCult) { selCult.value = 'todas'; threeCulturasCieloChanged(); }
+ }
+ document.getElementById('map_shell').scrollIntoView({ behavior: 'smooth', block: 'start' });
+ }, 60);
+}
+// Entra a "por día" (topocéntrica) pero deja la RUEDA 2D visible en vez de
+// la esfera 3D, y lleva la vista hasta el control deslizante de ±12h.
+function threeAtajoDia() {
+ if (_threeMode !== 'topocentrica') threeToggleEsferaTopocentrica();
+ setTimeout(() => {
+ const svgEl = document.getElementById('chart_wheel_svg');
+ if (svgEl && svgEl.style.display === 'none') document.getElementById('three_toggle_2d').click();
+ const slider = document.getElementById('topo_minuto_slider');
+ if (slider) { slider.value = 0; threeTopoIrAMinuto(0); }
+ document.getElementById('bb_topo_time').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+ }, 80);
+}
+// Las tarjetas "qué mueve cada barra de tiempo" (arriba del mapa) llevan
+// directo a esa vista del mapa 3D -- antes eran solo texto informativo, no
+// hacían nada al pulsarlas, y el mapa quedaba varias pantallas más abajo.
+function threeCardGo(vista) {
+ if (vista === 'topocentrismo') threeAtajoPage();
+ else if (vista === 'llona') threeAtajoLlona();
+ else threeHudGo(vista === 'sistema' ? 'sistema' : vista);
+ setTimeout(() => { const el = document.getElementById('map_shell'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
 }
 function railBuildHud() {
  const rail = document.getElementById('hud_rail');
@@ -7014,18 +7247,6 @@ const FRONTERAS_CICLO = [
  ['zodiaco', '🌗', 'Mostrando las 13 fronteras de la eclíptica. Clic para ver las 88 constelaciones completas.'],
  ['todas', '🗺️', 'Mostrando las 88 fronteras oficiales. Clic para ocultarlas.'],
 ];
-// Piscis/Acuario tal como los dibujó cada tradición (asterismo real, no
-// frontera administrativa) — clic para recorrer las 5 culturas y terminar
-// mostrándolas todas superpuestas para comparar tamaños de un vistazo.
-const CULTURAS_CICLO = [
- ['ninguno', '🌐', 'Culturas del cielo (Piscis/Acuario) — clic para ver cómo dibujó esta figura la astronomía griega (Ptolomeo).'],
- ['griego', '🇬🇷', 'Griego (Ptolomeo, Almagesto, s.II). Clic para ver la versión árabe.'],
- ['arabe', '🌙', 'Árabe (al-Sufi, s.X — hereda de Ptolomeo). Clic para ver la versión babilonia.'],
- ['babilonio', '𒀭', 'Babilonio (MUL.APIN, ~1000 a.C.: Golondrina+Anunitu / GU.LA "El Grande"). Clic para ver la versión hindú.'],
- ['hindu', '🕉️', 'Hindú (nakshatras védicos). Clic para ver la occidental moderna.'],
- ['moderno', '⭐', 'Occidental moderno (IAU) — la única con frontera oficial además de figura. Clic para comparar las 5 a la vez.'],
- ['todas', '🌍', 'Comparando las 5 culturas a la vez, cada una de un color. Clic para ocultarlas.'],
-];
 // El marco de referencia del Sistema Solar (☉ heliocéntrico / ⊕ geocéntrico)
 // se define aquí (no junto a threeCentroToggle/threeAplicarCentroReferencia,
 // más abajo) porque railBuildMov() -- que la usa -- se ejecuta de inmediato
@@ -7037,14 +7258,6 @@ const CENTRO_CICLO = [
 let _railFronterasEstado = 'ninguno';
 let _railResaltarNombre = '';
 let _railCulturaEstado = 'ninguno';
-function railCycleCulturas() {
- const idx = CULTURAS_CICLO.findIndex(c => c[0] === _railCulturaEstado);
- _railCulturaEstado = CULTURAS_CICLO[(idx + 1) % CULTURAS_CICLO.length][0];
- const sel = document.getElementById('culturas_cielo_sel');
- if (sel) sel.value = _railCulturaEstado;
- threeDibujarCulturasCielo(_railCulturaEstado);
- railFlyoutRefresh(railBuildConstFlyoutButtons);
-}
 function railCycleFronteras() {
  const idx = FRONTERAS_CICLO.findIndex(f => f[0] === _railFronterasEstado);
  _railFronterasEstado = FRONTERAS_CICLO[(idx + 1) % FRONTERAS_CICLO.length][0];
@@ -7077,10 +7290,72 @@ function railBuildConstFlyoutButtons() {
  figurasBtn.classList.add('figuras-btn');
  figurasBtn.classList.toggle('on', _threeFigurasOn);
  figurasBtn.onclick = () => threeToggleFiguras();
- const cEstado = CULTURAS_CICLO.find(c => c[0] === _railCulturaEstado);
- const culturasBtn = railBtn(null, cEstado[1], cEstado[2], () => railCycleCulturas());
- culturasBtn.classList.toggle('on', _railCulturaEstado !== 'ninguno');
- return [fronterasBtn, nombresBtn, resaltarBtn, medirBtn, figurasBtn, culturasBtn];
+ // "Culturas del cielo" ya NO va aquí como un botón más que cicla de a uno
+ // -- tiene su propio ícono de categoría en el riel (justo después de
+ // Constelaciones), con un sub-botón por cultura de una vez, porque cada
+ // una ya tenía su propio ícono (🇬🇷🌙𒀭🕉️⭐) y quedaba raro escondida
+ // detrás de un solo ícono cíclico.
+ return [fronterasBtn, nombresBtn, resaltarBtn, medirBtn, figurasBtn];
+}
+// Piscis/Acuario tal como lo dibujó cada tradición -- un botón directo por
+// cultura (en vez de un solo ícono que cicla) porque cada una ya tenía su
+// propio símbolo (bandera/luna/cuña/om/estrella) y compararlas de un
+// vistazo es justamente el punto de esta herramienta.
+const CULTURAS_ITEMS = [
+ ['griego', '🇬🇷', 'Griego (Ptolomeo, Almagesto, s.II)'],
+ ['arabe', '🌙', 'Árabe (al-Sufi, s.X — hereda de Ptolomeo)'],
+ ['babilonio', '𒀭', 'Babilonio (MUL.APIN, ~1000 a.C.: Golondrina+Anunitu / GU.LA "El Grande")'],
+ ['hindu', '🕉️', 'Hindú (nakshatras védicos)'],
+ ['moderno', '⭐', 'Occidental moderno (IAU) — la única con frontera oficial además de figura'],
+ ['todas', '🌍', 'Comparar las 5 culturas a la vez, cada una de un color'],
+];
+function railBuildCulturasFlyoutButtons() {
+ return CULTURAS_ITEMS.map(([val, icon, tip]) => {
+ const activo = _railCulturaEstado === val;
+ const b = railBtn(null, icon, tip + (activo ? ' — activo, clic para ocultar.' : '.'), () => {
+ _railCulturaEstado = activo ? 'ninguno' : val;
+ const sel = document.getElementById('culturas_cielo_sel');
+ if (sel) sel.value = _railCulturaEstado;
+ threeDibujarCulturasCielo(_railCulturaEstado);
+ railFlyoutRefresh(railBuildCulturasFlyoutButtons);
+ });
+ b.classList.toggle('on', activo);
+ return b;
+ });
+}
+// Cada botón simula el clic sobre la casilla real (no la reemplaza) y usa
+// el mismo estado 'checked' para su clase 'on', así el flyout siempre
+// refleja lo que ya está activado, se abra desde donde se abra.
+function railBuildCartaFlyoutButtons() {
+ const toggle = (chkId, fn) => {
+ const chk = document.getElementById(chkId);
+ const b = railBtn(null, '', '', () => { chk.click(); railFlyoutRefresh(railBuildCartaFlyoutButtons); });
+ if (chk && chk.checked) b.classList.add('on');
+ return b;
+ };
+ const svgEl = document.getElementById('chart_wheel_svg');
+ const en2D = svgEl && svgEl.style.display !== 'none';
+ const btn2D = railBtn(null, '🎡', 'Ver como carta astral (rueda 2D) — igual que astro.com, en vez de la escena 3D.', () => { document.getElementById('three_toggle_2d').click(); railFlyoutRefresh(railBuildCartaFlyoutButtons); });
+ if (en2D) btn2D.classList.add('on');
+ const btnAhora = toggle('three_ahora_on'); btnAhora.innerHTML = '🕐'; btnAhora.title = '';
+ railTip(btnAhora, 'Cielo de ahora — anillo interno con las posiciones planetarias del instante actual, sin tocar los datos de nacimiento.');
+ const btnProg = toggle('three_prog_on'); btnProg.innerHTML = '📈';
+ railTip(btnProg, 'Progresión secundaria — 1 día tras el nacimiento = 1 año de edad.');
+ const btnCasas = toggle('three_mostrar_casas'); btnCasas.innerHTML = '🏠';
+ railTip(btnCasas, 'Casas topocéntricas (Polich-Page) — cúspides desiguales, según la latitud real.');
+ const btnEclip = toggle('three_mostrar_eclip'); btnEclip.innerHTML = '🌐';
+ railTip(btnEclip, 'Plano de la eclíptica + punto vernal (en la vista 3D).');
+ const btnEcuador = toggle('three_mostrar_ecuador'); btnEcuador.innerHTML = '⭕';
+ railTip(btnEcuador, 'Ecuador celeste (en la vista 3D).');
+ // La esfera de casas en SÍ (3D) ya tiene su propio acceso directo en el
+ // riel izquierdo (🏛️, Topocentrismo) -- repetirla aquí sería redundante.
+ // Pero "ver la MISMA rueda 2D avanzando minuto a minuto en un día" sí es
+ // distinto y vale la pena tenerlo aquí: el ASC real gira ~1°/día ≈
+ // 0,25°/min (día sideral), y antes la rueda 2D se quedaba congelada
+ // mientras ese slider avanzaba (parecía que el ASC "no se movía" o se
+ // movía a saltos raros).
+ const btnDia = railBtn(null, '📅', 'Ver el ASC moverse de verdad en un día -- la misma rueda 2D, minuto a minuto (±12h), en vez de la esfera 3D.', () => { threeAtajoDia(); railFlyoutClose(); });
+ return [btn2D, btnAhora, btnProg, btnCasas, btnEclip, btnEcuador, btnDia];
 }
 function railBuildAnimFlyoutButtons() {
  return [
@@ -7128,6 +7403,13 @@ function railBuildMov() {
  const constCatBtn = railBtn(null, '🗺️', 'Constelaciones — fronteras oficiales IAU/Delporte, nombres, resaltar por signo, medir distancia angular.', null);
  constCatBtn.onclick = () => railFlyoutOpen(constCatBtn, railBuildConstFlyoutButtons);
  constGroup.appendChild(constCatBtn);
+ // Segundo botón, justo después -- "Culturas del cielo" merece su propio
+ // ícono en vez de vivir escondida como un sub-botón más dentro del de
+ // Constelaciones: cada cultura ya tenía su propio símbolo (🇬🇷🌙𒀭🕉️⭐),
+ // así que abrir su propio flyout con las 5 de una vez queda más vistoso.
+ const culturasCatBtn = railBtn(null, '🌐', 'Culturas del cielo — cómo dibujó Piscis/Acuario cada tradición (griega, árabe, babilonia, hindú, moderna).', null);
+ culturasCatBtn.onclick = () => railFlyoutOpen(culturasCatBtn, railBuildCulturasFlyoutButtons);
+ constGroup.appendChild(culturasCatBtn);
  rail.appendChild(constGroup);
 
  // "Sol + planetas en movimiento" — los controles reales (con sus ids, sus
@@ -7157,6 +7439,19 @@ function railBuildMov() {
  naveGroup.appendChild(naveBtn);
  rail.appendChild(naveGroup);
 
+ // Controles de "Carta astral" que NO requieren escribir datos (capas que
+ // se activan/desactivan solamente) -- antes vivían como casillas sueltas
+ // debajo del mapa, mezcladas con los campos de fecha/hora/lugar, dejando
+ // esa zona muy cargada. Aquí, igual que Movimientos/Vistas, son un solo
+ // ícono de categoría que abre un flyout con las opciones.
+ const cartaGroup = document.createElement('div');
+ cartaGroup.id = 'mov_rail_carta';
+ cartaGroup.style.display = 'none';
+ const cartaCatBtn = railBtn(null, '🔮', 'Capas de la carta astral — cielo de ahora, progresión secundaria, casas topocéntricas, plano eclíptica, ecuador celeste.', null);
+ cartaCatBtn.onclick = () => railFlyoutOpen(cartaCatBtn, railBuildCartaFlyoutButtons);
+ cartaGroup.appendChild(cartaCatBtn);
+ rail.appendChild(cartaGroup);
+
  // Controles de Llona — solo aparecen cuando esa vista está activa
  // (_threeLlonaActiva), para que el riel no se llene de botones que no
  // aplican al resto del modo "Tierra".
@@ -7179,15 +7474,17 @@ function railSyncMov() {
  // antes desaparecía entero en "Carta astral", que era la única forma de
  // llegar a pantalla completa desde ese modo y se perdía por completo.
  rail.style.display = 'flex';
+ const esCarta = (_threeMode === 'evento' || _threeMode === 'topocentrica');
  const movGroup = document.getElementById('mov_rail_movs'), constGroup = document.getElementById('mov_rail_const'),
  animGroup = document.getElementById('mov_rail_anim'), centroGroup = document.getElementById('mov_rail_centro'), naveGroup = document.getElementById('mov_rail_nave'),
- llonaGroup = document.getElementById('mov_rail_llona');
+ llonaGroup = document.getElementById('mov_rail_llona'), cartaGroup = document.getElementById('mov_rail_carta');
  if (movGroup) movGroup.style.display = esMov ? 'contents' : 'none';
  if (constGroup) constGroup.style.display = esConst ? 'contents' : 'none';
  if (animGroup) animGroup.style.display = esConst ? 'contents' : 'none';
  if (centroGroup) centroGroup.style.display = esConst ? 'contents' : 'none';
  if (naveGroup) naveGroup.style.display = esConst ? 'contents' : 'none';
  if (llonaGroup) llonaGroup.style.display = (esMov && _threeLlonaActiva) ? 'contents' : 'none';
+ if (cartaGroup) cartaGroup.style.display = esCarta ? 'contents' : 'none';
  if (!esConst && _threeNaveActive) threeNaveToggle(); // salir de la nave si el usuario cambia a otro modo
 }
 // Versión mínima de lo anterior, SOLO para el grupo de Llona y SIN cerrar
@@ -7395,10 +7692,223 @@ function threeAddSol(scene, position, radio, girar) {
  return sol;
 }
 
+// ═══ "Cielo de ahora" — un SEGUNDO anillo de posiciones (como un tránsito
+// en astro.com), calculado aparte y SIN TOCAR los campos de fecha/hora/zona
+// de la carta natal que la persona quiere ver. Antes este botón sobrescribía
+// esos campos y borraba la carta que se estaba mirando -- ahora ambas
+// coexisten: la natal (anillo de adentro) y la de ahora mismo (anillo de
+// afuera), a la vez. ═══
+let _threeAhoraLons = null;
+function threeActualizarAhora() {
+ const lat = parseFloat(document.getElementById('three_evento_lat').value) || 0;
+ const lon = parseFloat(document.getElementById('three_evento_lon').value) || 0;
+ const now = new Date();
+ _threeAhoraLons = approxLons(now.toISOString(), lat, lon);
+ document.getElementById('three_ahora_on').checked = true;
+ if (_threeLastLons) renderChartWheel(_threeLastLons, _threeLastDt, _threeLastLat, _threeLastLon);
+}
+function threeToggleAhoraOn() {
+ const on = document.getElementById('three_ahora_on').checked;
+ if (on && !_threeAhoraLons) { threeActualizarAhora(); return; } // ya redibuja adentro
+ if (_threeLastLons) renderChartWheel(_threeLastLons, _threeLastDt, _threeLastLat, _threeLastLon);
+}
+let _threeAutoAhoraTimer = null;
+function threeToggleAutoAhora() {
+ const chk = document.getElementById('three_ahora_auto');
+ if (_threeAutoAhoraTimer) { clearInterval(_threeAutoAhoraTimer); _threeAutoAhoraTimer = null; }
+ if (chk && chk.checked) {
+ threeActualizarAhora();
+ _threeAutoAhoraTimer = setInterval(threeActualizarAhora, 30000);
+ }
+}
+
+// ═══ Progresiones secundarias — método "un día = un año" (Placidus de
+// Titis / la convención estándar que ya se explica en la Metodología: "1
+// día tras la carta base = 1 año de vida"). Se calcula la fecha progresada
+// (nacimiento + tantos días como años de edad a la fecha elegida) y se
+// reutiliza el MISMO motor de posiciones ya validado -- sin tocar la carta
+// natal, igual que el "cielo de ahora": es un anillo más, no un reemplazo. ═══
+let _threeProgLons = null, _threeProgAgeYears = null;
+function threeActualizarProgresion() {
+ if (!_threeLastDt) { alert('Primero calcula una carta natal ("Calcular carta").'); return; }
+ const fechaInput = document.getElementById('three_prog_fecha').value;
+ const targetMs = fechaInput ? new Date(fechaInput + 'T12:00:00Z').getTime() : Date.now();
+ const natalMs = new Date(_threeLastDt).getTime();
+ const ageYears = (targetMs - natalMs) / 86400000 / 365.25;
+ const progMs = natalMs + ageYears * 86400000; // 1 día progresado = 1 año de edad
+ _threeProgLons = approxLons(new Date(progMs).toISOString(), _threeLastLat, _threeLastLon);
+ _threeProgAgeYears = ageYears;
+ document.getElementById('three_prog_on').checked = true;
+ const edadEl = document.getElementById('three_prog_edad');
+ if (edadEl) edadEl.textContent = `edad progresada: ${ageYears.toFixed(2)} años (fecha progresada real: ${new Date(progMs).toISOString().slice(0, 10)})`;
+ renderChartWheel(_threeLastLons, _threeLastDt, _threeLastLat, _threeLastLon);
+}
+function threeToggleProgOn() {
+ if (document.getElementById('three_prog_on').checked && !_threeProgLons) { threeActualizarProgresion(); return; }
+ if (_threeLastLons) renderChartWheel(_threeLastLons, _threeLastDt, _threeLastLat, _threeLastLon);
+}
+
+// ═══ Longitud eclíptica -> "grado dentro del signo" — la notación que
+// espera cualquier astrólogo (p.ej. "19°12' Libra"), no los 0-360° crudos
+// que solo tienen sentido para cálculo interno. El modo crudo sigue
+// disponible con un botón, pero YA NO es el default -- mostrarlo así de
+// entrada es lo que hacía dudar de la plataforma a quien ya conoce cómo
+// se ve una carta real (astro.com, etc.).
+let _threeLeyendaGrados = false; // false = signo+grado (default) · true = 0-360° crudos
+function lonASignoGrado(lonDeg) {
+ const l = ((lonDeg % 360) + 360) % 360;
+ let idx = Math.floor(l / 30);
+ let within = l - idx * 30;
+ let d = Math.floor(within);
+ let m = Math.round((within - d) * 60);
+ if (m === 60) { m = 0; d += 1; if (d === 30) { d = 0; idx = (idx + 1) % 12; } }
+ return `${d}°${String(m).padStart(2, '0')}' ${CHART_SIGNS[idx]}`;
+}
+function threeFormatLon(lonDeg) {
+ return _threeLeyendaGrados ? `${lonDeg.toFixed(1)}°` : lonASignoGrado(lonDeg);
+}
+function threeToggleLeyendaGrados() {
+ _threeLeyendaGrados = !_threeLeyendaGrados;
+ const btn = document.getElementById('three_leyenda_modo_btn');
+ if (btn) btn.textContent = _threeLeyendaGrados ? '🔄 Ver signo + grado (convención astrológica)' : '🔄 Ver en grados 0-360°';
+ if (_threeLastLons) threeCalcularEvento();
+}
+
+// ═══ Cartas guardadas — localStorage, SOLO en este navegador/computadora.
+// Nunca se manda a ningún servidor: esta plataforma no tiene backend para
+// esto, es exactamente el mismo mecanismo con el que un sitio recuerda un
+// carrito de compras o un tema oscuro/claro elegido. Se guarda un arreglo
+// de {nombre, fecha, hora, tz, lat, lon} bajo una sola llave. ═══
+const CARTAS_GUARDADAS_KEY = 'cosmobiologia_cartas_guardadas';
+function _cartasGuardadasLeer() {
+ try { return JSON.parse(localStorage.getItem(CARTAS_GUARDADAS_KEY) || '[]'); }
+ catch (e) { return []; }
+}
+function _cartasGuardadasEscribir(arr) {
+ try { localStorage.setItem(CARTAS_GUARDADAS_KEY, JSON.stringify(arr)); return true; }
+ catch (e) { alert('No se pudo guardar en este navegador (¿modo privado, o almacenamiento bloqueado?).'); return false; }
+}
+function threeInitCartasGuardadas() {
+ const sel = document.getElementById('three_cartas_select');
+ if (!sel) return;
+ const actual = sel.value;
+ sel.innerHTML = '<option value="">— ninguna guardada —</option>';
+ _cartasGuardadasLeer().forEach((c, i) => {
+ const o = document.createElement('option'); o.value = i; o.textContent = c.nombre;
+ sel.appendChild(o);
+ });
+ sel.value = actual && [...sel.options].some(o => o.value === actual) ? actual : '';
+}
+function threeGuardarCartaActual() {
+ const nombreInput = document.getElementById('three_carta_nombre');
+ const nombre = (nombreInput.value || '').trim();
+ if (!nombre) { alert('Ponle un nombre a esta carta antes de guardarla (ej. "yo", "mamá").'); return; }
+ const carta = {
+ nombre,
+ fecha: document.getElementById('three_evento_fechad').value,
+ hora: document.getElementById('three_evento_horal').value,
+ tz: document.getElementById('three_evento_tz').value,
+ lat: document.getElementById('three_evento_lat').value,
+ lon: document.getElementById('three_evento_lon').value,
+ };
+ const arr = _cartasGuardadasLeer();
+ const idxExistente = arr.findIndex(c => c.nombre === nombre);
+ if (idxExistente >= 0) arr[idxExistente] = carta; else arr.push(carta);
+ if (_cartasGuardadasEscribir(arr)) {
+ threeInitCartasGuardadas();
+ document.getElementById('three_cartas_select').value = idxExistente >= 0 ? idxExistente : arr.length - 1;
+ nombreInput.value = '';
+ }
+}
+function threeCargarCartaGuardada() {
+ const sel = document.getElementById('three_cartas_select');
+ if (!sel || sel.value === '') return;
+ const carta = _cartasGuardadasLeer()[parseInt(sel.value, 10)];
+ if (!carta) return;
+ threeInitTz();
+ document.getElementById('three_evento_fechad').value = carta.fecha;
+ document.getElementById('three_evento_horal').value = carta.hora;
+ if (carta.tz) document.getElementById('three_evento_tz').value = carta.tz;
+ document.getElementById('three_evento_lat').value = carta.lat;
+ document.getElementById('three_evento_lon').value = carta.lon;
+ threeCalcularEvento();
+}
+function threeBorrarCartaGuardada() {
+ const sel = document.getElementById('three_cartas_select');
+ if (!sel || sel.value === '') { alert('Elige primero una carta guardada de la lista para borrarla.'); return; }
+ const arr = _cartasGuardadasLeer();
+ const nombre = arr[parseInt(sel.value, 10)]?.nombre;
+ if (!confirm(`¿Borrar "${nombre}" de tus cartas guardadas en este navegador?`)) return;
+ arr.splice(parseInt(sel.value, 10), 1);
+ _cartasGuardadasEscribir(arr);
+ threeInitCartasGuardadas();
+}
+
+// ═══ Cargar la carta astral de un evento YA REGISTRADO en la plataforma
+// (DEFAULT_EVENTS, el mismo catálogo que usan Captura/Tablero) -- para que
+// alguien vea directamente "así se veía el cielo en este sismo/huracán/etc."
+// sin tener que teclear fecha y coordenadas a mano. datetime_utc ya viene
+// en UTC, así que no hace falta convertir zona horaria. ═══
+function threeInitDominiosEventos() {
+ const sel = document.getElementById('three_evento_dominio_sel');
+ if (!sel || sel.options.length > 1 || typeof DEFAULT_EVENTS === 'undefined') return;
+ const dominios = [...new Set(DEFAULT_EVENTS.map(e => e.domain))].sort();
+ dominios.forEach(d => {
+ const o = document.createElement('option');
+ o.value = d; o.textContent = (typeof DOMAIN_LABEL !== 'undefined' && DOMAIN_LABEL[d]) || d;
+ sel.appendChild(o);
+ });
+}
+const MAX_EVENTOS_DROPDOWN = 500;
+function threePoblarEventosDominio() {
+ const dom = document.getElementById('three_evento_dominio_sel').value;
+ const sel2 = document.getElementById('three_evento_registrado_sel');
+ const nota = document.getElementById('three_evento_registrado_nota');
+ sel2.innerHTML = '<option value="">— elegir evento —</option>';
+ sel2._eventos = [];
+ if (nota) nota.textContent = '';
+ if (!dom || typeof DEFAULT_EVENTS === 'undefined') return;
+ const todos = DEFAULT_EVENTS.filter(e => e.domain === dom)
+ .sort((a, b) => (a.datetime_utc < b.datetime_utc ? 1 : -1)); // más reciente primero
+ const eventos = todos.slice(0, MAX_EVENTOS_DROPDOWN);
+ eventos.forEach((e, i) => {
+ const o = document.createElement('option');
+ o.value = i;
+ const fecha = (e.datetime_utc || '').slice(0, 10);
+ const valor = e.value ? ` (${e.value_kind === 'mag_mww' ? 'M' : ''}${e.value})` : '';
+ o.textContent = `${fecha} — ${e.place || e.event_id || ''}${valor}`.slice(0, 70);
+ sel2.appendChild(o);
+ });
+ sel2._eventos = eventos;
+ if (nota && todos.length > MAX_EVENTOS_DROPDOWN) {
+ nota.textContent = `Mostrando los ${MAX_EVENTOS_DROPDOWN} más recientes de ${todos.length} en este dominio.`;
+ }
+}
+function threeCargarEventoRegistrado() {
+ const sel2 = document.getElementById('three_evento_registrado_sel');
+ if (!sel2.value || !sel2._eventos) return;
+ const e = sel2._eventos[parseInt(sel2.value, 10)];
+ if (!e || !e.datetime_utc) return;
+ threeInitTz();
+ const [fecha, horaZ] = e.datetime_utc.split('T');
+ document.getElementById('three_evento_fechad').value = fecha;
+ document.getElementById('three_evento_horal').value = (horaZ || '00:00:00Z').replace('Z', '');
+ document.getElementById('three_evento_tz').value = 'UTC';
+ document.getElementById('three_evento_lat').value = e.latitude;
+ document.getElementById('three_evento_lon').value = e.longitude;
+ threeCalcularEvento();
+ // más visual: si la rueda 2D no está activa, mostrarla de una vez --
+ // es justo lo que pidió esta función, "que de una vez cargue para ver su carta"
+ const svgEl = document.getElementById('chart_wheel_svg');
+ if (svgEl && svgEl.style.display === 'none') threeToggle2D();
+}
+
 function threeCalcularEvento() {
  threeInit();
  threeInitCiudades();
  threeInitTz();
+ threeInitCartasGuardadas();
+ threeInitDominiosEventos();
  const fecha = document.getElementById('three_evento_fechad').value;
  const hora = document.getElementById('three_evento_horal').value;
  const tz = document.getElementById('three_evento_tz').value || 'UTC';
@@ -7438,7 +7948,7 @@ function threeCalcularEvento() {
  const hex = '#' + color.toString(16).padStart(6, '0');
  leyenda.innerHTML += `<span style="display:inline-flex;align-items:center;gap:4px">
  <span style="width:10px;height:10px;border-radius:50%;background:${hex};display:inline-block"></span>
- ${name} (${lons[name].toFixed(1)}°)</span>`;
+ ${name} (${threeFormatLon(lons[name])})</span>`;
  if (selector && mesh) {
  const opt = document.createElement('option');
  opt.value = name; selector.appendChild(opt).textContent = name;
@@ -7451,7 +7961,7 @@ function threeCalcularEvento() {
  const moonMesh = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 16), threeGetMoonMaterial());
  moonMesh.position.set(Math.cos(lonRad) * THREE_MOON_R, 0, Math.sin(lonRad) * THREE_MOON_R);
  _threeScene.add(moonMesh);
- _threeHoverables.push({ mesh: moonMesh, info: `<b>Luna</b><br>Longitud: ${lons['Luna'].toFixed(1)}°<br>Distancia media real: 384.400 km` });
+ _threeHoverables.push({ mesh: moonMesh, info: `<b>Luna</b><br>${threeFormatLon(lons['Luna'])}<br>Distancia media real: 384.400 km` });
  agregarLeyenda('Luna', moonMesh);
  }
 
@@ -7468,11 +7978,11 @@ function threeCalcularEvento() {
  mesh = new THREE.Mesh(new THREE.SphereGeometry(THREE_PLANET_TAM[name] || 0.6, 16, 16), new THREE.MeshStandardMaterial({ color }));
  mesh.position.set(x, 0, z);
  _threeScene.add(mesh);
- _threeHoverables.push({ mesh, info: `<b>${name}</b><br>Longitud: ${lons[name].toFixed(1)}°` });
+ _threeHoverables.push({ mesh, info: `<b>${name}</b><br>${threeFormatLon(lons[name])}` });
  }
  agregarLeyenda(name, mesh);
  });
- if ('ASC' in lons) leyenda.innerHTML += `<span style="font-weight:700;color:#c0392b">ASC (${lons['ASC'].toFixed(1)}°) — aprox.</span>`;
+ if ('ASC' in lons) leyenda.innerHTML += `<span style="font-weight:700;color:#c0392b">ASC (${threeFormatLon(lons['ASC'])}) — aprox.</span>`;
  const mostrarEclip = document.getElementById('three_mostrar_eclip') && document.getElementById('three_mostrar_eclip').checked;
  if (mostrarEclip) {
  threeAddEclipticPlane(_threeScene, 20);
@@ -8609,7 +9119,9 @@ function threeDibujarCulturasCielo(seleccion) {
 }
 function threeCulturasCieloChanged() {
  const sel = document.getElementById('culturas_cielo_sel');
- threeDibujarCulturasCielo(sel ? sel.value : 'ninguno');
+ const val = sel ? sel.value : 'ninguno';
+ _railCulturaEstado = val; // mantiene el ícono del riel sincronizado con este select
+ threeDibujarCulturasCielo(val);
 }
 
 function threeLimitesChanged() {
@@ -8707,7 +9219,7 @@ function threeModeloRaynaudTexto(epoch) {
  const restante = (RAYNAUD_ANIO_FIN_PISCIS - epoch) / RAYNAUD_ANIOS_POR_GRADO; // grados restantes (negativo = ya cruzado)
  const estado = restante > 0
  ? `${restante.toFixed(2)}° restantes dentro de "su" Piscis (27,06°)`
- : `ya en la Era de Acuario desde hace ${Math.abs(epoch - RAYNAUD_ANIO_FIN_PISCIS).toFixed(1)} años`;
+ : `ya en la Era del Aquarius desde hace ${Math.abs(epoch - RAYNAUD_ANIO_FIN_PISCIS).toFixed(1)} años`; // así la escribe la TCC (forma latina), no "Acuario"
  return `🔮 <b>Modelo del Dr. Raynaud de la Ferrière</b> (TCC, cap. 41 — tasa fija 1°/72 años, Piscis=27,06°, ancla año 1 d.C.): ${estado} — su cálculo, hecho a mano con las tablas de precesión de su época, ubica el cruce en el <b>21 de marzo de 1948</b>.`;
 }
 
@@ -8737,7 +9249,7 @@ function erasPrecesionalesInit() {
  const enPiscis = psc ? _pointInPolyUnwrapped(raV, decV, psc.pts) : null;
  const realTxt = enPiscis ? `${dist.toFixed(2)}° dentro de Piscis` : `${dist.toFixed(2)}° ya en Acuario`;
  const restanteRaynaud = (RAYNAUD_ANIO_FIN_PISCIS - anio) / RAYNAUD_ANIOS_POR_GRADO;
- const raynaudTxt = restanteRaynaud > 0 ? `${restanteRaynaud.toFixed(2)}° restantes en "su" Piscis` : `Era de Acuario, +${Math.abs(anio - RAYNAUD_ANIO_FIN_PISCIS).toFixed(0)} años`;
+ const raynaudTxt = restanteRaynaud > 0 ? `${restanteRaynaud.toFixed(2)}° restantes en "su" Piscis` : `Era del Aquarius, +${Math.abs(anio - RAYNAUD_ANIO_FIN_PISCIS).toFixed(0)} años`;
  const etiquetaAnio = anio === 1948.32 ? '1948 (21 mar)' : Math.round(anio);
  return `<tr><td><b>${etiquetaAnio}</b></td><td>${realTxt}</td><td>${raynaudTxt}</td></tr>`;
  }).join('');
@@ -9710,6 +10222,17 @@ function threeTopoIrAMinuto(minutos) {
  const dtNuevo = new Date(new Date(dtISO.endsWith('Z') ? dtISO : dtISO + 'Z').getTime() + minutos * 60000).toISOString();
  const { asc } = realAscMc(dtNuevo, lat, lon);
  threeTopoActualizarEtiqueta(minutos, asc);
+ // Si la rueda 2D está visible, moverla también al mismo instante desplazado
+ // -- antes se quedaba congelada en la hora original mientras el slider de
+ // "por día" avanzaba, dando la impresión de que el ASC se movía "raro"
+ // (en realidad no se movía nada ahí, solo en la esfera 3D y la etiqueta).
+ // El ASC real avanza ~1°/día ≈ 0,25°/min (día sideral), así que en la
+ // rueda debe verse un giro fino y continuo, no saltos.
+ const svgEl = document.getElementById('chart_wheel_svg');
+ if (svgEl && svgEl.style.display !== 'none') {
+ const lonsDia = approxLons(dtNuevo, lat, lon);
+ renderChartWheel(lonsDia, dtNuevo, lat, lon);
+ }
 }
 function threeTopoSetSpeed(v, btn) {
  _threeTopoSpeed = parseFloat(v);
@@ -9892,6 +10415,50 @@ function threeAbrirEsferaEnPestana() {
 
 const CHART_SIGNS = ['Aries', 'Tauro', 'Géminis', 'Cáncer', 'Leo', 'Virgo',
  'Libra', 'Escorpio', 'Sagitario', 'Capricornio', 'Acuario', 'Piscis'];
+// Glifos reales — la convención estándar en cualquier carta astral (astro.com,
+// grupovenus, etc.), más legible y elegante que las abreviaturas de 3 letras.
+const SIGN_GLYPHS = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+// Íconos propios de los signos (trazo dibujado, NO texto/emoji): en Windows +
+// Chrome varios glifos zodiacales de Unicode (Virgo a Acuario) caen en el
+// rango que ese navegador renderiza con la fuente de emoji a color -- de ahí
+// el cuadro morado feo. Dibujarlos como <path> evita ese problema por
+// completo y de paso usa los colores propios de Invesciencias (insignia
+// menta+dorado, trazo verde) en vez de depender de qué fuente tenga el
+// sistema. Paths REALES (no trazados a mano): diseño de Denis Moskowitz para
+// los símbolos astrológicos/astronómicos, el mismo que usa Wikipedia,
+// licencia CC BY-SA 4.0 (commons.wikimedia.org, categoría "Fixed width
+// astronomical and astrological symbols"). ViewBox original 0 0 12 12.
+const SIGN_ICON_PATHS = [
+ 'M1.732 5.418A2.5 2.5 0 1 1 6 3.65a2.5 2.5 0 1 1 4.268 1.768M6 3.65v7.5', // Aries
+ 'M9.333 7.517a3.333 3.333 0 1 0-6.666-.001 3.333 3.333 0 0 0 6.666 0zM2.667.85a3.333 3.333 0 1 0 6.666 0', // Tauro
+ 'M3.5 2.022v7.956m5-7.956v7.956M11 1A9.995 9.995 0 0 1 1 1m10 10a10.001 10.001 0 0 0-10 0', // Géminis
+ 'M11 6a1.667 1.667 0 1 0-3.334 0A1.667 1.667 0 0 0 11 6zM1 6a1.667 1.667 0 1 0 3.334 0A1.667 1.667 0 0 0 1 6zm10 0a5 5 0 0 0-8.535-3.535M1 6a5 5 0 0 0 8.535 3.535', // Cáncer
+ 'M4.75 7.25C4.75 6 3.5 4.75 3.5 3.5a2.5 2.5 0 0 1 5 0c0 2.5-1.25 3.75-1.25 6.25a1.25 1.25 0 0 0 2.5 0m-5-2.5a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zm0 0', // Leo
+ 'M1.366 4.384A1.25 1.25 0 1 1 3.5 3.5v5m5-3.75a1.25 1.25 0 0 1 2.5 0A3.75 3.75 0 0 1 7.25 8.5M6 3.5a1.25 1.25 0 0 1 2.5 0v5c0 .69.56 1.25 1.25 1.25M3.5 3.5a1.25 1.25 0 0 1 2.5 0v5', // Virgo
+ 'M1 6h2.5a2.5 2.5 0 0 1 5 0H11M1 8.5h10', // Libra
+ 'M10.009 8.241v-1.25h1.25M1.366 4.384A1.25 1.25 0 1 1 3.5 3.5v5m0-5a1.25 1.25 0 0 1 2.5 0v5m0-5a1.25 1.25 0 0 1 2.5 0v5a1.25 1.25 0 1 0 2.134-.884l-.5-.5', // Escorpio
+ 'm3.456 3.544 5 5m-7.5 2.5 10-10m-2.5 0h2.5v2.5', // Sagitario
+ 'M.85 4.333h1.667L4.183 11 5.85 4.333h3.333A1.666 1.666 0 1 0 7.74 3.5l2.887 5a1.667 1.667 0 1 1-3.11.833', // Capricornio
+ 'M1 7.75a1.77 1.77 0 0 1 2.5 0 1.767 1.767 0 0 0 2.5 0 1.77 1.77 0 0 1 2.5 0 1.767 1.767 0 0 0 2.5 0M1 4.25a1.77 1.77 0 0 1 2.5 0 1.767 1.767 0 0 0 2.5 0 1.77 1.77 0 0 1 2.5 0 1.767 1.767 0 0 0 2.5 0', // Acuario
+ 'M9.125 1.67a5 5 0 0 0 0 8.66m-6.25 0a5 5 0 0 0 0-8.66M1 5.998h10.003', // Piscis
+];
+// Insignia: círculo menta + borde dorado detrás del trazo verde -- paleta
+// oficial de Fundación Invesciencias (ver Foro Invesciencias/rebrand_presentacion.py).
+// El path original vive en un viewBox 0 0 12 12 (centro en 6,6).
+function iconoSignoSVG(idx, cx0, cy0, r) {
+ const escala = (r * 1.6) / 12;
+ const tx = cx0 - 6 * escala, ty = cy0 - 6 * escala;
+ return `<g><title>${CHART_SIGNS[idx]}</title>`
+ + `<circle cx="${cx0}" cy="${cy0}" r="${r}" fill="#D9F0E6" stroke="#C8862C" stroke-width="1"/>`
+ + `<g transform="translate(${tx},${ty}) scale(${escala})">`
+ + `<path d="${SIGN_ICON_PATHS[idx]}" fill="none" stroke="#0B4A39" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>`
+ + `</g></g>`;
+}
+const PLANET_GLYPHS = {
+ Sol: '☉', Luna: '☽', Mercurio: '☿', Venus: '♀', Marte: '♂',
+ Júpiter: '♃', Saturno: '♄', Urano: '♅', Neptuno: '♆', Plutón: '♇',
+};
+function glifoPlaneta(name) { return PLANET_GLYPHS[name] || name.slice(0, 3); }
 
 // ── Casas topocéntricas (Polich-Page, 1961) — MISMA fórmula que
 // charts.topocentric_house_cusps() en Python, ya validada algebraicamente
@@ -9918,8 +10485,83 @@ function topocentricHouseCusps(dtStr, latDeg, lonDeg) {
  };
 }
 
+// ═══ Aspectos natales — orbes astrológicos convencionales (las mismas que
+// usa astro.com para cartas natales), DISTINTAS de ASPECTS_CIN (orbes de
+// ≤1.5° usadas para el modelo nulo estadístico del Prontuario II — esas
+// dos tablas sirven propósitos distintos y no deben confundirse). ═══
+const NATAL_ASPECTS = [
+ {name: 'conjunción', ang: 0, orb: 8, symbol: '☌', color: '#5B6E64', dash: null},
+ {name: 'oposición', ang: 180, orb: 8, symbol: '☍', color: '#c0392b', dash: null},
+ {name: 'cuadratura', ang: 90, orb: 7, symbol: '□', color: '#c0392b', dash: null},
+ {name: 'trígono', ang: 120, orb: 8, symbol: '△', color: '#1e8449', dash: null},
+ {name: 'sextil', ang: 60, orb: 6, symbol: '⚹', color: '#1e8449', dash: '4,3'},
+ {name: 'quincuncio', ang: 150, orb: 3, symbol: '⚻', color: '#8e44ad', dash: '2,4'},
+];
+
+// Orden convencional (igual que astro.com): Sol, Luna, y luego los planetas
+// por distancia -- Luna no está en THREE_PLANET_R (tiene su propio radio de
+// órbita en la rueda 3D) pero sí participa en los aspectos natales.
+const CUERPOS_ASPECTOS = ['Sol', 'Luna', 'Mercurio', 'Venus', 'Marte', 'Júpiter', 'Saturno', 'Urano', 'Neptuno', 'Plutón'];
+
+function computeNatalAspects(lons) {
+ const nombres = CUERPOS_ASPECTOS.filter(n => n in lons);
+ const out = [];
+ for (let i = 0; i < nombres.length; i++) {
+ for (let j = i + 1; j < nombres.length; j++) {
+ const a = nombres[i], b = nombres[j];
+ const dist = angDist(lons[a], lons[b]);
+ for (const asp of NATAL_ASPECTS) {
+ const diff = Math.abs(dist - asp.ang);
+ if (diff <= asp.orb) {
+ out.push({a, b, ...asp, orbe: diff});
+ break; // un solo aspecto por par (el que primero calza en la lista ordenada por exactitud implícita)
+ }
+ }
+ }
+ }
+ out.sort((x, y) => x.orbe - y.orbe);
+ return out;
+}
+
+function renderAspectGrid(lons) {
+ const wrap = document.getElementById('chart_aspects_wrap');
+ const cont = document.getElementById('chart_aspects_grid');
+ const mostrar = document.getElementById('three_mostrar_aspectos') && document.getElementById('three_mostrar_aspectos').checked;
+ if (!wrap || !cont) return;
+ if (!mostrar) { wrap.style.display = 'none'; return; }
+ const nombres = CUERPOS_ASPECTOS.filter(n => n in lons);
+ const aspectos = computeNatalAspects(lons);
+ const porPar = {};
+ aspectos.forEach(a => { porPar[a.a + '|' + a.b] = a; });
+ // grilla triangular, igual que el "aspectarian" de astro.com
+ let html = '<table style="border-collapse:collapse;font-size:12px"><tr><td></td>';
+ nombres.slice(1).forEach(n => { html += `<td style="padding:3px 6px;font-weight:700;color:var(--verde-oscuro);text-align:center;font-size:15px" title="${n}">${glifoPlaneta(n)}</td>`; });
+ html += '</tr>';
+ for (let i = 0; i < nombres.length - 1; i++) {
+ html += `<tr><td style="padding:3px 6px;font-weight:700;color:var(--verde-oscuro);font-size:15px" title="${nombres[i]}">${glifoPlaneta(nombres[i])}</td>`;
+ for (let j = 0; j < nombres.length - 1; j++) {
+ if (j < i) { html += '<td></td>'; continue; }
+ const b = nombres[j + 1];
+ const key1 = nombres[i] + '|' + b, key2 = b + '|' + nombres[i];
+ const asp = porPar[key1] || porPar[key2];
+ if (asp) {
+ html += `<td style="padding:3px 6px;text-align:center;border:1px solid var(--line)" title="${nombres[i]} ${asp.name} ${b} (orbe ${asp.orbe.toFixed(2)}°)"><span style="color:${asp.color};font-weight:700">${asp.symbol}</span></td>`;
+ } else {
+ html += '<td style="padding:3px 6px;border:1px solid var(--line)"></td>';
+ }
+ }
+ html += '</tr>';
+ }
+ html += '</table>';
+ html += '<div class="small muted" style="margin-top:6px">'
+ + NATAL_ASPECTS.map(a => `<span style="color:${a.color};font-weight:700">${a.symbol}</span> ${a.name} (±${a.orb}°)`).join(' · ')
+ + '</div>';
+ cont.innerHTML = html;
+ wrap.style.display = 'block';
+}
+
 function renderChartWheel(lons, dtStr, latDeg, lonDeg) {
- const cx = 200, cy = 200, rOuter = 180, rSigns = 155, rPlanets = 115, rHouses = 135;
+ const cx = 200, cy = 200, rOuter = 180, rSigns = 155, rPlanets = 128, rHouses = 135;
  // El Ascendente queda fijo a la izquierda (convención estándar de las
  // ruedas de carta astral) — sin esto, la rueda no se parece en nada a
  // una carta astral real, aunque las longitudes sean correctas.
@@ -9932,14 +10574,26 @@ function renderChartWheel(lons, dtStr, latDeg, lonDeg) {
  let svg = '';
  svg += `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="#2A6B52" stroke-width="2"/>`;
  svg += `<circle cx="${cx}" cy="${cy}" r="${rSigns}" fill="none" stroke="#D4E8E0" stroke-width="1"/>`;
- // divisiones de signo cada 30° absolutos (el signo real no cambia con el ASC)
+ // divisiones de signo cada 30° absolutos (el signo real no cambia con el ASC),
+ // marcas de grado cada 5° (10°/20° un poco más largas que las de 5°/15°/25°
+ // -- antes no había NINGUNA marca de grado, solo el límite de signo), y el
+ // nombre del signo centrado DENTRO de su propia banda (antes quedaba
+ // flotando afuera del círculo verde, como si no perteneciera a la rueda).
+ const rMidSigns = (rSigns + rOuter) / 2;
  for (let i = 0; i < 12; i++) {
  const deg = i * 30;
  const [x1, y1] = toXY(deg, rSigns);
  const [x2, y2] = toXY(deg, rOuter);
  svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#D4E8E0" stroke-width="1"/>`;
- const [lx, ly] = toXY(deg + 15, rOuter + 14);
- svg += `<text x="${lx}" y="${ly}" font-size="10" fill="#4A5E56" text-anchor="middle">${CHART_SIGNS[i]}</text>`;
+ for (let g = 5; g < 30; g += 5) {
+ const esDecena = (g === 10 || g === 20);
+ const rTick = esDecena ? rOuter + 7 : rOuter + 4;
+ const [tx1, ty1] = toXY(deg + g, rOuter);
+ const [tx2, ty2] = toXY(deg + g, rTick);
+ svg += `<line x1="${tx1}" y1="${ty1}" x2="${tx2}" y2="${ty2}" stroke="#2A6B52" stroke-width="${esDecena ? 1.2 : 0.7}"/>`;
+ }
+ const [lx, ly] = toXY(deg + 15, rMidSigns);
+ svg += iconoSignoSVG(i, lx, ly, 10.5);
  }
  // casas topocéntricas (Polich-Page) — cúspides DESIGUALES, dependen de la
  // latitud real. Se muestran como líneas punteadas moradas, con el número
@@ -9947,26 +10601,119 @@ function renderChartWheel(lons, dtStr, latDeg, lonDeg) {
  const mostrarCasas = document.getElementById('three_mostrar_casas') && document.getElementById('three_mostrar_casas').checked;
  if (mostrarCasas && dtStr && latDeg !== undefined) {
  const cusps = topocentricHouseCusps(dtStr, latDeg, lonDeg);
+ const rCasaLinea = rOuter + 9; // sale ~0.5cm del círculo verde, para ver dónde corta cada cúspide
  for (let h = 1; h <= 12; h++) {
- const [x1, y1] = toXY(cusps[h], rHouses);
+ const [x1, y1] = toXY(cusps[h], rCasaLinea);
  svg += `<line x1="${cx}" y1="${cy}" x2="${x1}" y2="${y1}" stroke="#8e44ad" stroke-width="1" stroke-dasharray="3,3"/>`;
  const [lx, ly] = toXY(cusps[h] + 3, rHouses - 12);
  svg += `<text x="${lx}" y="${ly}" font-size="9" fill="#8e44ad" font-weight="700">${h}</text>`;
  }
  }
- // marcador del Ascendente (siempre a la izquierda, por construcción)
- const [ax, ay] = toXY(asc, rOuter);
+ // marcador del Ascendente (siempre a la izquierda, por construcción). El
+ // signo que contiene el ASC casi siempre cae ahí también (su insignia
+ // vive en la banda de signos, radio rSigns-rOuter) -- así que la etiqueta
+ // "ASC" no puede vivir en esa banda (chocaría con la insignia) ni adentro
+ // cerca de los planetas (se confunde con ellos, como reportado). La línea
+ // roja se prolonga un poco más allá del círculo exterior y "ASC" se pone
+ // pegado a esa punta, sobre la misma línea -- así el nombre queda
+ // claramente asociado a ELLA y no flotando aparte en otro ángulo.
+ const rAscLinea = rOuter + 20; // hasta dónde sobresale la línea del círculo
+ const [ax, ay] = toXY(asc, rAscLinea);
  svg += `<line x1="${cx}" y1="${cy}" x2="${ax}" y2="${ay}" stroke="#c0392b" stroke-width="2"/>`;
- svg += `<text x="${ax - 14}" y="${ay + 4}" font-size="11" fill="#c0392b" font-weight="700">ASC</text>`;
- // planetas
- Object.keys(THREE_PLANET_R).forEach(name => {
- if (!(name in lons)) return;
- const [px, py] = toXY(lons[name], rPlanets);
- const hex = '#' + THREE_PLANET_COLORS[name].toString(16).padStart(6, '0');
- svg += `<circle cx="${px}" cy="${py}" r="7" fill="${hex}" stroke="#1A2820" stroke-width="1"/>`;
- svg += `<text x="${px}" y="${py - 11}" font-size="9" fill="#1A2820" text-anchor="middle">${name.slice(0, 3)}</text>`;
+ const [alx, aly] = toXY(asc, rAscLinea + 10);
+ svg += `<text x="${alx}" y="${aly}" font-size="11" fill="#c0392b" font-weight="700" text-anchor="middle" dominant-baseline="middle">ASC</text>`;
+ // Radio de dibujo por planeta -- si dos (o más) quedan a pocos grados uno
+ // del otro, sus círculos se tapan entre sí. En vez de mover el ángulo
+ // (que haría ver el planeta "en el signo equivocado"), se alternan en
+ // radios distintos, muy cerca del anillo principal, manteniendo el
+ // ángulo real -- la línea de aspecto sigue llegando exactamente al
+ // círculo de cada uno porque usa este mismo radio.
+ const RADIOS_DECLUTTER = [0, 15, -15, 30, -30];
+ const SEP_MINIMA_DEG = 9;
+ const _radiosPlaneta = {};
+ (() => {
+ const presentes = CUERPOS_ASPECTOS.filter(n => n in lons);
+ const usados = []; // {name, lon, off}
+ presentes
+ .slice()
+ .sort((a, b) => lons[a] - lons[b])
+ .forEach(name => {
+ const lon = lons[name];
+ const off = RADIOS_DECLUTTER.find(cand => !usados.some(u => u.off === cand && angDist(u.lon, lon) < SEP_MINIMA_DEG))
+ ?? RADIOS_DECLUTTER[RADIOS_DECLUTTER.length - 1];
+ usados.push({ name, lon, off });
+ _radiosPlaneta[name] = rPlanets + off;
  });
+ })();
+ // líneas de aspecto: conectan los planetas directamente en su propio
+ // radio (ya con la separación anti-solape aplicada) -- si se dibujan en
+ // un radio distinto al del círculo quedan "flotando" sin tocarlo.
+ const mostrarAspectos = document.getElementById('three_mostrar_aspectos') && document.getElementById('three_mostrar_aspectos').checked;
+ if (mostrarAspectos) {
+ computeNatalAspects(lons).forEach(asp => {
+ const [x1, y1] = toXY(lons[asp.a], _radiosPlaneta[asp.a] ?? rPlanets);
+ const [x2, y2] = toXY(lons[asp.b], _radiosPlaneta[asp.b] ?? rPlanets);
+ const dashAttr = asp.dash ? ` stroke-dasharray="${asp.dash}"` : '';
+ svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${asp.color}" stroke-width="1.2" opacity="0.75"${dashAttr}><title>${asp.a} ${asp.name} ${asp.b} (${asp.orbe.toFixed(2)}°)</title></line>`;
+ });
+ }
+ // planetas (incluida la Luna, que antes no se dibujaba aquí)
+ CUERPOS_ASPECTOS.forEach(name => {
+ if (!(name in lons)) return;
+ const rDibujo = _radiosPlaneta[name] ?? rPlanets;
+ const [px, py] = toXY(lons[name], rDibujo);
+ if (rDibujo !== rPlanets) {
+ // línea guía fina hacia el grado real, para no perder precisión visual
+ const [tx, ty] = toXY(lons[name], rPlanets);
+ svg += `<line x1="${tx}" y1="${ty}" x2="${px}" y2="${py}" stroke="#999" stroke-width="0.6"/>`;
+ }
+ const hex = '#' + (THREE_PLANET_COLORS[name] || 0xcccccc).toString(16).padStart(6, '0');
+ // <title> nativo del SVG -- el navegador muestra el tooltip solo con
+ // pasar el mouse, sin JS extra. Nombre completo + signo/grado, para
+ // quien no reconozca el glifo o quiera el dato exacto sin entrecerrar
+ // los ojos a la ruedita chiquita.
+ svg += `<g><title>${name} — ${lonASignoGrado(lons[name])}</title>`
+ + `<circle cx="${px}" cy="${py}" r="8" fill="${hex}" stroke="#1A2820" stroke-width="1"/>`
+ // glifo DENTRO del propio círculo (como un ícono), no flotando arriba --
+ // paint-order="stroke" dibuja primero un contorno oscuro y encima el
+ // relleno blanco, así se lee igual de bien sin importar el color del
+ // planeta debajo.
+ + `<text x="${px}" y="${py}" font-size="10" fill="#fff" stroke="#1A2820" stroke-width="2.2" paint-order="stroke" text-anchor="middle" dominant-baseline="central">${glifoPlaneta(name)}</text>`
+ + `</g>`;
+ });
+ // "Cielo de ahora" y progresión secundaria: DOS anillos concéntricos
+ // ADENTRO del anillo natal (nunca afuera de rOuter, para no salirse del
+ // viewBox ni pisar los nombres de signo) -- de centro hacia afuera:
+ // ahora (más chico) -> progresión -> planetas natales (el anillo principal).
+ const mostrarAhora = document.getElementById('three_ahora_on') && document.getElementById('three_ahora_on').checked && _threeAhoraLons;
+ if (mostrarAhora) {
+ const rAhora = rPlanets - 40; // más separado del resto, con más holgura entre anillos
+ svg += `<circle cx="${cx}" cy="${cy}" r="${rAhora}" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="2,3"/>`;
+ CUERPOS_ASPECTOS.forEach(name => {
+ if (!(name in _threeAhoraLons)) return;
+ const [px, py] = toXY(_threeAhoraLons[name], rAhora);
+ svg += `<circle cx="${px}" cy="${py}" r="6.5" fill="#fff" stroke="#333" stroke-width="1.2"/>`;
+ svg += `<text x="${px}" y="${py}" font-size="8" fill="#333" text-anchor="middle" dominant-baseline="central">${glifoPlaneta(name)}</text>`;
+ });
+ }
+ // Progresión secundaria — rombos dorados, distinguibles a simple vista
+ // de los círculos blancos de "ahora" y de los planetas natales llenos.
+ const mostrarProg = document.getElementById('three_prog_on') && document.getElementById('three_prog_on').checked && _threeProgLons;
+ if (mostrarProg) {
+ const rProg = rPlanets - 18; // entre "ahora" y los planetas natales, con holgura de ambos lados
+ svg += `<circle cx="${cx}" cy="${cy}" r="${rProg}" fill="none" stroke="#0B4A39" stroke-width="1" stroke-dasharray="2,3"/>`;
+ CUERPOS_ASPECTOS.forEach(name => {
+ if (!(name in _threeProgLons)) return;
+ const [px, py] = toXY(_threeProgLons[name], rProg);
+ // rombo blanco con borde dorado (igual criterio que "ahora": sin relleno
+ // de color, para que el glifo se lea bien adentro) -- el verde queda
+ // afuera, en el anillo guía punteado.
+ svg += `<rect x="${px - 5.5}" y="${py - 5.5}" width="11" height="11" fill="#fff" stroke="#C8862C" stroke-width="1.3" transform="rotate(45 ${px} ${py})"/>`;
+ svg += `<text x="${px}" y="${py}" font-size="7.5" fill="#7a4f16" text-anchor="middle" dominant-baseline="central">${glifoPlaneta(name)}</text>`;
+ });
+ }
  document.getElementById('chart_wheel_svg').innerHTML = svg;
+ renderAspectGrid(lons);
 }
 
 // Inicializar la escena de movimientos al cargar "Empieza aquí" (pestaña visible por defecto)
