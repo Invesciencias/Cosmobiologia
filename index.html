@@ -7476,12 +7476,12 @@ function threeCalcularEvento() {
  const mostrarEclip = document.getElementById('three_mostrar_eclip') && document.getElementById('three_mostrar_eclip').checked;
  if (mostrarEclip) {
  threeAddEclipticPlane(_threeScene, 20);
- leyenda.innerHTML += `<span style="color:#c0392b;font-weight:700">▸ Punto Vernal (0° Aries)</span>`;
+ leyenda.innerHTML += `<span style="color:#c0392b;font-weight:700">▸ Punto Vernal (0° Aries)</span> <span style="color:#2A6B52;font-weight:700">▸ Eclíptica (inclinada 23.44°)</span>`;
  }
  const mostrarEcuador = document.getElementById('three_mostrar_ecuador') && document.getElementById('three_mostrar_ecuador').checked;
  if (mostrarEcuador) {
  threeAddCelestialEquator(_threeScene, 20);
- leyenda.innerHTML += `<span style="color:#2A6BD8;font-weight:700">▸ Ecuador celeste (inclinado 23.44°)</span>`;
+ leyenda.innerHTML += `<span style="color:#2A6BD8;font-weight:700">▸ Ecuador celeste (plano de referencia, δ=0)</span>`;
  }
  // Anillo con las 12 constelaciones del zodíaco, para que la Carta astral
  // se sienta como una carta de verdad (planetas ubicados dentro de su
@@ -9061,13 +9061,17 @@ function buildCosmicMap() {
  const m = new THREE.Mesh(new THREE.SphereGeometry(0.01), new THREE.MeshBasicMaterial({ visible: false }));
  m.position.set(-80, 0, 0); _threeScene.add(m); return m;
  })());
+ // Las posiciones NO cambiaron -- solo las etiquetas, que estaban
+ // intercambiadas: (0,0,80) tiene δ=0 (α=90°) -- es un punto del ECUADOR;
+ // (0, 80·sinε, 80·cosε) es el punto de la eclíptica en α=90° (coincide
+ // con el solsticio de verano, verificado arriba en threeAddEclipticPlane).
  registrar('Ecuador celeste (plano)', (() => {
  const m = new THREE.Mesh(new THREE.SphereGeometry(0.01), new THREE.MeshBasicMaterial({ visible: false }));
- m.position.set(0, 80 * Math.sin(THREE.MathUtils.degToRad(23.44)), 80 * Math.cos(THREE.MathUtils.degToRad(23.44))); _threeScene.add(m); return m;
+ m.position.set(0, 0, 80); _threeScene.add(m); return m;
  })());
  registrar('Eclíptica (plano, vista de canto)', (() => {
  const m = new THREE.Mesh(new THREE.SphereGeometry(0.01), new THREE.MeshBasicMaterial({ visible: false }));
- m.position.set(0, 0, 80); _threeScene.add(m); return m;
+ m.position.set(0, 80 * Math.sin(THREE.MathUtils.degToRad(23.4393)), 80 * Math.cos(THREE.MathUtils.degToRad(23.4393))); _threeScene.add(m); return m;
  })());
 
  // --- Órbita galáctica del Sol — anillo-guía ESQUEMÁTICO junto al Sol (no
@@ -9395,13 +9399,19 @@ function threeActualizarMarcaFechaEnDetalle(diasSeleccionados) {
 }
 
 // ═══ Plano de la eclíptica + punto vernal (3D) ═══
-// El plano de la eclíptica YA es el plano y=0 en esta escena (todos los
-// planetas se colocan ahí) — esto solo lo hace VISIBLE con una grilla y
-// marca el punto vernal (0° Aries, origen de las longitudes eclípticas)
-// con una línea y una etiqueta.
+// OJO: esta grilla vive en el MISMO sistema que las estrellas/fronteras
+// (x=R·cosδ·cosα, y=R·sinδ, z=R·cosδ·sinα -- ver threeDibujarLimitesConstelaciones),
+// donde el eje Y es el eje de DECLINACIÓN, no el polo eclíptico. En ese
+// sistema el plano y=0 es el ECUADOR celeste (δ=0 para cualquier α) --
+// la eclíptica es la que hay que INCLINAR -23.44° alrededor del eje X
+// (el mismo eje donde vive el punto vernal, su intersección con el
+// ecuador). Verificado contra un punto conocido: el solsticio de verano
+// (α=90°, δ=+23.44°, que por definición ESTÁ sobre la eclíptica) solo
+// cae en este plano con el signo NEGATIVO de la rotación.
 function threeAddEclipticPlane(scene, rMax) {
  const grid = new THREE.PolarGridHelper(rMax, 12, 6, 64, 0x2A6B52, 0x2A6B52);
  grid.material.opacity = 0.25; grid.material.transparent = true;
+ grid.rotation.x = -THREE.MathUtils.degToRad(23.4393); // oblicuidad, signo verificado contra el solsticio de verano
  scene.add(grid);
  // línea del punto vernal (0° Aries) — hacia +X, coherente con toXY() de
  // approxLons donde longitud 0 corresponde a ángulo 0 en el plano XZ
@@ -9417,17 +9427,16 @@ function threeAddEclipticPlane(scene, rMax) {
 }
 
 // ═══ Ecuador celeste (3D) — la proyección del ecuador terrestre sobre la
-// esfera celeste. Está inclinado respecto a la eclíptica exactamente el
-// ángulo de la oblicuidad (≈23.44°), y el eje de esa inclinación es la
-// propia línea del punto vernal: por eso, al rotar la grilla de la
-// eclíptica alrededor del eje X (donde vive el punto vernal), el punto
-// vernal NO se mueve — es matemáticamente la intersección de ambos
-// planos (el nodo ascendente de la eclíptica sobre el ecuador). El punto
-// opuesto (equinoccio de otoño, 0° Libra) es la otra intersección.
+// esfera celeste. En el sistema de coordenadas de esta escena (y=R·sinδ,
+// ver threeAddEclipticPlane arriba) el ecuador celeste ES, por
+// definición, el plano y=0 -- no necesita rotación. La eclíptica es la
+// que está inclinada respecto a ÉL, exactamente el ángulo de la
+// oblicuidad (≈23.44°), alrededor del eje X donde vive el punto vernal
+// (la intersección de ambos planos; el punto opuesto es el equinoccio
+// de otoño, 0° Libra).
 function threeAddCelestialEquator(scene, rMax) {
  const grid = new THREE.PolarGridHelper(rMax, 12, 4, 64, 0x2A6BD8, 0x2A6BD8);
  grid.material.opacity = 0.22; grid.material.transparent = true;
- grid.rotation.x = THREE.MathUtils.degToRad(23.44); // oblicuidad de la eclíptica
  scene.add(grid);
  const marker2 = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.8, 8), new THREE.MeshBasicMaterial({ color: 0x2A6BD8 }));
  marker2.position.set(-rMax, 0, 0);
