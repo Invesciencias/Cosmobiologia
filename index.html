@@ -295,8 +295,8 @@
  <div class="nq-desc" data-i18n="nav_quick_fuentes_desc">Fuentes — catálogos públicos por ciencia</div>
  </div>
  <div class="navquick-card" style="border-color:#9b59b6" onclick="document.querySelector('[data-tab=eras_precesionales]').click()">
- <div class="nq-title">¿Cuándo empieza la Era de Acuario?</div>
- <div class="nq-desc">Eras precesionales — el cálculo real (IAU/Newcomb) vs. el del Dr. Raynaud de la Ferrière, con el mapa de estrellas y 5 culturas del cielo en vivo</div>
+ <div class="nq-title">Eras precesionales</div>
+ <div class="nq-desc">IAU/Newcomb y el Dr. Raynaud de la Ferrière, comparados, con estrellas y culturas del cielo en vivo</div>
  </div>
  </div>
  </div>
@@ -311,20 +311,21 @@
  riel der. / barra de tiempo), para explicar con símbolos en vez de párrafos. -->
  <div style="display:flex;border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-bottom:6px;min-height:150px">
  <div style="background:#0a1420;padding:10px 6px;display:flex;flex-direction:column;gap:7px;align-items:center;width:58px;flex:none">
- <span style="font-size:18px">🌍</span><span style="font-size:18px">☀️</span><span style="font-size:18px">✨</span><span style="font-size:18px">🔮</span><span style="font-size:18px">🏛️</span>
+ <span style="font-size:18px">🌍</span><span style="font-size:18px">🌌</span><span style="font-size:18px">🔮</span><span style="font-size:18px">🌀</span><span style="font-size:18px">🏛️</span>
  </div>
  <div style="flex:1;background:radial-gradient(ellipse at center,#13233a,#0a1420);display:flex;align-items:center;justify-content:center;color:#cfe0da;font-size:12.5px;text-align:center;padding:10px">
  🖱️ rota · 🔍 zoom<br><span style="opacity:.7">(el detalle de la vista elegida aparece debajo del mapa)</span>
  </div>
  <div style="background:#0a1420;padding:10px 6px;display:flex;flex-direction:column;gap:7px;align-items:center;width:58px;flex:none">
- <span style="font-size:16px">⛶</span><span style="font-size:16px">🌍</span><span style="font-size:16px">👁️</span><span style="font-size:16px">⏱️</span>
+ <span style="font-size:16px">⛶</span><span style="font-size:16px">🗺️</span><span style="font-size:16px">🌐</span>
  </div>
  </div>
  <div style="display:flex;font-size:11px;color:var(--muted);margin-bottom:4px">
  <div style="width:58px;flex:none;text-align:center">↑<br><b>Elige vista</b></div>
  <div style="flex:1;text-align:center">↑ <b>rota / haz zoom aquí</b></div>
- <div style="width:58px;flex:none;text-align:center">↑<br><b>Controles extra</b></div>
+ <div style="width:58px;flex:none;text-align:center">↑<br><b>Más opciones</b></div>
  </div>
+ <p class="small muted" style="margin:0 0 10px">Cada ícono es una <b>categoría</b>, no una acción directa: un clic abre un pequeño menú al lado con sus opciones (🌌 = Sistema Solar/Estrellas/Galaxia, mismo mapa a distinto zoom; 🗺️ = fronteras/nombres/resaltar/medir; 🌐 = las 5 culturas del cielo). El ⛶ (pantalla completa) es el único que actúa directo.</p>
  <div style="background:#0a1420;color:#cfe0da;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:10px;font-size:12px;margin-bottom:4px">
  <span>▶</span><span style="flex:1;height:3px;background:linear-gradient(90deg,var(--accent),rgba(255,255,255,.15));border-radius:2px;position:relative"><span style="position:absolute;left:35%;top:-4px;width:11px;height:11px;border-radius:50%;background:#fff"></span></span><span>🕰️</span>
  </div>
@@ -360,7 +361,7 @@
  </div>
 
  <div class="hint" style="margin:0 0 10px;font-size:13px">
- <b>➡️ El riel de la derecha</b> son accesos rápidos a controles extra. Casi ningún ícono hace algo al pulsarlo directamente — abre un pequeño menú flotante justo al lado con las opciones de ese grupo (🌍 = rotación/traslación/precesión/nutación; 👁️ = vistas de cámara; ➰, en la Cicloide de Llona, = Caso/Latitud φ/Curvas Rdr'). Un ícono = una categoría, un clic = ver sus opciones. El ⛶ (pantalla completa) es el único que siempre está ahí.
+ <b>➡️ El riel de la derecha</b> son accesos rápidos a controles extra, y cambia según la vista elegida a la izquierda. En "Tierra: sus movimientos": 🌍 = rotación/traslación/precesión/nutación, 👁️ = vistas de cámara, ⏱️ = escala de tiempo. En la Cicloide de Llona, en vez de esos aparecen sus 3 controles propios directo: Caso/Latitud φ/Curvas Rdr'. Casi ningún ícono hace algo al pulsarlo directamente — abre un pequeño menú flotante justo al lado con las opciones de ese grupo. El ⛶ (pantalla completa) es el único que siempre está ahí.
  </div>
 
  <div class="map-shell" id="map_shell">
@@ -397,7 +398,7 @@
  <div id="bb_topo_time" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
  <button class="bb-play" id="topo_play_btn" onclick="threeTopoPlayToggle()" title="Reproducir">▶</button>
  <span style="font-size:15px" title="La esfera entera gira alrededor del eje del mundo -- la misma rotación real de la Tierra (1° cada ≈4 minutos) -- sin recalcular nada, solo gira lo ya calculado.">🌐↻</span>
- <input type="range" id="topo_minuto_slider" min="-720" max="720" step="1" value="0" style="flex:1" oninput="threeTopoIrAMinuto(parseInt(this.value))">
+ <input type="range" id="topo_minuto_slider" min="-720" max="720" step="1" value="0" style="flex:1" oninput="threeTopoIrAMinuto(parseInt(this.value))" title="Los PLANETAS son siempre los mismos de tu carta (sus longitudes no cambian con los minutos) -- lo que ves girar es el ASC, y como el ASC se dibuja SIEMPRE fijo a la izquierda, toda la rueda se reacomoda alrededor de él. Es la misma carta vista con otro ASC, no otros planetas.">
  <span id="topo_minuto_label" class="small" style="color:#fff;font-weight:700;min-width:150px;text-align:right;white-space:nowrap"></span>
  <span class="bb-speedgroup">
  <button class="bb-speed" onclick="threeTopoSetSpeed(0.5,this)" title="Velocidad 0.5×">0.5×</button>
@@ -449,6 +450,7 @@
  <div class="rail-tip" id="rail_tip"></div>
  </div>
  <p class="small muted" style="margin-top:8px">Distancias esquemáticas, no a escala real — el objetivo es la geometría angular (qué tan alineados están los planetas), no la distancia física. Posiciones planetarias: modelo kepleriano simplificado para el navegador (la plataforma usa Skyfield + JPL DE421 para los cálculos reales).</p>
+ <p class="small muted" id="topo_dia_nota" style="display:none;margin-top:4px;color:var(--accent2)">🕰️ Al mover este control los <b>planetas siguen siendo los mismos de tu carta</b> (sus longitudes no cambian) — lo único que avanza es el instante, y como el ASC se dibuja SIEMPRE fijo a la izquierda, la rueda entera se reacomoda alrededor de él. Por eso parece que "cambian" los planetas: en realidad gira el marco de referencia (el ASC), no ellos.</p>
 
  <!-- ═══ Detalle — cambia según el botón del HUD que elegiste arriba ═══ -->
  <div id="three_detail" style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px">
@@ -597,6 +599,10 @@
  <button class="ghost act" id="three_toggle_esfera" onclick="threeToggleEsferaTopocentrica()">🌐 Ver esfera de casas (3D)</button>
  <button class="ghost act" onclick="threeAbrirEsferaEnPestana()">🔗 Abrir en pestaña nueva (fondo claro)</button>
  </div>
+ <!-- Los sliders de "explorar lat/lon" viven ahora en el riel derecho
+ (flyout de 🔮 Carta astral) cuando estás en Topocentrismo -- se
+ perdían aquí, muy abajo del panel largo (ciudad, fecha/hora, lat/lon
+ reales, ahora/progresión...), lejos del mapa que deberían controlar. -->
  <div class="row" style="margin:0 0 6px;gap:14px">
  <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_casas" checked onchange="threeCalcularEvento()"> Casas topocéntricas</label>
  <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_eclip" onchange="threeCalcularEvento()"> Plano eclíptica + punto vernal</label>
@@ -3938,7 +3944,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
  <h2 style="font-size:22px;color:#fff;margin-bottom:6px">♒ Eras precesionales</h2>
- <p style="font-size:15px;margin-bottom:0">¿Cuándo "empieza" la Era de Acuario? Esta pestaña reúne, en un solo lugar, el cálculo <b>real</b> que usa el resto de esta plataforma (fronteras oficiales IAU/Delporte + precesión de Newcomb) y el cálculo del <b>Dr. Serge Raynaud de la Ferrière</b> citado en la TCC (cap. 41) — con su fórmula completa, paso a paso, y una tabla que compara ambos en varias fechas.</p>
+ <p style="font-size:15px;margin-bottom:0">¿Cuándo "empieza" la Era de Acuario? Esta pestaña reúne, en un solo lugar, el cálculo de referencia que usa el resto de esta plataforma (fronteras oficiales IAU/Delporte + precesión de Newcomb) y el cálculo del <b>Dr. Serge Raynaud de la Ferrière</b> citado en la TCC (cap. 41) — dos métodos igualmente reales, con su fórmula completa, paso a paso, y una tabla que compara ambos en varias fechas.</p>
  </div>
 
  <div class="card">
@@ -3959,7 +3965,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p>Esta plataforma usa como referencia las <b>88 fronteras oficiales</b> que Eugène Delporte trazó en 1930 para la Unión Astronómica Internacional (sobre coordenadas de la época B1875.0, verificadas aquí contra la fuente original) y la <b>fórmula rigurosa de precesión de Newcomb</b> (Meeus, <i>Astronomical Algorithms</i>, cap. 21) para expresarlas en cualquier época. La tasa de precesión real <b>no es constante</b> — varía ligeramente con el tiempo — así que este cálculo usa su valor exacto para cada fecha, no un promedio redondeado.</p>
  <table style="margin-top:10px">
  <tbody>
- <tr><td style="width:40%"><b>Ancho real de Piscis</b></td><td>37,06° (varía de constelación a constelación — de 6° a 44° — porque sigue la forma real del cielo, no un reparto parejo)</td></tr>
+ <tr><td style="width:40%"><b>Ancho de Piscis (IAU/Delporte)</b></td><td>37,06° (varía de constelación a constelación — de 6° a 44° — porque sigue la forma del cielo, no un reparto parejo)</td></tr>
  <tr><td><b>Tasa de precesión</b></td><td>≈50,29″/año (varía con el tiempo, fórmula de Newcomb)</td></tr>
  <tr><td><b>Punto vernal hoy</b></td><td>dentro de Piscis, a pocos grados del límite con Acuario</td></tr>
  <tr><td><b>Cruce estimado a Acuario</b></td><td>≈año 2598</td></tr>
@@ -3977,17 +3983,17 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p class="small muted">La TCC llama a esto la <b>"Era del Aquarius"</b> (forma latina, tal como la escribe el propio texto — no "Era de Acuario"): <i>"Estamos matemáticamente en la Era del Aquarius"</i>. Aquí se respeta esa grafía cuando se cita su modelo directamente; "Acuario" se sigue usando para el nombre de la constelación/signo en el resto de la plataforma.</p>
  <p>El Dr. Raynaud de la Ferrière ancló el inicio de la Era de Piscis en el <b>Año 1 de la Era Cristiana</b>, y calculó cuánto tiempo tardaría el punto vernal en atravesar por completo la constelación de Piscis usando una tasa de precesión <b>fija</b>, redondeada a <b>1° cada 72 años</b> (72×360° = 25.920 años el ciclo completo — el "Año Platónico" clásico). Con su propio valor del ancho de Piscis, <b>27,06°</b>, su cuenta fue:</p>
  <div class="hint" style="font-size:15px;text-align:center;font-weight:700">27,06° × 72 años/° = 1.948,32 años → <span style="color:var(--oro)">21 de marzo de 1948</span></div>
- <p class="small muted" style="margin-top:8px">Es un cálculo hecho enteramente a mano, con las tablas de precesión disponibles en su época — un trabajo pionero, considerando que no tenía acceso a la precesión variable de Newcomb ni a fronteras IAU digitalizadas, herramientas que solo se volvieron accesibles décadas después. Justamente por eso es, en rigor, una <b>aproximación</b> y no un cálculo equivalente al de arriba: se apoya en una tasa fija (en vez de la tasa real, que varía con el tiempo) y en su propio valor del ancho de Piscis (27,06°, en vez del 37,06° que miden hoy las fronteras oficiales Delporte/IAU) — dos simplificaciones necesarias sin las herramientas modernas, y la razón concreta por la que su fecha (1948) se aleja tanto del cruce real estimado (≈2598).</p>
+ <p class="small muted" style="margin-top:8px">Es un cálculo hecho enteramente a mano, con las tablas de precesión disponibles en su época — un trabajo pionero, considerando que no tenía acceso a la precesión variable de Newcomb ni a fronteras IAU digitalizadas, herramientas que solo se volvieron accesibles décadas después. Su método parte de dos elecciones propias, tan legítimas como las de Delporte pero distintas: una tasa de precesión fija (en vez de la tasa variable de Newcomb) y su propio valor del ancho de Piscis (27,06°, en vez del 37,06° de las fronteras oficiales Delporte/IAU) — esas dos convenciones de partida, no un error de cálculo, son la razón concreta por la que su fecha (1948) queda tan lejos de la que da el método IAU/Newcomb (≈2598).</p>
  <h3 style="margin-top:14px">Tabla comparativa — mismos años, los dos métodos</h3>
  <div style="overflow-x:auto"><table id="tabla_eras" style="font-size:13px">
- <thead><tr><th>Año</th><th>Real (IAU/Delporte + Newcomb)</th><th>Modelo Raynaud de la Ferrière</th></tr></thead>
+ <thead><tr><th>Año</th><th>IAU/Delporte + Newcomb</th><th>Modelo Raynaud de la Ferrière</th></tr></thead>
  <tbody id="tabla_eras_body"><tr><td colspan="3" class="small muted">Calculando…</td></tr></tbody>
  </table></div>
  </div>
 
  <div class="card" style="border-left:4px solid #e67e22">
  <h2>🔬 Una pregunta de investigación abierta: ¿qué frontera pondría el cruce justo en 1948?</h2>
- <p>Esto es lo que hace valioso el cálculo del Dr. Raynaud de la Ferrière más allá de su resultado: en vez de tomar la clasificación de Delporte como un dato cerrado, se puede usar el motor de precesión de esta misma plataforma <b>al revés</b> — preguntando qué límite Piscis/Acuario haría que el cruce real coincidiera con el 21 de marzo de 1948, en lugar de partir de un límite fijo y calcular la fecha.</p>
+ <p>Esto es lo que hace valioso el cálculo del Dr. Raynaud de la Ferrière más allá de su resultado: en vez de tomar la clasificación de Delporte como un dato cerrado, se puede usar el motor de precesión de esta misma plataforma <b>al revés</b> — preguntando qué límite Piscis/Acuario haría que el cruce (según fronteras IAU/Delporte) coincidiera con el 21 de marzo de 1948, en lugar de partir de un límite fijo y calcular la fecha.</p>
  <p>La respuesta, calculada con el mismo motor de Newcomb ya validado: el punto vernal de 1948 estaba en la longitud eclíptica <b>≈0,72°</b> (frame J2000), mientras que el límite de Delporte está en <b>351,64°</b> — es decir, para que 1948 fuera el cruce exacto, la frontera tendría que estar dibujada <b>≈9,08° más adelante en la eclíptica</b> de donde la trazó Delporte. Delporte, siguiendo la cuadrícula de ascensión recta/declinación, no tenía ninguna razón para poner el límite ahí: su criterio era puramente cartográfico, no eclíptico. Esa diferencia de ≈9° es, en sí misma, una pista concreta y verificable de por dónde empezar a investigar.</p>
  <p>Esto abre varias líneas de trabajo matemático genuino, ninguna resuelta todavía en esta plataforma:</p>
  <ul style="margin:6px 0 10px 20px;padding:0">
@@ -3997,13 +4003,13 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </ul>
  <div class="hint">Esta plataforma ya tiene las piezas para probar cualquiera de esas tres ideas (el motor de precesión de Newcomb, el test punto-en-polígono sobre las fronteras, y ahora esta comparación) — lo que falta es definir con rigor un criterio alternativo de frontera y correrlo contra los mismos datos. Se deja planteado aquí como invitación a investigarlo científicamente, no como una forma de "ajustar" el cálculo para que dé 1948: el objetivo es ver si <i>algún</i> criterio geométrico razonable, distinto al de Delporte, ubica el cruce cerca de esa fecha — y si no lo hace, eso también es un resultado válido.</div>
  <div class="hint" style="margin-top:10px;border-left:4px solid #9b59b6">
- <b>Convergencia con una fuente primaria distinta:</b> el informe de investigación aparte sobre este mismo límite (<code>Limites/Fronteras_Piscis_Acuario_tres_metodos.docx</code>) encontró, revisando una tabla de anchos zodiacales citada por el propio Dr. Raynaud de la Ferrière (Aries 27°, Tauro 37°, Géminis 29°, Piscis 27°06′, Acuario 35°), que esa fuente <b>redistribuye ≈10° de Piscis hacia Acuario</b> respecto a los anchos reales IAU/Delporte, aunque el ancho combinado Piscis+Acuario le sale casi correcto. Es un método totalmente distinto (comparar una tabla de anchos citada en la tradición, no invertir el motor de precesión) llegando a un número muy cercano a los <b>≈9,08°</b> de aquí — dos caminos independientes señalando la misma magnitud de desplazamiento.
+ <b>Convergencia con una fuente primaria distinta:</b> el informe de investigación aparte sobre este mismo límite (<code>Limites/Fronteras_Piscis_Acuario_tres_metodos.docx</code>) encontró, revisando una tabla de anchos zodiacales citada por el propio Dr. Raynaud de la Ferrière (Aries 27°, Tauro 37°, Géminis 29°, Piscis 27°06′, Acuario 35°), que esa fuente <b>redistribuye ≈10° de Piscis hacia Acuario</b> respecto a los anchos IAU/Delporte, aunque el ancho combinado Piscis+Acuario le sale casi igual. Es un método totalmente distinto (comparar una tabla de anchos citada en la tradición, no invertir el motor de precesión) llegando a un número muy cercano a los <b>≈9,08°</b> de aquí — dos caminos independientes señalando la misma magnitud de desplazamiento.
  </div>
  </div>
 
  <div class="card" style="border-left:4px solid var(--verde)">
  <h2>📈 El recorrido del punto vernal, cada 2.000 años</h2>
- <p>Este gráfico usa el mismo cálculo real (IAU/Delporte + precesión de Newcomb) del panel de arriba, muestreado cada 2.000 años, para mostrar cuántos grados separan al punto vernal del límite Piscis/Acuario a lo largo del tiempo. La línea baja de forma suave — la tasa de precesión real varía poco de siglo a siglo — y cruza el cero cerca del año 2598, que es donde esta plataforma ubica el paso real a la Era de Acuario.</p>
+ <p>Este gráfico usa el mismo cálculo (fronteras IAU/Delporte + precesión de Newcomb) del panel de arriba, muestreado cada 2.000 años, para mostrar cuántos grados separan al punto vernal del límite Piscis/Acuario a lo largo del tiempo. La línea baja de forma suave — la tasa de precesión varía poco de siglo a siglo — y cruza el cero cerca del año 2598, que es donde ese método ubica el cruce a la Era de Acuario (recordando que el método del Dr. Raynaud de la Ferrière, con su propio ancho de Piscis y su propia tasa fija, ubica ese mismo cruce en 1948 — ver arriba).</p>
  <div id="chart_eras_vernal" style="width:100%;overflow-x:auto"></div>
  <div class="hint" style="margin-top:10px"><b>¿Qué podría significar esto para la Cosmobiología?</b> La idea central de la Cosmobiología —ya presente en la TCC— es que la orientación del eje terrestre y la posición del punto vernal no son solo una referencia geométrica: son el marco de fondo sobre el que se leen los ciclos energéticos largos (climáticos, geológicos, y según la TCC también sutiles) que afectan a la Tierra y a quienes la habitan. Un cambio de Era, en ese marco, no es un evento puntual sino un tránsito lentísimo (~2.150 años) durante el cual esa influencia de fondo se va desplazando de una constelación a otra — de ahí que el "diluvio prolongado" de la tarjeta siguiente se plantee como algo gradual, ligado al paso por Leo, y no como un evento súbito. Esta lectura energética es una hipótesis de la TCC, no algo que esta plataforma pueda medir o confirmar con datos.</div>
  </div>
@@ -5160,8 +5166,12 @@ function applyLang(lang){
  // Update page title
  if(dict.page_title) document.title = dict.page_title;
  }
+ // 3 idiomas ahora (antes solo ES/EN) -- un botón que "cicla" ya no puede
+ // mostrar bien "cuál sigue", así que el botón muestra el idioma ACTUAL
+ // (bandera + nombre) y un clic pasa al siguiente en el ciclo ES→EN→FR→ES.
+ const LANG_LABEL = { es: '🇪🇸 Español', en: '🇬🇧 English', fr: '🇫🇷 Français' };
  const toggleBtn = document.getElementById('lang-toggle');
- if(toggleBtn) toggleBtn.textContent = lang==='es' ? '🌐 English' : '🌐 Español';
+ if(toggleBtn) toggleBtn.textContent = LANG_LABEL[lang] || lang;
  // Keep legacy banner always hidden — full translation replaces it
  const banner = document.getElementById('en-banner');
  if(banner) banner.style.display = 'none';
@@ -5170,8 +5180,11 @@ function applyLang(lang){
  // más tarde (antes se reseteaba siempre a español)
  try { localStorage.setItem('cosmobiologia_lang', lang); } catch(e) {}
 }
+const LANG_CICLO = ['es', 'en', 'fr'];
 function toggleLang(){
- const next = document.documentElement.lang === 'es' ? 'en' : 'es';
+ const actual = document.documentElement.lang || 'es';
+ const idx = LANG_CICLO.indexOf(actual);
+ const next = LANG_CICLO[(idx + 1) % LANG_CICLO.length];
  applyLang(next);
 }
 // restaurar el idioma guardado (si lo hay) al cargar — este script corre
@@ -5179,7 +5192,7 @@ function toggleLang(){
 (function(){
  try {
  const saved = localStorage.getItem('cosmobiologia_lang');
- if (saved === 'en') applyLang('en');
+ if (saved && saved !== 'es' && window.I18N && window.I18N[saved]) applyLang(saved);
  } catch(e) {}
 })();
 
@@ -6763,8 +6776,21 @@ function threeLlonaConstruirEscena() {
  // exactamente _llonaPunto(t) (sin el pequeño bamboleo zOsc N-S que Llona
  // agrega aparte, ver comentario en _llonaPunto) -- la prueba de que
  // rotación + traslación reales SÍ combinan para dar esa curva.
- const cosPhi0 = Math.cos(THREE.MathUtils.degToRad(phiDeg));
- const v0 = new THREE.Vector3(0, cosPhi0 * Math.cos(epsRad), cosPhi0 * Math.sin(epsRad));
+ // BUG real corregido: v0 se construía como cosφ·(0,cosε,sinε), cuyo
+ // MÓDULO es cosφ (no 1) para cualquier φ≠0 -- es decir, el punto quedaba
+ // HUNDIDO dentro de la esfera opaca (a distancia cosφ del centro, no en
+ // la superficie), invisible desde fuera para cualquier latitud salvo 0°.
+ // Por eso "no se ve ningún cambio": a φ=45° (cosφ≈0,71) el punto ya
+ // estaba bien adentro, completamente tapado. Se corrige sumando la
+ // componente sinφ a lo largo del eje de giro (ejeGiro, ⊥ a (0,cosε,sinε)
+ // por construcción) -- así el resultado es SIEMPRE un vector unitario
+ // (combinación de dos direcciones ortonormales con pesos cosφ/sinφ),
+ // sigue coincidiendo en φ=0 con la fórmula original, y en φ=±90° cae
+ // exactamente sobre el eje/polo en vez de colapsar al origen.
+ const phi0Rad = THREE.MathUtils.degToRad(phiDeg);
+ const cosPhi0 = Math.cos(phi0Rad), sinPhi0 = Math.sin(phi0Rad);
+ const v0 = new THREE.Vector3(0, cosPhi0 * Math.cos(epsRad), cosPhi0 * Math.sin(epsRad))
+ .addScaledVector(ejeGiro, sinPhi0);
  const marcaEnTierra = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 10), new THREE.MeshBasicMaterial({ color: 0x2ecc71 }));
  marcaEnTierra.position.copy(v0);
  tierra.add(marcaEnTierra);
@@ -6963,12 +6989,24 @@ function threeHudGo(view) {
 let _threeHudView = 'tierra';
 function threeHudSync() {
  const map = { tierra: 'movimientos', carta: 'evento' };
- ['tierra', 'sistema', 'estrellas', 'galaxia', 'carta'].forEach(v => {
+ ['tierra', 'carta'].forEach(v => {
  const btn = document.getElementById('hud_' + v);
  if (!btn) return;
- const activo = map[v] ? (_threeMode === map[v] || (v === 'carta' && _threeMode === 'topocentrica')) : (_threeMode === 'constelaciones' && _threeHudView === v);
+ // "Carta astral" (🔮) y "Topocentrismo" (🏛️) usaban el mismo modo interno
+ // (evento/topocentrica comparten el motor y el canvas), y por eso 🔮 se
+ // encendía también estando en Topocentrismo -- parecía que los dos
+ // botones llamaban "lo mismo". Ahora 🔮 SOLO se enciende en la carta
+ // normal (modo 'evento'); Topocentrismo tiene su propio indicador abajo.
+ const activo = _threeMode === map[v];
  btn.className = 'rail-btn' + (activo ? ' on' : '');
  });
+ const btnPage = document.getElementById('hud_page');
+ if (btnPage) btnPage.className = 'rail-btn' + (_threeMode === 'topocentrica' ? ' on' : '');
+ // El ícono combinado (Sistema Solar/Estrellas/Galaxia) se enciende con
+ // cualquiera de los 3 -- cuál de ellos exactamente lo marca su propio
+ // flyout (railBuildCosmosFlyoutButtons), no este ícono de categoría.
+ const btnCosmos = document.getElementById('hud_cosmos');
+ if (btnCosmos) btnCosmos.className = 'rail-btn' + (_threeMode === 'constelaciones' ? ' on' : '');
  railSyncMov();
 }
 
@@ -7024,23 +7062,54 @@ function railBtn(id, icon, tip, onclick) {
 }
 function railSep(container) { const s = document.createElement('div'); s.className = 'rail-sep'; container.appendChild(s); }
 
+// Sistema Solar / Estrellas / Galaxia NO son 3 escenas ni 3 juegos de
+// herramientas distintos -- es el MISMO mapa (threeCosmicZoom solo mueve la
+// cámara más lejos), por eso los botones de la derecha eran siempre los
+// mismos en los 3: no es un descuido, es que de verdad comparten todo
+// (constelaciones, culturas del cielo, animaciones, nave). Antes eso se
+// veía como 3 íconos sueltos a la izquierda sin ninguna pista de que eran
+// "el mismo lugar, distinto zoom" -- ahora es un solo ícono con un flyout
+// de 3 niveles de zoom, igual que categoría/sub-botones en el riel derecho.
+const COSMOS_ZOOM_ITEMS = [
+ ['sistema', '☀️', 'Sistema Solar — los planetas y sus órbitas reales alrededor del Sol.'],
+ ['estrellas', '✨', 'Estrellas — el zodíaco, las estrellas más brillantes y las 88 fronteras oficiales IAU/Delporte.'],
+ ['galaxia', '🌌', 'Galaxia — dónde está el centro galáctico y hacia dónde viaja el Sol.'],
+];
+function railBuildCosmosFlyoutButtons() {
+ return COSMOS_ZOOM_ITEMS.map(([view, icon, tip]) => {
+ const b = railBtn(null, icon, tip, () => { threeHudGo(view); railFlyoutRefresh(railBuildCosmosFlyoutButtons); });
+ b.classList.toggle('on', _threeMode === 'constelaciones' && _threeHudView === view);
+ return b;
+ });
+}
 const HUD_RAIL_ITEMS = [
  ['hud_tierra', '🌍', 'Tierra — sus movimientos: rotación, traslación, precesión, nutación, eclipses y la cicloide de Llona.', () => threeHudGo('tierra')],
- ['hud_sistema', '☀️', 'Sistema Solar — los planetas y sus órbitas reales alrededor del Sol.', () => threeHudGo('sistema')],
- ['hud_estrellas', '✨', 'Estrellas — el zodíaco, las estrellas más brillantes y las 88 fronteras oficiales IAU/Delporte.', () => threeHudGo('estrellas')],
- ['hud_galaxia', '🌌', 'Galaxia — dónde está el centro galáctico y hacia dónde viaja el Sol.', () => threeHudGo('galaxia')],
- ['hud_carta', '🔮', 'Carta astral — calcula la carta topocéntrica exacta de cualquier fecha, hora y lugar.', () => threeHudGo('carta')],
+ ['hud_cosmos', '🌌', 'Sistema Solar / Estrellas / Galaxia — el mismo mapa, con distinto zoom.', null],
+ ['hud_carta', '🔮', 'Carta astral — planetas, signos y aspectos de cualquier fecha, hora y lugar (rueda 2D o escena 3D).', () => threeHudGo('carta')],
  null, // separador
  ['hud_llona', '🌀', 'Cicloide de Llona — la curva real que traza un punto de la corteza combinando rotación + traslación (Parte XIV de la TCC).', () => threeAtajoLlona()],
- ['hud_page', '🏛️', 'Topocentrismo de Polich-Page — la esfera de casas 3D, el sistema de domificación que usa toda esta plataforma.', () => threeAtajoPage()],
+ ['hud_page', '🏛️', 'Topocentrismo — LA MISMA carta astral, pero mostrando POR QUÉ tu latitud/longitud exactas cambian las casas: la esfera 3D del sistema Polich-Page que usa toda esta plataforma.', () => threeAtajoPage()],
 ];
 function threeAtajoLlona() {
  threeHudGo('tierra');
- setTimeout(() => { threeLlonaAnimar(); document.getElementById('three_detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 60);
+ // Mismo problema que tenía Topocentrismo: saltar hasta el FINAL de
+ // #three_detail (todo el panel largo de controles) dejaba el mapa mismo
+ // fuera de la vista -- "la cámara baja y queda en el limbo", sin la curva
+ // de Llona a la vista. Basta con llevar la vista al mapa (map_shell).
+ setTimeout(() => { threeLlonaAnimar(); document.getElementById('map_shell').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
 }
 function threeAtajoPage() {
  threeHudGo('carta');
- setTimeout(() => { threeToggleEsferaTopocentrica(); document.getElementById('three_detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 80);
+ // Antes esto llevaba hasta el final de #three_detail (todo el panel de
+ // debajo del mapa, muy largo) -- como ese bloque es más alto que la
+ // pantalla, el salto terminaba mostrando el FONDO del panel, sin el mapa
+ // a la vista (reportado: "me lleva abajo algo raro"). Los sliders de
+ // explorar lat/lon ahora viven en el riel derecho junto al mapa mismo
+ // (flyout de 🔮), así que basta con llevar la vista al mapa.
+ setTimeout(() => {
+ threeToggleEsferaTopocentrica();
+ document.getElementById('map_shell').scrollIntoView({ behavior: 'smooth', block: 'start' });
+ }, 80);
 }
 // Lleva de "Eras precesionales" (texto/tablas) directo al mapa 3D → Estrellas,
 // con las fronteras reales y/o las 5 culturas del cielo ya activadas -- antes
@@ -7097,7 +7166,24 @@ function railBuildHud() {
  const rail = document.getElementById('hud_rail');
  if (!rail || rail.dataset.built) return;
  rail.dataset.built = '1';
- HUD_RAIL_ITEMS.forEach(item => { if (!item) { railSep(rail); return; } const [id, icon, tip, fn] = item; rail.appendChild(railBtn(id, icon, tip, fn)); });
+ HUD_RAIL_ITEMS.forEach(item => {
+ if (!item) { railSep(rail); return; }
+ const [id, icon, tip, fn] = item;
+ const btn = railBtn(id, icon, tip, fn);
+ // El ícono combinado no puede limitarse a abrir el flyout -- si el
+ // riel derecho (y el mapa) no cambian hasta elegir una sub-opción, se ve
+ // "roto" (sigue mostrando Tierra/movimientos). Un solo clic YA entra al
+ // Mapa Cósmico (al último zoom usado, o Sistema Solar la primera vez) Y
+ // abre el flyout para refinar; los sub-botones de ahí solo cambian el zoom.
+ if (id === 'hud_cosmos') btn.onclick = () => {
+ if (_threeMode !== 'constelaciones') {
+ const vistaInicial = ['sistema', 'estrellas', 'galaxia'].includes(_threeHudView) ? _threeHudView : 'sistema';
+ threeHudGo(vistaInicial);
+ }
+ railFlyoutOpen(btn, railBuildCosmosFlyoutButtons);
+ };
+ rail.appendChild(btn);
+ });
 }
 
 function railToggleMov(chkId, btn) {
@@ -7221,22 +7307,36 @@ function railBuildLlonaFlyoutButtons() {
  const idx = LLONA_CASOS.findIndex(c => c[0] === modoSel.value);
  modoSel.value = LLONA_CASOS[(idx + 1) % LLONA_CASOS.length][0];
  threeLlonaActualizar();
- railFlyoutRefresh(railBuildLlonaFlyoutButtons);
+ railRefreshLlonaGroup();
  });
  const phiActual = phiInput ? parseFloat(phiInput.value) : 20;
  const phiBtn = railBtn(null, `φ${phiActual}°`, `Latitud φ=${phiActual}° del punto marcado en la Tierra — clic para recorrer valores típicos (0°, 20°, 45°, 60°, 80°).`, () => {
  const idx = LLONA_PHIS.findIndex(p => p >= parseFloat(phiInput.value));
  phiInput.value = LLONA_PHIS[(idx + 1) % LLONA_PHIS.length];
  threeLlonaActualizar();
- railFlyoutRefresh(railBuildLlonaFlyoutButtons);
+ railRefreshLlonaGroup();
  });
  phiBtn.style.fontSize = '12px';
- const rdrBtn = railBtn(null, '🌙', "Curvas Rdr' (Sol/Luna) — muestra/oculta los conos esquemáticos de marea.", () => { rdrChk.checked = !rdrChk.checked; threeLlonaActualizar(); railFlyoutRefresh(railBuildLlonaFlyoutButtons); });
+ const rdrBtn = railBtn(null, '🌙', "Curvas Rdr' (Sol/Luna) — muestra/oculta los conos esquemáticos de marea.", () => { rdrChk.checked = !rdrChk.checked; threeLlonaActualizar(); railRefreshLlonaGroup(); });
  rdrBtn.classList.toggle('on', !!(rdrChk && rdrChk.checked));
  // ▶/⏹ ya NO van aquí -- se movieron a la barra horizontal (bb_llona),
  // igual que en el resto de vistas, porque escondidos en este riel nadie
  // los encontraba.
  return [casoBtn, phiBtn, rdrBtn];
+}
+// Los 3 controles de Llona van DIRECTO en el riel (no detrás de un ícono
+// de categoría con flyout) -- Caso/φ/Rdr' ya son, en sí mismos, "las
+// opciones de ese grupo", así que esconderlos detrás de un ➰ agregaba un
+// clic de más para algo que ya cabe suelto. Además, mientras Llona está
+// activa no tiene sentido mostrar los íconos de "Tierra: sus movimientos"
+// (rotación/traslación/vistas/velocidad) -- Llona ya combina rotación +
+// traslación en su propia curva, esos controles no aplican aquí.
+function railRefreshLlonaGroup() {
+ const g = document.getElementById('mov_rail_llona');
+ if (!g) return;
+ g.innerHTML = '';
+ railSep(g);
+ railBuildLlonaFlyoutButtons().forEach(b => g.appendChild(b));
 }
 const ZODIAC_CICLO = [
  ['', '✨'], ['Aries', '♈'], ['Tauro', '♉'], ['Géminis', '♊'], ['Cáncer', '♋'], ['Leo', '♌'], ['Virgo', '♍'],
@@ -7355,7 +7455,42 @@ function railBuildCartaFlyoutButtons() {
  // mientras ese slider avanzaba (parecía que el ASC "no se movía" o se
  // movía a saltos raros).
  const btnDia = railBtn(null, '📅', 'Ver el ASC moverse de verdad en un día -- la misma rueda 2D, minuto a minuto (±12h), en vez de la esfera 3D.', () => { threeAtajoDia(); railFlyoutClose(); });
- return [btn2D, btnAhora, btnProg, btnCasas, btnEclip, btnEcuador, btnDia];
+ const items = [btn2D, btnAhora, btnProg, btnCasas, btnEclip, btnEcuador, btnDia];
+ // Sliders de "explorar lat/lon" -- SOLO en Topocentrismo (φ/λ solo tienen
+ // efecto visible ahí). Antes vivían muy abajo, en el panel largo del
+ // formulario, lejos del mapa que controlan -- se pedía "colocarlos dentro
+ // de la columna de la derecha", junto al mapa mismo.
+ if (_threeMode === 'topocentrica') items.push(railBuildTopoExplorarSliders());
+ return items;
+}
+function railBuildTopoExplorarSliders() {
+ const wrap = document.createElement('div');
+ wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;padding:8px 4px 2px;border-top:1px solid rgba(255,255,255,.15);width:190px;color:#cfe0da;font-size:11px';
+ const lat = _threeTopoExpLat !== null ? _threeTopoExpLat : parseFloat(document.getElementById('three_evento_lat').value);
+ const lon = _threeTopoExpLon !== null ? _threeTopoExpLon : parseFloat(document.getElementById('three_evento_lon').value);
+ wrap.innerHTML = `
+ <div style="font-weight:700">🌐 Explorar φ/λ</div>
+ <div style="display:flex;align-items:center;gap:6px">
+ <span style="min-width:14px">φ</span>
+ <input type="range" id="rail_topo_lat" min="-89" max="89" step="1" value="${lat}" style="flex:1">
+ <span id="rail_topo_lat_val" style="min-width:32px;text-align:right;font-weight:700">${lat}°</span>
+ </div>
+ <div style="display:flex;align-items:center;gap:6px">
+ <span style="min-width:14px">λ</span>
+ <input type="range" id="rail_topo_lon" min="-180" max="180" step="1" value="${lon}" style="flex:1">
+ <span id="rail_topo_lon_val" style="min-width:32px;text-align:right;font-weight:700">${lon}°</span>
+ </div>
+ <button type="button" id="rail_topo_reset" style="background:none;border:1px solid rgba(255,255,255,.3);color:#cfe0da;border-radius:6px;padding:3px 6px;font-size:10.5px;cursor:pointer">↺ Mi latitud/longitud real</button>
+ `;
+ const latSlider = wrap.querySelector('#rail_topo_lat'), lonSlider = wrap.querySelector('#rail_topo_lon');
+ const onMove = () => {
+ wrap.querySelector('#rail_topo_lat_val').textContent = latSlider.value + '°';
+ wrap.querySelector('#rail_topo_lon_val').textContent = lonSlider.value + '°';
+ threeTopoExplorarLatLon(parseFloat(latSlider.value), parseFloat(lonSlider.value));
+ };
+ latSlider.oninput = onMove; lonSlider.oninput = onMove;
+ wrap.querySelector('#rail_topo_reset').onclick = () => { threeTopoExplorarReset(); };
+ return wrap;
 }
 function railBuildAnimFlyoutButtons() {
  return [
@@ -7454,14 +7589,12 @@ function railBuildMov() {
 
  // Controles de Llona — solo aparecen cuando esa vista está activa
  // (_threeLlonaActiva), para que el riel no se llene de botones que no
- // aplican al resto del modo "Tierra".
+ // aplican al resto del modo "Tierra". Se rellenan con railRefreshLlonaGroup()
+ // (3 botones directos: Caso/φ/Rdr'), no aquí, porque su ícono/estado
+ // cambia con los controles reales del panel.
  const llonaGroup = document.createElement('div');
  llonaGroup.id = 'mov_rail_llona';
  llonaGroup.style.display = 'none';
- railSep(llonaGroup);
- const llonaCatBtn = railBtn(null, '➰', 'Cicloide de Llona — caso, latitud φ, curvas Rdr\' y reproducir, sin bajar al panel.', null);
- llonaCatBtn.onclick = () => railFlyoutOpen(llonaCatBtn, railBuildLlonaFlyoutButtons);
- llonaGroup.appendChild(llonaCatBtn);
  rail.appendChild(llonaGroup);
 }
 function railSyncMov() {
@@ -7478,12 +7611,19 @@ function railSyncMov() {
  const movGroup = document.getElementById('mov_rail_movs'), constGroup = document.getElementById('mov_rail_const'),
  animGroup = document.getElementById('mov_rail_anim'), centroGroup = document.getElementById('mov_rail_centro'), naveGroup = document.getElementById('mov_rail_nave'),
  llonaGroup = document.getElementById('mov_rail_llona'), cartaGroup = document.getElementById('mov_rail_carta');
- if (movGroup) movGroup.style.display = esMov ? 'contents' : 'none';
+ // Mientras Llona está activa, los íconos de "Tierra: sus movimientos"
+ // (rotación/traslación/vistas/velocidad) no aplican -- se ocultan y en su
+ // lugar aparecen los 3 controles propios de Llona (Caso/φ/Rdr').
+ if (movGroup) movGroup.style.display = (esMov && !_threeLlonaActiva) ? 'contents' : 'none';
  if (constGroup) constGroup.style.display = esConst ? 'contents' : 'none';
  if (animGroup) animGroup.style.display = esConst ? 'contents' : 'none';
  if (centroGroup) centroGroup.style.display = esConst ? 'contents' : 'none';
  if (naveGroup) naveGroup.style.display = esConst ? 'contents' : 'none';
- if (llonaGroup) llonaGroup.style.display = (esMov && _threeLlonaActiva) ? 'contents' : 'none';
+ if (llonaGroup) {
+ const mostrar = esMov && _threeLlonaActiva;
+ llonaGroup.style.display = mostrar ? 'contents' : 'none';
+ if (mostrar) railRefreshLlonaGroup();
+ }
  if (cartaGroup) cartaGroup.style.display = esCarta ? 'contents' : 'none';
  if (!esConst && _threeNaveActive) threeNaveToggle(); // salir de la nave si el usuario cambia a otro modo
 }
@@ -7495,7 +7635,12 @@ function railSyncMov() {
 // a sí mismo en cada clic.
 function railSyncLlonaGroup() {
  const g = document.getElementById('mov_rail_llona');
- if (g) g.style.display = (_threeMode === 'movimientos' && _threeLlonaActiva) ? 'contents' : 'none';
+ const mostrar = (_threeMode === 'movimientos' && _threeLlonaActiva);
+ if (g) { g.style.display = mostrar ? 'contents' : 'none'; if (mostrar) railRefreshLlonaGroup(); }
+ // Mismo criterio que railSyncMov(): mientras Llona está activa, los
+ // íconos de "Tierra: sus movimientos" no aplican y se ocultan.
+ const movGroup = document.getElementById('mov_rail_movs');
+ if (movGroup && _threeMode === 'movimientos') movGroup.style.display = _threeLlonaActiva ? 'none' : 'contents';
  // la barra inferior de "rotación" (bb_movs) no aplica mientras se ve la
  // Cicloide de Llona -- dejarla visible confundía: el usuario presionaba
  // SU ▶ (pensando que repetía la curva) y eso sí cambia la escena de
@@ -10003,6 +10148,41 @@ function _housePositionCircle3D(cuspXYZ, n = 181) {
  return pts;
 }
 
+// Recalcula la esfera topocéntrica EN VIVO con una lat/lon distinta a la
+// del evento real -- sin tocar los campos de fecha/hora/lugar guardados.
+// Reutiliza threeToggleEsferaTopocentrica() poniendo el modo en "evento" un
+// instante antes de llamarla, para forzar su rama de "entrar" (que es la
+// que reconstruye toda la geometría) en vez de la de "salir".
+// lat/lon: si se pasan, vienen de los sliders del riel derecho (flyout de
+// 🔮); si no, se usan los últimos valores explorados (_threeTopoExpLat/Lon).
+let _threeTopoExpLat = null, _threeTopoExpLon = null;
+function threeTopoExplorarLatLon(lat, lon) {
+ if (_threeMode !== 'topocentrica') return;
+ if (lat === undefined) lat = _threeTopoExpLat;
+ if (lon === undefined) lon = _threeTopoExpLon;
+ _threeTopoExpLat = lat; _threeTopoExpLon = lon;
+ const latInput = document.getElementById('three_evento_lat'), lonInput = document.getElementById('three_evento_lon');
+ const latReal = latInput.value, lonReal = lonInput.value; // para no perder el valor real del evento
+ latInput.value = lat; lonInput.value = lon;
+ _threeMode = 'evento';
+ _threeTopoPreservarCamara = true; // no reiniciar la vista en cada arrastre -- así se ve la esfera girar
+ threeToggleEsferaTopocentrica(); // reconstruye con lat/lon del slider
+ _threeTopoPreservarCamara = false;
+ latInput.value = latReal; lonInput.value = lonReal; // el campo del evento queda intacto -- solo se usó de paso
+ // NO se llama railFlyoutRefresh() aquí -- reconstruiría el <input type=range>
+ // en cada evento "input" (cada pixel arrastrado), lo que en varios
+ // navegadores corta el arrastre a la mitad. Los propios <span> de valor
+ // ya se actualizan directo (ver railBuildTopoExplorarSliders/onMove).
+}
+function threeTopoExplorarReset() {
+ const lat = Math.round(parseFloat(document.getElementById('three_evento_lat').value));
+ const lon = Math.round(parseFloat(document.getElementById('three_evento_lon').value));
+ threeTopoExplorarLatLon(lat, lon);
+ // reflejar el reset en los sliders del riel, si el flyout está abierto
+ const latSlider = document.getElementById('rail_topo_lat'), lonSlider = document.getElementById('rail_topo_lon');
+ if (latSlider) { latSlider.value = lat; document.getElementById('rail_topo_lat_val').textContent = lat + '°'; }
+ if (lonSlider) { lonSlider.value = lon; document.getElementById('rail_topo_lon_val').textContent = lon + '°'; }
+}
 function threeToggleEsferaTopocentrica() {
  const canvas3d = document.getElementById('three_canvas');
  const svg = document.getElementById('chart_wheel_svg');
@@ -10015,7 +10195,9 @@ function threeToggleEsferaTopocentrica() {
  btn.textContent = '🌐 Ver esfera de casas (3D)';
  if (bbTopo) bbTopo.style.display = 'none';
  if (bbEvento) bbEvento.style.display = 'flex';
+ const notaDia = document.getElementById('topo_dia_nota'); if (notaDia) notaDia.style.display = 'none';
  threeCalcularEvento();
+ threeHudSync(); // sin esto, el ícono 🔮 se quedaba "encendido" con el estado de cuando entramos por Topocentrismo
  return;
  }
  threeInit();
@@ -10027,12 +10209,16 @@ function threeToggleEsferaTopocentrica() {
  btn.textContent = '↩ Volver a las órbitas';
  if (bbEvento) bbEvento.style.display = 'none';
  if (bbTopo) { bbTopo.style.display = 'flex'; document.getElementById('topo_minuto_slider').value = 0; }
+ { const notaDia = document.getElementById('topo_dia_nota'); if (notaDia) notaDia.style.display = ''; }
 
  const fecha = document.getElementById('three_evento_fechad').value;
  const hora = document.getElementById('three_evento_horal').value;
  const tz = document.getElementById('three_evento_tz').value;
  const lat = parseFloat(document.getElementById('three_evento_lat').value);
  const lon = parseFloat(document.getElementById('three_evento_lon').value);
+ // Sliders de "explorar" (riel derecho, flyout de 🔮) -- inician
+ // sincronizados con la lat/lon real del evento.
+ _threeTopoExpLat = Math.round(lat); _threeTopoExpLon = Math.round(lon);
  const dt = toUTC(fecha, hora, tz);
  const { ramc, eps } = realAscMc(dt, lat, lon);
  const cusps = topocentricHouseCusps(dt, lat, lon);
@@ -10175,9 +10361,95 @@ function threeToggleEsferaTopocentrica() {
  _threeTopoRefVec0 = _eqToHorizonXYZ(0, 0, ramc, lat); // vector de referencia (dirección RA=0,Dec=0) al momento base -- ancla para medir el giro
  threeTopoActualizarEtiqueta(0, cusps[1]);
 
+ // Globo terráqueo esquemático CON la cuadrícula de latitud/longitud -- la
+ // pieza que faltaba para que "topocentrismo" se entienda: hasta ahora el
+ // horizonte/ecuador local se dibujaban ya inclinados por φ, pero nunca se
+ // veía POR QUÉ -- no había ninguna Tierra en la escena. Este globo se
+ // ancla exactamente bajo el punto de tangencia (0,0,0) = el observador,
+ // con su propio eje de rotación alineado al Eje del Mundo (ncp, línea
+ // roja) -- ese es el mismo eje real de la Tierra, solo expresado en el
+ // marco local de este observador.
+ threeAddGloboTopocentrico(lat, lon, ncp);
+
+ // Si el rebuild viene de mover un slider de "explorar lat/lon", NO se
+ // reinicia la cámara -- antes cada arrastre del slider hacía threeClearScene()
+ // + volver a poner la cámara en su posición fija de siempre, así que la
+ // vista "saltaba" de vuelta afuera en cada micro-cambio y era imposible
+ // quedarse mirando de cerca cómo gira el globo (reportado: "no se ve
+ // cómo se mueve"). Preservar la cámara mientras se explora resuelve eso.
+ if (!_threeTopoPreservarCamara) {
  _threeCamera.position.set(2.2, 1.6, 2.2);
  _threeCamera.lookAt(0, 0, 0);
  if (_threeControls) { _threeControls.target.set(0, 0, 0); _threeControls.update(); }
+ // threeHudSync() -> railSyncMov() cierra CUALQUIER flyout abierto (para no
+ // dejar uno viejo colgado al cambiar de vista) -- pero eso mismo cerraba
+ // el flyout de 🔮 (con los sliders de explorar adentro) en cada arrastre,
+ // porque cada uno reconstruye la escena llamando esta función. Solo hace
+ // falta correrlo al ENTRAR/SALIR de verdad, no en cada micro-cambio de
+ // lat/lon mientras se explora.
+ threeHudSync();
+ }
+}
+let _threeTopoPreservarCamara = false;
+// ═══ Globo terráqueo con meridianos/paralelos, para ver POR QUÉ la
+// latitud/longitud del observador inclinan el horizonte local. Centrado en
+// (0,0,-rGlobo): su "polo norte" (tangente) queda exactamente en (0,0,0),
+// el mismo punto donde nace el horizonte -- así el globo "sostiene" el
+// plano verde exactamente donde debe.
+function threeAddGloboTopocentrico(lat, lon, ncp) {
+ // El giro del globo con la latitud SÍ ocurre (verificado numéricamente),
+ // pero a radio 0.22 quedaba tan chico frente al resto de la escena que
+ // el cambio pasaba desapercibido -- "no veo ningún cambio en la Tierra"
+ // era un problema de tamaño, no de que no girara. Se agranda a 0.4.
+ const rGlobo = 0.4;
+ const centro = new THREE.Vector3(0, 0, -rGlobo);
+ const globo = new THREE.Mesh(new THREE.SphereGeometry(rGlobo, 32, 32), threeGetEarthMaterial());
+ globo.position.copy(centro);
+ // orientar el globo para que SU eje de rotación (+Y en su geometría) quede
+ // alineado con el Eje del Mundo real (ncp) -- mismo truco que _planoConGrilla
+ globo.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), ncp.clone().normalize());
+ _threeScene.add(globo);
+
+ const graticula = new THREE.Group();
+ const matLinea = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
+ const matEcuador = new THREE.LineBasicMaterial({ color: 0x5dade2, transparent: true, opacity: 0.9 });
+ const matObservador = new THREE.LineBasicMaterial({ color: 0x2ecc71, transparent: true, opacity: 0.95 });
+ // Paralelos (latitud constante), en el marco propio del globo (eje = +Y)
+ for (let latG = -60; latG <= 60; latG += 30) {
+ const rr = rGlobo * Math.cos(THREE.MathUtils.degToRad(latG));
+ const yy = rGlobo * Math.sin(THREE.MathUtils.degToRad(latG));
+ const pts = [];
+ for (let i = 0; i <= 64; i++) { const a = (i / 64) * Math.PI * 2; pts.push(new THREE.Vector3(rr * Math.cos(a), yy, rr * Math.sin(a))); }
+ graticula.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), latG === 0 ? matEcuador : matLinea));
+ }
+ // el paralelo EXACTO de esta latitud, resaltado en verde -- la línea que
+ // de verdad importa: es la que cambia con la latitud real del observador
+ const rrObs = rGlobo * Math.cos(THREE.MathUtils.degToRad(lat));
+ const yyObs = rGlobo * Math.sin(THREE.MathUtils.degToRad(lat));
+ const ptsObs = [];
+ for (let i = 0; i <= 64; i++) { const a = (i / 64) * Math.PI * 2; ptsObs.push(new THREE.Vector3(rrObs * Math.cos(a), yyObs, rrObs * Math.sin(a))); }
+ graticula.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ptsObs), matObservador));
+ // Meridianos (longitud constante) cada 30°, medio círculo polo a polo
+ for (let lonG = 0; lonG < 360; lonG += 30) {
+ const pts = [];
+ for (let i = 0; i <= 32; i++) {
+ const t = (i / 32) * Math.PI - Math.PI / 2; // -90°..+90° de latitud
+ pts.push(new THREE.Vector3(rGlobo * Math.cos(t) * Math.cos(THREE.MathUtils.degToRad(lonG)), rGlobo * Math.sin(t), rGlobo * Math.cos(t) * Math.sin(THREE.MathUtils.degToRad(lonG))));
+ }
+ graticula.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), matLinea));
+ }
+ graticula.quaternion.copy(globo.quaternion);
+ graticula.position.copy(centro);
+ _threeScene.add(graticula);
+
+ // Marcador del observador -- EXACTAMENTE en (0,0,0): el punto donde el
+ // globo toca el plano del horizonte es, por construcción, dónde está
+ // parado el observador (por eso el horizonte y el cénit nacen ahí).
+ const marcaObs = new THREE.Mesh(new THREE.SphereGeometry(0.025, 12, 12), new THREE.MeshBasicMaterial({ color: 0x2ecc71 }));
+ marcaObs.position.set(0, 0, 0);
+ _threeScene.add(marcaObs);
+ _threeHoverables.push({ mesh: marcaObs, info: `<b>Tú estás aquí</b><br>φ (latitud) = ${lat.toFixed(2)}° · λ (longitud) = ${lon.toFixed(2)}°<br>El plano verde (horizonte) es tangente a la Tierra justo en este punto -- por eso su inclinación depende de tu latitud.` });
+ _threeHoverables.push({ mesh: globo, info: `<b>Tierra (esquemática)</b><br>Meridianos/paralelos cada 30° · en verde, tu paralelo (φ=${lat.toFixed(1)}°)<br>Cambiar de latitud gira el Eje del Mundo (línea roja) respecto al horizonte -- ESA inclinación es la clave de "topocéntrico": la misma hora, vista desde otro lugar, da otras casas.` });
 }
 
 // ═══ Animación de la esfera de casas: gira el grupo "cielo" alrededor
