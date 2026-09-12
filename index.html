@@ -551,6 +551,23 @@
  <div id="const_info_panel" style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-bottom:10px;min-height:20px"><span class="small muted">Activa las fronteras (○ en el mapa) y pasa el mouse sobre cualquier constelación para ver su nombre y datos aquí — se resalta en dorado sobre el mapa.</span></div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
+ <div class="row" style="align-items:center;gap:8px;margin-bottom:6px">
+ <span class="small" style="font-weight:700">🌍 Culturas del cielo — Piscis/Acuario:</span>
+ <select id="culturas_cielo_sel" onchange="threeCulturasCieloChanged()">
+ <option value="ninguno" selected>No mostrar</option>
+ <option value="griego">Griego (Ptolomeo, Almagesto)</option>
+ <option value="arabe">Árabe (al-Sufi, s.X)</option>
+ <option value="babilonio">Babilonio (MUL.APIN, ~1000 a.C.)</option>
+ <option value="hindu">Hindú (Nakshatras védicos)</option>
+ <option value="moderno">Occidental moderno (IAU)</option>
+ <option value="todas">Comparar las 5 a la vez</option>
+ </select>
+ </div>
+ <details class="tccinfo"><summary>¿De dónde salen estas figuras y qué significa la extensión?</summary><p class="tccinfo-body small muted">Datos abiertos del proyecto Stellarium (asterismos por cultura: qué estrellas conecta cada tradición para dibujar su propio Piscis/Acuario). La extensión mostrada es la longitud eclíptica que abarca esa FIGURA de estrellas — no la frontera administrativa (esa es la de arriba, IAU/Delporte, ○ en el mapa). Solo la occidental moderna tiene ambas cosas a la vez: figura tradicional Y frontera oficial.</p></details>
+ <div id="culturas_cielo_info" style="margin-top:6px"></div>
+ </div>
+
+ <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
  <div class="row" style="align-items:center;gap:8px;margin-bottom:4px">
  <button class="ghost act" id="three_medir_btn" onclick="threeMedirToggle()">📐 Medir distancia angular</button>
  <span id="three_medir_nota" class="small muted"></span>
@@ -6997,6 +7014,18 @@ const FRONTERAS_CICLO = [
  ['zodiaco', '🌗', 'Mostrando las 13 fronteras de la eclíptica. Clic para ver las 88 constelaciones completas.'],
  ['todas', '🗺️', 'Mostrando las 88 fronteras oficiales. Clic para ocultarlas.'],
 ];
+// Piscis/Acuario tal como los dibujó cada tradición (asterismo real, no
+// frontera administrativa) — clic para recorrer las 5 culturas y terminar
+// mostrándolas todas superpuestas para comparar tamaños de un vistazo.
+const CULTURAS_CICLO = [
+ ['ninguno', '🌐', 'Culturas del cielo (Piscis/Acuario) — clic para ver cómo dibujó esta figura la astronomía griega (Ptolomeo).'],
+ ['griego', '🇬🇷', 'Griego (Ptolomeo, Almagesto, s.II). Clic para ver la versión árabe.'],
+ ['arabe', '🌙', 'Árabe (al-Sufi, s.X — hereda de Ptolomeo). Clic para ver la versión babilonia.'],
+ ['babilonio', '𒀭', 'Babilonio (MUL.APIN, ~1000 a.C.: Golondrina+Anunitu / GU.LA "El Grande"). Clic para ver la versión hindú.'],
+ ['hindu', '🕉️', 'Hindú (nakshatras védicos). Clic para ver la occidental moderna.'],
+ ['moderno', '⭐', 'Occidental moderno (IAU) — la única con frontera oficial además de figura. Clic para comparar las 5 a la vez.'],
+ ['todas', '🌍', 'Comparando las 5 culturas a la vez, cada una de un color. Clic para ocultarlas.'],
+];
 // El marco de referencia del Sistema Solar (☉ heliocéntrico / ⊕ geocéntrico)
 // se define aquí (no junto a threeCentroToggle/threeAplicarCentroReferencia,
 // más abajo) porque railBuildMov() -- que la usa -- se ejecuta de inmediato
@@ -7007,6 +7036,15 @@ const CENTRO_CICLO = [
 ];
 let _railFronterasEstado = 'ninguno';
 let _railResaltarNombre = '';
+let _railCulturaEstado = 'ninguno';
+function railCycleCulturas() {
+ const idx = CULTURAS_CICLO.findIndex(c => c[0] === _railCulturaEstado);
+ _railCulturaEstado = CULTURAS_CICLO[(idx + 1) % CULTURAS_CICLO.length][0];
+ const sel = document.getElementById('culturas_cielo_sel');
+ if (sel) sel.value = _railCulturaEstado;
+ threeDibujarCulturasCielo(_railCulturaEstado);
+ railFlyoutRefresh(railBuildConstFlyoutButtons);
+}
 function railCycleFronteras() {
  const idx = FRONTERAS_CICLO.findIndex(f => f[0] === _railFronterasEstado);
  _railFronterasEstado = FRONTERAS_CICLO[(idx + 1) % FRONTERAS_CICLO.length][0];
@@ -7039,7 +7077,10 @@ function railBuildConstFlyoutButtons() {
  figurasBtn.classList.add('figuras-btn');
  figurasBtn.classList.toggle('on', _threeFigurasOn);
  figurasBtn.onclick = () => threeToggleFiguras();
- return [fronterasBtn, nombresBtn, resaltarBtn, medirBtn, figurasBtn];
+ const cEstado = CULTURAS_CICLO.find(c => c[0] === _railCulturaEstado);
+ const culturasBtn = railBtn(null, cEstado[1], cEstado[2], () => railCycleCulturas());
+ culturasBtn.classList.toggle('on', _railCulturaEstado !== 'ninguno');
+ return [fronterasBtn, nombresBtn, resaltarBtn, medirBtn, figurasBtn, culturasBtn];
 }
 function railBuildAnimFlyoutButtons() {
  return [
@@ -8495,6 +8536,80 @@ function threeDibujarLimitesConstelaciones(modo) {
  ? 'Mostrando las fronteras en su época de referencia moderna (J2000.0 = año 2000).'
  : `Precesadas de J2000.0 a ${epoch} (fórmula de Newcomb, la misma en la que Delporte definió los límites en B1875.0). Cuanto más te alejes del año 2000, más diagonales se ven los tramos que en su época original eran rectos — es el mismo efecto que describe el propio libro de Delporte.`;
  }
+}
+
+// ═══ CULTURAS DEL CIELO — Piscis/Acuario en 5 tradiciones distintas ═══
+// Asterismos reales (qué estrellas conecta cada cultura), no fronteras
+// administrativas. Fuente: datos abiertos del proyecto Stellarium
+// (github.com/Stellarium/stellarium/tree/master/skycultures), coordenadas
+// de cada estrella (HIP, RA J1991.25, Dec J1991.25) vía catálogo Hipparcos
+// (VizieR I/239) -- la diferencia con J2000 es de centésimas de grado,
+// despreciable frente a las decenas de grados que mide cada figura.
+// Equivalencias usadas: Griego/Árabe = Ίχθύες/Al-Samakatān (siguen a
+// Ptolomeo, Almagesto); Babilonio = SIM.MAH "Golondrina" + Anunitu (Piscis)
+// y GU.LA "El Grande", dios Ea (Acuario), MUL.APIN ~1000 a.C.; Hindú =
+// nakshatras Purva/Uttara Bhadrapada + Revati (Piscis) y Shatabhisha
+// (Acuario). Cada línea es [HIP, RA_grados, Dec_grados].
+const CULTURAS_CIELO = {"griego":{"label":"Griego (Ptolomeo, Almagesto, s.II)","lines":{"Psc":[[[113889,345.9691938,3.82006998],[115227,350.08557117,5.38145156]],[[114971,349.28955677,3.28224524],[115738,351.73293881,1.25583758],[116928,355.51200741,1.7804172],[118268,359.82750994,6.86359373]],[[115227,350.08557117,5.38145156],[115830,351.99236589,6.37909727],[116771,354.98675133,5.62735374],[118268,359.82750994,6.86359373],[1645,5.14943435,8.19024803],[2548,8.09897908,6.95545461],[3786,12.17039736,7.58520186],[4906,15.73606615,7.89007256],[5737,18.43250986,7.57548895],[5346,17.09309979,5.6502213],[6061,19.4499337,3.61452038],[7007,22.54559597,6.14393314],[7884,25.35794814,5.48760445],[8833,28.38890233,3.18747844],[9487,30.51166929,2.76376048],[8198,26.34828629,9.15764102],[7535,24.27483902,12.14151058],[7097,22.87080776,15.34583101],[6706,21.56366085,19.17232096],[5742,18.43723014,24.58376482],[6193,19.86657455,27.26408682],[5544,17.7782219,31.42476555],[5586,17.91494471,30.08972962],[4889,15.70452742,31.80433674],[4510,14.4589515,28.9922356],[3885,12.47128657,27.71031105],[4366,13.99384283,27.20935396],[5131,16.42053152,21.4732162],[5310,16.98795829,20.73932115],[5454,17.45502008,19.6583854]],[[5310,16.98795829,20.73932115],[5742,18.43723014,24.58376482]],[[5310,16.98795829,20.73932115],[5571,17.86330901,21.03467568],[6706,21.56366085,19.17232096]]],"Aqr":[[[106944,324.88868707,2.24376298],[106278,322.88966951,-5.57115593],[104459,317.39830336,-11.37165474],[102618,311.91888574,-9.49568988]],[[106278,322.88966951,-5.57115593],[109139,331.60918894,-13.86954013],[110778,336.64228154,-16.74214759],[112211,340.89688564,-18.83030716]],[[106944,324.88868707,2.24376298],[109074,331.44593869,-0.31982656],[106278,322.88966951,-5.57115593]],[[109074,331.44593869,-0.31982656],[110003,334.20819329,-7.78323706],[111123,337.66172918,-10.67788619],[109139,331.60918894,-13.86954013]],[[111123,337.66172918,-10.67788619],[112716,342.39795761,-13.59253756],[113136,343.6626635,-15.82075994]],[[109074,331.44593869,-0.31982656],[110395,335.41374983,-1.38735315],[112961,343.15360192,-7.57967878],[114341,347.36150879,-21.17248555]],[[110395,335.41374983,-1.38735315],[110672,336.31921857,1.37739245],[111497,338.83887054,-0.11736123],[114855,348.97198728,-9.08769554]],[[115438,350.7429228,-20.10034505],[114855,348.97198728,-9.08769554]]]}},"arabe":{"label":"Árabe (al-Sufi, s.X)","lines":{"Psc":[[[113889,345.9691938,3.82006998],[115227,350.08557117,5.38145156],[115830,351.99236589,6.37909727],[116771,354.98675133,5.62735374],[118268,359.82750994,6.86359373],[116928,355.51200741,1.7804172],[115738,351.73293881,1.25583758],[114971,349.28955677,3.28224524],[113889,345.9691938,3.82006998]],[[118268,359.82750994,6.86359373],[1645,5.14943435,8.19024803],[2548,8.09897908,6.95545461],[3786,12.17039736,7.58520186],[4906,15.73606615,7.89007256],[5737,18.43250986,7.57548895],[5346,17.09309979,5.6502213],[6061,19.4499337,3.61452038],[7007,22.54559597,6.14393314],[7884,25.35794814,5.48760445],[8833,28.38890233,3.18747844],[9487,30.51166929,2.76376048],[8198,26.34828629,9.15764102],[7535,24.27483902,12.14151058],[7097,22.87080776,15.34583101],[6706,21.56366085,19.17232096],[5571,17.86330901,21.03467568],[5742,18.43723014,24.58376482],[6193,19.86657455,27.26408682],[5586,17.91494471,30.08972962],[5544,17.7782219,31.42476555],[4510,14.4589515,28.9922356],[4366,13.99384283,27.20935396],[3885,12.47128657,27.71031105],[5131,16.42053152,21.4732162],[5310,16.98795829,20.73932115],[5454,17.45502008,19.6583854],[6706,21.56366085,19.17232096]]],"Aqr":[[[106944,324.88868707,2.24376298],[108874,330.82845686,-2.15533588]],[[110672,336.31921857,1.37739245],[110960,337.20750231,-0.02006304],[110395,335.41374983,-1.38735315],[109074,331.44593869,-0.31982656],[108874,330.82845686,-2.15533588],[106278,322.88966951,-5.57115593],[106786,324.43767522,-7.85414212],[103401,314.22512443,-9.69751669],[103045,313.16335749,-8.98323782],[102618,311.91888574,-9.49568988]],[[106786,324.43767522,-7.85414212],[109139,331.60918894,-13.86954013],[110778,336.64228154,-16.74214759],[112211,340.89688564,-18.83030716],[112529,341.88828134,-19.61287445]],[[109074,331.44593869,-0.31982656],[111123,337.66172918,-10.67788619],[112716,342.39795761,-13.59253756],[113136,343.6626635,-15.82075994]],[[110960,337.20750231,-0.02006304],[111497,338.83887054,-0.11736123],[112961,343.15360192,-7.57967878],[113996,346.29047874,-7.69381853],[114724,348.58055219,-6.0485268],[114939,349.21229368,-7.72646619],[114855,348.97198728,-9.08769554],[115033,349.47584844,-9.1824899],[115115,349.74021218,-9.610731],[115404,350.66291976,-15.03938012],[116758,354.94598676,-14.22204281],[116971,355.68035357,-14.54474243],[116901,355.44082263,-17.81653327],[117089,356.05025914,-18.27692862],[117629,357.83884091,-18.90915459],[116247,353.31927128,-20.91452506],[115669,351.51173897,-20.64186122],[115438,350.7429228,-20.10034505],[114341,347.36150879,-21.17248555],[114375,347.47865379,-22.45759248],[114119,346.67003033,-23.7431168],[113368,344.41177323,-29.62183701]]]}},"babilonio":{"label":"Babilonio (MUL.APIN, ~1000 a.C.)","lines":{"Psc":[[[6732,21.67352916,19.24056476],[7097,22.87080776,15.34583101],[8198,26.34828629,9.15764102],[9487,30.51166929,2.76376048],[7007,22.54559597,6.14393314],[4906,15.73606615,7.89007256],[3786,12.17039736,7.58520186]],[[5364,17.14693197,-10.181928],[6537,21.00604671,-8.18275372],[9487,30.51166929,2.76376048],[14838,47.90695691,19.72669777]],[[12706,40.82551897,3.23617162],[12387,39.87061789,0.3285168],[11791,38.03931801,-1.03481751],[11021,35.48597927,0.39569203],[11738,37.87534312,2.26720689],[12706,40.82551897,3.23617162]],[[11021,35.48597927,0.39569203],[9487,30.51166929,2.76376048]],[[3693,11.83495908,24.26737703],[6193,19.86657455,27.26408682],[5586,17.91494471,30.08972962],[4436,14.18790699,38.49925513],[5447,17.43248991,35.62083048]],[[4436,14.18790699,38.49925513],[3881,12.45345723,41.07895474],[3231,10.27998074,39.45867141],[3092,9.83165567,30.86122579]],[[2912,9.22016239,33.71935227],[3693,11.83495908,24.26737703]]],"Aqr":[[[110003,334.20819329,-7.78323706],[109139,331.60918894,-13.86954013]],[[115438,350.7429228,-20.10034505],[114855,348.97198728,-9.08769554],[112961,343.15360192,-7.57967878],[110003,334.20819329,-7.78323706],[109074,331.44593869,-0.31982656],[106278,322.88966951,-5.57115593],[109139,331.60918894,-13.86954013],[112716,342.39795761,-13.59253756],[113136,343.6626635,-15.82075994],[114341,347.36150879,-21.17248555]],[[109074,331.44593869,-0.31982656],[107315,326.04641808,9.87500791],[106278,322.88966951,-5.57115593]],[[109074,331.44593869,-0.31982656],[110395,335.41374983,-1.38735315],[114971,349.28955677,3.28224524],[116771,354.98675133,5.62735374]],[[110960,337.20750231,-0.02006304],[111497,338.83887054,-0.11736123],[114724,348.58055219,-6.0485268],[115033,349.47584844,-9.1824899],[116971,355.68035357,-14.54474243],[116901,355.44082263,-17.81653327]],[[110960,337.20750231,-0.02006304],[110672,336.31921857,1.37739245],[118209,359.66837736,-3.55580738],[154,0.48996506,-6.01397169],[355,1.1255098,-10.50949443],[910,2.81628415,-15.46732287],[1170,3.66013628,-18.93268628]]]}},"hindu":{"label":"Hindú (Nakshatras védicos)","lines":{"Psc":[[[113881,345.94305575,28.08245462],[113963,346.1900702,15.20536786]],[[677,2.09653333,29.09082805],[1067,3.30895828,15.18361593]],[[7097,22.87080776,15.34583101],[7710,24.81411531,14.28562593]],[[7710,24.81411531,14.28562593],[8327,26.83993462,10.95369126]],[[8327,26.83993462,10.95369126],[8198,26.34828629,9.15764102]],[[8198,26.34828629,9.15764102],[7456,24.01191556,7.64525355]],[[7456,24.01191556,7.64525355],[6915,22.26296987,7.29422704]],[[5737,18.43250986,7.57548895],[5737,18.43250986,7.57548895]],[[5737,18.43250986,7.57548895],[6915,22.26296987,7.29422704]]],"Aqr":[[[114855,348.97198728,-9.08769554],[112961,343.15360192,-7.57967878]],[[112961,343.15360192,-7.57967878],[113136,343.6626635,-15.82075994]],[[110960,337.20750231,-0.02006304],[112961,343.15360192,-7.57967878]],[[154,0.48996506,-6.01397169],[115033,349.47584844,-9.1824899]],[[115033,349.47584844,-9.1824899],[116971,355.68035357,-14.54474243]],[[115438,350.7429228,-20.10034505],[113136,343.6626635,-15.82075994]],[[113136,343.6626635,-15.82075994],[114341,347.36150879,-21.17248555]],[[113136,343.6626635,-15.82075994],[111449,338.67291135,-20.70785949]]]}},"moderno":{"label":"Occidental moderno (IAU)","lines":{"Psc":[[[4889,15.70452742,31.80433674],[5742,18.43723014,24.58376482]],[[4889,15.70452742,31.80433674],[6193,19.86657455,27.26408682],[5742,18.43723014,24.58376482],[7097,22.87080776,15.34583101],[8198,26.34828629,9.15764102],[9487,30.51166929,2.76376048],[8833,28.38890233,3.18747844],[7884,25.35794814,5.48760445],[7007,22.54559597,6.14393314],[4906,15.73606615,7.89007256],[3760,12.07226858,7.29991977],[1645,5.14943435,8.19024803],[118268,359.82750994,6.86359373],[116771,354.98675133,5.62735374],[117245,356.59807048,3.48687164],[116928,355.51200741,1.7804172],[115738,351.73293881,1.25583758],[114971,349.28955677,3.28224524],[115227,350.08557117,5.38145156],[115830,351.99236589,6.37909727],[116771,354.98675133,5.62735374]]],"Aqr":[[[106278,322.88966951,-5.57115593],[109074,331.44593869,-0.31982656],[110395,335.41374983,-1.38735315],[110960,337.20750231,-0.02006304],[111497,338.83887054,-0.11736123],[112961,343.15360192,-7.57967878],[114855,348.97198728,-9.08769554],[115438,350.7429228,-20.10034505]],[[109074,331.44593869,-0.31982656],[110003,334.20819329,-7.78323706],[109139,331.60918894,-13.86954013]],[[110003,334.20819329,-7.78323706],[111123,337.66172918,-10.67788619],[112716,342.39795761,-13.59253756],[113136,343.6626635,-15.82075994],[114341,347.36150879,-21.17248555]],[[102618,311.91888574,-9.49568988],[106278,322.88966951,-5.57115593]]]}}};
+const CULTURAS_CIELO_ORDEN = ['griego', 'arabe', 'babilonio', 'hindu', 'moderno'];
+const CULTURAS_CIELO_COLOR = { griego: 0xe8b96a, arabe: 0x6ed3c8, babilonio: 0xd97ad9, hindu: 0x8fd15a, moderno: 0x7ea8ff };
+let _threeCulturaGroup = null;
+
+function _culturaEclLon(raDeg, decDeg) {
+ const EPS = THREE.MathUtils.degToRad(23.4393);
+ const ra = THREE.MathUtils.degToRad(raDeg), dec = THREE.MathUtils.degToRad(decDeg);
+ const y = Math.sin(ra) * Math.cos(EPS) + Math.tan(dec) * Math.sin(EPS);
+ const x = Math.cos(ra);
+ return (THREE.MathUtils.radToDeg(Math.atan2(y, x)) + 360) % 360;
+}
+// Extensión angular de un conjunto de longitudes que puede cruzar 0°/360°:
+// se busca el hueco más grande entre puntos consecutivos -- lo que queda
+// FUERA de ese hueco es la extensión real de la figura.
+function _culturaSpan(lons) {
+ const s = Array.from(new Set(lons.map(v => Math.round(v * 1000) / 1000))).sort((a, b) => a - b);
+ const n = s.length;
+ if (n < 2) return 0;
+ let maxGap = -1;
+ for (let i = 0; i < n; i++) { const gap = ((s[(i + 1) % n] - s[i]) + 360) % 360 || 360; if (gap > maxGap) maxGap = gap; }
+ return 360 - maxGap;
+}
+function threeDibujarCulturasCielo(seleccion) {
+ if (!_threeScene) return;
+ if (_threeCulturaGroup) { _threeScene.remove(_threeCulturaGroup); _threeCulturaGroup = null; }
+ const panel = document.getElementById('culturas_cielo_info');
+ if (!seleccion || seleccion === 'ninguno') { if (panel) panel.innerHTML = ''; return; }
+ const R = 78; // mismo radio que las fronteras IAU/Delporte -- directamente comparables en tamaño visual
+ const claves = seleccion === 'todas' ? CULTURAS_CIELO_ORDEN : [seleccion];
+ const g = new THREE.Group();
+ let infoHTML = '';
+ claves.forEach(function (key) {
+ const cult = CULTURAS_CIELO[key];
+ if (!cult) return;
+ const color = seleccion === 'todas' ? CULTURAS_CIELO_COLOR[key] : 0xffcc55;
+ const extents = {};
+ ['Psc', 'Aqr'].forEach(function (grp) {
+ const lons = [];
+ (cult.lines[grp] || []).forEach(function (line) {
+ const v = line.map(function (p) {
+ const ra = THREE.MathUtils.degToRad(p[1]), dec = THREE.MathUtils.degToRad(p[2]);
+ lons.push(_culturaEclLon(p[1], p[2]));
+ return new THREE.Vector3(R * Math.cos(dec) * Math.cos(ra), R * Math.sin(dec), R * Math.cos(dec) * Math.sin(ra));
+ });
+ const geo = new THREE.BufferGeometry().setFromPoints(v);
+ g.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: 0.9 })));
+ });
+ extents[grp] = lons.length > 1 ? _culturaSpan(lons) : 0;
+ });
+ const hex = '#' + color.toString(16).padStart(6, '0');
+ infoHTML += `<div style="margin-bottom:6px"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${hex};margin-right:6px"></span><b>${cult.label}</b> — Piscis: ${extents.Psc.toFixed(1)}° · Acuario: ${extents.Aqr.toFixed(1)}° <span class="small muted">(extensión eclíptica de la figura)</span></div>`;
+ });
+ _threeScene.add(g);
+ _threeCulturaGroup = g;
+ if (panel) panel.innerHTML = infoHTML || '<span class="small muted">Sin datos para esta selección.</span>';
+}
+function threeCulturasCieloChanged() {
+ const sel = document.getElementById('culturas_cielo_sel');
+ threeDibujarCulturasCielo(sel ? sel.value : 'ninguno');
 }
 
 function threeLimitesChanged() {
