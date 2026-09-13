@@ -285,8 +285,8 @@
  <div class="nq-desc" data-i18n="nav_quick_hip_desc">Hipótesis — redacta, guarda y pre-registra en OSF</div>
  </div>
  <div class="navquick-card" style="border-color:#8e44ad" onclick="threeIrACartaAstral()">
- <div class="nq-title">Carta astral</div>
- <div class="nq-desc">La tuya, la de alguien más, o la de un evento ya registrado (sismos, huracanes...)</div>
+ <div class="nq-title" data-i18n="nq_carta_title">Carta astral</div>
+ <div class="nq-desc" data-i18n="nq_carta_desc">La tuya, la de alguien más, o la de un evento ya registrado (sismos, huracanes...)</div>
  </div>
  <div class="navquick-card" style="border-color:var(--verde)" onclick="document.querySelector('[data-tab=ayuda]').click()">
  <div class="nq-title" data-i18n="nav_quick_estadistica">Entender la estadística</div>
@@ -297,8 +297,8 @@
  <div class="nq-desc" data-i18n="nav_quick_fuentes_desc">Fuentes — catálogos públicos por ciencia</div>
  </div>
  <div class="navquick-card" style="border-color:#9b59b6" onclick="document.querySelector('[data-tab=eras_precesionales]').click()">
- <div class="nq-title">Eras precesionales</div>
- <div class="nq-desc">IAU/Newcomb y el Dr. Raynaud de la Ferrière, comparados, con estrellas y culturas del cielo en vivo</div>
+ <div class="nq-title" data-i18n="nq_eras_title">Eras precesionales</div>
+ <div class="nq-desc" data-i18n="nq_eras_desc">IAU/Newcomb y el Dr. Raynaud de la Ferrière, comparados, con estrellas y culturas del cielo en vivo</div>
  </div>
  </div>
  </div>
@@ -306,8 +306,8 @@
  <!-- ═══ MAPA CÓSMICO — un solo escenario, un HUD lateral corto, un panel
  de detalle abajo que cambia según lo que elijas. ═══ -->
  <div class="card">
- <h2>Mapa Cósmico</h2>
- <p class="small muted" style="margin-bottom:12px">Así está organizado el mapa de abajo — mismo esquema, con lo que hace cada parte. Rota con el mouse, haz zoom con la rueda.</p>
+ <h2 data-i18n="mc_h2">Mapa Cósmico</h2>
+ <p class="small muted" style="margin-bottom:12px" data-i18n="mc_p_intro">Así está organizado el mapa de abajo — mismo esquema, con lo que hace cada parte. Rota con el mouse, haz zoom con la rueda.</p>
 
  <!-- Diagrama esquemático: misma forma que el mapa real (riel izq. / canvas /
  riel der. / barra de tiempo), para explicar con símbolos en vez de párrafos. -->
@@ -316,53 +316,53 @@
  <span style="font-size:18px">🌍</span><span style="font-size:18px">🌌</span><span style="font-size:18px">🔮</span><span style="font-size:18px">🌀</span><span style="font-size:18px">🏛️</span>
  </div>
  <div style="flex:1;background:radial-gradient(ellipse at center,#13233a,#0a1420);display:flex;align-items:center;justify-content:center;color:#cfe0da;font-size:12.5px;text-align:center;padding:10px">
- 🖱️ rota · 🔍 zoom<br><span style="opacity:.7">(el detalle de la vista elegida aparece debajo del mapa)</span>
+ <span data-i18n-html="mc_diagrama_rota">🖱️ rota · 🔍 zoom<br><span style="opacity:.7">(el detalle de la vista elegida aparece debajo del mapa)</span></span>
  </div>
  <div style="background:#0a1420;padding:10px 6px;display:flex;flex-direction:column;gap:7px;align-items:center;width:58px;flex:none">
  <span style="font-size:16px">⛶</span><span style="font-size:16px">🗺️</span><span style="font-size:16px">🌐</span>
  </div>
  </div>
  <div style="display:flex;font-size:11px;color:var(--muted);margin-bottom:4px">
- <div style="width:58px;flex:none;text-align:center">↑<br><b>Elige vista</b></div>
- <div style="flex:1;text-align:center">↑ <b>rota / haz zoom aquí</b></div>
- <div style="width:58px;flex:none;text-align:center">↑<br><b>Más opciones</b></div>
+ <div style="width:58px;flex:none;text-align:center" data-i18n-html="mc_diagrama_elige">↑<br><b>Elige vista</b></div>
+ <div style="flex:1;text-align:center" data-i18n-html="mc_diagrama_rota_zoom">↑ <b>rota / haz zoom aquí</b></div>
+ <div style="width:58px;flex:none;text-align:center" data-i18n-html="mc_diagrama_opciones">↑<br><b>Más opciones</b></div>
  </div>
- <p class="small muted" style="margin:0 0 10px">Cada ícono es una <b>categoría</b>, no una acción directa: un clic abre un pequeño menú al lado con sus opciones (🌌 = Sistema Solar/Estrellas/Galaxia, mismo mapa a distinto zoom; 🗺️ = fronteras/nombres/resaltar/medir; 🌐 = las 5 culturas del cielo). El ⛶ (pantalla completa) es el único que actúa directo.</p>
+ <p class="small muted" style="margin:0 0 10px" data-i18n-html="mc_p_iconos">Cada ícono es una <b>categoría</b>, no una acción directa: un clic abre un pequeño menú al lado con sus opciones (🌌 = Sistema Solar/Estrellas/Galaxia, mismo mapa a distinto zoom; 🗺️ = fronteras/nombres/resaltar/medir; 🌐 = las 5 culturas del cielo). El ⛶ (pantalla completa) es el único que actúa directo.</p>
  <div style="background:#0a1420;color:#cfe0da;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:10px;font-size:12px;margin-bottom:4px">
  <span>▶</span><span style="flex:1;height:3px;background:linear-gradient(90deg,var(--accent),rgba(255,255,255,.15));border-radius:2px;position:relative"><span style="position:absolute;left:35%;top:-4px;width:11px;height:11px;border-radius:50%;background:#fff"></span></span><span>🕰️</span>
  </div>
- <p class="small muted" style="margin:0 0 14px">↑ <b>La barra de tiempo</b> — cambia según la vista elegida a la izquierda; cada una avanza en una unidad de tiempo distinta (ver tarjetas debajo). Si no parece corresponder a lo que ves, cambia de vista y vuelve.</p>
+ <p class="small muted" style="margin:0 0 14px" data-i18n-html="mc_p_barra_tiempo">↑ <b>La barra de tiempo</b> — cambia según la vista elegida a la izquierda; cada una avanza en una unidad de tiempo distinta (ver tarjetas debajo). Si no parece corresponder a lo que ves, cambia de vista y vuelve.</p>
 
- <p class="small muted" style="margin:0 0 6px"><b>🕰️ Qué mueve cada barra de tiempo, según la vista:</b></p>
+ <p class="small muted" style="margin:0 0 6px" data-i18n-html="mc_p_que_mueve"><b>🕰️ Qué mueve cada barra de tiempo, según la vista:</b></p>
  <div class="navquick-grid" style="margin-top:0;margin-bottom:14px">
  <div class="navquick-card" style="border-color:var(--accent2)" onclick="threeCardGo('tierra')">
  <div class="nq-icon">🌍</div>
- <div class="nq-title">Tierra: sus movimientos</div>
- <div class="nq-desc">0 a 1.000 días — con casillas para aislar rotación (24h reales), traslación (1 año real), nutación y precesión (aceleradas: ≈18,6 y ≈25.772 años reales).</div>
+ <div class="nq-title" data-i18n="mc_tierra_title">Tierra: sus movimientos</div>
+ <div class="nq-desc" data-i18n="mc_tierra_desc">0 a 1.000 días — con casillas para aislar rotación (24h reales), traslación (1 año real), nutación y precesión (aceleradas: ≈18,6 y ≈25.772 años reales).</div>
  </div>
  <div class="navquick-card" style="border-color:var(--oro)" onclick="threeCardGo('sistema')">
  <div class="nq-icon">☀️✨🌌</div>
- <div class="nq-title">Sistema Solar / Estrellas / Galaxia</div>
- <div class="nq-desc">Años calendario reales, de 1900 a 2100.</div>
+ <div class="nq-title" data-i18n="mc_sistema_title">Sistema Solar / Estrellas / Galaxia</div>
+ <div class="nq-desc" data-i18n="mc_sistema_desc">Años calendario reales, de 1900 a 2100.</div>
  </div>
  <div class="navquick-card" style="border-color:#8e44ad" onclick="threeCardGo('carta')">
  <div class="nq-icon">🔮</div>
- <div class="nq-title">Carta astral</div>
- <div class="nq-desc">La fecha exacta del evento que estés viendo (años o días de un año, según el modo).</div>
+ <div class="nq-title" data-i18n="nq_carta_title">Carta astral</div>
+ <div class="nq-desc" data-i18n="mc_carta_desc">La fecha exacta del evento que estés viendo (años o días de un año, según el modo).</div>
  </div>
  <div class="navquick-card" style="border-color:var(--verde)" onclick="threeCardGo('topocentrismo')">
  <div class="nq-icon">🏛️</div>
- <div class="nq-title">Topocentrismo (esfera de casas 3D)</div>
- <div class="nq-desc">Minutos alrededor del instante exacto del evento (±12 horas).</div>
+ <div class="nq-title" data-i18n="mc_topo_title">Topocentrismo (esfera de casas 3D)</div>
+ <div class="nq-desc" data-i18n="mc_topo_desc">Minutos alrededor del instante exacto del evento (±12 horas).</div>
  </div>
  <div class="navquick-card" style="border-color:var(--accent2)" onclick="threeCardGo('llona')">
  <div class="nq-icon">🌀</div>
- <div class="nq-title">Cicloide de Llona</div>
- <div class="nq-desc">No avanza fecha real: reproduce el trazo completo de la curva a la velocidad esquemática que elijas (0.1× a 2×).</div>
+ <div class="nq-title" data-i18n="nq_llona_title">Cicloide de Llona</div>
+ <div class="nq-desc" data-i18n="mc_llona_desc">No avanza fecha real: reproduce el trazo completo de la curva a la velocidad esquemática que elijas (0.1× a 2×).</div>
  </div>
  </div>
 
- <div class="hint" style="margin:0 0 10px;font-size:13px">
+ <div class="hint" style="margin:0 0 10px;font-size:13px" data-i18n-html="mc_hint_riel">
  <b>➡️ El riel de la derecha</b> son accesos rápidos a controles extra, y cambia según la vista elegida a la izquierda. En "Tierra: sus movimientos": 🌍 = rotación/traslación/precesión/nutación, 👁️ = vistas de cámara, ⏱️ = escala de tiempo. En la Cicloide de Llona, en vez de esos aparecen sus 3 controles propios directo: Caso/Latitud φ/Curvas Rdr'. Casi ningún ícono hace algo al pulsarlo directamente — abre un pequeño menú flotante justo al lado con las opciones de ese grupo. El ⛶ (pantalla completa) es el único que siempre está ahí.
  </div>
 
@@ -376,68 +376,68 @@
  <svg id="chart_wheel_svg" viewBox="-20 0 420 430" style="display:none;width:100%;height:100%;background:#fff"></svg>
  <div id="three_tooltip" style="display:none;position:absolute;pointer-events:none;background:rgba(10,20,32,.92);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;line-height:1.5;z-index:20;white-space:nowrap;border:1px solid rgba(255,255,255,.2)"></div>
  <div id="three_medir_label" style="display:none;position:absolute;pointer-events:none;background:rgba(255,85,85,.92);color:#fff;padding:4px 10px;border-radius:14px;font-size:13px;font-weight:700;z-index:21;white-space:nowrap;transform:translate(-50%,-50%)"></div>
- <div class="mc-rotate-hint" id="mc_rotate_hint">🔄 Gira tu teléfono para verlo mejor</div>
+ <div class="mc-rotate-hint" id="mc_rotate_hint" data-i18n="mc_rotate_hint">🔄 Gira tu teléfono para verlo mejor</div>
  <div class="map-bottombar" id="map_bottombar">
  <div id="bb_movs" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
- <button class="bb-play" id="three_play_btn" onclick="threePlayToggle()" title="Reproducir">▶</button>
+ <button class="bb-play" id="three_play_btn" onclick="threePlayToggle()" title="Reproducir" data-i18n-title="bb_reproducir">▶</button>
  <input type="range" id="three_slider" min="0" max="100" step="0.001" value="0" style="flex:1" oninput="threeSliderChanged()">
  <span id="three_mov_label" class="small" style="color:#cfe0da;white-space:nowrap"></span>
  <span class="bb-speedgroup">
- <button class="bb-speed" onclick="threeSetPlaySpeed(0.1,this)" title="Velocidad 0.1× (muy lenta — para ver la rotación diaria con detalle)">0.1×</button>
- <button class="bb-speed" onclick="threeSetPlaySpeed(0.5,this)" title="Velocidad 0.5×">0.5×</button>
- <button class="bb-speed on" onclick="threeSetPlaySpeed(1,this)" title="Velocidad normal">1×</button>
- <button class="bb-speed" onclick="threeSetPlaySpeed(2,this)" title="Velocidad 2×">2×</button>
- <button class="bb-speed" onclick="threeSetPlaySpeed(4,this)" title="Velocidad 4×">4×</button>
+ <button class="bb-speed" onclick="threeSetPlaySpeed(0.1,this)" title="Velocidad 0.1× (muy lenta — para ver la rotación diaria con detalle)" data-i18n-title="bb_vel01">0.1×</button>
+ <button class="bb-speed" onclick="threeSetPlaySpeed(0.5,this)" title="Velocidad 0.5×" data-i18n-title="bb_vel05">0.5×</button>
+ <button class="bb-speed on" onclick="threeSetPlaySpeed(1,this)" title="Velocidad normal" data-i18n-title="bb_vel1">1×</button>
+ <button class="bb-speed" onclick="threeSetPlaySpeed(2,this)" title="Velocidad 2×" data-i18n-title="bb_vel2">2×</button>
+ <button class="bb-speed" onclick="threeSetPlaySpeed(4,this)" title="Velocidad 4×" data-i18n-title="bb_vel4">4×</button>
  </span>
  </div>
  <div id="bb_time" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
- <button class="bb-play" id="cm_fecha_play_btn" onclick="threeCosmicFechaPlayToggle()" title="Reproducir — recorre 1900-2100 solo (para ver moverse los planetas lentos, p.ej. Plutón, sin arrastrar el control a mano).">▶</button>
+ <button class="bb-play" id="cm_fecha_play_btn" onclick="threeCosmicFechaPlayToggle()" title="Reproducir — recorre 1900-2100 solo (para ver moverse los planetas lentos, p.ej. Plutón, sin arrastrar el control a mano)." data-i18n-title="bb_reproducir_1900">▶</button>
  <span style="font-size:15px">🕰️</span>
  <input type="range" id="cm_fecha_anio" min="1900" max="2100" step="1" value="2026" style="flex:1" oninput="threeCosmicIrAFecha()">
  <span id="cm_fecha_anio_label" class="small" style="color:#fff;font-weight:700;min-width:38px">2026</span>
- <button class="bb-chip" onclick="document.getElementById('cm_fecha_anio').value=new Date().getFullYear();threeCosmicIrAFecha()">Hoy</button>
+ <button class="bb-chip" onclick="document.getElementById('cm_fecha_anio').value=new Date().getFullYear();threeCosmicIrAFecha()" data-i18n="bb_hoy">Hoy</button>
  </div>
  <div id="bb_topo_time" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
- <button class="bb-play" id="topo_play_btn" onclick="threeTopoPlayToggle()" title="Reproducir">▶</button>
- <span style="font-size:15px" title="La esfera entera gira alrededor del eje del mundo -- la misma rotación real de la Tierra (1° cada ≈4 minutos) -- sin recalcular nada, solo gira lo ya calculado.">🌐↻</span>
- <input type="range" id="topo_minuto_slider" min="-720" max="720" step="1" value="0" style="flex:1" oninput="threeTopoIrAMinuto(parseInt(this.value))" title="Los PLANETAS son siempre los mismos de tu carta (sus longitudes no cambian con los minutos) -- lo que ves girar es el ASC, y como el ASC se dibuja SIEMPRE fijo a la izquierda, toda la rueda se reacomoda alrededor de él. Es la misma carta vista con otro ASC, no otros planetas.">
+ <button class="bb-play" id="topo_play_btn" onclick="threeTopoPlayToggle()" title="Reproducir" data-i18n-title="bb_reproducir">▶</button>
+ <span style="font-size:15px" title="La esfera entera gira alrededor del eje del mundo -- la misma rotación real de la Tierra (1° cada ≈4 minutos) -- sin recalcular nada, solo gira lo ya calculado." data-i18n-title="bb_topo_esfera_title">🌐↻</span>
+ <input type="range" id="topo_minuto_slider" min="-720" max="720" step="1" value="0" style="flex:1" oninput="threeTopoIrAMinuto(parseInt(this.value))" title="Los PLANETAS son siempre los mismos de tu carta (sus longitudes no cambian con los minutos) -- lo que ves girar es el ASC, y como el ASC se dibuja SIEMPRE fijo a la izquierda, toda la rueda se reacomoda alrededor de él. Es la misma carta vista con otro ASC, no otros planetas." data-i18n-title="bb_topo_slider_title">
  <span id="topo_minuto_label" class="small" style="color:#fff;font-weight:700;min-width:150px;text-align:right;white-space:nowrap"></span>
  <span class="bb-speedgroup">
- <button class="bb-speed" onclick="threeTopoSetSpeed(0.5,this)" title="Velocidad 0.5×">0.5×</button>
- <button class="bb-speed on" onclick="threeTopoSetSpeed(1,this)" title="Velocidad normal">1×</button>
- <button class="bb-speed" onclick="threeTopoSetSpeed(2,this)" title="Velocidad 2×">2×</button>
- <button class="bb-speed" onclick="threeTopoSetSpeed(4,this)" title="Velocidad 4×">4×</button>
+ <button class="bb-speed" onclick="threeTopoSetSpeed(0.5,this)" title="Velocidad 0.5×" data-i18n-title="bb_vel05">0.5×</button>
+ <button class="bb-speed on" onclick="threeTopoSetSpeed(1,this)" title="Velocidad normal" data-i18n-title="bb_vel1">1×</button>
+ <button class="bb-speed" onclick="threeTopoSetSpeed(2,this)" title="Velocidad 2×" data-i18n-title="bb_vel2">2×</button>
+ <button class="bb-speed" onclick="threeTopoSetSpeed(4,this)" title="Velocidad 4×" data-i18n-title="bb_vel4">4×</button>
  </span>
- <button class="bb-chip" onclick="document.getElementById('topo_minuto_slider').value=0;threeTopoIrAMinuto(0)">Ahora</button>
+ <button class="bb-chip" onclick="document.getElementById('topo_minuto_slider').value=0;threeTopoIrAMinuto(0)" data-i18n="bb_ahora">Ahora</button>
  </div>
  <div id="bb_evento_time" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
- <button class="bb-play" id="evt_fecha_play_btn" onclick="threeEventoPlayToggle()" title="Reproducir — recorre el control solo (años o días, según el modo elegido), sin tener que arrastrarlo a mano.">▶</button>
- <button class="bb-chip" id="evt_modo_btn" onclick="threeEventoToggleModo()" title="Cambia entre recorrer años (bueno para planetas lentos como Plutón) o días de un mismo año (bueno para ver al Sol y la Luna moverse por el zodíaco).">📅 Año</button>
- <span style="font-size:15px" title="Esta es la longitud geocéntrica real (vista desde la Tierra) -- por eso, a diferencia del Sistema Solar heliocéntrico, aquí SÍ se ve la retrogradación aparente de los planetas al mover el control.">🪐↩️</span>
+ <button class="bb-play" id="evt_fecha_play_btn" onclick="threeEventoPlayToggle()" title="Reproducir — recorre el control solo (años o días, según el modo elegido), sin tener que arrastrarlo a mano." data-i18n-title="bb_reproducir_evt">▶</button>
+ <button class="bb-chip" id="evt_modo_btn" onclick="threeEventoToggleModo()" title="Cambia entre recorrer años (bueno para planetas lentos como Plutón) o días de un mismo año (bueno para ver al Sol y la Luna moverse por el zodíaco)." data-i18n-title="bb_evt_modo_title">📅 Año</button>
+ <span style="font-size:15px" title="Esta es la longitud geocéntrica real (vista desde la Tierra) -- por eso, a diferencia del Sistema Solar heliocéntrico, aquí SÍ se ve la retrogradación aparente de los planetas al mover el control." data-i18n-title="bb_evt_geo_title">🪐↩️</span>
  <input type="range" id="evt_fecha_slider" min="1900" max="2100" step="1" value="2026" style="flex:1" oninput="threeEventoSliderInput()">
  <span id="evt_fecha_slider_label" class="small" style="color:#fff;font-weight:700;min-width:70px;text-align:right">2026</span>
- <button class="bb-chip" onclick="threeEventoIrAHoy()">Hoy</button>
+ <button class="bb-chip" onclick="threeEventoIrAHoy()" data-i18n="bb_hoy">Hoy</button>
  </div>
  <div id="bb_llona" style="display:none;align-items:center;gap:10px;flex:1;min-width:0">
- <button class="bb-play" id="llona_bb_play_btn" onclick="threeLlonaAnimar()" title="Dibujar / reanudar la curva — la Tierra gira y se traslada de verdad mientras se traza.">▶</button>
- <span style="font-size:15px" title="Esta barra NO recorre una fecha real -- la velocidad (0.1×-2×) es puramente esquemática, para poder ver la curva formarse. La proporción Vt/Vr (Caso A/B/C) sí es real o ilustrativa según el caso elegido, pero el tiempo que tarda en dibujarse en pantalla no corresponde a ningún tiempo real.">🌀 esquemático</span>
- <span id="llona_bb_nota" class="small" style="color:#cfe0da;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Escena lista</span>
+ <button class="bb-play" id="llona_bb_play_btn" onclick="threeLlonaAnimar()" title="Dibujar / reanudar la curva — la Tierra gira y se traslada de verdad mientras se traza." data-i18n-title="bb_llona_dibujar_title">▶</button>
+ <span style="font-size:15px" title="Esta barra NO recorre una fecha real -- la velocidad (0.1×-2×) es puramente esquemática, para poder ver la curva formarse. La proporción Vt/Vr (Caso A/B/C) sí es real o ilustrativa según el caso elegido, pero el tiempo que tarda en dibujarse en pantalla no corresponde a ningún tiempo real." data-i18n-title="bb_llona_esquematico_title">🌀 esquemático</span>
+ <span id="llona_bb_nota" class="small" style="color:#cfe0da;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" data-i18n="bb_llona_escena_lista">Escena lista</span>
  <span class="bb-speedgroup">
- <button class="bb-speed" onclick="threeLlonaSetSpeed(0.1,this)" title="Velocidad 0.1× (muy lenta)">0.1×</button>
- <button class="bb-speed on" onclick="threeLlonaSetSpeed(0.3,this)" title="Velocidad 0.3× (por defecto — para poder seguir la curva y detenerla a tiempo)">0.3×</button>
- <button class="bb-speed" onclick="threeLlonaSetSpeed(1,this)" title="Velocidad normal">1×</button>
- <button class="bb-speed" onclick="threeLlonaSetSpeed(2,this)" title="Velocidad 2×">2×</button>
+ <button class="bb-speed" onclick="threeLlonaSetSpeed(0.1,this)" title="Velocidad 0.1× (muy lenta)" data-i18n-title="bb_llona_vel01">0.1×</button>
+ <button class="bb-speed on" onclick="threeLlonaSetSpeed(0.3,this)" title="Velocidad 0.3× (por defecto — para poder seguir la curva y detenerla a tiempo)" data-i18n-title="bb_llona_vel03">0.3×</button>
+ <button class="bb-speed" onclick="threeLlonaSetSpeed(1,this)" title="Velocidad normal" data-i18n-title="bb_vel1">1×</button>
+ <button class="bb-speed" onclick="threeLlonaSetSpeed(2,this)" title="Velocidad 2×" data-i18n-title="bb_vel2">2×</button>
  </span>
- <button class="bb-chip" onclick="threeDetenerAnimaciones()" style="margin-left:auto">⏹ Detener</button>
+ <button class="bb-chip" onclick="threeDetenerAnimaciones()" style="margin-left:auto" data-i18n="bb_detener">⏹ Detener</button>
  </div>
  <div id="bb_nave" style="display:none;align-items:center;gap:10px;flex:1;min-width:0;color:#cfe0da;font-size:12px">
- <span>🚀 <b>Modo nave</b> — <kbd>↑↓←→</kbd> mover · mouse (clic y arrastra) mirar</span>
+ <span data-i18n-html="bb_nave_modo">🚀 <b>Modo nave</b> — <kbd>↑↓←→</kbd> mover · mouse (clic y arrastra) mirar</span>
  <span class="bb-speedgroup" style="margin-left:auto">
- <button class="bb-speed" onclick="threeNaveSetSpeed(0.5,this)" title="Vuelo lento">0.5×</button>
- <button class="bb-speed on" onclick="threeNaveSetSpeed(1,this)" title="Vuelo normal">1×</button>
- <button class="bb-speed" onclick="threeNaveSetSpeed(3,this)" title="Vuelo rápido">3×</button>
+ <button class="bb-speed" onclick="threeNaveSetSpeed(0.5,this)" title="Vuelo lento" data-i18n-title="bb_nave_lento">0.5×</button>
+ <button class="bb-speed on" onclick="threeNaveSetSpeed(1,this)" title="Vuelo normal" data-i18n-title="bb_nave_normal">1×</button>
+ <button class="bb-speed" onclick="threeNaveSetSpeed(3,this)" title="Vuelo rápido" data-i18n-title="bb_nave_rapido">3×</button>
  </span>
- <button class="bb-chip" onclick="threeNaveToggle()">✕ Salir</button>
+ <button class="bb-chip" onclick="threeNaveToggle()" data-i18n="bb_salir">✕ Salir</button>
  </div>
  </div>
  </div>
@@ -451,14 +451,14 @@
  los nombres al pasar el mouse en pantalla completa"). -->
  <div class="rail-tip" id="rail_tip"></div>
  </div>
- <p class="small muted" style="margin-top:8px">Distancias esquemáticas, no a escala real — el objetivo es la geometría angular (qué tan alineados están los planetas), no la distancia física. Posiciones planetarias: modelo kepleriano simplificado para el navegador (la plataforma usa Skyfield + JPL DE421 para los cálculos reales).</p>
- <p class="small muted" id="topo_dia_nota" style="display:none;margin-top:4px;color:var(--accent2)">🕰️ Al mover este control los <b>planetas siguen siendo los mismos de tu carta</b> (sus longitudes no cambian) — lo único que avanza es el instante, y como el ASC se dibuja SIEMPRE fijo a la izquierda, la rueda entera se reacomoda alrededor de él. Por eso parece que "cambian" los planetas: en realidad gira el marco de referencia (el ASC), no ellos.</p>
+ <p class="small muted" style="margin-top:8px" data-i18n="mc_p_distancias">Distancias esquemáticas, no a escala real — el objetivo es la geometría angular (qué tan alineados están los planetas), no la distancia física. Posiciones planetarias: modelo kepleriano simplificado para el navegador (la plataforma usa Skyfield + JPL DE421 para los cálculos reales).</p>
+ <p class="small muted" id="topo_dia_nota" style="display:none;margin-top:4px;color:var(--accent2)" data-i18n-html="mc_topo_dia_nota">🕰️ Al mover este control los <b>planetas siguen siendo los mismos de tu carta</b> (sus longitudes no cambian) — lo único que avanza es el instante, y como el ASC se dibuja SIEMPRE fijo a la izquierda, la rueda entera se reacomoda alrededor de él. Por eso parece que "cambian" los planetas: en realidad gira el marco de referencia (el ASC), no ellos.</p>
 
  <!-- ═══ Detalle — cambia según el botón del HUD que elegiste arriba ═══ -->
  <div id="three_detail" style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px">
 
  <div id="three_panel_movimientos">
- <p class="small muted" style="margin-bottom:8px">▶ El control de reproducción y la barra de progreso ahora están integrados abajo del mapa mismo.</p>
+ <p class="small muted" style="margin-bottom:8px" data-i18n="mc_p_control_integrado">▶ El control de reproducción y la barra de progreso ahora están integrados abajo del mapa mismo.</p>
  <!-- checkboxes reales, ocultos: los botones del riel lateral los controlan
  (se conservan para no tocar threeMovimientosChanged() ni el resto de la
  lógica ya validada, que lee estos mismos ids) -->
@@ -471,17 +471,17 @@
  </div>
 
  <div id="three_escala_tiempo" style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-top:10px;display:none">
- <div style="font-weight:700;font-size:13px;margin-bottom:4px">⏱ Escala de tiempo</div>
- <details class="tccinfo"><summary>¿Qué hace esto?</summary><p class="tccinfo-body small muted">Elige un movimiento y cuántos segundos reales quieres que dure verlo completo de principio a fin (5-10 s recomendado). Esto aísla ese movimiento solo (desmarca los demás) para que se vea claro.</p></details>
+ <div style="font-weight:700;font-size:13px;margin-bottom:4px" data-i18n="mc_escala_h">⏱ Escala de tiempo</div>
+ <details class="tccinfo"><summary data-i18n="mc_escala_q">¿Qué hace esto?</summary><p class="tccinfo-body small muted" data-i18n="mc_escala_a">Elige un movimiento y cuántos segundos reales quieres que dure verlo completo de principio a fin (5-10 s recomendado). Esto aísla ese movimiento solo (desmarca los demás) para que se vea claro.</p></details>
  <div class="row" style="align-items:center;gap:8px;margin-top:8px">
  <select id="three_ciclo_mov" style="max-width:230px">
- <option value="rotacion">Rotación diaria (real, 24 h)</option>
- <option value="traslacion">Traslación anual (real, 1 año)</option>
- <option value="nutacion">Nutación (esquemática, real ≈18.6 años)</option>
- <option value="precesion">Precesión (esquemática, real ≈25.772 años)</option>
- <option value="galactico">Órbita galáctica del Sol (esquemática, real ≈230 millones de años)</option>
+ <option value="rotacion" data-i18n="mc_ciclo_rotacion">Rotación diaria (real, 24 h)</option>
+ <option value="traslacion" data-i18n="mc_ciclo_traslacion">Traslación anual (real, 1 año)</option>
+ <option value="nutacion" data-i18n="mc_ciclo_nutacion">Nutación (esquemática, real ≈18.6 años)</option>
+ <option value="precesion" data-i18n="mc_ciclo_precesion">Precesión (esquemática, real ≈25.772 años)</option>
+ <option value="galactico" data-i18n="mc_ciclo_galactico">Órbita galáctica del Sol (esquemática, real ≈230 millones de años)</option>
  </select>
- <label class="small" style="margin:0">Duración:</label>
+ <label class="small" style="margin:0" data-i18n="mc_duracion_label">Duración:</label>
  <select id="three_ciclo_seg" style="max-width:90px">
  <option value="5">5 s</option>
  <option value="6">6 s</option>
@@ -490,56 +490,56 @@
  <option value="9">9 s</option>
  <option value="10">10 s</option>
  </select>
- <button class="act" id="three_ciclo_btn" onclick="threeReproducirCicloCompleto()">▶ Ver 1 ciclo completo</button>
+ <button class="act" id="three_ciclo_btn" onclick="threeReproducirCicloCompleto()" data-i18n="mc_ver_ciclo">▶ Ver 1 ciclo completo</button>
  <button class="ghost act" onclick="threeDetenerAnimaciones()" style="padding:8px 12px">⏹</button>
  </div>
  </div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-top:10px">
- <div style="font-weight:700;font-size:13px;margin-bottom:8px">🌑 Eclipses — la referencia de lo que se ve desde la Tierra</div>
+ <div style="font-weight:700;font-size:13px;margin-bottom:8px" data-i18n="mc_eclipses_h">🌑 Eclipses — la referencia de lo que se ve desde la Tierra</div>
  <div class="row" style="align-items:center;gap:8px">
- <button class="act" onclick="threeVerEclipse('solar')">☀️🌑 Eclipse solar</button>
- <button class="act" onclick="threeVerEclipse('lunar')">🌕🌑 Eclipse lunar</button>
- <button class="ghost act" id="three_eclipse_salir" onclick="threeSalirEclipse()" style="display:none">↩ Volver a vista normal</button>
+ <button class="act" onclick="threeVerEclipse('solar')" data-i18n="mc_eclipse_solar">☀️🌑 Eclipse solar</button>
+ <button class="act" onclick="threeVerEclipse('lunar')" data-i18n="mc_eclipse_lunar">🌕🌑 Eclipse lunar</button>
+ <button class="ghost act" id="three_eclipse_salir" onclick="threeSalirEclipse()" style="display:none" data-i18n="mc_volver_normal">↩ Volver a vista normal</button>
  </div>
  <div id="three_eclipse_nota" class="small muted" style="margin-top:6px"></div>
- <details class="tccinfo"><summary>¿Por qué no hay un eclipse cada mes?</summary><p class="tccinfo-body small muted">Un eclipse solar necesita Luna nueva (entre la Tierra y el Sol) exactamente cuando la Luna cruza el plano de la eclíptica; uno lunar necesita Luna llena en ese mismo cruce. Como la órbita lunar está inclinada ≈5.14°, la mayoría de los meses la Luna pasa "por arriba o por abajo" de la línea Tierra-Sol, sin alinearse — solo coincide un par de veces al año ("temporada de eclipses"). Aquí se <b>fuerza</b> esa coincidencia (se anula la inclinación por un momento) para que la alineación se vea clara; al salir, la inclinación real vuelve.</p></details>
+ <details class="tccinfo"><summary data-i18n="mc_eclipse_q">¿Por qué no hay un eclipse cada mes?</summary><p class="tccinfo-body small muted" data-i18n="mc_eclipse_a">Un eclipse solar necesita Luna nueva (entre la Tierra y el Sol) exactamente cuando la Luna cruza el plano de la eclíptica; uno lunar necesita Luna llena en ese mismo cruce. Como la órbita lunar está inclinada ≈5.14°, la mayoría de los meses la Luna pasa "por arriba o por abajo" de la línea Tierra-Sol, sin alinearse — solo coincide un par de veces al año ("temporada de eclipses"). Aquí se <b>fuerza</b> esa coincidencia (se anula la inclinación por un momento) para que la alineación se vea clara; al salir, la inclinación real vuelve.</p></details>
  </div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-top:10px">
- <div style="font-weight:700;font-size:13px;margin-bottom:8px">🌀 Cicloide de Llona — la trayectoria real de un punto de la corteza</div>
- <p class="small muted" style="margin:0 0 8px">Combinando rotación + traslación, un punto de la corteza NO dibuja un círculo: dibuja una curva cicloidal. Llona (TCC, Parte XIV) sostiene que las <b>cúspides</b> y <b>bucles</b> de esta curva marcan puntos de tensión dinámica en la corteza.</p>
+ <div style="font-weight:700;font-size:13px;margin-bottom:8px" data-i18n="mc_llona_h">🌀 Cicloide de Llona — la trayectoria real de un punto de la corteza</div>
+ <p class="small muted" style="margin:0 0 8px" data-i18n-html="mc_llona_p1">Combinando rotación + traslación, un punto de la corteza NO dibuja un círculo: dibuja una curva cicloidal. Llona (TCC, Parte XIV) sostiene que las <b>cúspides</b> y <b>bucles</b> de esta curva marcan puntos de tensión dinámica en la corteza.</p>
  <div class="row" style="align-items:center;gap:8px;margin-bottom:6px">
- <label class="small" style="margin:0">Caso:</label>
+ <label class="small" style="margin:0" data-i18n="mc_caso_label">Caso:</label>
  <select id="llona_modo" onchange="threeLlonaActualizar()" style="max-width:220px">
- <option value="normal" selected>A — Normal (Vt &gt; Vr, la Tierra real)</option>
- <option value="cero">B — Cero (Vt = Vr, cúspides exactas)</option>
- <option value="regresivo">C — Regresivo (Vt &lt; Vr, forma bucles)</option>
+ <option value="normal" selected data-i18n-html="mc_caso_a">A — Normal (Vt &gt; Vr, la Tierra real)</option>
+ <option value="cero" data-i18n="mc_caso_b">B — Cero (Vt = Vr, cúspides exactas)</option>
+ <option value="regresivo" data-i18n-html="mc_caso_c">C — Regresivo (Vt &lt; Vr, forma bucles)</option>
  </select>
- <label class="small" style="margin:0">Latitud φ:</label>
+ <label class="small" style="margin:0" data-i18n="mc_latitud_label">Latitud φ:</label>
  <input type="range" id="llona_phi" min="-80" max="80" step="1" value="20" style="flex:1;min-width:100px" oninput="threeLlonaActualizar()">
  <span id="llona_phi_label" class="small" style="min-width:40px">20°</span>
  </div>
  <div class="row" style="align-items:center;gap:8px">
- <label class="small" style="margin:0">Vueltas a dibujar:</label>
+ <label class="small" style="margin:0" data-i18n="mc_vueltas_label">Vueltas a dibujar:</label>
  <input type="range" id="llona_vueltas" min="3" max="16" step="1" value="8" style="flex:1;min-width:100px" oninput="threeLlonaActualizar()">
  <span id="llona_vueltas_label" class="small" style="min-width:30px">8</span>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="llona_mostrar_rdr" checked onchange="threeLlonaActualizar()"> Curvas Rdr' (Luna/Sol)</label>
- <button class="act" onclick="threeLlonaAnimar()" id="llona_play_btn">▶ Dibujar</button>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="llona_mostrar_rdr" checked onchange="threeLlonaActualizar()"> <span data-i18n="mc_curvas_rdr">Curvas Rdr' (Luna/Sol)</span></label>
+ <button class="act" onclick="threeLlonaAnimar()" id="llona_play_btn" data-i18n="mc_dibujar">▶ Dibujar</button>
  <button class="ghost act" onclick="threeDetenerAnimaciones()" style="padding:8px 12px">⏹</button>
- <button class="ghost act" onclick="threeBuildMovimientosScene()">↩ Volver a movimientos</button>
+ <button class="ghost act" onclick="threeBuildMovimientosScene()" data-i18n="mc_volver_movimientos">↩ Volver a movimientos</button>
  </div>
  <div id="llona_nota" class="small muted" style="margin-top:6px"></div>
- <p class="small muted" style="margin:4px 0 0">Nota: esta curva es una escena <b>aparte</b> de los movimientos de arriba (precesión/nutación/órbita galáctica) — pero, a diferencia de antes, la Tierra <b>sí gira y se traslada de verdad</b> al pulsar "▶ Dibujar": el punto verde marcado a latitud φ viaja pegado a la esfera, y su camino resultante (visto desde afuera) es exactamente la curva cicloidal que se traza. Tocar cualquier casilla o el slider de arriba te devuelve automáticamente a la vista normal.</p>
- <details class="tccinfo"><summary>¿Qué es exactamente y qué es esquemático?</summary><p class="tccinfo-body small muted">Real: la combinación rotación+traslación con el eje inclinado ε≈23.44° SÍ produce geométricamente una curva cicloidal, no un círculo — eso es trigonometría, no una interpretación TCC. Esquemático: aquí <b>Vt/Vr es una relación adimensional que tú eliges</b> para poder VER los tres casos (la Tierra real siempre está en el caso "Normal" con Vt≈29.78 km/s ≫ Vr≈0.46 km/s en el ecuador — el caso "Regresivo" no ocurre en la Tierra real, se muestra solo para comparar, como pide el guion, con lo que sí ocurriría en cuerpos como Urano). Los "Puntos Singulares" cada 30° y las curvas Rdr' (conos hacia el Sol/Luna) son la representación gráfica de la hipótesis de Llona — no hay, dentro de esta plataforma, una prueba estadística independiente de que esos puntos coincidan con sismos reales (ver <a href="#" onclick="return irA('guia','')">Metodología → Geodinámica de Llona</a> para lo que sí se ha probado).</p></details>
+ <p class="small muted" style="margin:4px 0 0" data-i18n-html="mc_llona_p2">Nota: esta curva es una escena <b>aparte</b> de los movimientos de arriba (precesión/nutación/órbita galáctica) — pero, a diferencia de antes, la Tierra <b>sí gira y se traslada de verdad</b> al pulsar "▶ Dibujar": el punto verde marcado a latitud φ viaja pegado a la esfera, y su camino resultante (visto desde afuera) es exactamente la curva cicloidal que se traza. Tocar cualquier casilla o el slider de arriba te devuelve automáticamente a la vista normal.</p>
+ <details class="tccinfo"><summary data-i18n="mc_llona_q">¿Qué es exactamente y qué es esquemático?</summary><p class="tccinfo-body small muted" data-i18n-html="mc_llona_a">Real: la combinación rotación+traslación con el eje inclinado ε≈23.44° SÍ produce geométricamente una curva cicloidal, no un círculo — eso es trigonometría, no una interpretación TCC. Esquemático: aquí <b>Vt/Vr es una relación adimensional que tú eliges</b> para poder VER los tres casos (la Tierra real siempre está en el caso "Normal" con Vt≈29.78 km/s ≫ Vr≈0.46 km/s en el ecuador — el caso "Regresivo" no ocurre en la Tierra real, se muestra solo para comparar, como pide el guion, con lo que sí ocurriría en cuerpos como Urano). Los "Puntos Singulares" cada 30° y las curvas Rdr' (conos hacia el Sol/Luna) son la representación gráfica de la hipótesis de Llona — no hay, dentro de esta plataforma, una prueba estadística independiente de que esos puntos coincidan con sismos reales (ver <a href="#" onclick="return irA('guia','')">Metodología → Geodinámica de Llona</a> para lo que sí se ha probado).</p></details>
  </div>
 
  <div id="eras_diluvios_panel" style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-top:10px">
- <div style="font-weight:700;font-size:13px;margin-bottom:8px">♒ Eras precesionales y el eje inclinado — ¿por qué se hablan de "diluvios"?</div>
- <p class="small muted" style="margin:0 0 8px">El mismo barrido de precesión del eje (arriba) es lo que, a lo largo de miles de años, desplaza al punto vernal de una constelación a otra. Este botón aísla ese movimiento y agrega la lectura que hace la TCC de ese barrido: qué hemisferio recibe el sol más directo en cada solsticio, y por qué eso importa para la hipótesis de los diluvios prolongados.</p>
+ <div style="font-weight:700;font-size:13px;margin-bottom:8px" data-i18n="mc_eras_h">♒ Eras precesionales y el eje inclinado — ¿por qué se hablan de "diluvios"?</div>
+ <p class="small muted" style="margin:0 0 8px" data-i18n="mc_eras_p">El mismo barrido de precesión del eje (arriba) es lo que, a lo largo de miles de años, desplaza al punto vernal de una constelación a otra. Este botón aísla ese movimiento y agrega la lectura que hace la TCC de ese barrido: qué hemisferio recibe el sol más directo en cada solsticio, y por qué eso importa para la hipótesis de los diluvios prolongados.</p>
  <div class="row" style="align-items:center;gap:8px">
- <button class="act" onclick="threeVerErasDiluvios()">🌊 Ver barrido del eje + eras y diluvios</button>
- <button class="ghost act" onclick="return irA('eras_precesionales','')" style="padding:8px 12px">📖 Explicación completa</button>
+ <button class="act" onclick="threeVerErasDiluvios()" data-i18n="mc_eras_ver">🌊 Ver barrido del eje + eras y diluvios</button>
+ <button class="ghost act" onclick="return irA('eras_precesionales','')" style="padding:8px 12px" data-i18n="mc_eras_explicacion">📖 Explicación completa</button>
  </div>
  <div id="eras_diluvios_nota" class="small muted" style="margin-top:8px"></div>
  </div>
@@ -547,174 +547,174 @@
 
  <div id="three_panel_evento" style="display:none">
  <div class="row" style="margin-bottom:8px;align-items:center;background:var(--panel2);border-radius:10px;padding:8px 12px">
- <label class="small" style="margin:0;font-weight:700">💾 Mis cartas guardadas:</label>
- <select id="three_cartas_select" onchange="threeCargarCartaGuardada()" style="max-width:180px"><option value="">— ninguna guardada —</option></select>
- <input type="text" id="three_carta_nombre" placeholder="nombre (ej. 'yo', 'mamá')" style="max-width:150px">
- <button class="ghost act" style="font-size:12px" onclick="threeGuardarCartaActual()">💾 Guardar esta carta</button>
- <button class="ghost act" style="font-size:12px;border-color:#c0392b;color:#c0392b" onclick="threeBorrarCartaGuardada()">🗑️ Borrar</button>
+ <label class="small" style="margin:0;font-weight:700" data-i18n="mc_cartas_guardadas">💾 Mis cartas guardadas:</label>
+ <select id="three_cartas_select" onchange="threeCargarCartaGuardada()" style="max-width:180px"><option value="" data-i18n="mc_ninguna_guardada">— ninguna guardada —</option></select>
+ <input type="text" id="three_carta_nombre" placeholder="nombre (ej. 'yo', 'mamá')" data-i18n-ph="mc_carta_nombre_ph" style="max-width:150px">
+ <button class="ghost act" style="font-size:12px" onclick="threeGuardarCartaActual()" data-i18n="mc_guardar_carta">💾 Guardar esta carta</button>
+ <button class="ghost act" style="font-size:12px;border-color:#c0392b;color:#c0392b" onclick="threeBorrarCartaGuardada()" data-i18n="mc_borrar">🗑️ Borrar</button>
  </div>
- <div class="small muted" style="margin-bottom:10px">Se guarda solo en <b>este navegador, en tu computadora</b> (localStorage) — nunca se envía a ningún servidor ni lo ve nadie más. Si cambias de navegador o de dispositivo, no vas a verla ahí; hay que guardarla de nuevo.</div>
+ <div class="small muted" style="margin-bottom:10px" data-i18n-html="mc_guardado_local">Se guarda solo en <b>este navegador, en tu computadora</b> (localStorage) — nunca se envía a ningún servidor ni lo ve nadie más. Si cambias de navegador o de dispositivo, no vas a verla ahí; hay que guardarla de nuevo.</div>
  <div class="row" style="margin-bottom:10px;align-items:center;background:var(--panel2);border-radius:10px;padding:8px 12px">
- <label class="small" style="margin:0;font-weight:700">📊 Ver la carta de un evento ya registrado:</label>
- <select id="three_evento_dominio_sel" onchange="threePoblarEventosDominio()" style="max-width:220px"><option value="">— tipo de evento —</option></select>
- <select id="three_evento_registrado_sel" onchange="threeCargarEventoRegistrado()" style="max-width:280px"><option value="">— elegir evento —</option></select>
+ <label class="small" style="margin:0;font-weight:700" data-i18n="mc_ver_evento_registrado">📊 Ver la carta de un evento ya registrado:</label>
+ <select id="three_evento_dominio_sel" onchange="threePoblarEventosDominio()" style="max-width:220px"><option value="" data-i18n="mc_tipo_evento">— tipo de evento —</option></select>
+ <select id="three_evento_registrado_sel" onchange="threeCargarEventoRegistrado()" style="max-width:280px"><option value="" data-i18n="mc_elegir_evento">— elegir evento —</option></select>
  </div>
  <div class="small muted" id="three_evento_registrado_nota" style="margin-bottom:10px"></div>
- <div class="hint" style="margin-bottom:10px"><b>Importante:</b> escribe tu hora <b>local</b> (la del reloj en ese momento y lugar) — la página convierte a UTC. <details class="tccinfo" style="display:inline"><summary style="display:inline">¿Por qué importa?</summary><p class="tccinfo-body small">Si escribes la hora ya convertida a UTC a mano, o eliges una ciudad distinta a tu lugar real, el Ascendente sale mal — puede desviarse varios signos con solo un par de horas de error. El Ascendente y las casas dependen del lugar, no solo de la fecha.</p></details></div>
+ <div class="hint" style="margin-bottom:10px" data-i18n-html="mc_hora_local_hint"><b>Importante:</b> escribe tu hora <b>local</b> (la del reloj en ese momento y lugar) — la página convierte a UTC. <details class="tccinfo" style="display:inline"><summary style="display:inline">¿Por qué importa?</summary><p class="tccinfo-body small">Si escribes la hora ya convertida a UTC a mano, o eliges una ciudad distinta a tu lugar real, el Ascendente sale mal — puede desviarse varios signos con solo un par de horas de error. El Ascendente y las casas dependen del lugar, no solo de la fecha.</p></details></div>
  <div class="row" style="margin-bottom:8px;align-items:center">
- <label class="small" style="margin:0">Fecha:</label>
+ <label class="small" style="margin:0" data-i18n="mc_fecha_label">Fecha:</label>
  <input type="date" id="three_evento_fechad" value="2011-03-11" style="max-width:145px">
- <label class="small" style="margin:0">Hora local:</label>
+ <label class="small" style="margin:0" data-i18n="mc_hora_local_label">Hora local:</label>
  <input type="time" id="three_evento_horal" step="1" value="05:46:00" style="max-width:110px">
- <label class="small" style="margin:0">Zona horaria:</label>
+ <label class="small" style="margin:0" data-i18n="mc_zona_horaria_label">Zona horaria:</label>
  <select id="three_evento_tz" style="max-width:200px"><option value="UTC">UTC</option></select>
  </div>
  <div class="row" style="margin-bottom:8px;align-items:center">
- <label class="small" style="margin:0">Ciudad (opcional, autocompleta lat/lon):</label>
+ <label class="small" style="margin:0" data-i18n="mc_ciudad_label">Ciudad (opcional, autocompleta lat/lon):</label>
  <select id="three_evento_ciudad" onchange="threeCiudadSeleccionada()" style="max-width:220px">
- <option value="">— elegir de la lista —</option>
+ <option value="" data-i18n="mc_elegir_lista">— elegir de la lista —</option>
  </select>
  </div>
  <div class="row" style="margin-bottom:8px;align-items:center">
- <label class="small" style="margin:0">Latitud:</label>
+ <label class="small" style="margin:0" data-i18n="mc_latitud_label2">Latitud:</label>
  <input type="number" id="three_evento_lat" step="0.0001" value="38.3" style="max-width:110px">
- <label class="small" style="margin:0">Longitud:</label>
+ <label class="small" style="margin:0" data-i18n="mc_longitud_label">Longitud:</label>
  <input type="number" id="three_evento_lon" step="0.0001" value="142.4" style="max-width:110px">
- <button class="act" onclick="threeCalcularEvento()">Calcular carta</button>
- <button class="ghost act" onclick="threeActualizarAhora()" title="Agrega al mapa (sin tocar tu carta) un segundo anillo con las posiciones reales del cielo en este momento -- para comparar tu carta natal contra ahora mismo, como un tránsito.">🕐 + Cielo de ahora</button>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_ahora_on" onchange="threeToggleAhoraOn()"> Mostrar</label>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_ahora_auto" onchange="threeToggleAutoAhora()"> 🔴 en vivo (cada 30s)</label>
+ <button class="act" onclick="threeCalcularEvento()" data-i18n="mc_calcular_carta">Calcular carta</button>
+ <button class="ghost act" onclick="threeActualizarAhora()" title="Agrega al mapa (sin tocar tu carta) un segundo anillo con las posiciones reales del cielo en este momento -- para comparar tu carta natal contra ahora mismo, como un tránsito." data-i18n-title="mc_cielo_ahora_title" data-i18n="mc_cielo_ahora">🕐 + Cielo de ahora</button>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_ahora_on" onchange="threeToggleAhoraOn()"> <span data-i18n="mc_mostrar">Mostrar</span></label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_ahora_auto" onchange="threeToggleAutoAhora()"> <span data-i18n="mc_en_vivo">🔴 en vivo (cada 30s)</span></label>
  </div>
  <div class="row" style="margin-bottom:8px;align-items:center">
- <label class="small" style="margin:0">Progresión secundaria a la fecha:</label>
+ <label class="small" style="margin:0" data-i18n="mc_progresion_label">Progresión secundaria a la fecha:</label>
  <input type="date" id="three_prog_fecha" style="max-width:145px">
- <button class="ghost act" onclick="threeActualizarProgresion()" title="Progresiones secundarias (1 día tras el nacimiento = 1 año de vida): recalcula las posiciones en la fecha progresada equivalente y las agrega como un tercer anillo, sin tocar tu carta natal. Deja la fecha vacía para progresar a hoy.">📈 + Progresión secundaria</button>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_prog_on" onchange="threeToggleProgOn()"> Mostrar</label>
+ <button class="ghost act" onclick="threeActualizarProgresion()" title="Progresiones secundarias (1 día tras el nacimiento = 1 año de vida): recalcula las posiciones en la fecha progresada equivalente y las agrega como un tercer anillo, sin tocar tu carta natal. Deja la fecha vacía para progresar a hoy." data-i18n-title="mc_progresion_title" data-i18n="mc_progresion_btn">📈 + Progresión secundaria</button>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_prog_on" onchange="threeToggleProgOn()"> <span data-i18n="mc_mostrar">Mostrar</span></label>
  <span id="three_prog_edad" class="small muted"></span>
  </div>
  <div class="row" style="margin-bottom:8px;align-items:center">
- <label class="small" style="margin:0">Ir directo a:</label>
- <select id="three_evento_selector" onchange="threeIrAEvento(this.value)" style="max-width:150px"><option value="">Ir a...</option></select>
- <button class="ghost act" id="three_toggle_2d" onclick="threeToggle2D()">Ver como carta astral (2D)</button>
- <button class="ghost act zodiaco-modo-btn" onclick="threeToggleZodiacoModo()" title="Alterna entre los límites reales IAU/Delporte (desiguales, 6°-44°) y los 12 signos tropicales de 30° iguales que usa la astrología occidental para signo solar/casas -- ninguno es 'más correcto', miden cosas distintas.">♈ Ver signos iguales (30°)</button>
- <button class="ghost act figuras-btn" id="three_figuras_evento_btn" onclick="threeToggleFiguras()">⭐ Figuras del zodíaco</button>
- <button class="ghost act" id="three_toggle_esfera" onclick="threeToggleEsferaTopocentrica()">🌐 Ver esfera de casas (3D)</button>
- <button class="ghost act" onclick="threeAbrirEsferaEnPestana()">🔗 Abrir en pestaña nueva (fondo claro)</button>
+ <label class="small" style="margin:0" data-i18n="mc_ir_directo">Ir directo a:</label>
+ <select id="three_evento_selector" onchange="threeIrAEvento(this.value)" style="max-width:150px"><option value="" data-i18n="mc_ir_a">Ir a...</option></select>
+ <button class="ghost act" id="three_toggle_2d" onclick="threeToggle2D()" data-i18n="mc_ver_2d">Ver como carta astral (2D)</button>
+ <button class="ghost act zodiaco-modo-btn" onclick="threeToggleZodiacoModo()" title="Alterna entre los límites reales IAU/Delporte (desiguales, 6°-44°) y los 12 signos tropicales de 30° iguales que usa la astrología occidental para signo solar/casas -- ninguno es 'más correcto', miden cosas distintas." data-i18n-title="mc_signos_iguales_title" data-i18n="mc_signos_iguales">♈ Ver signos iguales (30°)</button>
+ <button class="ghost act figuras-btn" id="three_figuras_evento_btn" onclick="threeToggleFiguras()" data-i18n="mc_figuras_zodiaco">⭐ Figuras del zodíaco</button>
+ <button class="ghost act" id="three_toggle_esfera" onclick="threeToggleEsferaTopocentrica()" data-i18n="mc_ver_esfera">🌐 Ver esfera de casas (3D)</button>
+ <button class="ghost act" onclick="threeAbrirEsferaEnPestana()" data-i18n="mc_abrir_pestana">🔗 Abrir en pestaña nueva (fondo claro)</button>
  </div>
  <!-- Los sliders de "explorar lat/lon" viven ahora en el riel derecho
  (flyout de 🔮 Carta astral) cuando estás en Topocentrismo -- se
  perdían aquí, muy abajo del panel largo (ciudad, fecha/hora, lat/lon
  reales, ahora/progresión...), lejos del mapa que deberían controlar. -->
  <div class="row" style="margin:0 0 6px;gap:14px">
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_casas" checked onchange="threeCalcularEvento()"> Casas topocéntricas</label>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_eclip" onchange="threeCalcularEvento()"> Plano eclíptica + punto vernal</label>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_ecuador" onchange="threeCalcularEvento()"> Ecuador celeste</label>
- <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_aspectos" checked onchange="threeCalcularEvento()"> Aspectos (líneas + grilla)</label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_casas" checked onchange="threeCalcularEvento()"> <span data-i18n="mc_casas_topo">Casas topocéntricas</span></label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_eclip" onchange="threeCalcularEvento()"> <span data-i18n="mc_plano_eclip">Plano eclíptica + punto vernal</span></label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_ecuador" onchange="threeCalcularEvento()"> <span data-i18n="mc_ecuador_celeste">Ecuador celeste</span></label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_mostrar_aspectos" checked onchange="threeCalcularEvento()"> <span data-i18n="mc_aspectos_lineas">Aspectos (líneas + grilla)</span></label>
  </div>
- <details class="tccinfo"><summary>¿Qué son estas 3 casillas?</summary><p class="tccinfo-body small muted"><b>Casas topocéntricas</b> (Polich-Page): cúspides desiguales, dependen de tu latitud real. <b>Plano eclíptica + punto vernal</b>: marca el 0° Aries, origen de las longitudes. <b>Ecuador celeste</b>: su intersección con la eclíptica ES el punto vernal.</p></details>
- <div style="margin-bottom:6px"><button class="ghost act" style="font-size:11px;padding:4px 9px" onclick="threeToggleLeyendaGrados()" id="three_leyenda_modo_btn">🔄 Ver en grados 0-360°</button></div>
+ <details class="tccinfo"><summary data-i18n="mc_3casillas_q">¿Qué son estas 3 casillas?</summary><p class="tccinfo-body small muted" data-i18n-html="mc_3casillas_a"><b>Casas topocéntricas</b> (Polich-Page): cúspides desiguales, dependen de tu latitud real. <b>Plano eclíptica + punto vernal</b>: marca el 0° Aries, origen de las longitudes. <b>Ecuador celeste</b>: su intersección con la eclíptica ES el punto vernal.</p></details>
+ <div style="margin-bottom:6px"><button class="ghost act" style="font-size:11px;padding:4px 9px" onclick="threeToggleLeyendaGrados()" id="three_leyenda_modo_btn" data-i18n="mc_ver_grados">🔄 Ver en grados 0-360°</button></div>
  <div id="three_evento_leyenda" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;font-size:12px"></div>
  <div id="chart_aspects_wrap" style="display:none">
- <div style="font-weight:700;font-size:13px;margin:10px 0 6px;color:var(--verde-oscuro)">🔗 Aspectos</div>
+ <div style="font-weight:700;font-size:13px;margin:10px 0 6px;color:var(--verde-oscuro)" data-i18n="mc_aspectos_h">🔗 Aspectos</div>
  <div id="chart_aspects_grid" style="overflow-x:auto"></div>
  </div>
  </div>
 
  <div id="three_panel_const" style="display:none">
- <details class="tccinfo" style="margin-bottom:8px"><summary>¿Qué significa "escala logarítmica"?</summary><p class="tccinfo-body small muted">El orden de anidamiento (qué está dentro de qué) es real, pero las distancias exactas están comprimidas para que quepan juntas Mercurio y el centro de la galaxia — si no, Mercurio sería invisible al lado de las estrellas.</p></details>
+ <details class="tccinfo" style="margin-bottom:8px"><summary data-i18n="mc_log_q">¿Qué significa "escala logarítmica"?</summary><p class="tccinfo-body small muted" data-i18n="mc_log_a">El orden de anidamiento (qué está dentro de qué) es real, pero las distancias exactas están comprimidas para que quepan juntas Mercurio y el centro de la galaxia — si no, Mercurio sería invisible al lado de las estrellas.</p></details>
 
  <div style="background:var(--panel2);border-radius:10px;padding:8px 12px;margin-bottom:10px">
- <span class="small muted">🕰️ La <b>línea de tiempo</b> (¿dónde estaban/estarán los planetas?) ahora está integrada abajo del mapa mismo.</span>
- <details class="tccinfo"><summary>¿Qué mueve exactamente?</summary><p class="tccinfo-body small muted">Recoloca el Sol, los planetas, la Luna y Plutón según el 1 de enero del año elegido (mismo modelo orbital elíptico de todo el mapa) — de 1900 a 2100. Las estrellas NO se mueven aquí (para eso usa el control de "movimiento propio" más abajo, en años simulados, no calendario).</p></details>
+ <span class="small muted" data-i18n-html="mc_linea_tiempo_integrada">🕰️ La <b>línea de tiempo</b> (¿dónde estaban/estarán los planetas?) ahora está integrada abajo del mapa mismo.</span>
+ <details class="tccinfo"><summary data-i18n="mc_mueve_q">¿Qué mueve exactamente?</summary><p class="tccinfo-body small muted" data-i18n="mc_mueve_a">Recoloca el Sol, los planetas, la Luna y Plutón según el 1 de enero del año elegido (mismo modelo orbital elíptico de todo el mapa) — de 1900 a 2100. Las estrellas NO se mueven aquí (para eso usa el control de "movimiento propio" más abajo, en años simulados, no calendario).</p></details>
  </div>
 
  <div class="row" style="margin-bottom:10px;gap:6px">
- <button class="ghost act" style="font-size:12px;border-color:#9b59b6;color:#9b59b6" onclick="threeIrAEstrella('★ Centro Galáctico')">★ Centro Galáctico</button>
- <button class="ghost act" style="font-size:12px;border-color:#e74c3c;color:#e74c3c" onclick="threeIrAEstrella('Punto Vernal (0° Aries)')">↳ Punto Vernal</button>
- <button class="ghost act" style="font-size:12px;border-color:#ff9f43;color:#ff9f43" onclick="threeIrAEstrella('→ Ápex solar')">→ Ápex Solar</button>
- <button class="ghost act" style="font-size:12px" onclick="threeHudGo('carta')">🔮 Ver carta astral de este momento</button>
+ <button class="ghost act" style="font-size:12px;border-color:#9b59b6;color:#9b59b6" onclick="threeIrAEstrella('★ Centro Galáctico')" data-i18n="mc_centro_galactico">★ Centro Galáctico</button>
+ <button class="ghost act" style="font-size:12px;border-color:#e74c3c;color:#e74c3c" onclick="threeIrAEstrella('Punto Vernal (0° Aries)')" data-i18n="mc_punto_vernal">↳ Punto Vernal</button>
+ <button class="ghost act" style="font-size:12px;border-color:#ff9f43;color:#ff9f43" onclick="threeIrAEstrella('→ Ápex solar')" data-i18n="mc_apex_solar">→ Ápex Solar</button>
+ <button class="ghost act" style="font-size:12px" onclick="threeHudGo('carta')" data-i18n="mc_ver_carta_momento">🔮 Ver carta astral de este momento</button>
  </div>
  <div class="row" style="margin-bottom:8px;align-items:center">
- <label class="small" style="margin:0">Ir a:</label>
- <select id="three_const_selector" onchange="threeIrAEstrella(this.value)" style="max-width:200px"><option value="">objeto específico...</option></select>
- <span class="small muted">✨ y ○/🌗/🗺️ (resaltar constelación y fronteras oficiales) ahora son botones dentro del mapa mismo.</span>
+ <label class="small" style="margin:0" data-i18n="mc_ir_a_label">Ir a:</label>
+ <select id="three_const_selector" onchange="threeIrAEstrella(this.value)" style="max-width:200px"><option value="" data-i18n="mc_objeto_especifico">objeto específico...</option></select>
+ <span class="small muted" data-i18n="mc_botones_integrados">✨ y ○/🌗/🗺️ (resaltar constelación y fronteras oficiales) ahora son botones dentro del mapa mismo.</span>
  </div>
  <!-- selects reales, ocultos: el botón ✨ del riel (railCycleResaltar) y el
  botón ○/🌗/🗺️ (railCycleFronteras) los controlan sin tocar la lógica ya
  validada, que lee estos mismos ids -->
  <div style="display:none">
  <select id="three_const_filtro" onchange="threeResaltarConstelacion(this.value)">
- <option value="">Todas</option>
- <option value="Aries">Aries</option><option value="Tauro">Tauro</option><option value="Géminis">Géminis</option>
- <option value="Cáncer">Cáncer</option><option value="Leo">Leo</option><option value="Virgo">Virgo</option>
- <option value="Libra">Libra</option><option value="Escorpio">Escorpio</option><option value="Sagitario">Sagitario</option>
- <option value="Capricornio">Capricornio</option><option value="Acuario">Acuario</option><option value="Piscis">Piscis</option>
+ <option value="" data-i18n="mc_todas">Todas</option>
+ <option value="Aries">Aries</option><option value="Tauro" data-i18n="mc_signo_tauro">Tauro</option><option value="Géminis" data-i18n="mc_signo_geminis">Géminis</option>
+ <option value="Cáncer" data-i18n="mc_signo_cancer">Cáncer</option><option value="Leo">Leo</option><option value="Virgo">Virgo</option>
+ <option value="Libra">Libra</option><option value="Escorpio" data-i18n="mc_signo_escorpio">Escorpio</option><option value="Sagitario" data-i18n="mc_signo_sagitario">Sagitario</option>
+ <option value="Capricornio" data-i18n="mc_signo_capricornio">Capricornio</option><option value="Acuario" data-i18n="mc_signo_acuario">Acuario</option><option value="Piscis" data-i18n="mc_signo_piscis">Piscis</option>
  </select>
  <select id="const_limites" onchange="threeLimitesChanged()">
- <option value="ninguno" selected>No mostrar</option>
- <option value="zodiaco">Solo las 13 de la eclíptica</option>
- <option value="todas">Las 88 constelaciones</option>
+ <option value="ninguno" selected data-i18n="mc_no_mostrar">No mostrar</option>
+ <option value="zodiaco" data-i18n="mc_solo_13">Solo las 13 de la eclíptica</option>
+ <option value="todas" data-i18n="mc_88_const">Las 88 constelaciones</option>
  </select>
  </div>
  <div id="const_epoca_bar" style="display:none;flex-direction:column;gap:8px;margin-bottom:8px;background:var(--panel2);border-radius:10px;padding:8px 12px">
  <div class="row" style="align-items:center;gap:8px;margin:0">
- <span class="small" style="font-weight:700">📜 Época de las fronteras (precesión):</span>
- <input type="number" id="const_limites_epoca" value="1948" step="1" style="max-width:80px" onchange="threeEpocaDesdeAnio()" title="Año al que se precesan las fronteras. Delporte las definió en B1875.0; 2000 = sin precesar (J2000.0).">
- <span class="small muted">o fecha exacta:</span>
- <input type="date" id="const_limites_fecha" style="max-width:145px" onchange="threeEpocaDesdeFecha()" title="Fecha exacta (para casos como un equinoccio concreto, p.ej. 21 de marzo de 1948) -- se convierte a año fraccionario para la misma fórmula de precesión.">
- <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=1875;threeEpocaDesdeAnio()" title="B1875.0 — el año exacto en que Delporte trazó las fronteras como meridianos y paralelos rectos">B1875 original</button>
- <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=2000;threeEpocaDesdeAnio()" title="J2000.0 — la época de referencia moderna, la que usa el resto de esta plataforma">J2000</button>
+ <span class="small" style="font-weight:700" data-i18n="mc_epoca_fronteras">📜 Época de las fronteras (precesión):</span>
+ <input type="number" id="const_limites_epoca" value="1948" step="1" style="max-width:80px" onchange="threeEpocaDesdeAnio()" title="Año al que se precesan las fronteras. Delporte las definió en B1875.0; 2000 = sin precesar (J2000.0)." data-i18n-title="mc_epoca_input_title">
+ <span class="small muted" data-i18n="mc_o_fecha_exacta">o fecha exacta:</span>
+ <input type="date" id="const_limites_fecha" style="max-width:145px" onchange="threeEpocaDesdeFecha()" title="Fecha exacta (para casos como un equinoccio concreto, p.ej. 21 de marzo de 1948) -- se convierte a año fraccionario para la misma fórmula de precesión." data-i18n-title="mc_fecha_exacta_title">
+ <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=1875;threeEpocaDesdeAnio()" title="B1875.0 — el año exacto en que Delporte trazó las fronteras como meridianos y paralelos rectos" data-i18n-title="mc_b1875_title" data-i18n="mc_b1875">B1875 original</button>
+ <button class="ghost act" style="font-size:11px;padding:5px 9px" onclick="document.getElementById('const_limites_epoca').value=2000;threeEpocaDesdeAnio()" title="J2000.0 — la época de referencia moderna, la que usa el resto de esta plataforma" data-i18n-title="mc_j2000_title">J2000</button>
  </div>
  <div class="row" style="align-items:center;gap:8px;margin:0">
  <span id="const_limites_nota" class="small muted"></span>
  </div>
  <div id="const_vernal_separacion" class="small" style="color:var(--verde-oscuro);font-weight:600"></div>
  </div>
- <div id="const_info_panel" style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-bottom:10px;min-height:20px"><span class="small muted">Activa las fronteras (○ en el mapa) y pasa el mouse sobre cualquier constelación para ver su nombre y datos aquí — se resalta en dorado sobre el mapa.</span></div>
+ <div id="const_info_panel" style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-bottom:10px;min-height:20px"><span class="small muted" data-i18n="mc_activa_fronteras">Activa las fronteras (○ en el mapa) y pasa el mouse sobre cualquier constelación para ver su nombre y datos aquí — se resalta en dorado sobre el mapa.</span></div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
  <div class="row" style="align-items:center;gap:8px;margin-bottom:6px">
- <span class="small" style="font-weight:700">🌍 Culturas del cielo — Piscis/Acuario:</span>
+ <span class="small" style="font-weight:700" data-i18n="mc_culturas_cielo">🌍 Culturas del cielo — Piscis/Acuario:</span>
  <select id="culturas_cielo_sel" onchange="threeCulturasCieloChanged()">
- <option value="ninguno" selected>No mostrar</option>
- <option value="griego">Griego (Ptolomeo, Almagesto)</option>
- <option value="arabe">Árabe (al-Sufi, s.X)</option>
- <option value="babilonio">Babilonio (MUL.APIN, ~1000 a.C.)</option>
- <option value="hindu">Hindú (Nakshatras védicos)</option>
- <option value="moderno">Occidental moderno (IAU)</option>
- <option value="todas">Comparar las 5 a la vez</option>
+ <option value="ninguno" selected data-i18n="mc_no_mostrar">No mostrar</option>
+ <option value="griego" data-i18n="mc_cultura_griego">Griego (Ptolomeo, Almagesto)</option>
+ <option value="arabe" data-i18n="mc_cultura_arabe">Árabe (al-Sufi, s.X)</option>
+ <option value="babilonio" data-i18n="mc_cultura_babilonio">Babilonio (MUL.APIN, ~1000 a.C.)</option>
+ <option value="hindu" data-i18n="mc_cultura_hindu">Hindú (Nakshatras védicos)</option>
+ <option value="moderno" data-i18n="mc_cultura_moderno">Occidental moderno (IAU)</option>
+ <option value="todas" data-i18n="mc_cultura_comparar">Comparar las 5 a la vez</option>
  </select>
  </div>
- <details class="tccinfo"><summary>¿De dónde salen estas figuras y qué significa la extensión?</summary><p class="tccinfo-body small muted">Datos abiertos del proyecto Stellarium (asterismos por cultura: qué estrellas conecta cada tradición para dibujar su propio Piscis/Acuario). La extensión mostrada es la longitud eclíptica que abarca esa FIGURA de estrellas — no la frontera administrativa (esa es la de arriba, IAU/Delporte, ○ en el mapa). Solo la occidental moderna tiene ambas cosas a la vez: figura tradicional Y frontera oficial.</p></details>
+ <details class="tccinfo"><summary data-i18n="mc_figuras_q">¿De dónde salen estas figuras y qué significa la extensión?</summary><p class="tccinfo-body small muted" data-i18n="mc_figuras_a">Datos abiertos del proyecto Stellarium (asterismos por cultura: qué estrellas conecta cada tradición para dibujar su propio Piscis/Acuario). La extensión mostrada es la longitud eclíptica que abarca esa FIGURA de estrellas — no la frontera administrativa (esa es la de arriba, IAU/Delporte, ○ en el mapa). Solo la occidental moderna tiene ambas cosas a la vez: figura tradicional Y frontera oficial.</p></details>
  <div id="culturas_cielo_info" style="margin-top:6px"></div>
  </div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
  <div class="row" style="align-items:center;gap:8px;margin-bottom:4px">
- <button class="ghost act" id="three_medir_btn" onclick="threeMedirToggle()">📐 Medir distancia angular</button>
+ <button class="ghost act" id="three_medir_btn" onclick="threeMedirToggle()" data-i18n="mc_medir_distancia">📐 Medir distancia angular</button>
  <span id="three_medir_nota" class="small muted"></span>
  </div>
- <details class="tccinfo"><summary>¿Cómo funciona?</summary><p class="tccinfo-body small muted">Sistema de coordenadas ecuatoriales (Ascensión Recta / Declinación), el mismo que usa toda la plataforma. Actívalo y haz clic en dos estrellas o planetas cualesquiera — se mide el ángulo real entre sus dos direcciones vistas desde el origen (no depende de qué tan "lejos" se ve cada uno en este mapa esquemático).</p></details>
+ <details class="tccinfo"><summary data-i18n="mc_medir_q">¿Cómo funciona?</summary><p class="tccinfo-body small muted" data-i18n="mc_medir_a">Sistema de coordenadas ecuatoriales (Ascensión Recta / Declinación), el mismo que usa toda la plataforma. Actívalo y haz clic en dos estrellas o planetas cualesquiera — se mide el ángulo real entre sus dos direcciones vistas desde el origen (no depende de qué tan "lejos" se ve cada uno en este mapa esquemático).</p></details>
  <div id="three_medir_resultado" class="small" style="margin-top:6px"></div>
  </div>
- <div id="three_const_leyenda" class="small muted" style="margin-bottom:8px">Pasa el mouse sobre cualquier punto para ver su nombre, magnitud y distancia real. Usa el selector "Ir a" para moverte por el mapa — elige un <b>planeta</b> (Mercurio a Plutón) para ver además en qué signo va a estar los próximos años.</div>
+ <div id="three_const_leyenda" class="small muted" style="margin-bottom:8px" data-i18n-html="mc_leyenda_pasa_mouse">Pasa el mouse sobre cualquier punto para ver su nombre, magnitud y distancia real. Usa el selector "Ir a" para moverte por el mapa — elige un <b>planeta</b> (Mercurio a Plutón) para ver además en qué signo va a estar los próximos años.</div>
 
  <div id="planeta_detalle" style="display:none;background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
  <div id="planeta_detalle_titulo" style="font-weight:700;font-size:13px;margin-bottom:6px"></div>
- <p class="small muted" style="margin:0 0 8px">Cada barra es el tiempo que pasa en ese signo — el color es su <b>elemento</b> (🔴 Fuego · 🟤 Tierra · 🟢 Aire (aguamarina) · 🔵 Agua). Si el planeta retrocede (retrógrado) y vuelve a un signo anterior por unas semanas, aparece como un segmento extra — no es un error, así se ve en el cielo real.</p>
+ <p class="small muted" style="margin:0 0 8px" data-i18n-html="mc_planeta_barras">Cada barra es el tiempo que pasa en ese signo — el color es su <b>elemento</b> (🔴 Fuego · 🟤 Tierra · 🟢 Aire (aguamarina) · 🔵 Agua). Si el planeta retrocede (retrógrado) y vuelve a un signo anterior por unas semanas, aparece como un segmento extra — no es un error, así se ve en el cielo real.</p>
  <div id="planeta_ciclo_plot" style="height:130px"></div>
  <div style="overflow-x:auto;margin-top:8px">
  <table style="width:100%;border-collapse:collapse;font-size:11.5px">
- <thead><tr style="background:var(--panel)"><th style="padding:4px 6px;text-align:left">Signo</th><th style="padding:4px 6px;text-align:left">Elemento</th><th style="padding:4px 6px;text-align:left">Modalidad</th><th style="padding:4px 6px;text-align:left">Desde</th><th style="padding:4px 6px;text-align:left">Hasta</th></tr></thead>
+ <thead><tr style="background:var(--panel)"><th style="padding:4px 6px;text-align:left" data-i18n="mc_th_signo">Signo</th><th style="padding:4px 6px;text-align:left" data-i18n="mc_th_elemento">Elemento</th><th style="padding:4px 6px;text-align:left" data-i18n="mc_th_modalidad">Modalidad</th><th style="padding:4px 6px;text-align:left" data-i18n="mc_th_desde">Desde</th><th style="padding:4px 6px;text-align:left" data-i18n="mc_th_hasta">Hasta</th></tr></thead>
  <tbody id="planeta_ciclo_tabla_body"></tbody>
  </table>
  </div>
- <p class="small muted" style="margin-top:8px">Elemento (Fuego/Tierra/Aire/Agua) y modalidad (Cardinal/Fijo/Mutable) son categorías estándar de la astrología occidental, no mediciones — el <i>signo y fecha</i> de cada tránsito sí vienen del mismo modelo orbital kepleriano usado en todo el Mapa Cósmico (± unos días de margen, no la precisión de la Captura de Eventos con Skyfield/DE421).</p>
+ <p class="small muted" style="margin-top:8px" data-i18n-html="mc_elemento_modalidad">Elemento (Fuego/Tierra/Aire/Agua) y modalidad (Cardinal/Fijo/Mutable) son categorías estándar de la astrología occidental, no mediciones — el <i>signo y fecha</i> de cada tránsito sí vienen del mismo modelo orbital kepleriano usado en todo el Mapa Cósmico (± unos días de margen, no la precisión de la Captura de Eventos con Skyfield/DE421).</p>
  </div>
 
  <div class="small muted" style="background:var(--panel2);border-radius:10px;padding:8px 12px;margin-bottom:10px">
- 🌀 <b>Sol + planetas en movimiento</b> (espiral real, solo planetas, solo el Sol, ¿gira la galaxia?) ahora son botones dentro del mapa mismo, junto a ⏹ para detenerlos.
- <details class="tccinfo"><summary>¿Por qué se ve como una espiral?</summary><p class="tccinfo-body small muted">Los planetas orbitan el Sol (más rápido cuanto más cerca — 3ª ley de Kepler) <b>y al mismo tiempo</b> el Sol, con todo el sistema, orbita el centro de la galaxia (mucho más lento, y orientado hacia el Centro Galáctico real que ves marcado en el mapa). Vistos juntos desde afuera, el camino real de cada planeta no es un círculo cerrado: es una espiral enroscada alrededor de la trayectoria del Sol — el botón 🌀 traza ese camino real con una estela para Mercurio, la Tierra y Júpiter. El giro galáctico sigue siendo esquemático/acelerado (real ≈230 millones de años, ≈220 km/s) — pero la <i>razón</i> entre velocidades de los planetas sí es real.</p></details>
+ <span data-i18n-html="mc_sol_planetas_mov">🌀 <b>Sol + planetas en movimiento</b> (espiral real, solo planetas, solo el Sol, ¿gira la galaxia?) ahora son botones dentro del mapa mismo, junto a ⏹ para detenerlos.</span>
+ <details class="tccinfo"><summary data-i18n="mc_espiral_q">¿Por qué se ve como una espiral?</summary><p class="tccinfo-body small muted" data-i18n-html="mc_espiral_a">Los planetas orbitan el Sol (más rápido cuanto más cerca — 3ª ley de Kepler) <b>y al mismo tiempo</b> el Sol, con todo el sistema, orbita el centro de la galaxia (mucho más lento, y orientado hacia el Centro Galáctico real que ves marcado en el mapa). Vistos juntos desde afuera, el camino real de cada planeta no es un círculo cerrado: es una espiral enroscada alrededor de la trayectoria del Sol — el botón 🌀 traza ese camino real con una estela para Mercurio, la Tierra y Júpiter. El giro galáctico sigue siendo esquemático/acelerado (real ≈230 millones de años, ≈220 km/s) — pero la <i>razón</i> entre velocidades de los planetas sí es real.</p></details>
  </div>
  <!-- selects reales de duración + botones reales, ocultos: los botones
  🌀/🪐/☀️/🌌/⏹ del riel (mov_rail_anim) simulan el clic sobre estos mismos
@@ -731,35 +731,35 @@
  <div id="cm_planetas_nota"></div>
  <div id="cm_galaxia_nota"></div>
  <select id="cm_girogalaxia_seg"><option value="5">5 s</option><option value="7" selected>7 s</option><option value="10">10 s</option></select>
- <button id="cm_girogalaxia_btn" onclick="threeAnimarGalaxiaGirando()">🌌 ¿Gira la galaxia?</button>
+ <button id="cm_girogalaxia_btn" onclick="threeAnimarGalaxiaGirando()" data-i18n="mc_gira_galaxia">🌌 ¿Gira la galaxia?</button>
  <div id="cm_girogalaxia_nota"></div>
  </div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
- <div style="font-weight:700;font-size:13px;margin-bottom:8px">✨ ¿Se mueven las estrellas?</div>
+ <div style="font-weight:700;font-size:13px;margin-bottom:8px" data-i18n="mc_mueven_estrellas">✨ ¿Se mueven las estrellas?</div>
  <div class="row" style="align-items:center;gap:8px;margin-bottom:6px">
- <label class="small" style="margin:0">Marco de referencia:</label>
+ <label class="small" style="margin:0" data-i18n="mc_marco_referencia">Marco de referencia:</label>
  <select id="pm_marco" onchange="threeAplicarMovimientoPropio()" style="max-width:260px">
- <option value="helio" selected>Heliocéntrico — como lo mide el catálogo</option>
+ <option value="helio" selected data-i18n="mc_helio">Heliocéntrico — como lo mide el catálogo</option>
  <option value="lsr">LSR — sin el movimiento propio del Sol</option>
  </select>
  </div>
  <div class="row" style="align-items:center;gap:8px;margin-bottom:6px">
- <label class="small" style="margin:0">Años simulados:</label>
+ <label class="small" style="margin:0" data-i18n="mc_anios_simulados">Años simulados:</label>
  <input type="range" id="pm_anios" min="0" max="100000" step="1000" value="0" style="flex:1;min-width:100px" oninput="threeAplicarMovimientoPropio()">
  <span id="pm_anios_label" class="small" style="min-width:70px">0 años</span>
  </div>
  <div id="pm_nota" class="small muted"></div>
- <details class="tccinfo"><summary>¿Qué es el "LSR" y por qué cambia lo que veo?</summary><p class="tccinfo-body small muted">Lo que mide un catálogo es movimiento <b>aparente</b>, visto desde el Sol — pero el Sol también se mueve, así que parte de ese movimiento es solo el <b>reflejo</b> del nuestro (como los árboles que "van hacia atrás" cuando uno va en carro). El <b>Local Standard of Rest</b> es el marco que acompaña la rotación galáctica a la velocidad <i>media</i> de las estrellas de la vecindad solar. Al restar la velocidad peculiar del Sol respecto al LSR (U,V,W = 11.10, 12.24, 7.25 km/s — Schönrich, Binney &amp; Dehnen 2010; en total ≈18 km/s hacia el <a href="#" onclick="threeIrAEstrella('→ Ápex solar');return false">ápex solar</a>) queda el movimiento propio <b>de cada estrella</b>, más limpio para estudiar la estructura del disco galáctico. Nota honesta: la corrección usa solo movimiento propio y distancia — sin velocidad radial no se reconstruye la velocidad 3D completa de cada estrella, pero para el <i>movimiento sobre el cielo</i> esta corrección sí es la completa (la parte radial no produce movimiento propio).</p></details>
- <details class="tccinfo"><summary>¿Se expanden o se contraen?</summary><p class="tccinfo-body small muted">Sí se mueven — cada una viaja por el espacio respecto al Sol a decenas de km/s ("movimiento propio", catálogo Hipparcos) — pero desde tan lejos se ve <b>diminuto</b> (fracciones de arcosegundo por año). No "se expanden ni se contraen": eso es la expansión del universo (Hubble), solo relevante entre galaxias muy lejanas. El control de arriba extrapola miles de años para ver la <i>dirección</i> real (línea recta, aproximación — la trayectoria real se curva por la rotación de la galaxia).</p></details>
+ <details class="tccinfo"><summary data-i18n="mc_lsr_q">¿Qué es el "LSR" y por qué cambia lo que veo?</summary><p class="tccinfo-body small muted" data-i18n-html="mc_lsr_a">Lo que mide un catálogo es movimiento <b>aparente</b>, visto desde el Sol — pero el Sol también se mueve, así que parte de ese movimiento es solo el <b>reflejo</b> del nuestro (como los árboles que "van hacia atrás" cuando uno va en carro). El <b>Local Standard of Rest</b> es el marco que acompaña la rotación galáctica a la velocidad <i>media</i> de las estrellas de la vecindad solar. Al restar la velocidad peculiar del Sol respecto al LSR (U,V,W = 11.10, 12.24, 7.25 km/s — Schönrich, Binney &amp; Dehnen 2010; en total ≈18 km/s hacia el <a href="#" onclick="threeIrAEstrella('→ Ápex solar');return false">ápex solar</a>) queda el movimiento propio <b>de cada estrella</b>, más limpio para estudiar la estructura del disco galáctico. Nota honesta: la corrección usa solo movimiento propio y distancia — sin velocidad radial no se reconstruye la velocidad 3D completa de cada estrella, pero para el <i>movimiento sobre el cielo</i> esta corrección sí es la completa (la parte radial no produce movimiento propio).</p></details>
+ <details class="tccinfo"><summary data-i18n="mc_expanden_q">¿Se expanden o se contraen?</summary><p class="tccinfo-body small muted" data-i18n="mc_expanden_a">Sí se mueven — cada una viaja por el espacio respecto al Sol a decenas de km/s ("movimiento propio", catálogo Hipparcos) — pero desde tan lejos se ve <b>diminuto</b> (fracciones de arcosegundo por año). No "se expanden ni se contraen": eso es la expansión del universo (Hubble), solo relevante entre galaxias muy lejanas. El control de arriba extrapola miles de años para ver la <i>dirección</i> real (línea recta, aproximación — la trayectoria real se curva por la rotación de la galaxia).</p></details>
  </div>
 
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px">
- <details class="tccinfo"><summary style="font-weight:700;font-size:13px;color:var(--fg,inherit)">📚 ¿De dónde sale cada número? — fórmulas, catálogos y qué usan otros</summary>
- <p class="tccinfo-body small muted">Nada de esto se inventó para el mapa. Cada dato tiene una fuente citable, y en varios casos <b>hay más de un sistema en uso</b> que da resultados distintos — se listan las diferencias, no se ocultan.</p>
+ <details class="tccinfo"><summary style="font-weight:700;font-size:13px;color:var(--fg,inherit)" data-i18n="mc_formulas_q">📚 ¿De dónde sale cada número? — fórmulas, catálogos y qué usan otros</summary>
+ <p class="tccinfo-body small muted" data-i18n="mc_formulas_intro">Nada de esto se inventó para el mapa. Cada dato tiene una fuente citable, y en varios casos <b>hay más de un sistema en uso</b> que da resultados distintos — se listan las diferencias, no se ocultan.</p>
  <div class="tccinfo-body" style="overflow-x:auto">
  <table style="width:100%;border-collapse:collapse;font-size:11.5px">
- <thead><tr style="background:var(--panel)"><th style="padding:5px 6px;text-align:left">Qué se calcula</th><th style="padding:5px 6px;text-align:left">Causa física / por qué pasa</th><th style="padding:5px 6px;text-align:left">Fórmula / catálogo usado aquí</th><th style="padding:5px 6px;text-align:left">Otros sistemas que existen y su diferencia</th></tr></thead>
+ <thead><tr style="background:var(--panel)"><th style="padding:5px 6px;text-align:left" data-i18n="mc_th_calcula">Qué se calcula</th><th style="padding:5px 6px;text-align:left" data-i18n="mc_th_causa">Causa física / por qué pasa</th><th style="padding:5px 6px;text-align:left" data-i18n="mc_th_formula">Fórmula / catálogo usado aquí</th><th style="padding:5px 6px;text-align:left" data-i18n="mc_th_otros">Otros sistemas que existen y su diferencia</th></tr></thead>
  <tbody>
  <tr><td style="padding:5px 6px"><b>Posición de los planetas</b> (este mapa 3D)</td><td style="padding:5px 6px">Órbita elíptica alrededor del Sol (gravedad, 1ª y 2ª ley de Kepler)</td><td style="padding:5px 6px">Elementos keplerianos de referencia J2000 (a, longitud media L0, movimiento medio n) — órbita <b>circular simplificada</b>, por rendimiento del 3D</td><td style="padding:5px 6px">La <b>captura de eventos</b> de esta misma plataforma usa la efeméride numérica JPL DE421 vía Skyfield (sub-arco-segundo) — mucho más precisa; aquí el error típico es de 0.5°-2° (Marte hasta ~14° por su excentricidad no modelada)</td></tr>
  <tr><td style="padding:5px 6px"><b>Velocidad orbital relativa</b> (animación "planetas" y "espiral")</td><td style="padding:5px 6px">3ª ley de Kepler: T²∝a³ — más cerca del Sol, más rápido</td><td style="padding:5px 6px">El mismo <code>n</code> (°/día) de los elementos keplerianos de arriba</td><td style="padding:5px 6px">—</td></tr>
@@ -5196,6 +5196,10 @@ function applyLang(lang){
  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
  const k = el.getAttribute('data-i18n-ph');
  if(dict[k] !== undefined) el.placeholder = dict[k];
+ });
+ document.querySelectorAll('[data-i18n-title]').forEach(el => {
+ const k = el.getAttribute('data-i18n-title');
+ if(dict[k] !== undefined) el.title = dict[k];
  });
  // Update page title
  if(dict.page_title) document.title = dict.page_title;
