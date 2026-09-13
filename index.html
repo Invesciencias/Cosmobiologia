@@ -179,7 +179,9 @@
  <h1 data-i18n="header_h1">Cosmobiología — Fundación Invesciencias</h1>
  <p data-i18n-html="header_subtitle">Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">hacia el principio de investigación de la causalidad por relación estadística</b></p>
  </div>
- <button id="lang-toggle" onclick="toggleLang()" style="margin-left:auto;padding:7px 16px;border-radius:20px;border:1.5px solid var(--oro);background:transparent;color:var(--oro);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">English</button>
+ <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+ <button id="lang-toggle" onclick="toggleLang()" style="padding:7px 16px;border-radius:20px;border:1.5px solid var(--oro);background:transparent;color:var(--oro);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">English</button>
+ </div>
 
 </header>
 
@@ -953,46 +955,46 @@
 
  <!-- RESULTADO DESTACADO -->
  <div class="card" style="border-left:4px solid #C8A84B">
- <h2>Resultados del primer paper</h2>
- <p class="small muted">Análisis sobre 3.730 terremotos M≥6 (USGS, 2000–2024) y 6.169 mainshocks GCMT (1976–2024, declustered Gardner-Knopoff). Metodología: modelo nulo emparejado ±30 días · Von Neumann · FDR Benjamini-Hochberg · validación split 50/50 · pre-registro OSF.</p>
+ <h2 data-i18n="paper1_h2">Resultados del primer paper</h2>
+ <p class="small muted" data-i18n="paper1_subtitle">Análisis sobre 3.730 terremotos M≥6 (USGS, 2000–2024) y 6.169 mainshocks GCMT (1976–2024, declustered Gardner-Knopoff). Metodología: modelo nulo emparejado ±30 días · Von Neumann · FDR Benjamini-Hochberg · validación split 50/50 · pre-registro OSF.</p>
 
  <!-- CONFIRMADO -->
  <div style="background:rgba(100,220,100,0.08);border-radius:10px;padding:14px;margin-top:14px;border-left:4px solid var(--verde)">
- <span class="badge badge-caution">Positivo — no confirmado</span><b>Conjunción Mercurio–Urano en sismos M≥6</b>
- <p class="small" style="margin-top:6px">En los <b>3.730 terremotos M≥6</b> (2000–2024), la conjunción Mercurio–Urano (alineación a menos de 8°, ~100 veces en 24 años) coincide con un <b>32% más de sismos de lo esperado por azar</b> (z = +5.27, RR = 1.32, FDR q = 0.000047). Pasó tres filtros de rigor:</p>
+ <span class="badge badge-caution" data-i18n="paper1_badge1">Positivo — no confirmado</span><b data-i18n="paper1_title1">Conjunción Mercurio–Urano en sismos M≥6</b>
+ <p class="small" style="margin-top:6px" data-i18n-html="paper1_p1">En los <b>3.730 terremotos M≥6</b> (2000–2024), la conjunción Mercurio–Urano (alineación a menos de 8°, ~100 veces en 24 años) coincide con un <b>32% más de sismos de lo esperado por azar</b> (z = +5.27, RR = 1.32, FDR q = 0.000047). Pasó tres filtros de rigor:</p>
  <ol class="small" style="margin:6px 0 6px 18px">
- <li><b>FDR por 398 pruebas simultáneas</b> (q = 0.000047) — descarta suerte entre muchos intentos.</li>
- <li><b>Validación cruzada split 50/50</b> — la señal apareció en ambas mitades independientes con la misma dirección.</li>
- <li><b>Libre del artefacto de planetas lentos</b> — Mercurio se mueve ~1°/día; el modelo nulo ±30 días captura variación real.</li>
+ <li data-i18n-html="paper1_li1"><b>FDR por 398 pruebas simultáneas</b> (q = 0.000047) — descarta suerte entre muchos intentos.</li>
+ <li data-i18n-html="paper1_li2"><b>Validación cruzada split 50/50</b> — la señal apareció en ambas mitades independientes con la misma dirección.</li>
+ <li data-i18n-html="paper1_li3"><b>Libre del artefacto de planetas lentos</b> — Mercurio se mueve ~1°/día; el modelo nulo ±30 días captura variación real.</li>
  </ol>
  <div class="hint" style="margin:10px 0;border-left-color:var(--accent2)">
-  <b>Precisión sobre el origen de esta hipótesis.</b> Este resultado surgió de un <b>rastreo exploratorio</b> de 398 rasgos,
+  <span data-i18n-html="paper1_hint_p1"><b>Precisión sobre el origen de esta hipótesis.</b> Este resultado surgió de un <b>rastreo exploratorio</b> de 398 rasgos,
   no de una predicción teórica previa. Conviene distinguirlo de la hipótesis documentada sobre este mismo par planetario:
   <b>Raynaud de la Ferrière asocia la conjunción Mercurio–Urano con la actividad intelectual y los hitos científicos</b>
   —Mercurio como inteligencia y ciencia, Urano como acontecimiento brusco y fuerza desencadenada— <b>no con la sismicidad</b>.
   En <i>Los Grandes Mensajes</i>, capítulo «La Era Atómica vista por la Astrología», señala la conjunción de junio de 1945 en
-  Géminis en relación con la era atómica.
-  <p class="small" style="margin:8px 0 0"><b>Ese dato astronómico lo verificamos</b> con Skyfield y la efeméride JPL DE421:
+  Géminis en relación con la era atómica.</span>
+  <p class="small" style="margin:8px 0 0" data-i18n-html="paper1_hint_p2"><b>Ese dato astronómico lo verificamos</b> con Skyfield y la efeméride JPL DE421:
   la conjunción ocurrió el <b>11 de junio de 1945</b> con una separación de <b>0,07°</b> —prácticamente exacta— y en efecto
   <b>en Géminis</b> (ambos cuerpos en 73,6°). El cálculo, hecho a mano en su momento, es correcto.</p>
-  <p class="small" style="margin:8px 0 0">La consecuencia metodológica importa: la hipótesis histórica sobre Mercurio–Urano
+  <p class="small" style="margin:8px 0 0" data-i18n-html="paper1_hint_p3">La consecuencia metodológica importa: la hipótesis histórica sobre Mercurio–Urano
   pertenece a <b>otro dominio</b> y <b>sigue sin ponerse a prueba</b>. Que nuestro hallazgo sísmico no replicara en un catálogo
   independiente no dice nada sobre ella. Y una coincidencia retrospectiva aislada, por precisa que sea, tampoco la confirma:
   probarla exigiría un catálogo fechado de hitos científicos contrastado contra el mismo modelo nulo.</p>
  </div>
- <p class="small" style="margin:8px 0 0;padding:8px 10px;background:rgba(230,126,34,.10);border-left:3px solid #e67e22;border-radius:6px"><b>Estado de la replicación externa:</b> la validación que superó fue el <b>split 50/50 dentro del catálogo USGS</b> (mitad confirmatoria n=1.865: z=+3.88, p_fdr=0.00041). La replicación en el catálogo <b>independiente GCMT 1976–1999</b> se intentó posteriormente y <b>no confirmó la señal</b>: sobre el catálogo corregido Mw≥6 da <b>z=+0,61, RR=1,04</b> (la cifra de z=−1,38 publicada antes procedía del catálogo con el error de magnitud). Aquí sí hay potencia suficiente —n=2.731 y piso de detección RR≥1,25 frente al RR=1,32 del descubrimiento—, de modo que este resultado <b>sí es interpretable</b>: la señal no generaliza. El hallazgo se mantiene como asociación robusta dentro de USGS 2000–2024, pero <b>pendiente de replicación externa exitosa</b>.</p>
- <span class="small muted">Pre-registrado en OSF.</span>
+ <p class="small" style="margin:8px 0 0;padding:8px 10px;background:rgba(230,126,34,.10);border-left:3px solid #e67e22;border-radius:6px" data-i18n-html="paper1_p2"><b>Estado de la replicación externa:</b> la validación que superó fue el <b>split 50/50 dentro del catálogo USGS</b> (mitad confirmatoria n=1.865: z=+3.88, p_fdr=0.00041). La replicación en el catálogo <b>independiente GCMT 1976–1999</b> se intentó posteriormente y <b>no confirmó la señal</b>: sobre el catálogo corregido Mw≥6 da <b>z=+0,61, RR=1,04</b> (la cifra de z=−1,38 publicada antes procedía del catálogo con el error de magnitud). Aquí sí hay potencia suficiente —n=2.731 y piso de detección RR≥1,25 frente al RR=1,32 del descubrimiento—, de modo que este resultado <b>sí es interpretable</b>: la señal no generaliza. El hallazgo se mantiene como asociación robusta dentro de USGS 2000–2024, pero <b>pendiente de replicación externa exitosa</b>.</p>
+ <span class="small muted" data-i18n="paper1_osf">Pre-registrado en OSF.</span>
  </div>
 
  <!-- PRE-REGISTRADOS FALLIDOS -->
  <div style="background:rgba(220,80,80,0.07);border-radius:10px;padding:14px;margin-top:10px;border-left:4px solid #e05555">
- <span class="badge badge-failed">No replicado</span><b>Pre-registrados que no se confirmaron</b>
- <p class="small" style="margin-top:6px">Dos hipótesis descubiertas en el análisis exploratorio USGS y pre-registradas en OSF <em>antes</em> de correr el catálogo GCMT independiente:</p>
+ <span class="badge badge-failed" data-i18n="paper1_badge2">No replicado</span><b data-i18n="paper1_title2">Pre-registrados que no se confirmaron</b>
+ <p class="small" style="margin-top:6px" data-i18n="paper1_p3">Dos hipótesis descubiertas en el análisis exploratorio USGS y pre-registradas en OSF antes de correr el catálogo GCMT independiente:</p>
  <ul class="small" style="margin:4px 0 4px 18px">
- <li><b>Sextil Venus–Júpiter</b> — descubierto en USGS (z=+3.1), GCMT mostró déficit. <b>No replicado.</b></li>
- <li><b>Trígono Marte–Urano</b> — descubierto en USGS (z=+2.8), GCMT mostró déficit. <b>No replicado.</b></li>
+ <li data-i18n-html="paper1_li4"><b>Sextil Venus–Júpiter</b> — descubierto en USGS (z=+3.1), GCMT mostró déficit. <b>No replicado.</b></li>
+ <li data-i18n-html="paper1_li5"><b>Trígono Marte–Urano</b> — descubierto en USGS (z=+2.8), GCMT mostró déficit. <b>No replicado.</b></li>
  </ul>
- <span class="small muted">El fracaso en replicar es un resultado válido: demuestra que el protocolo pre-registro + split funciona como control de falsos positivos. Se reportan en el paper como tales.</span>
+ <span class="small muted" data-i18n="paper1_footer">El fracaso en replicar es un resultado válido: demuestra que el protocolo pre-registro + split funciona como control de falsos positivos. Se reportan en el paper como tales.</span>
  </div>
 
  <!-- NUEVOS CANDIDATOS GCMT DECLUSTERED -->
@@ -1694,38 +1696,38 @@
  </div>
 
  <div class="card" style="border-left:4px solid var(--accent2)">
- <h2>Hipótesis históricas</h2>
- <p class="small muted">Estas hipótesis fueron formuladas cualitativamente por los fundadores de la cosmobiología. Esta plataforma permite someterlas por primera vez a prueba cuantitativa rigurosa con datos globales y modelo nulo emparejado.</p>
+ <h2 data-i18n="hip_hist_h2">Hipótesis históricas</h2>
+ <p class="small muted" data-i18n="hip_hist_p">Estas hipótesis fueron formuladas cualitativamente por los fundadores de la cosmobiología. Esta plataforma permite someterlas por primera vez a prueba cuantitativa rigurosa con datos globales y modelo nulo emparejado.</p>
 
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px">
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-left:4px solid var(--accent2)">
- <b>H1 · Plutón en configuración prominente → sismos / volcanes</b>
- <p class="small" style="margin-top:6px">Raynaud de la Ferrière (<em>Grandes Mensajes</em>) afirmó que Plutón "está siempre en poderosa configuración celeste cuando ocurren violentos terremotos o erupciones volcánicas". Rasgo a probar: <code>aspecto|Pluton|*|conjuncion</code> o <code>angular|Pluton|ASC</code> en catálogos GCMT M≥7 y GVP volcanes.</p>
+ <b data-i18n="hip_h1_title">H1 · Plutón en configuración prominente → sismos / volcanes</b>
+ <p class="small" style="margin-top:6px" data-i18n-html="hip_h1_p">Raynaud de la Ferrière (<em>Grandes Mensajes</em>) afirmó que Plutón "está siempre en poderosa configuración celeste cuando ocurren violentos terremotos o erupciones volcánicas". Rasgo a probar: <code>aspecto|Pluton|*|conjuncion</code> o <code>angular|Pluton|ASC</code> en catálogos GCMT M≥7 y GVP volcanes.</p>
  <div class="row" style="margin-top:10px;gap:8px">
- <span class="pill" style="background:var(--panel2)">Exploratoria</span>
- <span class="small muted">Pre-registrar antes de correr</span>
+ <span class="pill" style="background:var(--panel2)" data-i18n="hip_pill_explor">Exploratoria</span>
+ <span class="small muted" data-i18n="hip_h1_nota">Pre-registrar antes de correr</span>
  </div>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-left:4px solid var(--oro)">
- <b>H2 · Posición lunar en el momento del sismo (Llona / Teoría Cicloidal)</b>
- <p class="small" style="margin-top:6px">Llona (Teoría Cicloidal) señala que las fuerzas de marea lunar modulan la actividad geodinámica. Esta hipótesis tiene dos lecturas distintas:</p>
+ <b data-i18n="hip_h2_title">H2 · Posición lunar en el momento del sismo (Llona / Teoría Cicloidal)</b>
+ <p class="small" style="margin-top:6px" data-i18n="hip_h2_p">Llona (Teoría Cicloidal) señala que las fuerzas de marea lunar modulan la actividad geodinámica. Esta hipótesis tiene dos lecturas distintas:</p>
  <ul class="small" style="margin:6px 0 0 16px">
- <li><b>Periodicidad temporal</b> (más sismos cada ~29.5 días): <b>no confirmada</b> en GCMT declustered — correlación serial R<sub>h</sub>=−0.001, p=0.93. El catálogo limpio es compatible con un proceso de Poisson sin ritmo lunar.</li>
- <li><b>Posición lunar al momento del sismo</b> (fase, distancia, angularidad): <b>en suspenso</b> — <code>lunar_distance|apogeo</code> (z=+4.44) y <code>angular|Moon|ASC</code> (z=+5.41) salieron del catálogo inflado 5,5× por el error de magnitud; sobre el corregido dan z=+2.25 y z=+0.82, por debajo de su piso de detección. Sin potencia para concluir, en ninguna dirección. Esto es más fiel a Llona: no "más sismos cada mes", sino "más sismos cuando la Luna está en cierta posición".</li>
+ <li data-i18n-html="hip_h2_li1"><b>Periodicidad temporal</b> (más sismos cada ~29.5 días): <b>no confirmada</b> en GCMT declustered — correlación serial R<sub>h</sub>=−0.001, p=0.93. El catálogo limpio es compatible con un proceso de Poisson sin ritmo lunar.</li>
+ <li data-i18n-html="hip_h2_li2"><b>Posición lunar al momento del sismo</b> (fase, distancia, angularidad): <b>en suspenso</b> — <code>lunar_distance|apogeo</code> (z=+4.44) y <code>angular|Moon|ASC</code> (z=+5.41) salieron del catálogo inflado 5,5× por el error de magnitud; sobre el corregido dan z=+2.25 y z=+0.82, por debajo de su piso de detección. Sin potencia para concluir, en ninguna dirección. Esto es más fiel a Llona: no "más sismos cada mes", sino "más sismos cuando la Luna está en cierta posición".</li>
  </ul>
  <div class="row" style="margin-top:10px;gap:8px">
- <span class="pill" style="background:var(--panel2)">Exploratoria</span>
- <span class="small muted">La versión posicional es la candidata a pre-registro</span>
+ <span class="pill" style="background:var(--panel2)" data-i18n="hip_pill_explor">Exploratoria</span>
+ <span class="small muted" data-i18n="hip_h2_nota">La versión posicional es la candidata a pre-registro</span>
  </div>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-left:4px solid var(--verde)">
- <b>H3 · Luna en apogeo → mayor sismicidad (ya candidata)</b>
- <p class="small" style="margin-top:6px">Emergió del análisis GCMT declustered con z=+4.44 (p_fdr &lt; 0.001), <b>pero sobre el catálogo con el error de magnitud</b>; sobre el corregido da z=+2.25 con piso de detección RR≥1,19 — sin potencia para decidir. Consistente con Llona: en el apogeo la velocidad orbital de la Luna cambia de manera que la marea terrestre varía — posible ventana de menor "amortiguación" de esfuerzos corticales. <b>Candidata a pre-registro confirmatorio.</b></p>
+ <b data-i18n="hip_h3_title">H3 · Luna en apogeo → mayor sismicidad (ya candidata)</b>
+ <p class="small" style="margin-top:6px" data-i18n-html="hip_h3_p">Emergió del análisis GCMT declustered con z=+4.44 (p_fdr &lt; 0.001), <b>pero sobre el catálogo con el error de magnitud</b>; sobre el corregido da z=+2.25 con piso de detección RR≥1,19 — sin potencia para decidir. Consistente con Llona: en el apogeo la velocidad orbital de la Luna cambia de manera que la marea terrestre varía — posible ventana de menor "amortiguación" de esfuerzos corticales. <b>Candidata a pre-registro confirmatorio.</b></p>
  <div class="row" style="margin-top:10px;gap:8px">
- <span class="pill" style="background:rgba(100,220,100,0.15);color:var(--verde)">Candidata OSF</span>
+ <span class="pill" style="background:rgba(100,220,100,0.15);color:var(--verde)" data-i18n="hip_pill_candidata">Candidata OSF</span>
  </div>
  </div>
 
@@ -1745,8 +1747,8 @@
 <!-- ===================== FUENTES ===================== -->
 <section id="fuentes" style="display:none">
  <div class="card" style="border-left:4px solid var(--oro)">
- <h2>📦 El repositorio del proyecto</h2>
- <p class="small muted">Todo el código, los catálogos y esta misma página viven en un repositorio público. No hace falta descargar nada para usar la plataforma — es para quien quiera reproducir un análisis, auditar un resultado, o construir un módulo nuevo.</p>
+ <h2 data-i18n="fuentes_repo_h2">📦 El repositorio del proyecto</h2>
+ <p class="small muted" data-i18n="fuentes_repo_p">Todo el código, los catálogos y esta misma página viven en un repositorio público. No hace falta descargar nada para usar la plataforma — es para quien quiera reproducir un análisis, auditar un resultado, o construir un módulo nuevo.</p>
  <p style="margin:10px 0"><a class="act" style="text-decoration:none;display:inline-block" href="https://github.com/Invesciencias/Cosmobiologia" target="_blank" rel="noopener">↗ github.com/Invesciencias/Cosmobiologia</a></p>
  <div style="overflow-x:auto;margin-top:8px">
  <table class="small">
@@ -1866,10 +1868,10 @@
  </div>
 
  <div class="card">
- <h2 data-i18n="fuentes_gauquelin_h2">Natalidad — efecto Gauquelin <span class="pill">script listo</span></h2>
- <p class="small muted">El estudio más famoso de cosmobiología: Michel Gauquelin encontró que <b>Marte aparece más frecuentemente saliendo o culminando</b> (casas 1 y 10) en los nacimientos de campeones deportivos. Reproducible con nuestro motor porque ya calcula casas Whole Sign con hora exacta.</p>
+ <h2 data-i18n="fuentes_gauquelin_h2">Natalidad — efecto Gauquelin <span class="pill" data-i18n="fuentes_pill_script">script listo</span></h2>
+ <p class="small muted" data-i18n-html="fuentes_gq_p">El estudio más famoso de cosmobiología: Michel Gauquelin encontró que <b>Marte aparece más frecuentemente saliendo o culminando</b> (casas 1 y 10) en los nacimientos de campeones deportivos. Reproducible con nuestro motor porque ya calcula casas Whole Sign con hora exacta.</p>
 
- <div class="hint" style="border-left-color:var(--oro)">
+ <div class="hint" style="border-left-color:var(--oro)" data-i18n-html="fuentes_gq_hint">
  <b>Hipótesis Gauquelin pre-registrable en OSF:</b><br>
  "La frecuencia de <code>house|Mars|1</code> y <code>house|Mars|10</code> en nacimientos de atletas de élite supera la esperada por el modelo nulo emparejado (FDR&lt;0.05, validación cruzada confirmatoria)."
  </div>
@@ -1928,20 +1930,20 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <h2 data-i18n="fuentes_otras_h2">Otras fuentes planificadas</h2>
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px">
  <div style="background:var(--panel2);border-radius:10px;padding:14px">
- <b>Natalidad (Gauquelin) — más grupos</b><br>
- <span class="muted small">Médicos, músicos, políticos, escritores. Mismo pipeline, distinta profesión.</span>
+ <b data-i18n="fuentes_otras1_t">Natalidad (Gauquelin) — más grupos</b><br>
+ <span class="muted small" data-i18n="fuentes_otras1_d">Médicos, músicos, políticos, escritores. Mismo pipeline, distinta profesión.</span>
  </div>
  <div style="background:var(--panel2);border-radius:10px;padding:14px">
- <b>Tornados NOAA</b><br>
+ <b data-i18n="fuentes_otras2_t">Tornados NOAA</b><br>
  <span class="muted small">Storm Events Database · ncdc.noaa.gov/stormevents · Script: <code>descargar_tornados.py</code></span>
  </div>
  <div style="background:var(--panel2);border-radius:10px;padding:14px">
- <b>Accidentes aéreos</b><br>
- <span class="muted small">Aviation Safety Network · NTSB · Con hora exacta y coordenadas</span>
+ <b data-i18n="fuentes_otras3_t">Accidentes aéreos</b><br>
+ <span class="muted small" data-i18n="fuentes_otras3_d">Aviation Safety Network · NTSB · Con hora exacta y coordenadas</span>
  </div>
  <div style="background:var(--panel2);border-radius:10px;padding:14px">
- <b>Eventos médicos</b><br>
- <span class="muted small">PhysioNet MIMIC-IV · Requiere acreditación ética · Solo datos anonimizados</span>
+ <b data-i18n="fuentes_otras4_t">Eventos médicos</b><br>
+ <span class="muted small" data-i18n="fuentes_otras4_d">PhysioNet MIMIC-IV · Requiere acreditación ética · Solo datos anonimizados</span>
  </div>
  </div>
  </div>
@@ -1960,27 +1962,27 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  perdidas entre el resto sin ninguna jerarquía visual). -->
  <div class="card">
  <p style="margin:0 0 4px;font-weight:700;font-size:16px" data-i18n="met_index_title">¿Qué hay en esta pestaña?</p>
- <p class="small muted" style="margin-bottom:12px">20 secciones, organizadas en 4 grupos. Incluye dos calculadoras interactivas reales (no solo texto) que son fáciles de pasar por alto más abajo en la página.</p>
+ <p class="small muted" style="margin-bottom:12px" data-i18n="met_index_subtitle">20 secciones, organizadas en 4 grupos. Incluye dos calculadoras interactivas reales (no solo texto) que son fáciles de pasar por alto más abajo en la página.</p>
  <div class="navquick-grid">
  <div class="navquick-card" style="border-color:var(--accent2)" onclick="location.hash='met_marco'">
  <div class="nq-icon">🔭</div>
- <div class="nq-title">Marco científico (astronomía)</div>
- <div class="nq-desc">Qué calculamos, aspectos, signos, distancias a las estrellas, eras precesionales, notación, glosario</div>
+ <div class="nq-title" data-i18n="met_card_marco_title">Marco científico (astronomía)</div>
+ <div class="nq-desc" data-i18n="met_card_marco_desc">Qué calculamos, aspectos, signos, distancias a las estrellas, eras precesionales, notación, glosario</div>
  </div>
  <div class="navquick-card" style="border-color:#8e44ad" onclick="location.hash='met_principios'">
  <div class="nq-icon">★</div>
- <div class="nq-title">Principios de la Cosmobiología</div>
- <div class="nq-desc">Los principios de la TCC, Geodinámica de Llona, Gauquelin, para conocedores de la TCC</div>
+ <div class="nq-title" data-i18n="met_card_principios_title">Principios de la Cosmobiología</div>
+ <div class="nq-desc" data-i18n="met_card_principios_desc">Los principios de la TCC, Geodinámica de Llona, Gauquelin, para conocedores de la TCC</div>
  </div>
  <div class="navquick-card" style="border-color:var(--verde)" onclick="location.hash='met_nulo'">
  <div class="nq-icon">📐</div>
- <div class="nq-title">Estadística (matemática)</div>
- <div class="nq-desc">Modelo nulo, FDR, Von Neumann, validación cruzada, artefactos, estratificación, modelos mixtos</div>
+ <div class="nq-title" data-i18n="met_card_estad_title">Estadística (matemática)</div>
+ <div class="nq-desc" data-i18n="met_card_estad_desc">Modelo nulo, FDR, Von Neumann, validación cruzada, artefactos, estratificación, modelos mixtos</div>
  </div>
  <div class="navquick-card" style="border-color:var(--oro)" onclick="location.hash='met_duplas'">
  <div class="nq-icon">🧮</div>
- <div class="nq-title">Herramientas interactivas</div>
- <div class="nq-desc">Calculadora de Duplas/Tripletas y de Direcciones Primarias — cálculos reales, no solo lectura</div>
+ <div class="nq-title" data-i18n="met_card_herr_title">Herramientas interactivas</div>
+ <div class="nq-desc" data-i18n="met_card_herr_desc">Calculadora de Duplas/Tripletas y de Direcciones Primarias — cálculos reales, no solo lectura</div>
  </div>
  </div>
 
@@ -2060,69 +2062,69 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p class="small muted" data-i18n="met_marco_subtitle">Esta nota está dirigida a investigadores con formación en ciencias naturales que encuentran incómodo el lenguaje astrológico. La aclaración es importante para la integridad comunicativa del proyecto.</p>
 
  <h3 data-i18n="met_que_calc_h3">¿Qué calculamos exactamente?</h3>
- <p>Para cada evento calculamos las <b>longitudes eclípticas geocéntricas aparentes</b> de 10 cuerpos del Sistema Solar (Sol, Luna, Mercurio, Venus, Marte, Júpiter, Saturno, Urano, Neptuno, Plutón) usando la efeméride <b>JPL DE421</b> del Jet Propulsion Laboratory de la NASA — la misma base de datos de posiciones planetarias que se usa para calcular trayectorias de misiones espaciales. La precisión es de sub-arco-segundo.</p>
- <p>El sistema de referencia es la <b>franja eclíptica</b>: el plano de la órbita terrestre alrededor del Sol, dividido en 360°. Es un sistema de coordenadas astronómico estándar, descrito en cualquier manual de mecánica celeste.</p>
+ <p data-i18n-html="met_que_calc_p1">Para cada evento calculamos las <b>longitudes eclípticas geocéntricas aparentes</b> de 10 cuerpos del Sistema Solar (Sol, Luna, Mercurio, Venus, Marte, Júpiter, Saturno, Urano, Neptuno, Plutón) usando la efeméride <b>JPL DE421</b> del Jet Propulsion Laboratory de la NASA — la misma base de datos de posiciones planetarias que se usa para calcular trayectorias de misiones espaciales. La precisión es de sub-arco-segundo.</p>
+ <p data-i18n-html="met_que_calc_p2">El sistema de referencia es la <b>franja eclíptica</b>: el plano de la órbita terrestre alrededor del Sol, dividido en 360°. Es un sistema de coordenadas astronómico estándar, descrito en cualquier manual de mecánica celeste.</p>
 
  <h3 data-i18n="met_aspectos_h3">¿Qué son los "aspectos"?</h3>
- <p>Son simplemente <b>separaciones angulares entre pares de planetas</b> medidas en longitud eclíptica:</p>
+ <p data-i18n="met_aspectos_p1">Son simplemente <b>separaciones angulares entre pares de planetas</b> medidas en longitud eclíptica:</p>
  <table class="small">
  <thead><tr><th data-i18n="met_aspectos_th_nombre">Nombre</th><th data-i18n="met_aspectos_th_sep">Separación angular</th><th data-i18n="met_aspectos_th_tol">Tolerancia (orbe)</th><th data-i18n="met_aspectos_th_uso">Uso en astronomía</th></tr></thead>
  <tbody>
- <tr><td>Conjunción</td><td>0°</td><td>±8°</td><td>Estándar — dos cuerpos con la misma longitud eclíptica</td></tr>
- <tr><td>Oposición</td><td>180°</td><td>±8°</td><td>Estándar — cuerpo en dirección opuesta al Sol (oposición solar)</td></tr>
- <tr><td>Cuadratura</td><td>90°</td><td>±7°</td><td>Geometría orbital; ocurre p. ej. en las cuadraturas de la Luna</td></tr>
- <tr><td>Trígono</td><td>120°</td><td>±7°</td><td>Separación de 1/3 de la eclíptica</td></tr>
- <tr><td>Sextil</td><td>60°</td><td>±6°</td><td>Separación de 1/6 de la eclíptica</td></tr>
+ <tr><td data-i18n="asp_conj">Conjunción</td><td>0°</td><td>±8°</td><td data-i18n="asp_conj_uso">Estándar — dos cuerpos con la misma longitud eclíptica</td></tr>
+ <tr><td data-i18n="asp_opos">Oposición</td><td>180°</td><td>±8°</td><td data-i18n="asp_opos_uso">Estándar — cuerpo en dirección opuesta al Sol (oposición solar)</td></tr>
+ <tr><td data-i18n="asp_cuad">Cuadratura</td><td>90°</td><td>±7°</td><td data-i18n="asp_cuad_uso">Geometría orbital; ocurre p. ej. en las cuadraturas de la Luna</td></tr>
+ <tr><td data-i18n="asp_trig">Trígono</td><td>120°</td><td>±7°</td><td data-i18n="asp_trig_uso">Separación de 1/3 de la eclíptica</td></tr>
+ <tr><td data-i18n="asp_sext">Sextil</td><td>60°</td><td>±6°</td><td data-i18n="asp_sext_uso">Separación de 1/6 de la eclíptica</td></tr>
  </tbody>
  </table>
- <p>Todos estos términos aparecen en la literatura astronómica. "Conjunción" y "oposición" son términos de la <b>Unión Astronómica Internacional (IAU)</b>. Kepler estudió los aspectos como relaciones geométricas entre órbitas. El hecho de que la astrología tradicional también los use no los hace no-científicos.</p>
+ <p data-i18n-html="met_aspectos_p2">Todos estos términos aparecen en la literatura astronómica. "Conjunción" y "oposición" son términos de la <b>Unión Astronómica Internacional (IAU)</b>. Kepler estudió los aspectos como relaciones geométricas entre órbitas. El hecho de que la astrología tradicional también los use no los hace no-científicos.</p>
 
  <h3 data-i18n="met_signos_h3">¿Qué son los "signos del zodíaco" en este contexto?</h3>
- <p>Son una forma de <b>dividir la franja eclíptica en 12 sectores de 30°</b> con fines de referencia. Este sistema fue adoptado independientemente por múltiples culturas:</p>
+ <p data-i18n-html="met_signos_p1">Son una forma de <b>dividir la franja eclíptica en 12 sectores de 30°</b> con fines de referencia. Este sistema fue adoptado independientemente por múltiples culturas:</p>
  <ul class="small">
- <li><b>Babilónica / griega / occidental</b>: zodíaco <i>tropical</i>, anclado al equinoccio vernal (0° Aries = inicio de la primavera boreal). Es el que usamos.</li>
- <li><b>India (Jyotisha)</b>: zodíaco <i>sidéreo</i>, anclado a las constelaciones reales. Difiere del tropical por ~24° (ayanamsa) debido a la precesión de los equinoccios.</li>
- <li><b>China</b>: sistema de 28 mansiones lunares sobre la eclíptica, diferente división pero el mismo plano de referencia.</li>
+ <li data-i18n-html="met_signos_li1"><b>Babilónica / griega / occidental</b>: zodíaco <i>tropical</i>, anclado al equinoccio vernal (0° Aries = inicio de la primavera boreal). Es el que usamos.</li>
+ <li data-i18n-html="met_signos_li2"><b>India (Jyotisha)</b>: zodíaco <i>sidéreo</i>, anclado a las constelaciones reales. Difiere del tropical por ~24° (ayanamsa) debido a la precesión de los equinoccios.</li>
+ <li data-i18n-html="met_signos_li3"><b>China</b>: sistema de 28 mansiones lunares sobre la eclíptica, diferente división pero el mismo plano de referencia.</li>
  </ul>
- <p>Para los <b>aspectos planeta–planeta</b> (las separaciones angulares entre dos planetas) la distinción tropical/sidéreo <b>no importa</b>: si Mercurio y Urano están a 3° de separación, lo están en cualquier sistema de coordenadas. La diferencia solo afecta la posición absoluta de un planeta en su sector de la eclíptica, no la geometría relativa entre planetas.</p>
- <p>En este proyecto <b>no analizamos signos zodiacales como variable</b>. La unidad de análisis es la separación angular entre pares de planetas y la posición relativa de planetas respecto al horizonte local (casas). Los signos son solo una convención de nomenclatura para describir en qué parte de la eclíptica está cada planeta.</p>
+ <p data-i18n-html="met_signos_p2">Para los <b>aspectos planeta–planeta</b> (las separaciones angulares entre dos planetas) la distinción tropical/sidéreo <b>no importa</b>: si Mercurio y Urano están a 3° de separación, lo están en cualquier sistema de coordenadas. La diferencia solo afecta la posición absoluta de un planeta en su sector de la eclíptica, no la geometría relativa entre planetas.</p>
+ <p data-i18n-html="met_signos_p3">En este proyecto <b>no analizamos signos zodiacales como variable</b>. La unidad de análisis es la separación angular entre pares de planetas y la posición relativa de planetas respecto al horizonte local (casas). Los signos son solo una convención de nomenclatura para describir en qué parte de la eclíptica está cada planeta.</p>
 
- <h3 id="met_distancias">¿Cómo se miden las distancias a las estrellas?</h3>
- <p>Las posiciones planetarias de esta plataforma son <b>direcciones</b> (longitud eclíptica), no distancias — para los aspectos y las casas solo importa el ángulo. Pero el mapa 3D sí necesita una distancia real para dibujar cada estrella en su sitio, y esa distancia se mide por <b>paralaje</b>: el pequeño desplazamiento aparente de una estrella cercana contra el fondo de estrellas lejanas, visto desde dos puntos separados por el diámetro de la órbita terrestre (enero vs. julio). Cuanto más lejos está la estrella, más pequeño ese ángulo — por eso la distancia (en pársecs) es, en el fondo, simplemente <b>1 ÷ paralaje</b> (paralaje en segundos de arco) — 1 pársec ≈ 3,26 años luz.</p>
- <p class="small muted">Las estrellas y sus distancias que usa este mapa vienen de catálogos estándar (<b>Yale Bright Star</b> / <b>Hipparcos</b>), redondeadas a mano para un mapa reducido — un catálogo profesional moderno (<b>Gaia</b>) mide paralajes de más de mil millones de estrellas con precisión de micro-arco-segundos. El cálculo de precesión (Eras precesionales) usa este mismo tipo de geometría angular, solo que a otra escala.</p>
+ <h3 id="met_distancias" data-i18n="met_distancias_h3">¿Cómo se miden las distancias a las estrellas?</h3>
+ <p data-i18n-html="met_distancias_p1">Las posiciones planetarias de esta plataforma son <b>direcciones</b> (longitud eclíptica), no distancias — para los aspectos y las casas solo importa el ángulo. Pero el mapa 3D sí necesita una distancia real para dibujar cada estrella en su sitio, y esa distancia se mide por <b>paralaje</b>: el pequeño desplazamiento aparente de una estrella cercana contra el fondo de estrellas lejanas, visto desde dos puntos separados por el diámetro de la órbita terrestre (enero vs. julio). Cuanto más lejos está la estrella, más pequeño ese ángulo — por eso la distancia (en pársecs) es, en el fondo, simplemente <b>1 ÷ paralaje</b> (paralaje en segundos de arco) — 1 pársec ≈ 3,26 años luz.</p>
+ <p class="small muted" data-i18n-html="met_distancias_p2">Las estrellas y sus distancias que usa este mapa vienen de catálogos estándar (<b>Yale Bright Star</b> / <b>Hipparcos</b>), redondeadas a mano para un mapa reducido — un catálogo profesional moderno (<b>Gaia</b>) mide paralajes de más de mil millones de estrellas con precisión de micro-arco-segundos. El cálculo de precesión (Eras precesionales) usa este mismo tipo de geometría angular, solo que a otra escala.</p>
  <div class="row" style="margin-top:8px;gap:8px">
- <button class="ghost act" onclick="threeIrAMedirDistancia()">📐 Probar "Medir distancia angular" en el mapa</button>
- <button class="ghost act" style="border-color:#9b59b6;color:#9b59b6" onclick="document.querySelector('[data-tab=eras_precesionales]').click()">♒ Ver Eras precesionales</button>
+ <button class="ghost act" onclick="threeIrAMedirDistancia()" data-i18n="met_distancias_btn1">📐 Probar "Medir distancia angular" en el mapa</button>
+ <button class="ghost act" style="border-color:#9b59b6;color:#9b59b6" onclick="document.querySelector('[data-tab=eras_precesionales]').click()" data-i18n="met_distancias_btn2">♒ Ver Eras precesionales</button>
  </div>
 
  <h3 data-i18n="met_cosmo_h3">¿Por qué "cosmobiología" y no "astronomía estadística"?</h3>
- <p>"Cosmobiología" es el término académico establecido para la investigación empírica de posibles relaciones entre posiciones astronómicas y fenómenos terrestres — introducido por el médico suizo Karl Ernst Krafft en los años 1920–30 y retomado por Michel Gauquelin en trabajos que generaron debate científico durante décadas. Usamos ese término por rigor histórico, no para validar las afirmaciones de la astrología popular.</p>
- <p>La distinción clave: la astrología predictiva tradicional <b>interpreta</b> posiciones planetarias como portadoras de significado simbólico. Este proyecto <b>mide</b> posiciones planetarias como variables numéricas y pregunta si alguna covaria con eventos, sin asumir ninguna interpretación simbólica.</p>
+ <p data-i18n-html="met_cosmo_p1">"Cosmobiología" es el término académico establecido para la investigación empírica de posibles relaciones entre posiciones astronómicas y fenómenos terrestres — introducido por el médico suizo Karl Ernst Krafft en los años 1920–30 y retomado por Michel Gauquelin en trabajos que generaron debate científico durante décadas. Usamos ese término por rigor histórico, no para validar las afirmaciones de la astrología popular.</p>
+ <p data-i18n-html="met_cosmo_p2">La distinción clave: la astrología predictiva tradicional <b>interpreta</b> posiciones planetarias como portadoras de significado simbólico. Este proyecto <b>mide</b> posiciones planetarias como variables numéricas y pregunta si alguna covaria con eventos, sin asumir ninguna interpretación simbólica.</p>
 
- <h3 id="met_linaje" style="margin-top:20px">Linaje científico: Raynaud de la Ferrière → Ferríz Olivares → esta plataforma</h3>
+ <h3 id="met_linaje" style="margin-top:20px" data-i18n="met_linaje_h3">Linaje científico: Raynaud de la Ferrière → Ferríz Olivares → esta plataforma</h3>
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:10px">
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--accent2)">
  <b>Dr. Serge Raynaud de la Ferrière</b><br>
- <span class="small muted">Francia / Venezuela, 1910–1962</span>
- <p class="small" style="margin-top:8px">Científico, filósofo y maestro espiritual franco-venezolano. Fundó la <em>Gran Fraternidad Universal</em> y desarrolló una cosmobiología integradora que relacionaba posiciones planetarias con fenómenos geofísicos y la salud humana. Observó que <b>Plutón aparece en configuración prominente en terremotos y erupciones volcánicas</b> — hipótesis cualitativa que esta plataforma somete a prueba cuantitativa. Sus cartas a Ferríz Olivares desde 1957 (Bogotá) transmitieron los fundamentos de la interrelación cosmobiológica. Referencia: <em>Grandes Mensajes</em> y correspondencia con Ferríz <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
+ <span class="small muted" data-i18n="met_linaje_srf_sub">Francia / Venezuela, 1910–1962</span>
+ <p class="small" style="margin-top:8px" data-i18n-html="met_linaje_srf_p">Científico, filósofo y maestro espiritual franco-venezolano. Fundó la <em>Gran Fraternidad Universal</em> y desarrolló una cosmobiología integradora que relacionaba posiciones planetarias con fenómenos geofísicos y la salud humana. Observó que <b>Plutón aparece en configuración prominente en terremotos y erupciones volcánicas</b> — hipótesis cualitativa que esta plataforma somete a prueba cuantitativa. Sus cartas a Ferríz Olivares desde 1957 (Bogotá) transmitieron los fundamentos de la interrelación cosmobiológica. Referencia: <em>Grandes Mensajes</em> y correspondencia con Ferríz <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--oro)">
  <b>Scipión E. Llona</b><br>
- <span class="small muted">Geofísico peruano, ~1940</span>
- <p class="small" style="margin-top:8px">Propuso la <b>Teoría Cicloidal</b>: los sismos y fenómenos geodinámicos resultan de la combinación de movimientos astronómicos sobre la corteza terrestre — rotación, traslación, marea terrestre lunar y solar, y otros catorce movimientos de origen astronómico. Señaló que "con cinco horas de anticipación puede predecirse un movimiento sísmico" combinando posiciones de Sol, Luna y planetas con registros barométricos y electromagnéticos. Ferríz Olivares retoma esta teoría como el marco físico que explica <em>por qué</em> podría existir una relación entre configuraciones planetarias y sismicidad <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
+ <span class="small muted" data-i18n="met_linaje_llona_sub">Geofísico peruano, ~1940</span>
+ <p class="small" style="margin-top:8px" data-i18n-html="met_linaje_llona_p">Propuso la <b>Teoría Cicloidal</b>: los sismos y fenómenos geodinámicos resultan de la combinación de movimientos astronómicos sobre la corteza terrestre — rotación, traslación, marea terrestre lunar y solar, y otros catorce movimientos de origen astronómico. Señaló que "con cinco horas de anticipación puede predecirse un movimiento sísmico" combinando posiciones de Sol, Luna y planetas con registros barométricos y electromagnéticos. Ferríz Olivares retoma esta teoría como el marco físico que explica <em>por qué</em> podría existir una relación entre configuraciones planetarias y sismicidad <a href="#ref_ferriz" style="color:var(--accent2)">[TCC cap. 36]</a>.</p>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:10px;padding:14px;border-top:3px solid var(--verde)">
  <b>Dr. David Juan Ferríz Olivares</b><br>
- <span class="small muted">Kobe, Japón, 12 jun 1921 — Caracas, Venezuela, 22 oct 1992</span>
- <p class="small" style="margin-top:8px">Nació en la legación diplomática mexicana en Japón. Filósofo, científico, compositor y orador — más de 7.000 conferencias y 10.000 horas grabadas a lo largo de su vida. Doctor en Filosofía y Letras. El 3 de diciembre de 1953 conoció la obra del Dr. Serge Raynaud de la Ferrière, a quien dedicó el resto de su vida como discípulo predilecto, prologuista-traductor y coordinador de obra. Mantuvieron una correspondencia de 2 cartas semanales durante 7 años. En <b>1975 fundó Invesciencias</b> (Instituto de Investigaciones y Aplicaciones Científicas y Tecnológicas) en Venezuela. Es autor de la <em>Teoría Científica de la Cosmobiología</em> (TCC, 1.064 pp.) — la sistematización estadística más extensa de la cosmobiología iberoamericana, con los métodos de Von Neumann, Wilcoxon y correlación serial que implementa esta plataforma. Su sinfonía "Oriente y Occidente" se estrenó en el Teatro Teresa Carreño de Caracas el 14 de octubre de 1990. "Soy sudamericano de cuna mexicana nacido en Japón."</p>
+ <span class="small muted" data-i18n="met_linaje_dfo_sub">Kobe, Japón, 12 jun 1921 — Caracas, Venezuela, 22 oct 1992</span>
+ <p class="small" style="margin-top:8px" data-i18n-html="met_linaje_dfo_p">Nació en la legación diplomática mexicana en Japón. Filósofo, científico, compositor y orador — más de 7.000 conferencias y 10.000 horas grabadas a lo largo de su vida. Doctor en Filosofía y Letras. El 3 de diciembre de 1953 conoció la obra del Dr. Serge Raynaud de la Ferrière, a quien dedicó el resto de su vida como discípulo predilecto, prologuista-traductor y coordinador de obra. Mantuvieron una correspondencia de 2 cartas semanales durante 7 años. En <b>1975 fundó Invesciencias</b> (Instituto de Investigaciones y Aplicaciones Científicas y Tecnológicas) en Venezuela. Es autor de la <em>Teoría Científica de la Cosmobiología</em> (TCC, 1.064 pp.) — la sistematización estadística más extensa de la cosmobiología iberoamericana, con los métodos de Von Neumann, Wilcoxon y correlación serial que implementa esta plataforma. Su sinfonía "Oriente y Occidente" se estrenó en el Teatro Teresa Carreño de Caracas el 14 de octubre de 1990. "Soy sudamericano de cuna mexicana nacido en Japón."</p>
  </div>
 
  </div>
 
- <div class="hint" style="border-left-color:var(--verde);margin-top:14px">
+ <div class="hint" style="border-left-color:var(--verde);margin-top:14px" data-i18n-html="met_mecanismo_hint">
  <b>Mecanismo físico propuesto (Llona / Raynaud de la Ferrière):</b>Las fuerzas de marea — tanto oceánicas como terrestres — son el mismo tipo de fuerza que determinan las mareas y los maremotos. La combinación de posiciones de Sol, Luna y planetas modula estas fuerzas de manera predecible. Esta plataforma <b>no asume</b> que este mecanismo sea correcto: mide la covarianza estadística y deja la interpretación física para un paso ulterior. El mecanismo es una hipótesis de trabajo, no una premisa.
  </div>
 
@@ -2132,40 +2134,40 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div id="met_principios" class="card" style="border-left:4px solid var(--oro);background:linear-gradient(135deg,var(--panel2),rgba(200,168,75,.08))">
- <h2 id="met_principios">★ Los principios de la TCC</h2>
- <p>Todo lo demás en esta pestaña (modelo nulo, FDR, Von Neumann, split 50/50...) son <b>procedimientos</b>. Pero el Cap. 10 de la TCC (Ferríz Olivares, 1976) los sitúa dentro de algo más amplio: tres <b>principios fundamentales</b> —el dialéctico alternalizado bajo controles, el de ubicación en el ámbito biocéntrico, y el de investigación de la causalidad por relación estadística— de los que se derivan otros cuatro: sinergia, isomorfía, sincronización y enfocamiento para la interpretación diversificada. El propio texto los llama "principios que hacen unidad": no una lista de requisitos sueltos, sino un solo sistema de control de exactitud visto desde cinco ángulos.</p>
+ <h2 id="met_principios" data-i18n="met_principios_h2">★ Los principios de la TCC</h2>
+ <p data-i18n-html="met_principios_p1">Todo lo demás en esta pestaña (modelo nulo, FDR, Von Neumann, split 50/50...) son <b>procedimientos</b>. Pero el Cap. 10 de la TCC (Ferríz Olivares, 1976) los sitúa dentro de algo más amplio: tres <b>principios fundamentales</b> —el dialéctico alternalizado bajo controles, el de ubicación en el ámbito biocéntrico, y el de investigación de la causalidad por relación estadística— de los que se derivan otros cuatro: sinergia, isomorfía, sincronización y enfocamiento para la interpretación diversificada. El propio texto los llama "principios que hacen unidad": no una lista de requisitos sueltos, sino un solo sistema de control de exactitud visto desde cinco ángulos.</p>
 
- <h3 style="margin-top:16px">El tercer principio — donde está enfocado el trabajo actual</h3>
+ <h3 style="margin-top:16px" data-i18n="met_tercer_h3">El tercer principio — donde está enfocado el trabajo actual</h3>
  <div class="hint" style="border-left-color:var(--oro)">
- <p style="margin:0 0 8px"><b>Investigación de la causalidad por relación estadística.</b> El punto que el Dr. Ferríz Olivares subraya —y que esta plataforma trata de honrar en cada módulo— es que lo presenta como <b>principio, no como procedimiento</b>. Como señala el Lic. José Miguel Esborronda Andrade, esto constituye <b>un aporte de fondo a la epistemología de la ciencia</b>: no presupone que exista una ley oculta de causa-efecto a la cual la estadística simplemente "sirve" de evidencia indirecta. La relación estadística, depurada de artefactos, <i>realiza</i> a la causalidad en el dominio donde ocurre — opera en un plano previo al surgimiento mismo de esa ley de causa a efecto, no como un sustituto provisional de ella.</p>
- <p style="margin:0">Es, con diferencia, el principio más consistentemente implementado en todo el programa: modelo nulo emparejado, corrección FDR (ver <a href="#met_nulo">abajo</a>), declustering, distinción confusor/mediador declarada antes de ver resultados, controles negativos con sismicidad de origen humano conocido. Cada módulo de esta plataforma lo aplica sin excepción — incluida la comparación de modelos de eras precesionales (ver <a href="#" onclick="return irA('eras_precesionales','')">Didáctica → Eras precesionales</a>), donde precisamente investigar la causalidad detrás de una fecha, en vez de darla por sentada, es el punto de partida.</p>
+ <p style="margin:0 0 8px" data-i18n-html="met_tercer_p1"><b>Investigación de la causalidad por relación estadística.</b> El punto que el Dr. Ferríz Olivares subraya —y que esta plataforma trata de honrar en cada módulo— es que lo presenta como <b>principio, no como procedimiento</b>. Como señala el Lic. José Miguel Esborronda Andrade, esto constituye <b>un aporte de fondo a la epistemología de la ciencia</b>: no presupone que exista una ley oculta de causa-efecto a la cual la estadística simplemente "sirve" de evidencia indirecta. La relación estadística, depurada de artefactos, <i>realiza</i> a la causalidad en el dominio donde ocurre — opera en un plano previo al surgimiento mismo de esa ley de causa a efecto, no como un sustituto provisional de ella.</p>
+ <p style="margin:0" data-i18n-html="met_tercer_p2">Es, con diferencia, el principio más consistentemente implementado en todo el programa: modelo nulo emparejado, corrección FDR (ver <a href="#met_nulo">abajo</a>), declustering, distinción confusor/mediador declarada antes de ver resultados, controles negativos con sismicidad de origen humano conocido. Cada módulo de esta plataforma lo aplica sin excepción — incluida la comparación de modelos de eras precesionales (ver <a href="#" onclick="return irA('eras_precesionales','')">Didáctica → Eras precesionales</a>), donde precisamente investigar la causalidad detrás de una fecha, en vez de darla por sentada, es el punto de partida.</p>
  </div>
 
- <h3 style="margin-top:16px">Los otros dos principios fundamentales</h3>
+ <h3 style="margin-top:16px" data-i18n="met_otrosdos_h3">Los otros dos principios fundamentales</h3>
  <table style="margin-top:6px">
  <tbody>
- <tr><td style="width:32%"><b>Dialéctico alternalizado bajo controles</b></td><td>El razonamiento avanza por contraste sistemático de hipótesis (real vs. modelo nulo, real vs. control negativo) bajo condiciones controladas — no por afirmación directa. Es la lógica detrás de cada comparación real-vs-nulo de esta plataforma.</td></tr>
- <tr><td><b>Ubicación en el ámbito biocéntrico</b></td><td>El fenómeno se estudia siempre situado en relación con lo vivo — el sismo importa en la medida en que afecta a seres humanos, el ritmo planetario en la medida en que se cruza con fisiología o conducta — nunca como geometría celeste aislada de sus efectos.</td></tr>
+ <tr><td style="width:32%" data-i18n-html="met_dialectico_label"><b>Dialéctico alternalizado bajo controles</b></td><td data-i18n="met_dialectico_desc">El razonamiento avanza por contraste sistemático de hipótesis (real vs. modelo nulo, real vs. control negativo) bajo condiciones controladas — no por afirmación directa. Es la lógica detrás de cada comparación real-vs-nulo de esta plataforma.</td></tr>
+ <tr><td data-i18n-html="met_biocentrico_label"><b>Ubicación en el ámbito biocéntrico</b></td><td data-i18n="met_biocentrico_desc">El fenómeno se estudia siempre situado en relación con lo vivo — el sismo importa en la medida en que afecta a seres humanos, el ritmo planetario en la medida en que se cruza con fisiología o conducta — nunca como geometría celeste aislada de sus efectos.</td></tr>
  </tbody>
  </table>
 
- <h3 style="margin-top:16px">Los cuatro principios derivados</h3>
+ <h3 style="margin-top:16px" data-i18n="met_cuatro_h3">Los cuatro principios derivados</h3>
  <table style="margin-top:6px;font-size:13px">
- <thead><tr><th>Principio</th><th>Qué dice</th><th>Dónde se ve en esta plataforma</th></tr></thead>
+ <thead><tr><th data-i18n="met_cuatro_th1">Principio</th><th data-i18n="met_cuatro_th2">Qué dice</th><th data-i18n="met_cuatro_th3">Dónde se ve en esta plataforma</th></tr></thead>
  <tbody>
- <tr><td><b>Sincronización</b></td><td>Precisión al segundo y coincidencia exacta en el tiempo absoluto (Bridgman, simultaneidad de Einstein).</td><td>Mejor cubierto de los cinco — cada carta se calcula al instante UTC exacto y en coordenadas topocéntricas, no geocéntricas.</td></tr>
- <tr><td><b>Sinergia</b></td><td>La influencia cósmica no viene de un cuerpo aislado sino del "caleidoscopio planetario" combinado.</td><td>Puesto a prueba con pares de cuerpos en ajedrez y sismos — resultado nulo pero genuinamente probado, no solo señalado.</td></tr>
- <tr><td><b>Isomorfía</b></td><td>La analogía de los dos grifos: estructura estática (carta natal) + dinamismo cinético (tránsitos) deben activarse a la vez.</td><td>Probado en ajedrez (carta del jugador + carta de la jugada) y en sismos (carta fundacional de zona).</td></tr>
- <tr><td><b>Enfocamiento</b></td><td>El mapa celeste, pura geometría, debe traducirse a los datos y requisitos concretos de cada ciencia aplicada.</td><td>Bien cubierto en ajedrez (Δwin%) y sismos (magnitud declusterizada) — pendiente en medicina/biología/psicología, el hueco más grande.</td></tr>
+ <tr><td data-i18n-html="met_sincro_label"><b>Sincronización</b></td><td data-i18n="met_sincro_que">Precisión al segundo y coincidencia exacta en el tiempo absoluto (Bridgman, simultaneidad de Einstein).</td><td data-i18n="met_sincro_donde">Mejor cubierto de los cinco — cada carta se calcula al instante UTC exacto y en coordenadas topocéntricas, no geocéntricas.</td></tr>
+ <tr><td data-i18n-html="met_sinergia_label"><b>Sinergia</b></td><td data-i18n="met_sinergia_que">La influencia cósmica no viene de un cuerpo aislado sino del "caleidoscopio planetario" combinado.</td><td data-i18n="met_sinergia_donde">Puesto a prueba con pares de cuerpos en ajedrez y sismos — resultado nulo pero genuinamente probado, no solo señalado.</td></tr>
+ <tr><td data-i18n-html="met_isomorfia_label"><b>Isomorfía</b></td><td data-i18n="met_isomorfia_que">La analogía de los dos grifos: estructura estática (carta natal) + dinamismo cinético (tránsitos) deben activarse a la vez.</td><td data-i18n="met_isomorfia_donde">Probado en ajedrez (carta del jugador + carta de la jugada) y en sismos (carta fundacional de zona).</td></tr>
+ <tr><td data-i18n-html="met_enfoque_label"><b>Enfocamiento</b></td><td data-i18n="met_enfoque_que">El mapa celeste, pura geometría, debe traducirse a los datos y requisitos concretos de cada ciencia aplicada.</td><td data-i18n="met_enfoque_donde">Bien cubierto en ajedrez (Δwin%) y sismos (magnitud declusterizada) — pendiente en medicina/biología/psicología, el hueco más grande.</td></tr>
  </tbody>
  </table>
  </div>
 
  <div class="card">
  <h2 id="met_nulo" data-i18n="met_nulo_h2">¿Por qué un <span class="glos" data-glos="modelo nulo">modelo nulo</span>?</h2>
- <p>Contar los <span class="glos" data-glos="aspecto">aspectos</span> más frecuentes en sismos <b>no es evidencia</b>: planetas lentos como Neptuno y Plutón están en sextil durante décadas, para cualquier evento — sismos, bodas, partidos de fútbol. Sin un punto de comparación, cualquier conteo parece significativo.</p>
- <p>Para cada evento real generamos <b>K controles ficticios</b> en fechas cercanas (±30 días, mismo lugar), calculamos la misma carta y comparamos frecuencias. El resultado es la diferencia entre lo real y lo aleatorio, medida con un <span class="glos" data-glos="z-score">z-score</span> y un <span class="glos" data-glos="p-valor">p-valor</span>.</p>
- <div class="hint">
+ <p data-i18n-html="met_nulo_p1">Contar los <span class="glos" data-glos="aspecto">aspectos</span> más frecuentes en sismos <b>no es evidencia</b>: planetas lentos como Neptuno y Plutón están en sextil durante décadas, para cualquier evento — sismos, bodas, partidos de fútbol. Sin un punto de comparación, cualquier conteo parece significativo.</p>
+ <p data-i18n-html="met_nulo_p2">Para cada evento real generamos <b>K controles ficticios</b> en fechas cercanas (±30 días, mismo lugar), calculamos la misma carta y comparamos frecuencias. El resultado es la diferencia entre lo real y lo aleatorio, medida con un <span class="glos" data-glos="z-score">z-score</span> y un <span class="glos" data-glos="p-valor">p-valor</span>.</p>
+ <div class="hint" data-i18n-html="met_nulo_hint">
  <b>Artefacto clásico sin modelo nulo:</b> el catálogo USGS tiene muchos más sismos en décadas recientes (mejor instrumentación). Como Neptuno y Plutón marcan "qué época es", sus configuraciones correlacionan con los años de mayor cobertura. Un nulo uniforme produce ~24 falsos positivos. El nulo emparejado ±30 días los elimina.
  </div>
 
@@ -2180,55 +2182,55 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <div class="card">
  <h2 id="met_fdr" data-i18n="met_fdr_h2">Corrección por comparaciones múltiples — <span class="glos" data-glos="fdr">FDR</span> (<span class="glos" data-glos="benjamini-hochberg">Benjamini-Hochberg</span>) + <span class="glos" data-glos="von neumann">Von Neumann</span></h2>
- <p>Probamos 398 características astronómicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
- <p>FDR ajusta cada p-valor teniendo en cuenta cuántas pruebas hicimos. Solo declaramos significativo lo que supera ese umbral más estricto. Resultado: en lugar de 26 falsos positivos, esperamos que máximo el 5% de los que declaramos significativos sean falsos.</p>
- <p class="small muted">El método BH es más permisivo que Bonferroni (que es demasiado conservador) y más estricto que no corregir. Es el estándar en genómica y estudios de múltiples hipótesis.</p>
+ <p data-i18n-html="met_fdr_p1">Probamos 398 características astronómicas a la vez (aspectos + planetas en casas). Si usáramos <span class="glos" data-glos="p-valor">p&lt;0.05</span> sin corrección, esperaríamos que <b>~26 salieran significativas solo por azar</b>.</p>
+ <p data-i18n="met_fdr_p2">FDR ajusta cada p-valor teniendo en cuenta cuántas pruebas hicimos. Solo declaramos significativo lo que supera ese umbral más estricto. Resultado: en lugar de 26 falsos positivos, esperamos que máximo el 5% de los que declaramos significativos sean falsos.</p>
+ <p class="small muted" data-i18n="met_fdr_p3">El método BH es más permisivo que Bonferroni (que es demasiado conservador) y más estricto que no corregir. Es el estándar en genómica y estudios de múltiples hipótesis.</p>
 
- <h3 id="met_vn" style="margin-top:18px">Paso previo: test de Von Neumann para detectar autocorrelación temporal</h3>
- <p>La corrección FDR asume que los eventos son <b>independientes entre sí</b>. Antes de aplicarla, es necesario verificar esa independencia con el <span class="glos" data-glos="von neumann">test de Von Neumann de diferencias sucesivas</span> (1941). El estadístico es:</p>
- <div style="background:var(--fondo-alt);border-radius:8px;padding:12px 18px;font-family:monospace;text-align:center;margin:10px 0">
+ <h3 id="met_vn" style="margin-top:18px" data-i18n="met_vn_h3">Paso previo: test de Von Neumann para detectar autocorrelación temporal</h3>
+ <p data-i18n-html="met_vn_p1">La corrección FDR asume que los eventos son <b>independientes entre sí</b>. Antes de aplicarla, es necesario verificar esa independencia con el <span class="glos" data-glos="von neumann">test de Von Neumann de diferencias sucesivas</span> (1941). El estadístico es:</p>
+ <div style="background:var(--fondo-alt);border-radius:8px;padding:12px 18px;font-family:monospace;text-align:center;margin:10px 0" data-i18n="met_vn_formula">
  δ² / s² ≈ 2 bajo H₀ (serie aleatoria)
  </div>
- <p>Un ratio significativamente menor a 2 indica <b>autocorrelación positiva</b>: los eventos se agrupan en el tiempo, lo cual infla artificialmente cualquier rasgo activo durante ese periodo. <b>David Ferríz Olivares</b>, fundador de Invesciencias y figura fundacional de la cosmobiología iberoamericana, lo incorpora en su <em>Teoría Científica de la Cosmobiología</em> (cap. 18) precisamente para "estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica" <a href="#ref_ferriz" style="color:var(--accent2)">[Ferríz, TCC cap. 18]</a>.</p>
+ <p data-i18n-html="met_vn_p2">Un ratio significativamente menor a 2 indica <b>autocorrelación positiva</b>: los eventos se agrupan en el tiempo, lo cual infla artificialmente cualquier rasgo activo durante ese periodo. <b>David Ferríz Olivares</b>, fundador de Invesciencias y figura fundacional de la cosmobiología iberoamericana, lo incorpora en su <em>Teoría Científica de la Cosmobiología</em> (cap. 18) precisamente para "estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica" <a href="#ref_ferriz" style="color:var(--accent2)">[Ferríz, TCC cap. 18]</a>.</p>
 
  <!-- ═══ SIMULADOR INTERACTIVO — velo la diferencia, no solo la leas ═══ -->
  <div style="background:var(--panel);border-radius:12px;padding:18px;margin:16px 0;border:1px solid var(--border)">
- <div style="font-weight:700;font-size:15px;margin-bottom:6px;color:var(--accent)">Compruébalo tú mismo</div>
- <p class="small muted" style="margin-bottom:12px">Genera dos series de 60 "eventos" y mira qué le pasa al ratio δ²/s² cuando pasan de estar
+ <div style="font-weight:700;font-size:15px;margin-bottom:6px;color:var(--accent)" data-i18n="met_vn_sim_title">Compruébalo tú mismo</div>
+ <p class="small muted" style="margin-bottom:12px" data-i18n="met_vn_sim_p">Genera dos series de 60 "eventos" y mira qué le pasa al ratio δ²/s² cuando pasan de estar
  esparcidos al azar a estar agrupados en el tiempo. Es exactamente lo que hace el motor con cada catálogo antes de analizarlo.</p>
  <div class="row" style="margin-bottom:10px">
- <button class="act" onclick="vnSimular('aleatoria')">Generar serie aleatoria</button>
- <button class="ghost act" onclick="vnSimular('agrupada')">Generar serie agrupada (réplicas)</button>
- <button class="ghost act" onclick="vnSimular('periodica')">Generar serie periódica</button>
+ <button class="act" onclick="vnSimular('aleatoria')" data-i18n="met_vn_btn1">Generar serie aleatoria</button>
+ <button class="ghost act" onclick="vnSimular('agrupada')" data-i18n="met_vn_btn2">Generar serie agrupada (réplicas)</button>
+ <button class="ghost act" onclick="vnSimular('periodica')" data-i18n="met_vn_btn3">Generar serie periódica</button>
  </div>
  <div id="vn_plot" style="height:220px"></div>
  <div id="vn_resultado" style="display:none;margin-top:10px;padding:12px;border-radius:8px">
  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
  <div><span class="small muted">ratio δ²/s²</span><br><b id="vn_ratio" style="font-size:22px"></b></div>
  <div><span class="small muted">z-score</span><br><b id="vn_z" style="font-size:22px"></b></div>
- <div><span class="small muted">p-valor</span><br><b id="vn_p" style="font-size:22px"></b></div>
- <div style="flex:1;min-width:180px"><span class="small muted">Veredicto</span><br><b id="vn_veredicto"></b></div>
+ <div><span class="small muted" data-i18n="met_vn_pvalor_lbl">p-valor</span><br><b id="vn_p" style="font-size:22px"></b></div>
+ <div style="flex:1;min-width:180px"><span class="small muted" data-i18n="met_vn_veredicto_lbl">Veredicto</span><br><b id="vn_veredicto"></b></div>
  </div>
  </div>
  </div>
 
- <h4 style="margin-top:12px">¿Por qué surge autocorrelación en datos cosmobiológicos?</h4>
+ <h4 style="margin-top:12px" data-i18n="met_vn_h4">¿Por qué surge autocorrelación en datos cosmobiológicos?</h4>
  <ul class="small">
- <li><b>Duración del aspecto:</b> un aspecto planetario puede durar días o semanas — todos los eventos en ese intervalo comparten el mismo rasgo astronómico, aunque sus causas físicas sean independientes.</li>
- <li><b>Posición zodiacal duradera:</b> planetas lentos (Júpiter, Saturno, Neptuno) permanecen en un signo meses o años; un clúster de eventos en ese período infla ese signo de forma espuria.</li>
- <li><b>Réplicas sísmicas (aftershocks):</b> un sismo M7 genera cientos de réplicas en pocos días. Si un aspecto era activo en ese momento, su frecuencia se multiplica sin relación real. La solución es la <b>declusterización</b> (Gardner-Knopoff 1974). En GCMT, el 58.9% de los eventos son réplicas; tras eliminarlas, las señales espurias desaparecen y sobreviven solo las robustas.</li>
- <li><b>Estacionalidad no cosmobiológica:</b> algunas series (huracanes, sismos de subducción) tienen preferencias estacionales por razones físicas. Si un rasgo planetario se correlaciona con esas estaciones, emerge una señal falsa.</li>
+ <li data-i18n-html="met_vn_li1"><b>Duración del aspecto:</b> un aspecto planetario puede durar días o semanas — todos los eventos en ese intervalo comparten el mismo rasgo astronómico, aunque sus causas físicas sean independientes.</li>
+ <li data-i18n-html="met_vn_li2"><b>Posición zodiacal duradera:</b> planetas lentos (Júpiter, Saturno, Neptuno) permanecen en un signo meses o años; un clúster de eventos en ese período infla ese signo de forma espuria.</li>
+ <li data-i18n-html="met_vn_li3"><b>Réplicas sísmicas (aftershocks):</b> un sismo M7 genera cientos de réplicas en pocos días. Si un aspecto era activo en ese momento, su frecuencia se multiplica sin relación real. La solución es la <b>declusterización</b> (Gardner-Knopoff 1974). En GCMT, el 58.9% de los eventos son réplicas; tras eliminarlas, las señales espurias desaparecen y sobreviven solo las robustas.</li>
+ <li data-i18n-html="met_vn_li4"><b>Estacionalidad no cosmobiológica:</b> algunas series (huracanes, sismos de subducción) tienen preferencias estacionales por razones físicas. Si un rasgo planetario se correlaciona con esas estaciones, emerge una señal falsa.</li>
  </ul>
 
  <div class="hint" style="border-left-color:var(--accent2);margin-top:12px">
- <b>Flujo obligatorio en esta plataforma:</b>
+ <span data-i18n="met_vn_flujo_titulo"><b>Flujo obligatorio en esta plataforma:</b></span>
  <ol style="margin:6px 0 0 18px;padding:0">
- <li>Test de Von Neumann sobre la densidad temporal del catálogo</li>
- <li>Si p &lt; 0.05 → declusterizar (sismos) o estratificar temporalmente (otros dominios)</li>
- <li>Repetir Von Neumann en el catálogo limpio hasta obtener p ≥ 0.05</li>
- <li>Correr modelo nulo + corrección Benjamini-Hochberg sobre el catálogo independiente</li>
+ <li data-i18n="met_vn_flujo_li1">Test de Von Neumann sobre la densidad temporal del catálogo</li>
+ <li data-i18n-html="met_vn_flujo_li2">Si p &lt; 0.05 → declusterizar (sismos) o estratificar temporalmente (otros dominios)</li>
+ <li data-i18n="met_vn_flujo_li3">Repetir Von Neumann en el catálogo limpio hasta obtener p ≥ 0.05</li>
+ <li data-i18n="met_vn_flujo_li4">Correr modelo nulo + corrección Benjamini-Hochberg sobre el catálogo independiente</li>
  </ol>
- <span class="small muted">VN garantiza la independencia que BH presupone — aplicar primero VN, luego BH.</span>
+ <span class="small muted" data-i18n="met_vn_flujo_nota">VN garantiza la independencia que BH presupone — aplicar primero VN, luego BH.</span>
  </div>
  </div>
 
@@ -3061,30 +3063,30 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <div class="card">
  <h2 id="met_split" data-i18n="met_split_h2"><span class="glos" data-glos="split validation">Validación exploratoria + confirmatoria</span> (anti <span class="glos" data-glos="p-hacking">p-hacking</span>)</h2>
- <p>El <span class="glos" data-glos="p-hacking">p-hacking</span> ocurre cuando buscamos en los datos con suficiente creatividad hasta encontrar algo, y reportamos solo eso. La solución es dividir los datos antes de empezar:</p>
+ <p data-i18n-html="met_split_p1">El <span class="glos" data-glos="p-hacking">p-hacking</span> ocurre cuando buscamos en los datos con suficiente creatividad hasta encontrar algo, y reportamos solo eso. La solución es dividir los datos antes de empezar:</p>
  <ol>
- <li><b>Exploración (50%):</b> buscamos candidatos con FDR&lt;0.05. Pueden ser muchos o pocos.</li>
- <li><b>Confirmación (50%):</b> testeamos SOLO esos candidatos. Si replican en la misma dirección, hay evidencia real.</li>
+ <li data-i18n="met_split_li1"><b>Exploración (50%):</b> buscamos candidatos con FDR&lt;0.05. Pueden ser muchos o pocos.</li>
+ <li data-i18n="met_split_li2"><b>Confirmación (50%):</b> testeamos SOLO esos candidatos. Si replican en la misma dirección, hay evidencia real.</li>
  </ol>
- <p>Un candidato que no replica en confirmación era ruido, aunque tuviera p&lt;0.001 en exploración. Esto es el estándar de oro que exigen revistas como <i>Nature</i> y <i>PLOS ONE</i>.</p>
+ <p data-i18n-html="met_split_p2">Un candidato que no replica en confirmación era ruido, aunque tuviera p&lt;0.001 en exploración. Esto es el estándar de oro que exigen revistas como <i>Nature</i> y <i>PLOS ONE</i>.</p>
  </div>
 
  <div class="card">
  <h2 data-i18n="met_casas_h2">Sistema de casas — <span class="glos" data-glos="whole sign">Whole Sign</span></h2>
- <p>Las casas astrológicas dividen el cielo en 12 sectores según el punto del horizonte donde sale el sol (Ascendente). El sistema <span class="glos" data-glos="whole sign">Whole Sign</span> asigna cada casa a un signo zodiacal completo (30°).</p>
- <p><b>¿Por qué no Placidus?</b>Placidus (el más popular en astrología occidental) se degenera matemáticamente en latitudes &gt;66°N/S — exactamente donde ocurren muchos sismos importantes (Alaska, Kamchatka, norte de Japón). Whole Sign es estable en todo el globo.</p>
+ <p data-i18n-html="met_casas_p1">Las casas astrológicas dividen el cielo en 12 sectores según el punto del horizonte donde sale el sol (Ascendente). El sistema <span class="glos" data-glos="whole sign">Whole Sign</span> asigna cada casa a un signo zodiacal completo (30°).</p>
+ <p data-i18n-html="met_casas_p2"><b>¿Por qué no Placidus?</b>Placidus (el más popular en astrología occidental) se degenera matemáticamente en latitudes &gt;66°N/S — exactamente donde ocurren muchos sismos importantes (Alaska, Kamchatka, norte de Japón). Whole Sign es estable en todo el globo.</p>
  </div>
 
  <div class="card">
- <h2 id="met_estrat" data-i18n="met_estrat_h2"> <span class="glos" data-glos="estratificación">Estratificación</span>: cuándo el global da negativo y el subgrupo da positivo</h2>
- <p>Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. El primer resultado positivo de este proyecto (<b>Mercurio–Urano en sismos M≥6</b>, aún no confirmado) no apareció en el análisis global M≥5 — apareció al estratificar por magnitud.</p>
+ <h2 id="met_estrat" data-i18n-html="met_estrat_h2"> <span class="glos" data-glos="estratificación">Estratificación</span>: cuándo el global da negativo y el subgrupo da positivo</h2>
+ <p data-i18n-html="met_estrat_p1">Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. El primer resultado positivo de este proyecto (<b>Mercurio–Urano en sismos M≥6</b>, aún no confirmado) no apareció en el análisis global M≥5 — apareció al estratificar por magnitud.</p>
  <table>
- <thead><tr><th>Dimensión</th><th>Estratos útiles</th><th>Justificación física</th></tr></thead>
+ <thead><tr><th data-i18n="met_estrat_th1">Dimensión</th><th data-i18n="met_estrat_th2">Estratos útiles</th><th data-i18n="met_estrat_th3">Justificación física</th></tr></thead>
  <tbody>
- <tr><td><b>Magnitud</b></td><td>M4–5 · M5–6 · M6–7 · M≥7</td><td>Energía exponencial: M7 libera 1000× más que M5. La señal puede tener umbral.</td></tr>
- <tr><td><b>Profundidad</b></td><td>Superficial &lt;70 km · Intermedio · Profundo &gt;300 km</td><td>Las mareas afectan sobre todo fallas superficiales críticamente cargadas.</td></tr>
- <tr><td><b>Causa</b></td><td>Tectónico · Volcánico · Inducido (fracking)</td><td>Los inducidos son <b>control negativo</b>: si muestran señal, es artefacto del método.</td></tr>
- <tr><td><b>Región</b></td><td>Anillo de Fuego · Himalaya · Mediterráneo</td><td>Contexto tectónico distinto. El Mapa y Grilla ya permite esto: clic en una celda.</td></tr>
+ <tr><td data-i18n-html="met_estrat_r1a"><b>Magnitud</b></td><td>M4–5 · M5–6 · M6–7 · M≥7</td><td data-i18n="met_estrat_r1c">Energía exponencial: M7 libera 1000× más que M5. La señal puede tener umbral.</td></tr>
+ <tr><td data-i18n-html="met_estrat_r2a"><b>Profundidad</b></td><td data-i18n="met_estrat_r2b">Superficial &lt;70 km · Intermedio · Profundo &gt;300 km</td><td data-i18n="met_estrat_r2c">Las mareas afectan sobre todo fallas superficiales críticamente cargadas.</td></tr>
+ <tr><td data-i18n-html="met_estrat_r3a"><b>Causa</b></td><td data-i18n="met_estrat_r3b">Tectónico · Volcánico · Inducido (fracking)</td><td data-i18n-html="met_estrat_r3c">Los inducidos son <b>control negativo</b>: si muestran señal, es artefacto del método.</td></tr>
+ <tr><td data-i18n-html="met_estrat_r4a"><b>Región</b></td><td data-i18n="met_estrat_r4b">Anillo de Fuego · Himalaya · Mediterráneo</td><td data-i18n="met_estrat_r4c">Contexto tectónico distinto. El Mapa y Grilla ya permite esto: clic en una celda.</td></tr>
  </tbody>
  </table>
    <div style="background:var(--panel2);border-radius:10px;padding:12px 14px;margin-top:14px">
@@ -3120,95 +3122,95 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <div class="card">
  <h2 data-i18n="met_params_h2">Cómo se aplican los parámetros del evento al análisis</h2>
- <p>Los componentes físicos del sismo (profundidad, energía, tipo, duración…) no entran en el cálculo de la carta, pero <b>sí estructuran el análisis estadístico</b> de tres maneras complementarias:</p>
+ <p data-i18n-html="met_params_p1">Los componentes físicos del sismo (profundidad, energía, tipo, duración…) no entran en el cálculo de la carta, pero <b>sí estructuran el análisis estadístico</b> de tres maneras complementarias:</p>
 
  <table>
- <thead><tr><th>Uso</th><th>Qué hace</th><th>Ejemplo</th></tr></thead>
+ <thead><tr><th data-i18n="met_params_th1">Uso</th><th data-i18n="met_params_th2">Qué hace</th><th data-i18n="met_params_th3">Ejemplo</th></tr></thead>
  <tbody>
- <tr><td><b>Estratificar</b></td><td>Dividir en subgrupos físicamente homogéneos y analizar cada uno por separado.</td><td>Solo sismos tectónicos superficiales M≥7.</td></tr>
- <tr><td><b>Ponderar</b></td><td>Pesar cada evento por su energía liberada en vez de contar 1 por sismo, para que los grandes "pesen" más.</td><td>¿Los aspectos Marte–Luna se asocian a más <i>energía</i>, no solo a más sismos?</td></tr>
- <tr><td><b>Control negativo</b></td><td>Usar eventos de origen humano como grupo que NO debería mostrar señal astrológica.</td><td>Fracking y explosiones: si dan señal, es artefacto del método.</td></tr>
+ <tr><td data-i18n-html="met_params_r1a"><b>Estratificar</b></td><td data-i18n="met_params_r1b">Dividir en subgrupos físicamente homogéneos y analizar cada uno por separado.</td><td data-i18n="met_params_r1c">Solo sismos tectónicos superficiales M≥7.</td></tr>
+ <tr><td data-i18n-html="met_params_r2a"><b>Ponderar</b></td><td data-i18n="met_params_r2b">Pesar cada evento por su energía liberada en vez de contar 1 por sismo, para que los grandes "pesen" más.</td><td data-i18n-html="met_params_r2c">¿Los aspectos Marte–Luna se asocian a más <i>energía</i>, no solo a más sismos?</td></tr>
+ <tr><td data-i18n-html="met_params_r3a"><b>Control negativo</b></td><td data-i18n="met_params_r3b">Usar eventos de origen humano como grupo que NO debería mostrar señal astrológica.</td><td data-i18n="met_params_r3c">Fracking y explosiones: si dan señal, es artefacto del método.</td></tr>
  </tbody>
  </table>
 
- <h3>Análisis "intra-sismo" (no necesita modelo nulo)</h3>
- <p class="small">Una vía poderosa y distinta: en lugar de comparar sismos contra controles, preguntar <b>entre los sismos mismos</b> si una medida astrológica continua se correlaciona con una medida física continua. Ejemplo: ¿los sismos con la <span class="glos" data-glos="orbe">conjunción Sol–Marte más exacta</span> (orbe menor) tienden a ser de mayor magnitud? Esto es una <b>regresión</b> dentro del catálogo y no depende del modelo nulo (aunque sigue requiriendo controlar confusores temporales).</p>
+ <h3 data-i18n="met_intra_h3">Análisis "intra-sismo" (no necesita modelo nulo)</h3>
+ <p class="small" data-i18n-html="met_intra_p1">Una vía poderosa y distinta: en lugar de comparar sismos contra controles, preguntar <b>entre los sismos mismos</b> si una medida astrológica continua se correlaciona con una medida física continua. Ejemplo: ¿los sismos con la <span class="glos" data-glos="orbe">conjunción Sol–Marte más exacta</span> (orbe menor) tienden a ser de mayor magnitud? Esto es una <b>regresión</b> dentro del catálogo y no depende del modelo nulo (aunque sigue requiriendo controlar confusores temporales).</p>
  </div>
 
  <div class="card">
  <div id="met_rasgos" class="card" style="border-left:4px solid var(--accent2)">
  <h2 data-i18n="met_rasgos_h2">Grupos de rasgos astronómicos y físicos</h2>
- <p>La plataforma calcula cuatro familias de rasgos para cada evento y sus controles del modelo nulo:</p>
+ <p data-i18n="met_rasgos_p1">La plataforma calcula cuatro familias de rasgos para cada evento y sus controles del modelo nulo:</p>
 
- <h3>1. Aspectos planeta–planeta</h3>
- <p>Separaciones angulares entre pares de planetas en longitud eclíptica geocéntrica (zodíaco tropical, Skyfield + JPL DE421). Cinco aspectos mayores: conjunción (0°), sextil (60°), cuadratura (90°), trígono (120°), oposición (180°). <b>Válidos para todos los dominios</b> — no dependen del lugar ni de la hora exacta del día.</p>
+ <h3 data-i18n="met_rasgo1_h3">1. Aspectos planeta–planeta</h3>
+ <p data-i18n-html="met_rasgo1_p">Separaciones angulares entre pares de planetas en longitud eclíptica geocéntrica (zodíaco tropical, Skyfield + JPL DE421). Cinco aspectos mayores: conjunción (0°), sextil (60°), cuadratura (90°), trígono (120°), oposición (180°). <b>Válidos para todos los dominios</b> — no dependen del lugar ni de la hora exacta del día.</p>
 
- <h3>2. Angularidad topocéntrica <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
- <p>Un planeta está <b>angular</b> cuando se encuentra dentro de 8° de uno de los cuatro ángulos locales calculados desde el epicentro del evento:</p>
+ <h3 data-i18n-html="met_rasgo2_h3">2. Angularidad topocéntrica <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
+ <p data-i18n-html="met_rasgo2_p1">Un planeta está <b>angular</b> cuando se encuentra dentro de 8° de uno de los cuatro ángulos locales calculados desde el epicentro del evento:</p>
  <ul>
- <li><b>ASC (Ascendente)</b> — horizonte Este, donde el planeta está saliendo</li>
- <li><b>DSC (Descendente)</b> — horizonte Oeste, donde el planeta está poniéndose</li>
- <li><b>MC (Medio Cielo)</b> — punto más alto del cielo, mediodía local</li>
- <li><b>IC (Fondo del Cielo)</b> — punto más bajo, medianoche local</li>
+ <li data-i18n-html="met_rasgo2_li1"><b>ASC (Ascendente)</b> — horizonte Este, donde el planeta está saliendo</li>
+ <li data-i18n-html="met_rasgo2_li2"><b>DSC (Descendente)</b> — horizonte Oeste, donde el planeta está poniéndose</li>
+ <li data-i18n-html="met_rasgo2_li3"><b>MC (Medio Cielo)</b> — punto más alto del cielo, mediodía local</li>
+ <li data-i18n-html="met_rasgo2_li4"><b>IC (Fondo del Cielo)</b> — punto más bajo, medianoche local</li>
  </ul>
- <p>Estos ángulos giran 360° en 24 horas y son completamente distintos a 4 minutos de diferencia. <b>Solo válidos para eventos con hora exacta y coordenadas precisas</b> (sismos, volcanes). Primer resultado destacado: Júpiter en DSC. La cifra inicial (z=+9,16) se calculó sobre un catálogo GCMT inflado 5,5× por un error de tipo de magnitud (se usaba mb/MS en vez de Mw). Sobre el catálogo corregido Mw≥6 el hallazgo <b>sobrevive pero es mucho más modesto: z=+4,07, RR=1,37, q=0,019</b> en fallas inversas — por encima del techo de ruido propio de ese estrato (3,27±0,31), medido con 5 réplicas.</p>
+ <p data-i18n-html="met_rasgo2_p2">Estos ángulos giran 360° en 24 horas y son completamente distintos a 4 minutos de diferencia. <b>Solo válidos para eventos con hora exacta y coordenadas precisas</b> (sismos, volcanes). Primer resultado destacado: Júpiter en DSC. La cifra inicial (z=+9,16) se calculó sobre un catálogo GCMT inflado 5,5× por un error de tipo de magnitud (se usaba mb/MS en vez de Mw). Sobre el catálogo corregido Mw≥6 el hallazgo <b>sobrevive pero es mucho más modesto: z=+4,07, RR=1,37, q=0,019</b> en fallas inversas — por encima del techo de ruido propio de ese estrato (3,27±0,31), medido con 5 réplicas.</p>
 
- <h3>3. Fase lunar y distancia <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
- <p>La Luna completa un ciclo de fases (luna nueva → cuartos → luna llena) cada ~29.5 días. La plataforma divide este ciclo en <b>8 bins de 45°</b> y prueba si los eventos se concentran en alguna fase más de lo esperado por azar. También mide la <b>distancia geocéntrica lunar</b> en km:</p>
+ <h3 data-i18n-html="met_rasgo3_h3">3. Fase lunar y distancia <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
+ <p data-i18n-html="met_rasgo3_p1">La Luna completa un ciclo de fases (luna nueva → cuartos → luna llena) cada ~29.5 días. La plataforma divide este ciclo en <b>8 bins de 45°</b> y prueba si los eventos se concentran en alguna fase más de lo esperado por azar. También mide la <b>distancia geocéntrica lunar</b> en km:</p>
  <ul>
- <li><b>Perigeo</b> — Luna a menos de 365.000 km (marea gravitacional máxima)</li>
- <li><b>Apogeo</b> — Luna a más de 400.000 km (marea gravitacional mínima)</li>
+ <li data-i18n-html="met_rasgo3_li1"><b>Perigeo</b> — Luna a menos de 365.000 km (marea gravitacional máxima)</li>
+ <li data-i18n-html="met_rasgo3_li2"><b>Apogeo</b> — Luna a más de 400.000 km (marea gravitacional mínima)</li>
  </ul>
- <p>Primer resultado en GCMT: apogeo lunar con z=+3.01 (más sismos cuando la Luna está más lejos — resultado contraintuitivo, pendiente de replicación).</p>
+ <p data-i18n="met_rasgo3_p2">Primer resultado en GCMT: apogeo lunar con z=+3.01 (más sismos cuando la Luna está más lejos — resultado contraintuitivo, pendiente de replicación).</p>
 
- <h3>4. Fuerza de marea <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
- <p>La fuerza de marea combinada Luna+Sol (proporcional a GM/r³) varía hasta un 48% entre perigeo y apogeo. La plataforma define tres categorías:</p>
+ <h3 data-i18n-html="met_rasgo4_h3">4. Fuerza de marea <span class="pill" style="background:var(--ok);color:#000">nuevo</span></h3>
+ <p data-i18n="met_rasgo4_p1">La fuerza de marea combinada Luna+Sol (proporcional a GM/r³) varía hasta un 48% entre perigeo y apogeo. La plataforma define tres categorías:</p>
  <ul>
- <li><b>Sicigia</b> — luna nueva o llena: Sol y Luna alineados, mareas máximas (~50% del tiempo)</li>
- <li><b>Cuadratura</b> — cuartos: Sol y Luna en ángulo recto, mareas mínimas (~50%)</li>
- <li><b>Sicigia extrema</b> — sicigia + perigeo simultáneos: marea máxima histórica (&lt;5% del tiempo)</li>
+ <li data-i18n-html="met_rasgo4_li1"><b>Sicigia</b> — luna nueva o llena: Sol y Luna alineados, mareas máximas (~50% del tiempo)</li>
+ <li data-i18n-html="met_rasgo4_li2"><b>Cuadratura</b> — cuartos: Sol y Luna en ángulo recto, mareas mínimas (~50%)</li>
+ <li data-i18n-html="met_rasgo4_li3"><b>Sicigia extrema</b> — sicigia + perigeo simultáneos: marea máxima histórica (&lt;5% del tiempo)</li>
  </ul>
- <div class="hint">Los rasgos de angularidad, fase lunar y distancia lunar <b>solo son válidos para eventos con hora exacta</b>. Para dominios con hora redondeada (HURDAT2: 00/06/12/18 UTC) estos rasgos generan artefactos sistemáticos y deben excluirse del análisis.</div>
+ <div class="hint" data-i18n-html="met_rasgo_hint">Los rasgos de angularidad, fase lunar y distancia lunar <b>solo son válidos para eventos con hora exacta</b>. Para dominios con hora redondeada (HURDAT2: 00/06/12/18 UTC) estos rasgos generan artefactos sistemáticos y deben excluirse del análisis.</div>
  </div>
 
  <h2 id="met_flujo" data-i18n="met_flujo_h2">Flujo de trabajo completo</h2>
  <ol>
- <li>Captura/carga eventos → exporta <code>eventos.csv</code></li>
- <li><b>Pre-registra</b> la hipótesis en <a href="https://osf.io" target="_blank" style="color:var(--accent2)">osf.io</a> antes de mirar resultados</li>
- <li><code>python nullmodel.py eventos.csv 1000</code> → <code>resultados_estadisticos.csv</code></li>
- <li>Cárgalo en el Tablero → explora el volcano plot y las barras</li>
- <li><code>python nullmodel.py eventos.csv 500 --split</code> → validación cruzada</li>
- <li>Solo los candidatos que replican en confirmación van al paper</li>
+ <li data-i18n="met_flujo_li1">Captura/carga eventos → exporta <code>eventos.csv</code></li>
+ <li data-i18n-html="met_flujo_li2"><b>Pre-registra</b> la hipótesis en <a href="https://osf.io" target="_blank" style="color:var(--accent2)">osf.io</a> antes de mirar resultados</li>
+ <li data-i18n-html="met_flujo_li3"><code>python nullmodel.py eventos.csv 1000</code> → <code>resultados_estadisticos.csv</code></li>
+ <li data-i18n="met_flujo_li4">Cárgalo en el Tablero → explora el volcano plot y las barras</li>
+ <li data-i18n-html="met_flujo_li5"><code>python nullmodel.py eventos.csv 500 --split</code> → validación cruzada</li>
+ <li data-i18n="met_flujo_li6">Solo los candidatos que replican en confirmación van al paper</li>
  </ol>
- <p class="small muted">Para más de 50,000 eventos: <code>python descargar_sismos_masivo.py</code> · Ver <code>README_METODOLOGIA.md</code> para todas las decisiones técnicas.</p>
+ <p class="small muted" data-i18n-html="met_flujo_nota">Para más de 50,000 eventos: <code>python descargar_sismos_masivo.py</code> · Ver <code>README_METODOLOGIA.md</code> para todas las decisiones técnicas.</p>
  </div>
 
  <div class="card">
  <h2 id="met_gauquelin" data-i18n="met_gauquelin_h2">Efecto Gauquelin</h2>
- <p>El estudio estadístico más famoso en cosmobiología. Entre 1950 y 1991, Michel y Françoise Gauquelin analizaron los nacimientos de miles de profesionales europeos y encontraron una anomalía reproducible: ciertos planetas aparecen más frecuentemente <b>saliendo o culminando</b> en el horizonte en el momento del nacimiento de personas destacadas en su profesión.</p>
+ <p data-i18n-html="met_gauquelin_p1">El estudio estadístico más famoso en cosmobiología. Entre 1950 y 1991, Michel y Françoise Gauquelin analizaron los nacimientos de miles de profesionales europeos y encontraron una anomalía reproducible: ciertos planetas aparecen más frecuentemente <b>saliendo o culminando</b> en el horizonte en el momento del nacimiento de personas destacadas en su profesión.</p>
 
- <h3>El hallazgo central</h3>
+ <h3 data-i18n="met_gq_hallazgo_h3">El hallazgo central</h3>
  <div style="overflow-x:auto"><table>
- <thead><tr><th>Profesión</th><th>Planeta "en exceso"</th><th>Casas afectadas</th><th>n aproximado</th></tr></thead>
+ <thead><tr><th data-i18n="met_gq_th1">Profesión</th><th data-i18n="met_gq_th2">Planeta "en exceso"</th><th data-i18n="met_gq_th3">Casas afectadas</th><th data-i18n="met_gq_th4">n aproximado</th></tr></thead>
  <tbody>
- <tr><td>Campeones deportivos</td><td><b>Marte ↑</b></td><td>1 (saliendo) y 10 (culminando)</td><td>~2,088</td></tr>
- <tr><td>Médicos eminentes</td><td><b>Saturno ↑, Marte ↑</b></td><td>1 y 10</td><td>~3,647</td></tr>
- <tr><td>Científicos eminentes</td><td><b>Saturno ↑</b></td><td>1 y 10</td><td>~3,647</td></tr>
- <tr><td>Actores famosos</td><td><b>Júpiter ↑</b></td><td>1 y 10</td><td>~1,409</td></tr>
- <tr><td>Escritores</td><td><b>Luna ↑</b></td><td>1 y 10</td><td>~1,352</td></tr>
+ <tr><td data-i18n="met_gq_r1a">Campeones deportivos</td><td><b>Marte ↑</b></td><td data-i18n="met_gq_r1c">1 (saliendo) y 10 (culminando)</td><td>~2,088</td></tr>
+ <tr><td data-i18n="met_gq_r2a">Médicos eminentes</td><td><b>Saturno ↑, Marte ↑</b></td><td data-i18n="met_gq_1y10">1 y 10</td><td>~3,647</td></tr>
+ <tr><td data-i18n="met_gq_r3a">Científicos eminentes</td><td><b>Saturno ↑</b></td><td data-i18n="met_gq_1y10">1 y 10</td><td>~3,647</td></tr>
+ <tr><td data-i18n="met_gq_r4a">Actores famosos</td><td><b>Júpiter ↑</b></td><td data-i18n="met_gq_1y10">1 y 10</td><td>~1,409</td></tr>
+ <tr><td data-i18n="met_gq_r5a">Escritores</td><td><b>Luna ↑</b></td><td data-i18n="met_gq_1y10">1 y 10</td><td>~1,352</td></tr>
  </tbody>
  </table></div>
 
- <h3>Por qué es el mejor candidato a resultado positivo</h3>
+ <h3 data-i18n="met_gq_porque_h3">Por qué es el mejor candidato a resultado positivo</h3>
  <ul class="small">
- <li><b>Replicado parcialmente</b> por equipos independientes (Comité Para, 1982; Ertel, 1988), aunque con controversia metodológica activa.</li>
- <li><b>Casas válidas:</b> los datos vienen de actas de nacimiento con hora exacta → el Ascendente y el MC son calculables con precisión.</li>
- <li>El efecto es de <b>posición diurna</b> (casa 1 y 10), no de aspectos — exactamente lo que calcula nuestro motor.</li>
- <li>Si se replica con datos nuevos y nuestro modelo nulo emparejado, sería un paper en JSE o Correlation.</li>
+ <li data-i18n-html="met_gq_porque_li1"><b>Replicado parcialmente</b> por equipos independientes (Comité Para, 1982; Ertel, 1988), aunque con controversia metodológica activa.</li>
+ <li data-i18n-html="met_gq_porque_li2"><b>Casas válidas:</b> los datos vienen de actas de nacimiento con hora exacta → el Ascendente y el MC son calculables con precisión.</li>
+ <li data-i18n-html="met_gq_porque_li3">El efecto es de <b>posición diurna</b> (casa 1 y 10), no de aspectos — exactamente lo que calcula nuestro motor.</li>
+ <li data-i18n="met_gq_porque_li4">Si se replica con datos nuevos y nuestro modelo nulo emparejado, sería un paper en JSE o Correlation.</li>
  </ul>
 
- <h3>Cómo analizarlo en esta plataforma</h3>
- <div class="hint">
+ <h3 data-i18n="met_gq_como_h3">Cómo analizarlo en esta plataforma</h3>
+ <div class="hint" data-i18n-html="met_gq_como_pasos">
  <b>Paso 1 — Datos:</b> obtener CSV de AstroDatabank (calidad AA = acta de nacimiento) o del archivo LERRCP.<br>
  <b>Paso 2 — Convertir:</b> <code>python convertir_gauquelin.py --csv datos.csv --profesion atletismo</code><br>
  <b>Paso 3 — Embeber:</b> <code>python generar_data_js.py &amp;&amp; python compute_features.py</code><br>
@@ -3216,43 +3218,43 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <b>Paso 5 — Buscar en resultados:</b> <code>house|Mars|1</code> y <code>house|Mars|10</code> en la tabla del Tablero.
  </div>
 
- <h3>Advertencias metodológicas clave</h3>
+ <h3 data-i18n="met_gq_advert_h3">Advertencias metodológicas clave</h3>
  <ul class="small">
- <li><b>Efecto demográfico:</b> las tasas de natalidad varían por hora del día (más partos nocturnos en algunos períodos). El modelo nulo emparejado ±30 días lo controla si los controles se generan con la misma distribución horaria — si no, sesga. Pre-registra explícitamente cómo lo manejas.</li>
- <li><b>Selección de la muestra:</b>¿quién cuenta como "campeón"? La definición precisa debe ir en el pre-registro, no elegirse después de ver los resultados.</li>
- <li><b>Consentimiento y privacidad:</b> figuras históricas públicas (fallecidas) no requieren consentimiento. Personas vivas requieren IRB. AstroDatabank contiene mayoritariamente figuras públicas históricas.</li>
- <li><b>El "efecto de los padres":</b>Gauquelin sugirió que los propios padres también muestran el efecto, lo que apuntaría a herencia genética ligada al ciclo circadiano, no al planeta.</li>
+ <li data-i18n-html="met_gq_advert_li1"><b>Efecto demográfico:</b> las tasas de natalidad varían por hora del día (más partos nocturnos en algunos períodos). El modelo nulo emparejado ±30 días lo controla si los controles se generan con la misma distribución horaria — si no, sesga. Pre-registra explícitamente cómo lo manejas.</li>
+ <li data-i18n-html="met_gq_advert_li2"><b>Selección de la muestra:</b>¿quién cuenta como "campeón"? La definición precisa debe ir en el pre-registro, no elegirse después de ver los resultados.</li>
+ <li data-i18n-html="met_gq_advert_li3"><b>Consentimiento y privacidad:</b> figuras históricas públicas (fallecidas) no requieren consentimiento. Personas vivas requieren IRB. AstroDatabank contiene mayoritariamente figuras públicas históricas.</li>
+ <li data-i18n-html="met_gq_advert_li4"><b>El "efecto de los padres":</b>Gauquelin sugirió que los propios padres también muestran el efecto, lo que apuntaría a herencia genética ligada al ciclo circadiano, no al planeta.</li>
  </ul>
  </div>
 
  <div class="card">
  <h2 id="met_artefactos" data-i18n="met_artefactos_h2">Artefactos detectados en este proyecto</h2>
- <p>Cada dominio nuevo trae sesgos propios. Detectarlos es parte del trabajo científico. Estos son los cuatro artefactos descubiertos en esta plataforma:</p>
+ <p data-i18n="met_artefactos_p1">Cada dominio nuevo trae sesgos propios. Detectarlos es parte del trabajo científico. Estos son los cuatro artefactos descubiertos en esta plataforma:</p>
 
- <h3>1. Artefacto de planetas lentos (nulo uniforme)</h3>
- <div class="hint">El catálogo USGS tiene más sismos en décadas recientes (mejor instrumentación). Los planetas lentos (Neptuno, Plutón) definen "qué época es" — sus configuraciones correlacionan con los años de mayor cobertura. Con un nulo uniforme aparecen <b>~24 falsos positivos</b>.</div>
- <p class="small"><b>Solución:</b> nulo emparejado ±30 días por evento. Los planetas lentos quedan congelados entre el evento real y sus controles.</p>
+ <h3 data-i18n="met_art1_h3">1. Artefacto de planetas lentos (nulo uniforme)</h3>
+ <div class="hint" data-i18n-html="met_art1_hint">El catálogo USGS tiene más sismos en décadas recientes (mejor instrumentación). Los planetas lentos (Neptuno, Plutón) definen "qué época es" — sus configuraciones correlacionan con los años de mayor cobertura. Con un nulo uniforme aparecen <b>~24 falsos positivos</b>.</div>
+ <p class="small" data-i18n-html="met_art1_sol"><b>Solución:</b> nulo emparejado ±30 días por evento. Los planetas lentos quedan congelados entre el evento real y sus controles.</p>
 
- <h3>2. Artefacto de densidad del catálogo</h3>
- <p class="small">Un catálogo con épocas de distinta cobertura tiene más eventos en ciertos períodos, sesgando cualquier rasgo que varía lentamente. El nulo emparejado lo elimina al sortear controles cerca de la fecha real.</p>
+ <h3 data-i18n="met_art2_h3">2. Artefacto de densidad del catálogo</h3>
+ <p class="small" data-i18n="met_art2_p">Un catálogo con épocas de distinta cobertura tiene más eventos en ciertos períodos, sesgando cualquier rasgo que varía lentamente. El nulo emparejado lo elimina al sortear controles cerca de la fecha real.</p>
 
- <h3>3. Artefacto de hora sinóptica (huracanes)</h3>
- <div class="hint">HURDAT2 reporta posiciones solo a horas fijas (00, 06, 12, 18 UTC). El Ascendente y el MC giran 360° en 24 h, así que caen en casas no uniformes. Al correr el análisis sobre 2.494 huracanes aparecieron <b>10 rasgos significativos — todos casas o ángulos, cero aspectos planeta–planeta puros</b>. Es ruido de muestreo, no astrología.</div>
- <p class="small"><b>Solución:</b> analizar eventos con hora redondeada usando <b>solo aspectos planeta–planeta</b>, nunca casas ni ángulos.</p>
+ <h3 data-i18n="met_art3_h3">3. Artefacto de hora sinóptica (huracanes)</h3>
+ <div class="hint" data-i18n-html="met_art3_hint">HURDAT2 reporta posiciones solo a horas fijas (00, 06, 12, 18 UTC). El Ascendente y el MC giran 360° en 24 h, así que caen en casas no uniformes. Al correr el análisis sobre 2.494 huracanes aparecieron <b>10 rasgos significativos — todos casas o ángulos, cero aspectos planeta–planeta puros</b>. Es ruido de muestreo, no astrología.</div>
+ <p class="small" data-i18n-html="met_art3_sol"><b>Solución:</b> analizar eventos con hora redondeada usando <b>solo aspectos planeta–planeta</b>, nunca casas ni ángulos.</p>
 
- <h3>4. Artefacto de pseudo-replicación (tormentas solares)</h3>
- <div class="hint">Una sola región activa del Sol produce decenas de fulguraciones en pocos días. El análisis trató cada una como dato independiente → <b>234 rasgos significativos con z hasta 8</b>. También el punto subsolar pone al Sol siempre en el cénit, saturando las casas. Los resultados solares actuales <b>no son válidos</b>.</div>
- <p class="small"><b>Solución:</b> de-duplicar a un evento por día: <code>python descargar_solar.py --dedupe</code>. Las barras solares en el Tablero se muestran solo como ejemplo didáctico del error.</p>
+ <h3 data-i18n="met_art4_h3">4. Artefacto de pseudo-replicación (tormentas solares)</h3>
+ <div class="hint" data-i18n-html="met_art4_hint">Una sola región activa del Sol produce decenas de fulguraciones en pocos días. El análisis trató cada una como dato independiente → <b>234 rasgos significativos con z hasta 8</b>. También el punto subsolar pone al Sol siempre en el cénit, saturando las casas. Los resultados solares actuales <b>no son válidos</b>.</div>
+ <p class="small" data-i18n-html="met_art4_sol"><b>Solución:</b> de-duplicar a un evento por día: <code>python descargar_solar.py --dedupe</code>. Las barras solares en el Tablero se muestran solo como ejemplo didáctico del error.</p>
 
- <div class="hint" style="border-left-color:var(--ok);margin-top:14px">
+ <div class="hint" style="border-left-color:var(--ok);margin-top:14px" data-i18n-html="met_art_regla">
  <b>Regla práctica:</b> antes de celebrar un hallazgo, pregunta si el rasgo depende de <i>cuándo se registró</i> el evento (hora redondeada, densidad del catálogo) en vez de <i>cuándo ocurrió de verdad</i>. Los aspectos planeta–planeta son los más robustos — no dependen ni del lugar ni de la hora del día — y son el denominador común válido para todos los dominios.
  </div>
  </div>
 
  <!-- ═══ ANOTACIONES PARA CONOCEDORES DE LA TCC ═══ -->
  <div class="card" id="met_tcc_expertos" style="border-left:4px solid var(--oro);background:linear-gradient(135deg,var(--panel2),rgba(212,175,55,.06))">
- <h2 id="met_tcc_expertos">Para quienes conocen la TCC</h2>
- <p class="small muted">Esta sección es para lectores familiarizados con la <em>Teoría Científica de la Cosmobiología</em> de David Juan Ferríz Olivares. Muestra cómo cada pieza de la plataforma corresponde a un imperativo de la obra.</p>
+ <h2 id="met_tcc_expertos" data-i18n="met_tcc_expertos_h2">Para quienes conocen la TCC</h2>
+ <p class="small muted" data-i18n-html="met_tcc_expertos_p">Esta sección es para lectores familiarizados con la <em>Teoría Científica de la Cosmobiología</em> de David Juan Ferríz Olivares. Muestra cómo cada pieza de la plataforma corresponde a un imperativo de la obra.</p>
 
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:16px">
 
@@ -3261,12 +3263,12 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
  <div style="font-size:26px"></div>
  <div>
- <div style="font-weight:700;font-size:14px">Test de Von Neumann</div>
- <div style="font-size:11px;color:var(--oro);font-weight:600">TCC cap. 18 — imperativo de rigor</div>
+ <div style="font-weight:700;font-size:14px" data-i18n="met_exp1_title">Test de Von Neumann</div>
+ <div style="font-size:11px;color:var(--oro);font-weight:600" data-i18n="met_exp1_sub">TCC cap. 18 — imperativo de rigor</div>
  </div>
  </div>
- <p class="small" style="margin:0 0 8px">Ferríz Olivares establece en el capítulo 18 que para <em>"estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica"</em> es indispensable verificar la independencia temporal de la serie antes de cualquier test de frecuencias.</p>
- <p class="small" style="margin:0">Esta plataforma aplica el test de diferencias sucesivas δ²/s² de Von Neumann (1941) como paso <b>previo obligatorio</b> al análisis FDR — exactamente el orden que prescribe la TCC. Sin este paso, los resultados de Mercurio-Urano (que parecían significativos) quedaron expuestos como artefacto de réplicas sísmicas.</p>
+ <p class="small" style="margin:0 0 8px" data-i18n-html="met_exp1_p1">Ferríz Olivares establece en el capítulo 18 que para <em>"estudiar la revelación de influencias periódicas en la tendencia o investigación cíclica"</em> es indispensable verificar la independencia temporal de la serie antes de cualquier test de frecuencias.</p>
+ <p class="small" style="margin:0" data-i18n-html="met_exp1_p2">Esta plataforma aplica el test de diferencias sucesivas δ²/s² de Von Neumann (1941) como paso <b>previo obligatorio</b> al análisis FDR — exactamente el orden que prescribe la TCC. Sin este paso, los resultados de Mercurio-Urano (que parecían significativos) quedaron expuestos como artefacto de réplicas sísmicas.</p>
  <div style="margin-top:10px;background:var(--panel2);border-radius:8px;padding:8px 12px;font-size:12px;border-left:3px solid var(--oro)">VN → declusterización → VN retest → modelo nulo → FDR (Benjamini-Hochberg)
  </div>
  </div>
@@ -3276,12 +3278,12 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
  <div style="font-size:26px">️</div>
  <div>
- <div style="font-weight:700;font-size:14px">Cibernética y cómputo masivo</div>
- <div style="font-size:11px;color:var(--oro);font-weight:600">El sueño de Ferríz Olivares, realizado</div>
+ <div style="font-weight:700;font-size:14px" data-i18n="met_exp2_title">Cibernética y cómputo masivo</div>
+ <div style="font-size:11px;color:var(--oro);font-weight:600" data-i18n="met_exp2_sub">El sueño de Ferríz Olivares, realizado</div>
  </div>
  </div>
- <p class="small" style="margin:0 0 8px">En 1975, Ferríz Olivares advertía que procesar la casuística cosmobiológica a mano requería <em>"más de seis meses de trabajo manual para un solo esquema"</em>. Propuso que los <em>"centros de cómputo y la cibernética"</em> serían la herramienta decisiva para validar la Teoría a escala masiva.</p>
- <p class="small" style="margin:0">Esta plataforma procesa <b>34 503 eventos en 11 dominios</b>, calcula 398 configuraciones astronómicas por evento y genera la distribución nula con 200 réplicas de control — en minutos, con código abierto en Python + NASA JPL DE421. Lo que Ferríz Olivares vislumbró como necesario en 1975 es hoy el pipeline estándar de la plataforma.</p>
+ <p class="small" style="margin:0 0 8px" data-i18n-html="met_exp2_p1">En 1975, Ferríz Olivares advertía que procesar la casuística cosmobiológica a mano requería <em>"más de seis meses de trabajo manual para un solo esquema"</em>. Propuso que los <em>"centros de cómputo y la cibernética"</em> serían la herramienta decisiva para validar la Teoría a escala masiva.</p>
+ <p class="small" style="margin:0" data-i18n-html="met_exp2_p2">Esta plataforma procesa <b>34 503 eventos en 11 dominios</b>, calcula 398 configuraciones astronómicas por evento y genera la distribución nula con 200 réplicas de control — en minutos, con código abierto en Python + NASA JPL DE421. Lo que Ferríz Olivares vislumbró como necesario en 1975 es hoy el pipeline estándar de la plataforma.</p>
  </div>
 
  <!-- Bloque 3: Ciencia-Síntesis / Biocibernética cósmica -->
@@ -3289,12 +3291,12 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
  <div style="font-size:26px"></div>
  <div>
- <div style="font-weight:700;font-size:14px">Biocibernética cósmica, no astrología</div>
- <div style="font-size:11px;color:var(--oro);font-weight:600">Prontuario I de la TCC — definición fundacional</div>
+ <div style="font-weight:700;font-size:14px" data-i18n="met_exp3_title">Biocibernética cósmica, no astrología</div>
+ <div style="font-size:11px;color:var(--oro);font-weight:600" data-i18n="met_exp3_sub">Prontuario I de la TCC — definición fundacional</div>
  </div>
  </div>
- <p class="small" style="margin:0 0 8px">La TCC define la Cosmobiología como <em>"ciencia-síntesis"</em> que une la astronomía de posición con las ciencias aplicadas — no como sistema de predicción simbólica. El Prontuario I distingue explícitamente entre el zodíaco <b>simbólico</b> (tropical/sidéreo, sectores de 30°) y el zodíaco <b>real</b> (sectores variables según el tamaño de cada constelación, TCC pp. 850–852).</p>
- <p class="small" style="margin:0">Esta plataforma opera en el mismo espíritu: mide longitudes eclípticas como variables numéricas continuas, reporta todo con estadística falseable, y distingue entre asociaciones estadísticas (Nivel II de evidencia) y mecanismos físicos establecidos (Nivel I). Los aspectos planeta-planeta son independientes del tipo de zodíaco; las posiciones en signo requerirían conversión al zodíaco real en estudios futuros.</p>
+ <p class="small" style="margin:0 0 8px" data-i18n-html="met_exp3_p1">La TCC define la Cosmobiología como <em>"ciencia-síntesis"</em> que une la astronomía de posición con las ciencias aplicadas — no como sistema de predicción simbólica. El Prontuario I distingue explícitamente entre el zodíaco <b>simbólico</b> (tropical/sidéreo, sectores de 30°) y el zodíaco <b>real</b> (sectores variables según el tamaño de cada constelación, TCC pp. 850–852).</p>
+ <p class="small" style="margin:0" data-i18n-html="met_exp3_p2">Esta plataforma opera en el mismo espíritu: mide longitudes eclípticas como variables numéricas continuas, reporta todo con estadística falseable, y distingue entre asociaciones estadísticas (Nivel II de evidencia) y mecanismos físicos establecidos (Nivel I). Los aspectos planeta-planeta son independientes del tipo de zodíaco; las posiciones en signo requerirían conversión al zodíaco real en estudios futuros.</p>
  </div>
 
  <!-- Bloque 4: Principio de causalidad estadística -->
@@ -3302,20 +3304,20 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
  <div style="font-size:26px"></div>
  <div>
- <div style="font-weight:700;font-size:14px">Principio de causalidad estadística</div>
- <div style="font-size:11px;color:var(--oro);font-weight:600">TCC p. 371 — duplas de parámetros</div>
+ <div style="font-weight:700;font-size:14px" data-i18n="met_exp4_title">Principio de causalidad estadística</div>
+ <div style="font-size:11px;color:var(--oro);font-weight:600" data-i18n="met_exp4_sub">TCC p. 371 — duplas de parámetros</div>
  </div>
  </div>
- <p class="small" style="margin:0 0 8px">El <em>"principio para la investigación de la causalidad por la relación estadística"</em> (TCC p. 371) propone que la significación estadística aumenta drásticamente al cruzar dos o más parámetros inarmónicos — lo que Ferríz Olivares llama <b>duplas</b>. El estudio de 58 casos de malformaciones (TCC cap. 16) mostró que ciertas duplas aparecían en el 80–90% de los casos.</p>
- <p class="small" style="margin:0">La calculadora de duplas y tripletas de esta plataforma implementa exactamente este principio: calcula la co-ocurrencia observada vs. esperada bajo independencia, y reporta el exceso con z-score y riesgo relativo. Es la extensión computacional directa de la metodología del cap. 16.</p>
+ <p class="small" style="margin:0 0 8px" data-i18n-html="met_exp4_p1">El <em>"principio para la investigación de la causalidad por la relación estadística"</em> (TCC p. 371) propone que la significación estadística aumenta drásticamente al cruzar dos o más parámetros inarmónicos — lo que Ferríz Olivares llama <b>duplas</b>. El estudio de 58 casos de malformaciones (TCC cap. 16) mostró que ciertas duplas aparecían en el 80–90% de los casos.</p>
+ <p class="small" style="margin:0" data-i18n-html="met_exp4_p2">La calculadora de duplas y tripletas de esta plataforma implementa exactamente este principio: calcula la co-ocurrencia observada vs. esperada bajo independencia, y reporta el exceso con z-score y riesgo relativo. Es la extensión computacional directa de la metodología del cap. 16.</p>
  </div>
 
  </div>
 
  <!-- Nota sobre zodíaco real -->
  <div style="margin-top:16px;background:var(--panel2);border-radius:10px;padding:14px;border-left:4px solid var(--accent2)">
- <div style="font-weight:700;font-size:13px;margin-bottom:6px">Nota metodológica: zodíaco simbólico vs. zodíaco real (TCC pp. 850–852)</div>
- <p class="small" style="margin:0">Los resultados actuales usan el zodíaco tropical (simbólico, sectores de 30°). Los <b>aspectos planeta-planeta</b> son independientes de esta elección — aplican igualmente en cualquier sistema de coordenadas eclípticas. Las <b>posiciones en signo y casa</b>, en cambio, requerirían conversión a las coordenadas del zodíaco real (sectores variables por tamaño de constelación) para el análisis más riguroso que prescribe la TCC. Esta conversión está planificada como mejora en la siguiente versión del pipeline.</p>
+ <div style="font-weight:700;font-size:13px;margin-bottom:6px" data-i18n="met_zodreal_title">Nota metodológica: zodíaco simbólico vs. zodíaco real (TCC pp. 850–852)</div>
+ <p class="small" style="margin:0" data-i18n-html="met_zodreal_p">Los resultados actuales usan el zodíaco tropical (simbólico, sectores de 30°). Los <b>aspectos planeta-planeta</b> son independientes de esta elección — aplican igualmente en cualquier sistema de coordenadas eclípticas. Las <b>posiciones en signo y casa</b>, en cambio, requerirían conversión a las coordenadas del zodíaco real (sectores variables por tamaño de constelación) para el análisis más riguroso que prescribe la TCC. Esta conversión está planificada como mejora en la siguiente versión del pipeline.</p>
  </div>
  </div>
 
@@ -3444,7 +3446,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card" id="ref_ferriz" style="border-left:4px solid var(--oro)">
- <h2 id="met_referencias">Referencias clave</h2>
+ <h2 id="met_referencias" data-i18n="met_referencias_h2">Referencias clave</h2>
  <ul class="small" style="line-height:1.9">
  <li><b>Raynaud de la Ferrière, S.</b> (1950–1962). <em>Grandes Mensajes</em> y correspondencia científica. Gran Fraternidad Universal. — Observó la asociación de Plutón con terremotos y erupciones volcánicas; formuló la interrelación cosmobiológica entre personas. Predecesor directo de David Ferríz Olivares.</li>
  <li><b>Llona, S. E.</b> (~1941). <em>Teoría Cicloidal</em> [manuscrito / publicaciones en La Prensa, Lima]. — Propone que los movimientos astronómicos (rotación, traslación, mareas terrestres) son la fuerza motriz de la sismicidad y los fenómenos geodinámicos. Citado extensamente en Ferríz Olivares, TCC cap. 36.</li>
@@ -3472,15 +3474,15 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card">
- <h2 id="met_codigos">Clasificación decimal (estándar Invesciencias, 1975)</h2>
- <p class="small muted" style="margin-bottom:12px">Sistema de biblioteconomía especializada propuesto por Ferríz Olivares para organizar el saber cosmobiológico (000-900). Cada dominio de esta plataforma corresponde a un código, para que investigadores familiarizados con la TCC naveguen la base de datos de forma reconocible.</p>
+ <h2 id="met_codigos" data-i18n="met_codigos_h2">Clasificación decimal (estándar Invesciencias, 1975)</h2>
+ <p class="small muted" style="margin-bottom:12px" data-i18n="met_codigos_p1">Sistema de biblioteconomía especializada propuesto por Ferríz Olivares para organizar el saber cosmobiológico (000-900). Cada dominio de esta plataforma corresponde a un código, para que investigadores familiarizados con la TCC naveguen la base de datos de forma reconocible.</p>
  <div style="overflow-x:auto">
  <table style="width:100%;border-collapse:collapse;font-size:13px">
  <thead>
  <tr style="background:var(--panel2)">
- <th style="padding:8px 10px">Código</th>
- <th style="padding:8px 10px">Área TCC</th>
- <th style="padding:8px 10px">Dominio(s) en esta plataforma</th>
+ <th style="padding:8px 10px" data-i18n="met_codigos_th1">Código</th>
+ <th style="padding:8px 10px" data-i18n="met_codigos_th2">Área TCC</th>
+ <th style="padding:8px 10px" data-i18n="met_codigos_th3">Dominio(s) en esta plataforma</th>
  </tr>
  </thead>
  <tbody>
@@ -3498,16 +3500,16 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card">
- <h2 id="met_notacion">Notación y símbolos</h2>
- <p class="small muted" style="margin-bottom:12px">Tabla de referencia única para los símbolos y fórmulas usados en las secciones técnicas (Factores Cinéticos, Geodinámica de Llona, Domificación Topocéntrica). Cada fila enlaza a su sección de origen.</p>
+ <h2 id="met_notacion" data-i18n="met_notacion_h2">Notación y símbolos</h2>
+ <p class="small muted" style="margin-bottom:12px" data-i18n="met_notacion_p1">Tabla de referencia única para los símbolos y fórmulas usados en las secciones técnicas (Factores Cinéticos, Geodinámica de Llona, Domificación Topocéntrica). Cada fila enlaza a su sección de origen.</p>
  <div style="overflow-x:auto">
  <table style="width:100%;border-collapse:collapse;font-size:13px">
  <thead>
  <tr style="background:var(--panel2)">
- <th style="padding:8px 10px">Símbolo</th>
- <th style="padding:8px 10px">Nombre</th>
- <th style="padding:8px 10px">Definición</th>
- <th style="padding:8px 10px">Sección</th>
+ <th style="padding:8px 10px" data-i18n="met_notacion_th1">Símbolo</th>
+ <th style="padding:8px 10px" data-i18n="met_notacion_th2">Nombre</th>
+ <th style="padding:8px 10px" data-i18n="met_notacion_th3">Definición</th>
+ <th style="padding:8px 10px" data-i18n="met_notacion_th4">Sección</th>
  </tr>
  </thead>
  <tbody>
@@ -3749,103 +3751,103 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <!-- Historia Clínica Cosmobiológica — formulario de captura -->
  <div class="card">
- <h2>Historia Clínica Cosmobiológica</h2>
- <p class="small muted">Los campos siguen el modelo de historia clínica de la TCC. Se almacena con el mismo esquema de eventos del resto de la plataforma (<code>domain=medico_411</code>).</p>
+ <h2 data-i18n="epi_hc_h2">Historia Clínica Cosmobiológica</h2>
+ <p class="small muted" data-i18n-html="epi_hc_p">Los campos siguen el modelo de historia clínica de la TCC. Se almacena con el mismo esquema de eventos del resto de la plataforma (<code>domain=medico_411</code>).</p>
 
  <div class="grid" style="margin-top:12px">
  <div>
- <label>Diagnóstico / patología (CIE-10 o texto libre)</label>
- <input id="epi_diagnostico" type="text" placeholder="p.ej. Infarto agudo de miocardio">
+ <label data-i18n="epi_lbl_diag">Diagnóstico / patología (CIE-10 o texto libre)</label>
+ <input id="epi_diagnostico" type="text" placeholder="p.ej. Infarto agudo de miocardio" data-i18n-ph="epi_ph_diag">
  </div>
  <div>
- <label>Tipo de registro</label>
+ <label data-i18n="epi_lbl_tipo">Tipo de registro</label>
  <select id="epi_value_kind">
- <option value="casos">Casos nuevos</option>
- <option value="defunciones">Defunciones</option>
- <option value="reagudizacion">Reagudización</option>
- <option value="consulta">Consulta</option>
- <option value="ingreso">Ingreso hospitalario</option>
+ <option value="casos" data-i18n="epi_opt_casos">Casos nuevos</option>
+ <option value="defunciones" data-i18n="epi_opt_def">Defunciones</option>
+ <option value="reagudizacion" data-i18n="epi_opt_reag">Reagudización</option>
+ <option value="consulta" data-i18n="epi_opt_consulta">Consulta</option>
+ <option value="ingreso" data-i18n="epi_opt_ingreso">Ingreso hospitalario</option>
  </select>
  </div>
  <div>
- <label>Fecha y hora de inicio del cuadro (UTC)</label>
+ <label data-i18n="epi_lbl_fechahora">Fecha y hora de inicio del cuadro (UTC)</label>
  <input id="epi_datetime" type="datetime-local">
  </div>
  <div>
- <label>Lugar</label>
- <input id="epi_place" type="text" placeholder="Ciudad, país">
+ <label data-i18n="epi_lbl_lugar">Lugar</label>
+ <input id="epi_place" type="text" placeholder="Ciudad, país" data-i18n-ph="epi_ph_lugar">
  </div>
  <div>
- <label>Latitud</label>
+ <label data-i18n="epi_lbl_lat">Latitud</label>
  <input id="epi_lat" type="number" step="0.0001">
  </div>
  <div>
- <label>Longitud</label>
+ <label data-i18n="epi_lbl_lon">Longitud</label>
  <input id="epi_lon" type="number" step="0.0001">
  </div>
  </div>
 
- <h3>Filiación y antecedentes (opcional — para rectificación del esquema y ciclo anual crítico)</h3>
+ <h3 data-i18n="epi_filiacion_h3">Filiación y antecedentes (opcional — para rectificación del esquema y ciclo anual crítico)</h3>
  <div class="grid">
  <div>
- <label>Fecha de nacimiento del paciente</label>
+ <label data-i18n="epi_lbl_fnac">Fecha de nacimiento del paciente</label>
  <input id="epi_fecha_nac" type="date">
  </div>
  <div>
- <label>Hora de nacimiento (si se conoce)</label>
+ <label data-i18n="epi_lbl_hnac">Hora de nacimiento (si se conoce)</label>
  <input id="epi_hora_nac" type="time">
  </div>
  <div>
- <label>Biotipología humana</label>
+ <label data-i18n="epi_lbl_biotipo">Biotipología humana</label>
  <select id="epi_biotipo">
- <option value="">— no clasificado —</option>
- <option value="picnico">Pícnico</option>
- <option value="atletico">Atlético</option>
- <option value="astenico">Asténico</option>
- <option value="displastico">Displástico</option>
+ <option value="" data-i18n="epi_opt_noclas">— no clasificado —</option>
+ <option value="picnico" data-i18n="epi_opt_picnico">Pícnico</option>
+ <option value="atletico" data-i18n="epi_opt_atletico">Atlético</option>
+ <option value="astenico" data-i18n="epi_opt_astenico">Asténico</option>
+ <option value="displastico" data-i18n="epi_opt_displastico">Displástico</option>
  </select>
  </div>
  </div>
 
- <h3>Laboratorio sincrónico (opcional)</h3>
+ <h3 data-i18n="epi_lab_h3">Laboratorio sincrónico (opcional)</h3>
  <div class="grid">
  <div>
- <label>Reacción de Takata</label>
- <input id="epi_takata" type="text" placeholder="p.ej. positiva/negativa">
+ <label data-i18n="epi_lbl_takata">Reacción de Takata</label>
+ <input id="epi_takata" type="text" placeholder="p.ej. positiva/negativa" data-i18n-ph="epi_ph_takata">
  </div>
  <div>
- <label>Recuento de linfocitos</label>
+ <label data-i18n="epi_lbl_linfo">Recuento de linfocitos</label>
  <input id="epi_linfocitos" type="number">
  </div>
  <div>
- <label>Otros valores bioquímicos</label>
+ <label data-i18n="epi_lbl_otros">Otros valores bioquímicos</label>
  <input id="epi_otros_lab" type="text">
  </div>
  </div>
 
  <div class="row">
- <button class="act" onclick="guardarEventoMedico()">Registrar evento médico</button>
+ <button class="act" onclick="guardarEventoMedico()" data-i18n="epi_btn_guardar">Registrar evento médico</button>
  </div>
  <div id="epi_status" class="small muted" style="margin-top:8px"></div>
  </div>
 
  <!-- Metodología de cruce -->
  <div class="card">
- <h2>Metodología de cruce estadístico</h2>
- <p>El motor de análisis (<code>epidemiology.py</code>) cruza los eventos médicos registrados con tres tipos de factores, siguiendo el mismo rigor estadístico usado en el resto de la plataforma:</p>
+ <h2 data-i18n="epi_cruce_h2">Metodología de cruce estadístico</h2>
+ <p data-i18n-html="epi_cruce_p1">El motor de análisis (<code>epidemiology.py</code>) cruza los eventos médicos registrados con tres tipos de factores, siguiendo el mismo rigor estadístico usado en el resto de la plataforma:</p>
  <table style="margin-top:10px">
  <thead>
- <tr><th>Factor</th><th>Método</th><th>Fuente de datos requerida</th></tr>
+ <tr><th data-i18n="epi_cruce_th1">Factor</th><th data-i18n="epi_cruce_th2">Método</th><th data-i18n="epi_cruce_th3">Fuente de datos requerida</th></tr>
  </thead>
  <tbody>
- <tr><td>Fase lunar (natalidad, crisis)</td><td>Frecuencia observada vs. uniforme por bin de 45°, z-score</td><td>Calculada internamente (Skyfield)</td></tr>
- <tr><td>Actividad solar (número de Wolf)</td><td>Modelo nulo emparejado (K=200, ±30 días)</td><td><a href="https://www.sidc.be/silso/" target="_blank" rel="noopener">SILSO</a> (Real Observatorio de Bélgica)</td></tr>
- <tr><td>Índice geomagnético Kp</td><td>Modelo nulo emparejado (K=200, ±30 días)</td><td><a href="https://kp.gfz-potsdam.de/" target="_blank" rel="noopener">GFZ Potsdam</a></td></tr>
- <tr><td>Factores meteorotrópicos (Tromp, Brezowsky)</td><td>Modelo nulo emparejado sobre presión/temperatura</td><td>Estación meteorológica local o ERA5 (Copernicus)</td></tr>
- <tr><td>Periodicidad de brotes</td><td>Test de Von Neumann (δ²/s²)</td><td>Calculada internamente sobre la serie de casos</td></tr>
+ <tr><td data-i18n="epi_cruce_r1a">Fase lunar (natalidad, crisis)</td><td data-i18n="epi_cruce_r1b">Frecuencia observada vs. uniforme por bin de 45°, z-score</td><td data-i18n="epi_cruce_r1c">Calculada internamente (Skyfield)</td></tr>
+ <tr><td data-i18n="epi_cruce_r2a">Actividad solar (número de Wolf)</td><td data-i18n="epi_cruce_r2b">Modelo nulo emparejado (K=200, ±30 días)</td><td data-i18n-html="epi_cruce_r2c"><a href="https://www.sidc.be/silso/" target="_blank" rel="noopener">SILSO</a> (Real Observatorio de Bélgica)</td></tr>
+ <tr><td data-i18n="epi_cruce_r3a">Índice geomagnético Kp</td><td data-i18n="epi_cruce_r2b">Modelo nulo emparejado (K=200, ±30 días)</td><td data-i18n-html="epi_cruce_r3c"><a href="https://kp.gfz-potsdam.de/" target="_blank" rel="noopener">GFZ Potsdam</a></td></tr>
+ <tr><td data-i18n="epi_cruce_r4a">Factores meteorotrópicos (Tromp, Brezowsky)</td><td data-i18n="epi_cruce_r4b">Modelo nulo emparejado sobre presión/temperatura</td><td data-i18n="epi_cruce_r4c">Estación meteorológica local o ERA5 (Copernicus)</td></tr>
+ <tr><td data-i18n="epi_cruce_r5a">Periodicidad de brotes</td><td data-i18n="epi_cruce_r5b">Test de Von Neumann (δ²/s²)</td><td data-i18n="epi_cruce_r5c">Calculada internamente sobre la serie de casos</td></tr>
  </tbody>
  </table>
- <p class="small muted" style="margin-top:10px">Todas las pruebas de correlación usan el mismo modelo nulo emparejado y corrección FDR (Benjamini-Hochberg) que el módulo sísmico — ver <a href="#met_nulo">Metodología</a>.</p>
+ <p class="small muted" style="margin-top:10px" data-i18n-html="epi_cruce_nota">Todas las pruebas de correlación usan el mismo modelo nulo emparejado y corrección FDR (Benjamini-Hochberg) que el módulo sísmico — ver <a href="#met_nulo">Metodología</a>.</p>
  </div>
 
 </section>
@@ -3859,82 +3861,82 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
 
  <div class="card" style="border-left:4px solid var(--oro)">
- <h2>¿De dónde sale todo esto?</h2>
- <p>El instrumento de captura de arriba no nace de la nada: reproduce, campo por campo, la <b>Historia Clínica Cosmobiológica</b> del propio Prontuario I (biotipo, laboratorio sincrónico, ciclo anual) y responde a una tradición de más de un siglo de estudios reales — algunos publicados en revistas médicas serias, otros con resultados nulos igual de honestos — que la TCC recopila en los capítulos <code>11. Acta médica de ritmos biológicos</code>, <code>13. Trabajos cosmobiomédicos y prospectiva</code> y <code>20. Observaciones de Jung y Barbault</code>. Van aquí, con sus cifras y su cita tal como aparecen en el libro, para que quien entra a Asistencia Social vea el contexto histórico completo — <b>no son resultados de esta plataforma</b> (que solo valida lo que aparece en Investigación → Tablero), son los antecedentes que la propia TCC reconoce.</p>
- <button class="ghost act small" style="font-size:12px;padding:3px 10px;margin-top:6px" onclick="document.querySelector('[data-tab=epidemiologia]').click()">↑ Ir al instrumento de captura</button>
+ <h2 data-i18n="hist_origen_h2">¿De dónde sale todo esto?</h2>
+ <p data-i18n-html="hist_origen_p">El instrumento de captura de arriba no nace de la nada: reproduce, campo por campo, la <b>Historia Clínica Cosmobiológica</b> del propio Prontuario I (biotipo, laboratorio sincrónico, ciclo anual) y responde a una tradición de más de un siglo de estudios reales — algunos publicados en revistas médicas serias, otros con resultados nulos igual de honestos — que la TCC recopila en los capítulos <code>11. Acta médica de ritmos biológicos</code>, <code>13. Trabajos cosmobiomédicos y prospectiva</code> y <code>20. Observaciones de Jung y Barbault</code>. Van aquí, con sus cifras y su cita tal como aparecen en el libro, para que quien entra a Asistencia Social vea el contexto histórico completo — <b>no son resultados de esta plataforma</b> (que solo valida lo que aparece en Investigación → Tablero), son los antecedentes que la propia TCC reconoce.</p>
+ <button class="ghost act small" style="font-size:12px;padding:3px 10px;margin-top:6px" onclick="document.querySelector('[data-tab=epidemiologia]').click()" data-i18n="hist_origen_btn">↑ Ir al instrumento de captura</button>
  </div>
 
  <div class="card">
- <h2>Un resultado nulo bien reportado, hace más de 60 años</h2>
- <p class="small muted"><code>TCC, cap. 11</code> — Kelley, sobre datos de Pokorny et al. (<i>Am. J. Psychiat.</i>, 120, 1963–64)</p>
- <p>Texas, 1959–1961: <b>2.497 suicidios y 2.017 homicidios</b>, identificados por fecha, raza y sexo, cruzados contra las 4 fases lunares y contra el ciclo afelio-perihelio de la Luna. Es exactamente el tipo de prueba que esta plataforma sigue haciendo hoy — con la diferencia de que aquí el propio estudio original ya declaró el resultado con honestidad:</p>
+ <h2 data-i18n="hist_nulo_h2">Un resultado nulo bien reportado, hace más de 60 años</h2>
+ <p class="small muted" data-i18n="hist_nulo_cita"><code>TCC, cap. 11</code> — Kelley, sobre datos de Pokorny et al. (<i>Am. J. Psychiat.</i>, 120, 1963–64)</p>
+ <p data-i18n-html="hist_nulo_p1">Texas, 1959–1961: <b>2.497 suicidios y 2.017 homicidios</b>, identificados por fecha, raza y sexo, cruzados contra las 4 fases lunares y contra el ciclo afelio-perihelio de la Luna. Es exactamente el tipo de prueba que esta plataforma sigue haciendo hoy — con la diferencia de que aquí el propio estudio original ya declaró el resultado con honestidad:</p>
  <div style="overflow-x:auto"><table>
- <thead><tr><th>Quincena lunar</th><th>Suicidios</th><th>Homicidios</th></tr></thead>
+ <thead><tr><th data-i18n="hist_nulo_th1">Quincena lunar</th><th data-i18n="hist_nulo_th2">Suicidios</th><th data-i18n="hist_nulo_th3">Homicidios</th></tr></thead>
  <tbody>
- <tr><td>Luna llena</td><td>1.246</td><td>1.005</td></tr>
- <tr><td>Luna nueva</td><td>1.251</td><td>1.012</td></tr>
- <tr><td><b>Total</b></td><td><b>2.497</b></td><td><b>2.017</b></td></tr>
+ <tr><td data-i18n="hist_nulo_llena">Luna llena</td><td>1.246</td><td>1.005</td></tr>
+ <tr><td data-i18n="hist_nulo_nueva">Luna nueva</td><td>1.251</td><td>1.012</td></tr>
+ <tr><td data-i18n-html="hist_nulo_total"><b>Total</b></td><td><b>2.497</b></td><td><b>2.017</b></td></tr>
  </tbody>
  </table></div>
- <p class="small muted" style="margin-top:8px">Y agrupando por afelio/perihelio, la simetría es igual de exacta: Afelio 1.251 suicidios / 1.024 homicidios, Perihelio 1.246 / 993.</p>
- <div class="hint" style="margin-top:8px"><b>Conclusión del estudio original:</b> "No se encontró ninguna relación significativa" — ni por fase lunar, ni por sexo, ni por raza, ni por el día previo al perihelio (la desviación entre lo esperado y lo observado en 1959–1961 no fue estadísticamente significativa). Es el mismo tipo de honestidad estadística — reportar el nulo en vez de esconderlo — que esta plataforma intenta sostener con el modelo nulo emparejado y la corrección FDR.</div>
+ <p class="small muted" style="margin-top:8px" data-i18n="hist_nulo_p2">Y agrupando por afelio/perihelio, la simetría es igual de exacta: Afelio 1.251 suicidios / 1.024 homicidios, Perihelio 1.246 / 993.</p>
+ <div class="hint" style="margin-top:8px" data-i18n-html="hist_nulo_hint"><b>Conclusión del estudio original:</b> "No se encontró ninguna relación significativa" — ni por fase lunar, ni por sexo, ni por raza, ni por el día previo al perihelio (la desviación entre lo esperado y lo observado en 1959–1961 no fue estadísticamente significativa). Es el mismo tipo de honestidad estadística — reportar el nulo en vez de esconderlo — que esta plataforma intenta sostener con el modelo nulo emparejado y la corrección FDR.</div>
  </div>
 
  <div class="card">
- <h2>Geomagnetismo y salud</h2>
- <p class="small muted"><code>TCC, cap. 13</code></p>
+ <h2 data-i18n="hist_geo_h2">Geomagnetismo y salud</h2>
+ <p class="small muted" data-i18n-html="hist_geo_cita"><code>TCC, cap. 13</code></p>
  <table>
- <thead><tr><th>Estudio</th><th>Qué midió</th><th>Fuente citada en la TCC</th></tr></thead>
+ <thead><tr><th data-i18n="hist_geo_th1">Estudio</th><th data-i18n="hist_geo_th2">Qué midió</th><th data-i18n="hist_geo_th3">Fuente citada en la TCC</th></tr></thead>
  <tbody>
- <tr><td>Friedman, Becker &amp; Bachman</td><td>8 hospitales psiquiátricos de Nueva York, admisiones vs. parámetros geomagnéticos</td><td><i>"Geomagnetic Parameters and Psychiatric Hospital Admissions"</i>, <i>Nature</i>, vol. 200, 1963</td></tr>
- <tr><td>Poumailloux &amp; Viart</td><td>Incidencia de infartos de miocardio en Pavia, 1954–1958, vs. actividad solar/geomagnética creciente</td><td><i>Bull. Acad. Méd.</i>, CXLIII, n.º 7–8, pág. 167, 1959 (Academia de Medicina de París)</td></tr>
- <tr><td>N. Romensky</td><td>3 explosiones solares intensas hacia la Tierra + aumento de pacientes vasculares, Observatorio de la Academia de Ciencias de la URSS</td><td>Recueil des Travaux Scientifiques, Estaciones Termales y Climáticas, Sochi, 1960</td></tr>
+ <tr><td>Friedman, Becker &amp; Bachman</td><td data-i18n="hist_geo_r1b">8 hospitales psiquiátricos de Nueva York, admisiones vs. parámetros geomagnéticos</td><td><i>"Geomagnetic Parameters and Psychiatric Hospital Admissions"</i>, <i>Nature</i>, vol. 200, 1963</td></tr>
+ <tr><td>Poumailloux &amp; Viart</td><td data-i18n="hist_geo_r2b">Incidencia de infartos de miocardio en Pavia, 1954–1958, vs. actividad solar/geomagnética creciente</td><td><i>Bull. Acad. Méd.</i>, CXLIII, n.º 7–8, pág. 167, 1959 (Academia de Medicina de París)</td></tr>
+ <tr><td>N. Romensky</td><td data-i18n="hist_geo_r3b">3 explosiones solares intensas hacia la Tierra + aumento de pacientes vasculares, Observatorio de la Academia de Ciencias de la URSS</td><td>Recueil des Travaux Scientifiques, Estaciones Termales y Climáticas, Sochi, 1960</td></tr>
  </tbody>
  </table>
- <p class="small muted" style="margin-top:8px">Conclusión textual de Friedman, Becker y Bachman: "la conducta del organismo es significativamente afectada, a través del sistema de control directo en funcionamiento en momento dado, por campos de fuerza externos". Esta es exactamente la clase de hipótesis que el módulo de <a href="#" onclick="return irA('epidemiologia','')">Epidemiología</a> de arriba te permite volver a poner a prueba con datos propios (número de Wolf, índice Kp) y el mismo rigor del resto de la plataforma.</p>
+ <p class="small muted" style="margin-top:8px" data-i18n-html="hist_geo_p1">Conclusión textual de Friedman, Becker y Bachman: "la conducta del organismo es significativamente afectada, a través del sistema de control directo en funcionamiento en momento dado, por campos de fuerza externos". Esta es exactamente la clase de hipótesis que el módulo de <a href="#" onclick="return irA('epidemiologia','')">Epidemiología</a> de arriba te permite volver a poner a prueba con datos propios (número de Wolf, índice Kp) y el mismo rigor del resto de la plataforma.</p>
  </div>
 
  <div class="card">
- <h2>Biotipo humano</h2>
- <p class="small muted"><code>TCC, cap. 18</code> — Historia Clínica Cosmobiológica, ítem 13</p>
- <p>El campo "Biotipología humana" del instrumento de captura reproduce dos clasificaciones clásicas de la constitución humana que la TCC cruza con el análisis cosmobiológico — ninguna de las dos nació con la cosmobiología, pero la TCC las incorpora como variable de estratificación:</p>
+ <h2 data-i18n="hist_bio_h2">Biotipo humano</h2>
+ <p class="small muted" data-i18n="hist_bio_cita"><code>TCC, cap. 18</code> — Historia Clínica Cosmobiológica, ítem 13</p>
+ <p data-i18n-html="hist_bio_p1">El campo "Biotipología humana" del instrumento de captura reproduce dos clasificaciones clásicas de la constitución humana que la TCC cruza con el análisis cosmobiológico — ninguna de las dos nació con la cosmobiología, pero la TCC las incorpora como variable de estratificación:</p>
  <div style="overflow-x:auto"><table>
- <thead><tr><th>Sistema</th><th>Categorías</th><th>Origen</th></tr></thead>
+ <thead><tr><th data-i18n="hist_bio_th1">Sistema</th><th data-i18n="hist_bio_th2">Categorías</th><th data-i18n="hist_bio_th3">Origen</th></tr></thead>
  <tbody>
- <tr><td>Biotipología constitucional</td><td>Pícnico · Atlético · Asténico (· Displástico)</td><td>Ernst Kretschmer, psiquiatra alemán (constitución física ↔ temperamento)</td></tr>
- <tr><td>Temperamentos clásicos</td><td>Bilioso · Nervioso · Sanguíneo · Linfático</td><td>Doctrina humoral hipocrática, retomada por la medicina constitucional del s. XX</td></tr>
+ <tr><td data-i18n="hist_bio_r1a">Biotipología constitucional</td><td>Pícnico · Atlético · Asténico (· Displástico)</td><td data-i18n="hist_bio_r1c">Ernst Kretschmer, psiquiatra alemán (constitución física ↔ temperamento)</td></tr>
+ <tr><td data-i18n="hist_bio_r2a">Temperamentos clásicos</td><td>Bilioso · Nervioso · Sanguíneo · Linfático</td><td data-i18n="hist_bio_r2c">Doctrina humoral hipocrática, retomada por la medicina constitucional del s. XX</td></tr>
  </tbody>
  </table></div>
- <p class="small muted" style="margin-top:8px">Un dato real que la TCC cita de Kretschmer para justificar por qué esto importa en un formulario cosmobiológico: en su casuística, <b>las fases maníacas se concentraban en abril y agosto, y las depresivas en enero y septiembre</b> — una periodicidad anual real, documentada, que cualquier cruce entre biotipo y fecha de crisis debería poder distinguir de una simple coincidencia estacional.</p>
+ <p class="small muted" style="margin-top:8px" data-i18n-html="hist_bio_p2">Un dato real que la TCC cita de Kretschmer para justificar por qué esto importa en un formulario cosmobiológico: en su casuística, <b>las fases maníacas se concentraban en abril y agosto, y las depresivas en enero y septiembre</b> — una periodicidad anual real, documentada, que cualquier cruce entre biotipo y fecha de crisis debería poder distinguir de una simple coincidencia estacional.</p>
  </div>
 
  <div class="card">
- <h2>Laboratorio sincrónico</h2>
- <p class="small muted"><code>TCC, cap. 13</code> — el mismo campo que aparece en "Laboratorio sincrónico" del formulario de arriba</p>
- <p>En 1941, el científico japonés Maki Takata describió que el <b>índice de floculación de la albúmina en suero sanguíneo</b> varía con el ritmo menstrual y — más llamativo — empieza a subir pocos minutos antes del amanecer, "como si la sangre previese la aparición del sol" (M. Takata y T. Murasugi, <i>Bioklimat. Beibl.</i>, VII, 1941). El propio Takata documentó en 1951 que esa reacción presenta variaciones marcadas y reproducibles. Un fenómeno análogo — cambios en la estabilidad de soluciones coloidales (oxicloruro de bismuto) correlacionados con factores atmosféricos/cósmicos — fue estudiado por Giorgio Piccardi, director del Instituto Físico-Químico de Florencia.</p>
- <div class="hint">Ninguno de los dos fenómenos se mide en esta plataforma (no fabricamos datos de laboratorio) — el campo "Reacción de Takata" del formulario existe para que, si tú o tu institución <i>sí</i> tienen esa medición real, quede registrada junto con el resto del evento y pueda cruzarse después con el motor estadístico.</div>
+ <h2 data-i18n="hist_lab_h2">Laboratorio sincrónico</h2>
+ <p class="small muted" data-i18n="hist_lab_cita"><code>TCC, cap. 13</code> — el mismo campo que aparece en "Laboratorio sincrónico" del formulario de arriba</p>
+ <p data-i18n-html="hist_lab_p1">En 1941, el científico japonés Maki Takata describió que el <b>índice de floculación de la albúmina en suero sanguíneo</b> varía con el ritmo menstrual y — más llamativo — empieza a subir pocos minutos antes del amanecer, "como si la sangre previese la aparición del sol" (M. Takata y T. Murasugi, <i>Bioklimat. Beibl.</i>, VII, 1941). El propio Takata documentó en 1951 que esa reacción presenta variaciones marcadas y reproducibles. Un fenómeno análogo — cambios en la estabilidad de soluciones coloidales (oxicloruro de bismuto) correlacionados con factores atmosféricos/cósmicos — fue estudiado por Giorgio Piccardi, director del Instituto Físico-Químico de Florencia.</p>
+ <div class="hint" data-i18n-html="hist_lab_hint">Ninguno de los dos fenómenos se mide en esta plataforma (no fabricamos datos de laboratorio) — el campo "Reacción de Takata" del formulario existe para que, si tú o tu institución <i>sí</i> tienen esa medición real, quede registrada junto con el resto del evento y pueda cruzarse después con el motor estadístico.</div>
  </div>
 
  <div class="card">
- <h2>Criminalidad y estación del año</h2>
- <p class="small muted"><code>TCC, cap. 20</code> — vía Durkheim, <i>El Suicidio</i> (1897), cap. II "Los factores extrasociales"</p>
- <p>Alexandre Lacassagne publicó su <i>"calendario de la criminalidad"</i> (<i>Revue Scientifique</i>, 1881) sobre datos franceses de 1827–1870: los <b>delitos contra la propiedad</b> tienen su máximo en <b>invierno</b>, mientras los <b>delitos contra las personas</b> tienen su máximo a <b>fines de primavera/inicios de verano</b> — patrón que Quetelet (1835), Guerry, Ferri y Corre confirmaron después con series propias. Durkheim, en el mismo capítulo, tabuló la proporción estacional del suicidio en 7 países europeos (cuadro XI, sobre 1.000 casos/año) — el patrón se repite casi idéntico de un país a otro:</p>
+ <h2 data-i18n="hist_crim_h2">Criminalidad y estación del año</h2>
+ <p class="small muted" data-i18n-html="hist_crim_cita"><code>TCC, cap. 20</code> — vía Durkheim, <i>El Suicidio</i> (1897), cap. II "Los factores extrasociales"</p>
+ <p data-i18n-html="hist_crim_p1">Alexandre Lacassagne publicó su <i>"calendario de la criminalidad"</i> (<i>Revue Scientifique</i>, 1881) sobre datos franceses de 1827–1870: los <b>delitos contra la propiedad</b> tienen su máximo en <b>invierno</b>, mientras los <b>delitos contra las personas</b> tienen su máximo a <b>fines de primavera/inicios de verano</b> — patrón que Quetelet (1835), Guerry, Ferri y Corre confirmaron después con series propias. Durkheim, en el mismo capítulo, tabuló la proporción estacional del suicidio en 7 países europeos (cuadro XI, sobre 1.000 casos/año) — el patrón se repite casi idéntico de un país a otro:</p>
  <div style="overflow-x:auto"><table style="font-size:12px">
- <thead><tr><th>Estación</th><th>Dinamarca<br><span class="small muted">1858–65</span></th><th>Bélgica<br><span class="small muted">1841–49</span></th><th>Francia<br><span class="small muted">1835–43</span></th><th>Sajonia<br><span class="small muted">1847–58</span></th><th>Baviera<br><span class="small muted">1858–65</span></th><th>Austria<br><span class="small muted">1858–59</span></th><th>Prusia<br><span class="small muted">1869–72</span></th></tr></thead>
+ <thead><tr><th data-i18n="hist_crim_th_estacion">Estación</th><th>Dinamarca<br><span class="small muted">1858–65</span></th><th>Bélgica<br><span class="small muted">1841–49</span></th><th>Francia<br><span class="small muted">1835–43</span></th><th>Sajonia<br><span class="small muted">1847–58</span></th><th>Baviera<br><span class="small muted">1858–65</span></th><th>Austria<br><span class="small muted">1858–59</span></th><th>Prusia<br><span class="small muted">1869–72</span></th></tr></thead>
  <tbody>
- <tr><td>Verano</td><td>312</td><td>301</td><td>306</td><td>307</td><td>308</td><td>315</td><td>290</td></tr>
- <tr><td>Primavera</td><td>284</td><td>275</td><td>283</td><td>281</td><td>282</td><td>281</td><td>284</td></tr>
- <tr><td>Otoño</td><td>227</td><td>229</td><td>210</td><td>217</td><td>218</td><td>219</td><td>227</td></tr>
- <tr><td>Invierno</td><td>177</td><td>195</td><td>201</td><td>195</td><td>192</td><td>185</td><td>199</td></tr>
+ <tr><td data-i18n="hist_crim_verano">Verano</td><td>312</td><td>301</td><td>306</td><td>307</td><td>308</td><td>315</td><td>290</td></tr>
+ <tr><td data-i18n="hist_crim_primavera">Primavera</td><td>284</td><td>275</td><td>283</td><td>281</td><td>282</td><td>281</td><td>284</td></tr>
+ <tr><td data-i18n="hist_crim_otono">Otoño</td><td>227</td><td>229</td><td>210</td><td>217</td><td>218</td><td>219</td><td>227</td></tr>
+ <tr><td data-i18n="hist_crim_invierno">Invierno</td><td>177</td><td>195</td><td>201</td><td>195</td><td>192</td><td>185</td><td>199</td></tr>
  </tbody>
  </table></div>
- <p class="small muted" style="margin-top:8px">Nótese que este patrón, real y bien documentado desde el siglo XIX, es <b>estacional</b> (ligado al calendario solar/climático), no necesariamente astrológico — la propia TCC lo presenta como antecedente de que "el ritmo cósmico se deja sentir en las actividades sociales", una hipótesis más amplia que esta plataforma solo puede poner a prueba con series propias, evento por evento, con el mismo modelo nulo emparejado de siempre.</p>
+ <p class="small muted" style="margin-top:8px" data-i18n-html="hist_crim_p2">Nótese que este patrón, real y bien documentado desde el siglo XIX, es <b>estacional</b> (ligado al calendario solar/climático), no necesariamente astrológico — la propia TCC lo presenta como antecedente de que "el ritmo cósmico se deja sentir en las actividades sociales", una hipótesis más amplia que esta plataforma solo puede poner a prueba con series propias, evento por evento, con el mismo modelo nulo emparejado de siempre.</p>
  </div>
 
  <div class="card" style="background:var(--panel2)">
- <h2>Un dato pendiente de rastrear hasta su fuente original</h2>
- <p class="small muted"><code>TCC, pág. 212</code> — se incluye tal como aparece en el libro, sin la referencia bibliográfica completa del estudio original; queda como antecedente histórico por verificar, no como hallazgo confirmado por esta plataforma.</p>
- <p>"De 47 mujeres fallecidas de suicidio, accidente o enfermedad, 45 estaban en la fase luteínica" del ciclo menstrual — mencionado en la TCC junto a los trabajos de Weinstein (poliomielitis y ciclo menstrual) y Dowling (susceptibilidad al resfriado común según la fase del ciclo).</p>
+ <h2 data-i18n="hist_pend_h2">Un dato pendiente de rastrear hasta su fuente original</h2>
+ <p class="small muted" data-i18n="hist_pend_cita"><code>TCC, pág. 212</code> — se incluye tal como aparece en el libro, sin la referencia bibliográfica completa del estudio original; queda como antecedente histórico por verificar, no como hallazgo confirmado por esta plataforma.</p>
+ <p data-i18n="hist_pend_p1">"De 47 mujeres fallecidas de suicidio, accidente o enfermedad, 45 estaban en la fase luteínica" del ciclo menstrual — mencionado en la TCC junto a los trabajos de Weinstein (poliomielitis y ciclo menstrual) y Dowling (susceptibilidad al resfriado común según la fase del ciclo).</p>
  </div>
 
 </section>
@@ -3943,83 +3945,83 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 <section id="eras_precesionales" style="display:none">
 
  <div class="card" style="background:linear-gradient(135deg,var(--verde-profundo),var(--verde));color:#fff;border:none">
- <h2 style="font-size:22px;color:#fff;margin-bottom:6px">♒ Eras precesionales</h2>
- <p style="font-size:15px;margin-bottom:0">¿Cuándo "empieza" la Era de Acuario? Esta pestaña reúne, en un solo lugar, el cálculo de referencia que usa el resto de esta plataforma (fronteras oficiales IAU/Delporte + precesión de Newcomb) y el cálculo del <b>Dr. Serge Raynaud de la Ferrière</b> citado en la TCC (cap. 41) — dos métodos igualmente reales, con su fórmula completa, paso a paso, y una tabla que compara ambos en varias fechas.</p>
+ <h2 style="font-size:22px;color:#fff;margin-bottom:6px" data-i18n="eras_h2">♒ Eras precesionales</h2>
+ <p style="font-size:15px;margin-bottom:0" data-i18n-html="eras_hero_p">¿Cuándo "empieza" la Era de Acuario? Esta pestaña reúne, en un solo lugar, el cálculo de referencia que usa el resto de esta plataforma (fronteras oficiales IAU/Delporte + precesión de Newcomb) y el cálculo del <b>Dr. Serge Raynaud de la Ferrière</b> citado en la TCC (cap. 41) — dos métodos igualmente reales, con su fórmula completa, paso a paso, y una tabla que compara ambos en varias fechas.</p>
  </div>
 
  <div class="card">
- <h2>¿Qué es exactamente una "Era Precesional"?</h2>
- <p>El eje de la Tierra no apunta siempre al mismo lugar del cielo: describe un lento círculo completo cada <b>≈25.772 años</b> (precesión de los equinoccios, ya descrita por Hiparco en el siglo II a.C.). Por eso el <b>punto vernal</b> — la intersección entre el ecuador celeste y la eclíptica, el 0° de las longitudes astronómicas — recorre lentamente las 12 constelaciones del zodíaco, tardando en promedio unos 2.150 años en cada una. A ese tránsito de ≈2.150 años por constelación se le llama, en astrología, una "Era" (de Piscis, de Acuario, etc.).</p>
- <p class="small muted">El problema —y la razón de que existan varias respuestas distintas a "¿cuándo empieza la Era de Acuario?"— es que <b>no hay una única definición acordada</b> de dónde traza uno los límites de esa constelación, ni de qué tan preciso hay que ser con la tasa de precesión. Las dos secciones de abajo muestran dos respuestas serias, con su método completo a la vista, para que la diferencia quede clara en vez de escondida.</p>
+ <h2 data-i18n="eras_que_es_h2">¿Qué es exactamente una "Era Precesional"?</h2>
+ <p data-i18n-html="eras_p_que_es1">El eje de la Tierra no apunta siempre al mismo lugar del cielo: describe un lento círculo completo cada <b>≈25.772 años</b> (precesión de los equinoccios, ya descrita por Hiparco en el siglo II a.C.). Por eso el <b>punto vernal</b> — la intersección entre el ecuador celeste y la eclíptica, el 0° de las longitudes astronómicas — recorre lentamente las 12 constelaciones del zodíaco, tardando en promedio unos 2.150 años en cada una. A ese tránsito de ≈2.150 años por constelación se le llama, en astrología, una "Era" (de Piscis, de Acuario, etc.).</p>
+ <p class="small muted" data-i18n-html="eras_p_que_es2">El problema —y la razón de que existan varias respuestas distintas a "¿cuándo empieza la Era de Acuario?"— es que <b>no hay una única definición acordada</b> de dónde traza uno los límites de esa constelación, ni de qué tan preciso hay que ser con la tasa de precesión. Las dos secciones de abajo muestran dos respuestas serias, con su método completo a la vista, para que la diferencia quede clara en vez de escondida.</p>
  </div>
 
  <div class="hint" style="border-left:4px solid #e67e22">
- <h2 style="margin-top:0">⚠️ Esto sigue siendo un tema de estudio abierto</h2>
- <p>Es tentador leer el cálculo de la sección siguiente como "la respuesta correcta" solo porque usa datos oficiales de la UAI. Pero conviene ser honestos sobre qué son en realidad esas 88 fronteras: Eugène Delporte las trazó en 1930 <b>siguiendo la cuadrícula de coordenadas</b> (segmentos de ascensión recta y declinación constantes, en la época B1875.0) — es decir, son <b>líneas rectas verticales y horizontales sobre un mapa de coordenadas</b>, elegidas por conveniencia administrativa y cartográfica para repartir todo el cielo sin dejar huecos ni superposiciones. No fueron trazadas para marcar dónde "empieza" o "termina" una influencia astronómica o energética real, ni existe una única forma astronómicamente obligada de dibujarlas.</p>
- <p>Si esas fronteras hubieran seguido, por ejemplo, la forma real de las figuras mitológicas o algún otro criterio (líneas diagonales, la posición de las estrellas más brillantes de cada constelación, un reparto proporcional al recorrido del Sol), la fecha de cruce Piscis/Acuario que calcula esta plataforma cambiaría — quizás varios siglos en cualquier dirección. Eso no invierte el cálculo de Newcomb (la <i>tasa</i> de precesión sí está bien establecida), pero sí significa que <b>dónde exactamente se traza el límite</b> es, en el fondo, una convención, no un hecho fijo grabado en el cielo.</p>
- <p>Visto así, el enfoque del Dr. Raynaud de la Ferrière —anclar la Era de Piscis en un evento histórico concreto (el Año 1) y usar su propio ancho de Piscis— no es menos legítimo que usar Delporte: es simplemente <b>otra convención</b>, con otro criterio de partida. Y el Dr. Raynaud de la Ferrière no se apoyó solo en la geometría del cielo: la TCC y la tradición cosmobiológica también señalan <b>marcadores sociales e históricos</b> del cambio de Era (transformaciones profundas en comunicación, ciencia, movimientos sociales y conciencia colectiva a mediados del siglo XX) como otra línea de evidencia, complementaria a la astronómica, para ubicar ese tránsito. Esta plataforma todavía no tiene ese análisis hecho, pero es un tema pendiente distinto del cálculo astronómico: la idea es, más adelante, reunir esos marcadores sociales (eventos, cambios de tendencia, indicadores históricos alrededor de mediados del siglo XX) y revisarlos con el mismo rigor estadístico que ya se aplica al resto de esta plataforma —modelo nulo, significancia, corrección por comparaciones múltiples— para ver si hay algo verificable ahí, en vez de asumir de entrada que sí o que no lo hay. Se presentan aquí junto al cálculo astronómico como una línea de investigación futura, no como un resultado ya obtenido ni como algo que se pueda descartar sin revisar.</p>
+ <h2 style="margin-top:0" data-i18n="eras_abierto_h2">⚠️ Esto sigue siendo un tema de estudio abierto</h2>
+ <p data-i18n-html="eras_p_abierto1">Es tentador leer el cálculo de la sección siguiente como "la respuesta correcta" solo porque usa datos oficiales de la UAI. Pero conviene ser honestos sobre qué son en realidad esas 88 fronteras: Eugène Delporte las trazó en 1930 <b>siguiendo la cuadrícula de coordenadas</b> (segmentos de ascensión recta y declinación constantes, en la época B1875.0) — es decir, son <b>líneas rectas verticales y horizontales sobre un mapa de coordenadas</b>, elegidas por conveniencia administrativa y cartográfica para repartir todo el cielo sin dejar huecos ni superposiciones. No fueron trazadas para marcar dónde "empieza" o "termina" una influencia astronómica o energética real, ni existe una única forma astronómicamente obligada de dibujarlas.</p>
+ <p data-i18n-html="eras_p_abierto2">Si esas fronteras hubieran seguido, por ejemplo, la forma real de las figuras mitológicas o algún otro criterio (líneas diagonales, la posición de las estrellas más brillantes de cada constelación, un reparto proporcional al recorrido del Sol), la fecha de cruce Piscis/Acuario que calcula esta plataforma cambiaría — quizás varios siglos en cualquier dirección. Eso no invierte el cálculo de Newcomb (la <i>tasa</i> de precesión sí está bien establecida), pero sí significa que <b>dónde exactamente se traza el límite</b> es, en el fondo, una convención, no un hecho fijo grabado en el cielo.</p>
+ <p data-i18n-html="eras_p_abierto3">Visto así, el enfoque del Dr. Raynaud de la Ferrière —anclar la Era de Piscis en un evento histórico concreto (el Año 1) y usar su propio ancho de Piscis— no es menos legítimo que usar Delporte: es simplemente <b>otra convención</b>, con otro criterio de partida. Y el Dr. Raynaud de la Ferrière no se apoyó solo en la geometría del cielo: la TCC y la tradición cosmobiológica también señalan <b>marcadores sociales e históricos</b> del cambio de Era (transformaciones profundas en comunicación, ciencia, movimientos sociales y conciencia colectiva a mediados del siglo XX) como otra línea de evidencia, complementaria a la astronómica, para ubicar ese tránsito. Esta plataforma todavía no tiene ese análisis hecho, pero es un tema pendiente distinto del cálculo astronómico: la idea es, más adelante, reunir esos marcadores sociales (eventos, cambios de tendencia, indicadores históricos alrededor de mediados del siglo XX) y revisarlos con el mismo rigor estadístico que ya se aplica al resto de esta plataforma —modelo nulo, significancia, corrección por comparaciones múltiples— para ver si hay algo verificable ahí, en vez de asumir de entrada que sí o que no lo hay. Se presentan aquí junto al cálculo astronómico como una línea de investigación futura, no como un resultado ya obtenido ni como algo que se pueda descartar sin revisar.</p>
  </div>
 
  <div class="card" style="border-left:4px solid var(--oro)">
- <h2>📐 Cálculo "de referencia"</h2>
- <p>Esta plataforma usa como referencia las <b>88 fronteras oficiales</b> que Eugène Delporte trazó en 1930 para la Unión Astronómica Internacional (sobre coordenadas de la época B1875.0, verificadas aquí contra la fuente original) y la <b>fórmula rigurosa de precesión de Newcomb</b> (Meeus, <i>Astronomical Algorithms</i>, cap. 21) para expresarlas en cualquier época. La tasa de precesión real <b>no es constante</b> — varía ligeramente con el tiempo — así que este cálculo usa su valor exacto para cada fecha, no un promedio redondeado.</p>
+ <h2 data-i18n="eras_ref_h2">📐 Cálculo "de referencia"</h2>
+ <p data-i18n-html="eras_p_ref1">Esta plataforma usa como referencia las <b>88 fronteras oficiales</b> que Eugène Delporte trazó en 1930 para la Unión Astronómica Internacional (sobre coordenadas de la época B1875.0, verificadas aquí contra la fuente original) y la <b>fórmula rigurosa de precesión de Newcomb</b> (Meeus, <i>Astronomical Algorithms</i>, cap. 21) para expresarlas en cualquier época. La tasa de precesión real <b>no es constante</b> — varía ligeramente con el tiempo — así que este cálculo usa su valor exacto para cada fecha, no un promedio redondeado.</p>
  <table style="margin-top:10px">
  <tbody>
- <tr><td style="width:40%"><b>Ancho de Piscis (IAU/Delporte)</b></td><td>37,06° (varía de constelación a constelación — de 6° a 44° — porque sigue la forma del cielo, no un reparto parejo)</td></tr>
- <tr><td><b>Tasa de precesión</b></td><td>≈50,29″/año (varía con el tiempo, fórmula de Newcomb)</td></tr>
- <tr><td><b>Punto vernal hoy</b></td><td>dentro de Piscis, a pocos grados del límite con Acuario</td></tr>
- <tr><td><b>Cruce estimado a Acuario</b></td><td>≈año 2598</td></tr>
+ <tr><td style="width:40%" data-i18n-html="eras_tr1_label"><b>Ancho de Piscis (IAU/Delporte)</b></td><td data-i18n="eras_tr1_desc">37,06° (varía de constelación a constelación — de 6° a 44° — porque sigue la forma del cielo, no un reparto parejo)</td></tr>
+ <tr><td data-i18n-html="eras_tr2_label"><b>Tasa de precesión</b></td><td data-i18n="eras_tr2_desc">≈50,29″/año (varía con el tiempo, fórmula de Newcomb)</td></tr>
+ <tr><td data-i18n-html="eras_tr3_label"><b>Punto vernal hoy</b></td><td data-i18n="eras_tr3_desc">dentro de Piscis, a pocos grados del límite con Acuario</td></tr>
+ <tr><td data-i18n-html="eras_tr4_label"><b>Cruce estimado a Acuario</b></td><td data-i18n="eras_tr4_desc">≈año 2598</td></tr>
  </tbody>
  </table>
  <div class="row" style="margin-top:10px;gap:8px">
- <button class="ghost act" onclick="threeIrALimitesPiscisAcuario(false)">🗺️ Ver el cálculo en vivo (Mapa Cósmico → Estrellas → Límites oficiales)</button>
- <button class="ghost act" style="border-color:#9b59b6;color:#9b59b6" onclick="threeIrALimitesPiscisAcuario(true)">🌍 Comparar Piscis/Acuario en 5 culturas del cielo</button>
+ <button class="ghost act" onclick="threeIrALimitesPiscisAcuario(false)" data-i18n="eras_btn1">🗺️ Ver el cálculo en vivo (Mapa Cósmico → Estrellas → Límites oficiales)</button>
+ <button class="ghost act" style="border-color:#9b59b6;color:#9b59b6" onclick="threeIrALimitesPiscisAcuario(true)" data-i18n="eras_btn2">🌍 Comparar Piscis/Acuario en 5 culturas del cielo</button>
  </div>
  </div>
 
  <div class="card" style="border-left:4px solid #9b59b6">
- <h2>🔮 El cálculo del Dr. Serge Raynaud de la Ferrière</h2>
+ <h2 data-i18n="eras_raynaud_h2">🔮 El cálculo del Dr. Serge Raynaud de la Ferrière</h2>
  <p class="small muted"><code>TCC, cap. 41</code> — "El valor expresado por el Dr. R. de la Ferrière"</p>
- <p class="small muted">La TCC llama a esto la <b>"Era del Aquarius"</b> (forma latina, tal como la escribe el propio texto — no "Era de Acuario"): <i>"Estamos matemáticamente en la Era del Aquarius"</i>. Aquí se respeta esa grafía cuando se cita su modelo directamente; "Acuario" se sigue usando para el nombre de la constelación/signo en el resto de la plataforma.</p>
- <p>El Dr. Raynaud de la Ferrière ancló el inicio de la Era de Piscis en el <b>Año 1 de la Era Cristiana</b>, y calculó cuánto tiempo tardaría el punto vernal en atravesar por completo la constelación de Piscis usando una tasa de precesión <b>fija</b>, redondeada a <b>1° cada 72 años</b> (72×360° = 25.920 años el ciclo completo — el "Año Platónico" clásico). Con su propio valor del ancho de Piscis, <b>27,06°</b>, su cuenta fue:</p>
- <div class="hint" style="font-size:15px;text-align:center;font-weight:700">27,06° × 72 años/° = 1.948,32 años → <span style="color:var(--oro)">21 de marzo de 1948</span></div>
- <p class="small muted" style="margin-top:8px">Es un cálculo hecho enteramente a mano, con las tablas de precesión disponibles en su época — un trabajo pionero, considerando que no tenía acceso a la precesión variable de Newcomb ni a fronteras IAU digitalizadas, herramientas que solo se volvieron accesibles décadas después. Su método parte de dos elecciones propias, tan legítimas como las de Delporte pero distintas: una tasa de precesión fija (en vez de la tasa variable de Newcomb) y su propio valor del ancho de Piscis (27,06°, en vez del 37,06° de las fronteras oficiales Delporte/IAU) — esas dos convenciones de partida, no un error de cálculo, son la razón concreta por la que su fecha (1948) queda tan lejos de la que da el método IAU/Newcomb (≈2598).</p>
- <h3 style="margin-top:14px">Tabla comparativa — mismos años, los dos métodos</h3>
+ <p class="small muted" data-i18n-html="eras_p_raynaud1">La TCC llama a esto la <b>"Era del Aquarius"</b> (forma latina, tal como la escribe el propio texto — no "Era de Acuario"): <i>"Estamos matemáticamente en la Era del Aquarius"</i>. Aquí se respeta esa grafía cuando se cita su modelo directamente; "Acuario" se sigue usando para el nombre de la constelación/signo en el resto de la plataforma.</p>
+ <p data-i18n-html="eras_p_raynaud2">El Dr. Raynaud de la Ferrière ancló el inicio de la Era de Piscis en el <b>Año 1 de la Era Cristiana</b>, y calculó cuánto tiempo tardaría el punto vernal en atravesar por completo la constelación de Piscis usando una tasa de precesión <b>fija</b>, redondeada a <b>1° cada 72 años</b> (72×360° = 25.920 años el ciclo completo — el "Año Platónico" clásico). Con su propio valor del ancho de Piscis, <b>27,06°</b>, su cuenta fue:</p>
+ <div class="hint" style="font-size:15px;text-align:center;font-weight:700" data-i18n-html="eras_hint_raynaud">27,06° × 72 años/° = 1.948,32 años → <span style="color:var(--oro)">21 de marzo de 1948</span></div>
+ <p class="small muted" style="margin-top:8px" data-i18n-html="eras_p_raynaud3">Es un cálculo hecho enteramente a mano, con las tablas de precesión disponibles en su época — un trabajo pionero, considerando que no tenía acceso a la precesión variable de Newcomb ni a fronteras IAU digitalizadas, herramientas que solo se volvieron accesibles décadas después. Su método parte de dos elecciones propias, tan legítimas como las de Delporte pero distintas: una tasa de precesión fija (en vez de la tasa variable de Newcomb) y su propio valor del ancho de Piscis (27,06°, en vez del 37,06° de las fronteras oficiales Delporte/IAU) — esas dos convenciones de partida, no un error de cálculo, son la razón concreta por la que su fecha (1948) queda tan lejos de la que da el método IAU/Newcomb (≈2598).</p>
+ <h3 style="margin-top:14px" data-i18n="eras_tabla_h3">Tabla comparativa — mismos años, los dos métodos</h3>
  <div style="overflow-x:auto"><table id="tabla_eras" style="font-size:13px">
- <thead><tr><th>Año</th><th>IAU/Delporte + Newcomb</th><th>Modelo Raynaud de la Ferrière</th></tr></thead>
+ <thead><tr><th data-i18n="eras_th_anio">Año</th><th data-i18n="eras_th_iau">IAU/Delporte + Newcomb</th><th data-i18n="eras_th_raynaud">Modelo Raynaud de la Ferrière</th></tr></thead>
  <tbody id="tabla_eras_body"><tr><td colspan="3" class="small muted">Calculando…</td></tr></tbody>
  </table></div>
  </div>
 
  <div class="card" style="border-left:4px solid #e67e22">
- <h2>🔬 Una pregunta de investigación abierta: ¿qué frontera pondría el cruce justo en 1948?</h2>
- <p>Esto es lo que hace valioso el cálculo del Dr. Raynaud de la Ferrière más allá de su resultado: en vez de tomar la clasificación de Delporte como un dato cerrado, se puede usar el motor de precesión de esta misma plataforma <b>al revés</b> — preguntando qué límite Piscis/Acuario haría que el cruce (según fronteras IAU/Delporte) coincidiera con el 21 de marzo de 1948, en lugar de partir de un límite fijo y calcular la fecha.</p>
- <p>La respuesta, calculada con el mismo motor de Newcomb ya validado: el punto vernal de 1948 estaba en la longitud eclíptica <b>≈0,72°</b> (frame J2000), mientras que el límite de Delporte está en <b>351,64°</b> — es decir, para que 1948 fuera el cruce exacto, la frontera tendría que estar dibujada <b>≈9,08° más adelante en la eclíptica</b> de donde la trazó Delporte. Delporte, siguiendo la cuadrícula de ascensión recta/declinación, no tenía ninguna razón para poner el límite ahí: su criterio era puramente cartográfico, no eclíptico. Esa diferencia de ≈9° es, en sí misma, una pista concreta y verificable de por dónde empezar a investigar.</p>
- <p>Esto abre varias líneas de trabajo matemático genuino, ninguna resuelta todavía en esta plataforma:</p>
+ <h2 data-i18n="eras_pregunta_h2">🔬 Una pregunta de investigación abierta: ¿qué frontera pondría el cruce justo en 1948?</h2>
+ <p data-i18n-html="eras_p_pregunta1">Esto es lo que hace valioso el cálculo del Dr. Raynaud de la Ferrière más allá de su resultado: en vez de tomar la clasificación de Delporte como un dato cerrado, se puede usar el motor de precesión de esta misma plataforma <b>al revés</b> — preguntando qué límite Piscis/Acuario haría que el cruce (según fronteras IAU/Delporte) coincidiera con el 21 de marzo de 1948, en lugar de partir de un límite fijo y calcular la fecha.</p>
+ <p data-i18n-html="eras_p_pregunta2">La respuesta, calculada con el mismo motor de Newcomb ya validado: el punto vernal de 1948 estaba en la longitud eclíptica <b>≈0,72°</b> (frame J2000), mientras que el límite de Delporte está en <b>351,64°</b> — es decir, para que 1948 fuera el cruce exacto, la frontera tendría que estar dibujada <b>≈9,08° más adelante en la eclíptica</b> de donde la trazó Delporte. Delporte, siguiendo la cuadrícula de ascensión recta/declinación, no tenía ninguna razón para poner el límite ahí: su criterio era puramente cartográfico, no eclíptico. Esa diferencia de ≈9° es, en sí misma, una pista concreta y verificable de por dónde empezar a investigar.</p>
+ <p data-i18n="eras_p_pregunta3">Esto abre varias líneas de trabajo matemático genuino, ninguna resuelta todavía en esta plataforma:</p>
  <ul style="margin:6px 0 10px 20px;padding:0">
- <li><b>Fronteras basadas en la eclíptica</b> en vez de en el ecuador celeste — un criterio distinto al de Delporte, que sí seguiría de forma natural el propio recorrido del punto vernal en vez de una cuadrícula ajena a él.</li>
- <li><b>Fronteras diagonales o curvas</b>, trazadas por ejemplo siguiendo la posición real de las estrellas más brillantes de cada figura (en vez de segmentos rectos de RA/Dec constante) — lo que daría un límite con otra geometría y, por tanto, otra fecha de cruce.</li>
- <li><b>Fronteras dinámicas</b>, que no sean una sola línea fija sino que se ajusten con el tiempo según algún criterio físico (brillo estelar, densidad de estrellas, el propio recorrido eclíptico) — reconociendo que ni siquiera el cielo real reparte el zodíaco en compartimentos parejos y estáticos.</li>
+ <li data-i18n-html="eras_li1"><b>Fronteras basadas en la eclíptica</b> en vez de en el ecuador celeste — un criterio distinto al de Delporte, que sí seguiría de forma natural el propio recorrido del punto vernal en vez de una cuadrícula ajena a él.</li>
+ <li data-i18n-html="eras_li2"><b>Fronteras diagonales o curvas</b>, trazadas por ejemplo siguiendo la posición real de las estrellas más brillantes de cada figura (en vez de segmentos rectos de RA/Dec constante) — lo que daría un límite con otra geometría y, por tanto, otra fecha de cruce.</li>
+ <li data-i18n-html="eras_li3"><b>Fronteras dinámicas</b>, que no sean una sola línea fija sino que se ajusten con el tiempo según algún criterio físico (brillo estelar, densidad de estrellas, el propio recorrido eclíptico) — reconociendo que ni siquiera el cielo real reparte el zodíaco en compartimentos parejos y estáticos.</li>
  </ul>
- <div class="hint">Esta plataforma ya tiene las piezas para probar cualquiera de esas tres ideas (el motor de precesión de Newcomb, el test punto-en-polígono sobre las fronteras, y ahora esta comparación) — lo que falta es definir con rigor un criterio alternativo de frontera y correrlo contra los mismos datos. Se deja planteado aquí como invitación a investigarlo científicamente, no como una forma de "ajustar" el cálculo para que dé 1948: el objetivo es ver si <i>algún</i> criterio geométrico razonable, distinto al de Delporte, ubica el cruce cerca de esa fecha — y si no lo hace, eso también es un resultado válido.</div>
- <div class="hint" style="margin-top:10px;border-left:4px solid #9b59b6">
+ <div class="hint" data-i18n-html="eras_hint_pregunta">Esta plataforma ya tiene las piezas para probar cualquiera de esas tres ideas (el motor de precesión de Newcomb, el test punto-en-polígono sobre las fronteras, y ahora esta comparación) — lo que falta es definir con rigor un criterio alternativo de frontera y correrlo contra los mismos datos. Se deja planteado aquí como invitación a investigarlo científicamente, no como una forma de "ajustar" el cálculo para que dé 1948: el objetivo es ver si <i>algún</i> criterio geométrico razonable, distinto al de Delporte, ubica el cruce cerca de esa fecha — y si no lo hace, eso también es un resultado válido.</div>
+ <div class="hint" style="margin-top:10px;border-left:4px solid #9b59b6" data-i18n-html="eras_hint_convergencia">
  <b>Convergencia con una fuente primaria distinta:</b> el informe de investigación aparte sobre este mismo límite (<code>Limites/Fronteras_Piscis_Acuario_tres_metodos.docx</code>) encontró, revisando una tabla de anchos zodiacales citada por el propio Dr. Raynaud de la Ferrière (Aries 27°, Tauro 37°, Géminis 29°, Piscis 27°06′, Acuario 35°), que esa fuente <b>redistribuye ≈10° de Piscis hacia Acuario</b> respecto a los anchos IAU/Delporte, aunque el ancho combinado Piscis+Acuario le sale casi igual. Es un método totalmente distinto (comparar una tabla de anchos citada en la tradición, no invertir el motor de precesión) llegando a un número muy cercano a los <b>≈9,08°</b> de aquí — dos caminos independientes señalando la misma magnitud de desplazamiento.
  </div>
  </div>
 
  <div class="card" style="border-left:4px solid var(--verde)">
- <h2>📈 El recorrido del punto vernal, cada 2.000 años</h2>
- <p>Este gráfico usa el mismo cálculo (fronteras IAU/Delporte + precesión de Newcomb) del panel de arriba, muestreado cada 2.000 años, para mostrar cuántos grados separan al punto vernal del límite Piscis/Acuario a lo largo del tiempo. La línea baja de forma suave — la tasa de precesión varía poco de siglo a siglo — y cruza el cero cerca del año 2598, que es donde ese método ubica el cruce a la Era de Acuario (recordando que el método del Dr. Raynaud de la Ferrière, con su propio ancho de Piscis y su propia tasa fija, ubica ese mismo cruce en 1948 — ver arriba).</p>
+ <h2 data-i18n="eras_recorrido_h2">📈 El recorrido del punto vernal, cada 2.000 años</h2>
+ <p data-i18n-html="eras_p_recorrido1">Este gráfico usa el mismo cálculo (fronteras IAU/Delporte + precesión de Newcomb) del panel de arriba, muestreado cada 2.000 años, para mostrar cuántos grados separan al punto vernal del límite Piscis/Acuario a lo largo del tiempo. La línea baja de forma suave — la tasa de precesión varía poco de siglo a siglo — y cruza el cero cerca del año 2598, que es donde ese método ubica el cruce a la Era de Acuario (recordando que el método del Dr. Raynaud de la Ferrière, con su propio ancho de Piscis y su propia tasa fija, ubica ese mismo cruce en 1948 — ver arriba).</p>
  <div id="chart_eras_vernal" style="width:100%;overflow-x:auto"></div>
- <div class="hint" style="margin-top:10px"><b>¿Qué podría significar esto para la Cosmobiología?</b> La idea central de la Cosmobiología —ya presente en la TCC— es que la orientación del eje terrestre y la posición del punto vernal no son solo una referencia geométrica: son el marco de fondo sobre el que se leen los ciclos energéticos largos (climáticos, geológicos, y según la TCC también sutiles) que afectan a la Tierra y a quienes la habitan. Un cambio de Era, en ese marco, no es un evento puntual sino un tránsito lentísimo (~2.150 años) durante el cual esa influencia de fondo se va desplazando de una constelación a otra — de ahí que el "diluvio prolongado" de la tarjeta siguiente se plantee como algo gradual, ligado al paso por Leo, y no como un evento súbito. Esta lectura energética es una hipótesis de la TCC, no algo que esta plataforma pueda medir o confirmar con datos.</div>
+ <div class="hint" style="margin-top:10px" data-i18n-html="eras_hint_recorrido"><b>¿Qué podría significar esto para la Cosmobiología?</b> La idea central de la Cosmobiología —ya presente en la TCC— es que la orientación del eje terrestre y la posición del punto vernal no son solo una referencia geométrica: son el marco de fondo sobre el que se leen los ciclos energéticos largos (climáticos, geológicos, y según la TCC también sutiles) que afectan a la Tierra y a quienes la habitan. Un cambio de Era, en ese marco, no es un evento puntual sino un tránsito lentísimo (~2.150 años) durante el cual esa influencia de fondo se va desplazando de una constelación a otra — de ahí que el "diluvio prolongado" de la tarjeta siguiente se plantee como algo gradual, ligado al paso por Leo, y no como un evento súbito. Esta lectura energética es una hipótesis de la TCC, no algo que esta plataforma pueda medir o confirmar con datos.</div>
  </div>
 
  <div class="card" style="border-left:4px solid #2980b9">
- <h2>🌊 El fenómeno de los diluvios prolongados</h2>
- <p class="small muted"><code>TCC, Parte XI</code> — "El fenómeno de los diluvios prolongados"</p>
- <p>La TCC plantea una hipótesis a escala mucho mayor que cualquier cosa que esta plataforma pueda poner a prueba con su catálogo moderno: que el paso del punto vernal por <b>Leo</b> (constelación opuesta a Acuario en el zodíaco, un tránsito de ≈2.160 años que ocurriría, según el libro, dentro de unos 13.000 años) podría desplazar las líneas isotérmicas y de precipitación lo suficiente como para producir <b>diluvios prolongados de cientos de años</b> — capaces de sedimentar y borrar buena parte de las huellas de una civilización.</p>
- <p>Como corroboración histórica, la TCC cita que la historia del diluvio aparece independientemente en culturas muy distintas y sin contacto entre sí — la Biblia y el Popol Vuh maya, entre otras — y señala restos como <b>Sacsahuamán</b> (Perú) como posible vestigio de una civilización anterior que el agua no alcanzó a borrar del todo. Cita además al propio Dr. Raynaud de la Ferrière (<i>Medicina Universal</i>, 1956).</p>
- <div class="hint">Esta hipótesis opera en una escala de <b>miles de años</b> — muy distinta de los ≈100 años que cubre el catálogo real de inundaciones de esta plataforma (dominio "Inundaciones", ver <a href="#" onclick="return irA('fuentes','')">Fuentes de datos</a>). Es un tema activo de investigación: por ahora se presenta aquí como el planteamiento original de la TCC, y la idea es seguir ampliando el horizonte de datos y de método hasta poder ponerlo a prueba con algo más que el catálogo moderno — no como un resultado ya cerrado de esta plataforma.</div>
+ <h2 data-i18n="eras_diluvios_h2">🌊 El fenómeno de los diluvios prolongados</h2>
+ <p class="small muted" data-i18n-html="eras_p_diluvios_cap"><code>TCC, Parte XI</code> — "El fenómeno de los diluvios prolongados"</p>
+ <p data-i18n-html="eras_p_diluvios1">La TCC plantea una hipótesis a escala mucho mayor que cualquier cosa que esta plataforma pueda poner a prueba con su catálogo moderno: que el paso del punto vernal por <b>Leo</b> (constelación opuesta a Acuario en el zodíaco, un tránsito de ≈2.160 años que ocurriría, según el libro, dentro de unos 13.000 años) podría desplazar las líneas isotérmicas y de precipitación lo suficiente como para producir <b>diluvios prolongados de cientos de años</b> — capaces de sedimentar y borrar buena parte de las huellas de una civilización.</p>
+ <p data-i18n-html="eras_p_diluvios2">Como corroboración histórica, la TCC cita que la historia del diluvio aparece independientemente en culturas muy distintas y sin contacto entre sí — la Biblia y el Popol Vuh maya, entre otras — y señala restos como <b>Sacsahuamán</b> (Perú) como posible vestigio de una civilización anterior que el agua no alcanzó a borrar del todo. Cita además al propio Dr. Raynaud de la Ferrière (<i>Medicina Universal</i>, 1956).</p>
+ <div class="hint" data-i18n-html="eras_hint_diluvios">Esta hipótesis opera en una escala de <b>miles de años</b> — muy distinta de los ≈100 años que cubre el catálogo real de inundaciones de esta plataforma (dominio "Inundaciones", ver <a href="#" onclick="return irA('fuentes','')">Fuentes de datos</a>). Es un tema activo de investigación: por ahora se presenta aquí como el planteamiento original de la TCC, y la idea es seguir ampliando el horizonte de datos y de método hasta poder ponerlo a prueba con algo más que el catálogo moderno — no como un resultado ya cerrado de esta plataforma.</div>
  </div>
 
 </section>
@@ -4134,8 +4136,40 @@ const GLOSARIO = {
  }
 };
 
+// Traduce el glosario (antes SIEMPRE en español, sin importar el idioma
+// elegido, porque vivía en este objeto aparte y nunca se conectó al
+// diccionario data-i18n). Mapea cada clave española de GLOSARIO al prefijo
+// glos_* correspondiente en translations.js -- solo los términos listados
+// aquí ya tienen EN/FR completos; el resto sigue mostrando español (mejor
+// eso que un error) hasta que se traduzcan también.
+const GLOSARIO_I18N_MAP = {
+ 'modelo nulo': 'modelo_nulo', 'fdr': 'fdr', 'benjamini-hochberg': 'bh',
+ 'p-valor': 'pvalor', 'z-score': 'zscore', 'split validation': 'split',
+ 'p-hacking': 'phacking', 'whole sign': 'wholesign', 'aspecto': 'aspecto',
+ 'orbe': 'orbe', 'estratificación': 'estrat', 'estudio negativo': 'negativo',
+ 'skyfield': 'skyfield', 'supabase': 'supabase',
+ // Paso 1 de la traducción sistemática: los 10 términos que faltaban.
+ 'von neumann': 'von_neumann', 'declusterizacion': 'declusterizacion',
+ 'armc': 'armc', 'distancia meridiana': 'distancia_meridiana',
+ 'arco de naibod': 'arco_naibod', 'ascensión oblicua': 'ascension_oblicua',
+ 'polich-page': 'polich_page', "rdr'": 'rdr', 'geosinclinal': 'geosinclinal',
+ 'cicloide kepleriano': 'cicloide_kepleriano',
+};
 function showGlos(key){
  const g=GLOSARIO[key];
+ const prefijo = GLOSARIO_I18N_MAP[key];
+ const lang = document.documentElement.lang;
+ if (prefijo && lang && lang !== 'es' && window.I18N && window.I18N[lang]) {
+ const dict = window.I18N[lang];
+ const tKey = 'glos_' + prefijo + '_title', bKey = 'glos_' + prefijo + '_body';
+ if (dict[tKey] && dict[bKey]) {
+ document.getElementById('glosTitle').textContent = dict[tKey];
+ document.getElementById('glosBody').textContent = dict[bKey];
+ const box2 = document.getElementById('glosBox');
+ box2.style.display='block'; box2.style.bottom='24px'; box2.style.right='24px'; box2.style.top='auto'; box2.style.left='auto';
+ return;
+ }
+ }
  if(!g)return;
  document.getElementById('glosTitle').textContent=g.title;
  document.getElementById('glosBody').textContent=g.body;
