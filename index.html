@@ -684,6 +684,8 @@
  <option value="moderno" data-i18n="mc_cultura_moderno">Occidental moderno (IAU)</option>
  <option value="todas" data-i18n="mc_cultura_comparar">Comparar las 5 a la vez</option>
  </select>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="cult_nombres" checked onchange="threeCulturasCieloChanged()"> <span data-i18n="mc_cult_nombres">Nombres de estrellas</span></label>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="cult_metodo3" checked onchange="threeCulturasCieloChanged()"> <span data-i18n="mc_cult_metodo3">Método 3 (cruces y punto medio)</span></label>
  </div>
  <details class="tccinfo"><summary data-i18n="mc_figuras_q">¿De dónde salen estas figuras y qué significa la extensión?</summary><p class="tccinfo-body small muted" data-i18n="mc_figuras_a">Datos abiertos del proyecto Stellarium (asterismos por cultura: qué estrellas conecta cada tradición para dibujar su propio Piscis/Acuario). La extensión mostrada es la longitud eclíptica que abarca esa FIGURA de estrellas — no la frontera administrativa (esa es la de arriba, IAU/Delporte, ○ en el mapa). Solo la occidental moderna tiene ambas cosas a la vez: figura tradicional Y frontera oficial.</p></details>
  <div id="culturas_cielo_info" style="margin-top:6px"></div>
@@ -692,9 +694,21 @@
  <div style="background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px">
  <div class="row" style="align-items:center;gap:8px;margin-bottom:4px">
  <button class="ghost act" id="three_medir_btn" onclick="threeMedirToggle()" data-i18n="mc_medir_distancia">📐 Medir distancia angular</button>
+ <select id="three_medir_tipo" style="max-width:210px" title="Qué se puede elegir con el clic">
+ <option value="todo" data-i18n="mc_medir_tipo_todo">Elegir: puntos y líneas</option>
+ <option value="puntos" data-i18n="mc_medir_tipo_puntos">Solo estrellas / puntos</option>
+ <option value="lineas" data-i18n="mc_medir_tipo_lineas">Solo líneas y fronteras</option>
+ </select>
+ <label class="small" style="display:flex;align-items:center;gap:4px;margin:0"><input type="checkbox" id="three_medir_snap" checked> <span data-i18n="mc_medir_snap">Ajustar a estrellas/vértices</span></label>
  <span id="three_medir_nota" class="small muted"></span>
  </div>
- <details class="tccinfo"><summary data-i18n="mc_medir_q">¿Cómo funciona?</summary><p class="tccinfo-body small muted" data-i18n="mc_medir_a">Sistema de coordenadas ecuatoriales (Ascensión Recta / Declinación), el mismo que usa toda la plataforma. Actívalo y haz clic en dos estrellas o planetas cualesquiera — se mide el ángulo real entre sus dos direcciones vistas desde el origen (no depende de qué tan "lejos" se ve cada uno en este mapa esquemático).</p></details>
+ <div class="row" style="align-items:center;gap:8px;margin-bottom:4px">
+ <label class="small" style="margin:0" data-i18n="mc_meridiano_lbl">Meridiano eclíptico λ (°):</label>
+ <input type="number" id="meridiano_lon" step="0.01" value="351.64" style="max-width:100px">
+ <button class="ghost act" style="font-size:11px;padding:4px 9px" onclick="threeMeridianoAgregar()" data-i18n="mc_meridiano_btn">Trazar (medible)</button>
+ <button class="ghost act" style="font-size:11px;padding:4px 9px" onclick="threeMeridianosQuitar()" data-i18n="mc_meridiano_quitar">Quitar</button>
+ </div>
+ <details class="tccinfo"><summary data-i18n="mc_medir_q">¿Cómo funciona?</summary><p class="tccinfo-body small muted" data-i18n="mc_medir_a">Sistema de coordenadas ecuatoriales (Ascensión Recta / Declinación), el mismo que usa toda la plataforma, más longitud/latitud eclíptica J2000. Actívalo y haz clic en cualquier par de objetos: dos estrellas o planetas, una estrella y una frontera (Delporte) o una figura cultural, dos líneas entre sí, o el punto vernal (J2000 en rojo, o el de la época elegida en dorado). Con líneas se calcula la separación angular mínima real entre ambas (0 si se cruzan) y los dos puntos más cercanos, con AR/Dec, λ/β y Δλ a lo largo de la eclíptica. Shift+clic sobre una línea mide el punto exacto donde hiciste clic (útil para esquinas de fronteras); «Ajustar» pega el clic a la estrella o vértice más cercano. Las medidas quedan en un historial que se puede copiar como CSV. La eclíptica, el ecuador y cualquier meridiano eclíptico λ que traces también son medibles.</p></details>
  <div id="three_medir_resultado" class="small" style="margin-top:6px"></div>
  </div>
  <div id="three_const_leyenda" class="small muted" style="margin-bottom:8px" data-i18n-html="mc_leyenda_pasa_mouse">Pasa el mouse sobre cualquier punto para ver su nombre, magnitud y distancia real. Usa el selector "Ir a" para moverte por el mapa — elige un <b>planeta</b> (Mercurio a Plutón) para ver además en qué signo va a estar los próximos años.</div>
@@ -5944,6 +5958,7 @@ function threeInit() {
  window.addEventListener('resize', threeOnResize);
  _threeRenderer.domElement.addEventListener('mousemove', threeOnMouseMove);
  _threeRenderer.domElement.addEventListener('mouseleave', () => { document.getElementById('three_tooltip').style.display = 'none'; });
+ _threeRenderer.domElement.addEventListener('mousedown', ev => { _medirDown = { x: ev.clientX, y: ev.clientY }; });
  _threeRenderer.domElement.addEventListener('click', threeOnClickMedir);
  threeBuildMovimientosScene();
  threeAnimate();
@@ -5959,6 +5974,13 @@ function threeInit() {
 let _threeMedirActivo = false;
 let _threeMedirPuntos = [];
 let _threeMedirMarkers = [];
+let _threeMedirSel = [];        // selecciones pendientes (1 o 2 objetos: punto | línea)
+let _threeMedirHistorial = [];  // resultados anteriores (tabla exportable)
+let _threeMedirUltimo = null;
+let _medirDown = null;
+const _MEDIR_UMBRAL_PX = 14, _MEDIR_SNAP_PX = 11;
+function _medirTipo() { const s = document.getElementById('three_medir_tipo'); return s ? s.value : 'todo'; }
+function _medirSnap() { const c = document.getElementById('three_medir_snap'); return !c || c.checked; }
 function threeMedirToggle() {
  _threeMedirActivo = !_threeMedirActivo;
  const btn = document.getElementById('three_medir_btn');
@@ -5966,34 +5988,32 @@ function threeMedirToggle() {
  const btnRail = document.getElementById('three_medir_btn_rail');
  if (btnRail) btnRail.classList.toggle('on', _threeMedirActivo);
  threeMedirReset();
+ if (_threeMedirActivo) { threeMedirExtrasAsegurar(); }
+ else if (_threeMedibleExtra) { _threeMedibleExtra.visible = true; }
+ threeVernalEpocaActualizar();
  const nota = document.getElementById('three_medir_nota');
- if (nota) nota.textContent = _threeMedirActivo ? 'Activo — haz clic en dos estrellas o planetas cualesquiera.' : '';
+ if (nota) nota.textContent = _threeMedirActivo ? _T('md_activo', 'Activo — clic en estrellas, puntos, líneas o fronteras (Shift+clic = punto exacto sobre una línea).') : '';
 }
 function threeMedirReset() {
+ _threeMedirSel = [];
  _threeMedirPuntos = [];
  _threeMedirMarkers.forEach(m => _threeScene && _threeScene.remove(m));
  _threeMedirMarkers = [];
- const res = document.getElementById('three_medir_resultado');
- if (res) res.innerHTML = '';
  const lbl = document.getElementById('three_medir_label');
  if (lbl) lbl.style.display = 'none';
+ _medirRender(null);
 }
-// El número (el ángulo) queda pegado a la MITAD de la línea, directo sobre
-// el mapa -- antes solo aparecía en el texto de abajo (#three_medir_resultado)
-// y había que bajar a buscarlo. Se recalcula en cada cuadro (threeAnimate)
-// para que la etiqueta siga la línea aunque el usuario rote/haga zoom.
 function threeMedirActualizarEtiqueta() {
  const lbl = document.getElementById('three_medir_label');
  if (!lbl || _threeMedirPuntos.length < 2 || !_threeCamera || !_threeRenderer) { if (lbl) lbl.style.display = 'none'; return; }
  const [a, b] = _threeMedirPuntos;
  const medio = a.pos.clone().add(b.pos).multiplyScalar(0.5);
  const ndc = medio.project(_threeCamera);
- if (ndc.z > 1) { lbl.style.display = 'none'; return; } // punto medio detrás de la cámara
+ if (ndc.z > 1) { lbl.style.display = 'none'; return; }
  const rect = _threeRenderer.domElement.getBoundingClientRect();
  const contRect = document.getElementById('three_canvas_container').getBoundingClientRect();
- const x = (ndc.x * 0.5 + 0.5) * rect.width + (rect.left - contRect.left);
- const y = (-ndc.y * 0.5 + 0.5) * rect.height + (rect.top - contRect.top);
- lbl.style.left = x + 'px'; lbl.style.top = y + 'px';
+ lbl.style.left = ((ndc.x * 0.5 + 0.5) * rect.width + (rect.left - contRect.left)) + 'px';
+ lbl.style.top = ((-ndc.y * 0.5 + 0.5) * rect.height + (rect.top - contRect.top)) + 'px';
  lbl.style.display = 'block';
 }
 function _xyzToRaDec(pos) {
@@ -6002,45 +6022,202 @@ function _xyzToRaDec(pos) {
  const ra = (Math.atan2(pos.z, pos.x) * 180 / Math.PI + 360) % 360;
  return { ra, dec: dec * 180 / Math.PI };
 }
+// ── geometría esférica sobre vectores unitarios ──
+const _MD_EPS = 1e-12;
+function _mdEnArco(s, a, b, n) { return a.clone().cross(s).dot(n) >= -_MD_EPS && s.clone().cross(b).dot(n) >= -_MD_EPS; }
+function _mdDistPuntoArco(p, a, b) { // -> {d (rad), q (punto más cercano)}
+ const n = a.clone().cross(b);
+ if (n.lengthSq() > 1e-16) {
+ n.normalize();
+ const q = p.clone().addScaledVector(n, -p.dot(n));
+ if (q.lengthSq() > 1e-16) {
+ q.normalize();
+ if (_mdEnArco(q, a, b, n)) return { d: Math.acos(Math.max(-1, Math.min(1, p.dot(q)))), q };
+ }
+ }
+ const da = Math.acos(Math.max(-1, Math.min(1, p.dot(a)))), db = Math.acos(Math.max(-1, Math.min(1, p.dot(b))));
+ return da <= db ? { d: da, q: a.clone() } : { d: db, q: b.clone() };
+}
+function _mdDistPuntoLinea(p, U) {
+ let best = { d: Infinity, q: null, i: -1 };
+ for (let i = 0; i < U.length - 1; i++) { const r = _mdDistPuntoArco(p, U[i], U[i + 1]); if (r.d < best.d) best = { d: r.d, q: r.q, i }; }
+ if (U.length === 1) best = { d: Math.acos(Math.max(-1, Math.min(1, p.dot(U[0])))), q: U[0].clone(), i: 0 };
+ return best;
+}
+function _mdDistLineaLinea(A, B) { // mínima separación entre dos polilíneas esféricas (0 si se cruzan)
+ const segA = [], segB = [];
+ const prep = (U, out) => { for (let i = 0; i < U.length - 1; i++) { const m = U[i].clone().add(U[i + 1]); if (m.lengthSq() < 1e-12) continue; m.normalize(); out.push({ a: U[i], b: U[i + 1], m, h: Math.acos(Math.max(-1, Math.min(1, m.dot(U[i])))), n: U[i].clone().cross(U[i + 1]) }); } };
+ prep(A, segA); prep(B, segB);
+ let best = { d: Infinity, p: null, q: null, cruce: false };
+ for (const sa of segA) {
+ for (const sb of segB) {
+ const lb = Math.acos(Math.max(-1, Math.min(1, sa.m.dot(sb.m)))) - sa.h - sb.h;
+ if (lb > best.d) continue;
+ // ¿se cruzan?
+ const x = sa.n.clone().cross(sb.n);
+ if (x.lengthSq() > 1e-16 && sa.n.lengthSq() > 1e-16 && sb.n.lengthSq() > 1e-16) {
+ x.normalize();
+ for (const s of [x, x.clone().negate()]) {
+ if (_mdEnArco(s, sa.a, sa.b, sa.n.clone().normalize()) && _mdEnArco(s, sb.a, sb.b, sb.n.clone().normalize())) return { d: 0, p: s, q: s.clone(), cruce: true };
+ }
+ }
+ const c = [[sa.a, sb], [sa.b, sb], [sb.a, sa], [sb.b, sa]];
+ for (let k = 0; k < 4; k++) {
+ const r = _mdDistPuntoArco(c[k][0], c[k][1].a, c[k][1].b);
+ if (r.d < best.d) best = k < 2 ? { d: r.d, p: c[k][0].clone(), q: r.q, cruce: false } : { d: r.d, p: r.q, q: c[k][0].clone(), cruce: false };
+ }
+ }
+ }
+ return best;
+}
+// ── líneas medibles disponibles en la escena ──
+function _medirLineas() {
+ const out = [];
+ [_threeConstBoundsGroup, _threeCulturaGroup, _threeMedibleExtra].forEach(function (grp) {
+ if (!grp || !grp.visible) return;
+ grp.children.forEach(function (o) {
+ if (!o.isLine || !o.userData.medibleLabel) return;
+ const at = o.geometry.attributes.position; const pts = [];
+ for (let i = 0; i < at.count; i++) pts.push(new THREE.Vector3(at.getX(i), at.getY(i), at.getZ(i)));
+ out.push({ label: o.userData.medibleLabel, pts, hips: o.userData.hips || null, obj: o });
+ });
+ });
+ return out;
+}
+function _medirPickLinea(ev) {
+ const rect = _threeRenderer.domElement.getBoundingClientRect();
+ const mx = ev.clientX - rect.left, my = ev.clientY - rect.top, W = rect.width, H = rect.height;
+ const proj = v => { const p = v.clone().project(_threeCamera); return { x: (p.x * 0.5 + 0.5) * W, y: (-p.y * 0.5 + 0.5) * H, z: p.z }; };
+ let best = null;
+ _medirLineas().forEach(function (L) {
+ const P = L.pts.map(proj);
+ for (let i = 0; i < P.length - 1; i++) {
+ const a = P[i], b = P[i + 1]; if (a.z > 1 || b.z > 1) continue;
+ const dx = b.x - a.x, dy = b.y - a.y, l2 = dx * dx + dy * dy;
+ let t = l2 > 0 ? ((mx - a.x) * dx + (my - a.y) * dy) / l2 : 0; t = Math.max(0, Math.min(1, t));
+ const d = Math.hypot(mx - (a.x + t * dx), my - (a.y + t * dy));
+ if (!best || d < best.d) best = { d, L, i, t, P };
+ }
+ });
+ if (!best || best.d > _MEDIR_UMBRAL_PX) return null;
+ const L = best.L; const a3 = L.pts[best.i], b3 = L.pts[best.i + 1];
+ let pos = a3.clone().lerp(b3, best.t); pos.setLength(a3.length());
+ let vertLabel = null;
+ if (_medirSnap()) { // ajustar al vértice (estrella / esquina de frontera) si está cerca del cursor
+ [best.i, best.i + 1].forEach(function (k) {
+ const q = best.P[k]; if (!q || q.z > 1) return;
+ if (Math.hypot(mx - q.x, my - q.y) <= _MEDIR_SNAP_PX) { pos = L.pts[k].clone(); if (L.hips && L.hips[k] !== undefined && CULTURAS_ESTRELLAS[L.hips[k]]) vertLabel = CULTURAS_ESTRELLAS[L.hips[k]][0]; else vertLabel = '#vértice'; }
+ });
+ }
+ return { L, pos, vertLabel };
+}
+function _medirPickPunto(ev) {
+ const rect = _threeRenderer.domElement.getBoundingClientRect();
+ const ndc = new THREE.Vector2(((ev.clientX - rect.left) / rect.width) * 2 - 1, -((ev.clientY - rect.top) / rect.height) * 2 + 1);
+ _threeRaycaster.setFromCamera(ndc, _threeCamera);
+ const hov = _threeHoverables.filter(h => !h.esConstFill);
+ const hits = _threeRaycaster.intersectObjects(hov.map(h => h.mesh), false);
+ if (!hits.length) return null;
+ const hit = hov.find(h => h.mesh === hits[0].object);
+ if (!hit) return null;
+ const m0 = hit.info.match(/<b>(.*?)<\/b>/);
+ return { label: m0 ? m0[1].replace(/<[^>]+>/g, '') : '(punto)', pos: hit.mesh.position.clone() };
+}
 function threeOnClickMedir(ev) {
  if (!_threeMedirActivo || !_threeScene) return;
- _threeRaycaster.setFromCamera(_threeMouseNDC, _threeCamera);
- const meshes = _threeHoverables.map(h => h.mesh);
- const hits = _threeRaycaster.intersectObjects(meshes, false);
- if (!hits.length) return;
- const hit = _threeHoverables.find(h => h.mesh === hits[0].object);
- if (!hit) return;
- const nombre0 = hit.info.match(/<b>(.*?)<\/b>/); const label0 = nombre0 ? nombre0[1] : '(punto)';
- if (hit.mesh.position.length() < 0.05) {
- const res0 = document.getElementById('three_medir_resultado');
- if (res0) res0.innerHTML = `<b>${label0}</b> está en el origen de este mapa (0,0,0) — no tiene una dirección propia que medir aquí. Elige otro punto.`;
- return;
+ if (_medirDown && Math.hypot(ev.clientX - _medirDown.x, ev.clientY - _medirDown.y) > 5) return; // fue un arrastre (rotar), no un clic
+ const tipo = _medirTipo();
+ let sel = null;
+ if (tipo !== 'lineas') { const p = _medirPickPunto(ev); if (p) sel = { kind: 'punto', label: p.label, dir: p.pos.clone().normalize(), rad: p.pos.length() }; }
+ if (!sel && tipo !== 'puntos') {
+ const l = _medirPickLinea(ev);
+ if (l) {
+ if (ev.shiftKey || l.vertLabel) sel = { kind: 'punto', label: l.vertLabel ? `${l.vertLabel} (${l.L.label})` : `${_T('md_punto_sobre', 'punto sobre')} ${l.L.label}`, dir: l.pos.clone().normalize(), rad: l.pos.length() };
+ else sel = { kind: 'linea', label: l.L.label, pts: l.L.pts.map(v => v.clone().normalize()), rad: l.pos.length(), clic: l.pos.clone().normalize() };
  }
- if (_threeMedirPuntos.length >= 2) threeMedirReset();
- const nombre = nombre0; const label = label0;
- const pos = hit.mesh.position.clone();
- const marker = new THREE.Mesh(new THREE.RingGeometry(pos.length() * 0.012, pos.length() * 0.018, 24),
- new THREE.MeshBasicMaterial({ color: 0xff5555, side: THREE.DoubleSide }));
- marker.position.copy(pos); marker.lookAt(0, 0, 0);
- _threeScene.add(marker); _threeMedirMarkers.push(marker);
- _threeMedirPuntos.push({ label, pos });
- const res = document.getElementById('three_medir_resultado');
- if (_threeMedirPuntos.length === 1) {
- const c = _xyzToRaDec(pos);
- res.innerHTML = `Punto A: <b>${label}</b> — AR ${(c.ra / 15).toFixed(2)}h (${c.ra.toFixed(2)}°), Dec ${c.dec >= 0 ? '+' : ''}${c.dec.toFixed(2)}°. Elige el segundo punto…`;
- } else if (_threeMedirPuntos.length === 2) {
- const [a, b] = _threeMedirPuntos;
- const ca = _xyzToRaDec(a.pos), cb = _xyzToRaDec(b.pos);
- const cosang = a.pos.clone().normalize().dot(b.pos.clone().normalize());
- const ang = Math.acos(Math.max(-1, Math.min(1, cosang))) * 180 / Math.PI;
- res.innerHTML = `<b>${a.label}</b> (AR ${(ca.ra / 15).toFixed(2)}h, Dec ${ca.dec >= 0 ? '+' : ''}${ca.dec.toFixed(2)}°) ↔ <b>${b.label}</b> (AR ${(cb.ra / 15).toFixed(2)}h, Dec ${cb.dec >= 0 ? '+' : ''}${cb.dec.toFixed(2)}°)<br><span style="font-size:16px;font-weight:700;color:var(--accent2)">Distancia angular: ${ang.toFixed(2)}°</span> — haz clic en cualquier punto para empezar de nuevo.`;
- _threeScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a.pos, b.pos]),
- new THREE.LineDashedMaterial({ color: 0xff5555, dashSize: 2, gapSize: 1 })).computeLineDistances());
- const lbl = document.getElementById('three_medir_label');
- if (lbl) lbl.textContent = `${ang.toFixed(2)}°`;
- threeMedirActualizarEtiqueta();
  }
+ if (!sel) return;
+ if (sel.kind === 'punto' && sel.rad < 0.05) { _medirRender({ aviso: `<b>${sel.label}</b> ${_T('md_origen', 'está en el origen de este mapa (0,0,0) — no tiene una dirección propia que medir aquí. Elige otro objeto.')}` }); return; }
+ if (_threeMedirSel.length >= 2) threeMedirReset();
+ _threeMedirSel.push(sel);
+ const punto0 = sel.kind === 'punto' ? sel.dir : sel.clic;
+ _medirMarcar(punto0, sel.rad, 0xff5555);
+ if (sel.kind === 'linea') _medirResaltarLinea(sel.pts, sel.rad, 0xffe066);
+ if (_threeMedirSel.length === 1) { _medirRender({ pendiente: sel }); return; }
+ _medirCalcular(_threeMedirSel[0], _threeMedirSel[1]);
 }
+function _medirMarcar(dir, rad, color) {
+ const m = new THREE.Mesh(new THREE.RingGeometry(rad * 0.012, rad * 0.018, 24), new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, depthTest: false }));
+ m.position.copy(dir.clone().multiplyScalar(rad)); m.lookAt(0, 0, 0); m.renderOrder = 998; _threeScene.add(m); _threeMedirMarkers.push(m);
+}
+function _medirResaltarLinea(U, rad, color) {
+ const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(U.map(u => u.clone().multiplyScalar(rad * 1.004))), new THREE.LineBasicMaterial({ color, depthTest: false }));
+ l.renderOrder = 997; _threeScene.add(l); _threeMedirMarkers.push(l);
+}
+function _medirCalcular(A, B) {
+ let d, P, Q, cruce = false;
+ if (A.kind === 'punto' && B.kind === 'punto') { P = A.dir; Q = B.dir; d = Math.acos(Math.max(-1, Math.min(1, P.dot(Q)))); }
+ else if (A.kind === 'punto' || B.kind === 'punto') {
+ const pt = A.kind === 'punto' ? A : B, ln = A.kind === 'punto' ? B : A;
+ const r = _mdDistPuntoLinea(pt.dir, ln.pts); d = r.d;
+ if (A.kind === 'punto') { P = pt.dir; Q = r.q; } else { P = r.q; Q = pt.dir; }
+ } else { const r = _mdDistLineaLinea(A.pts, B.pts); d = r.d; P = r.p; Q = r.q; cruce = r.cruce; }
+ const rad = (A.rad + B.rad) / 2;
+ const dDeg = THREE.MathUtils.radToDeg(d);
+ const cP = _xyzToRaDec(P), cQ = _xyzToRaDec(Q);
+ const eP = _eqToEclLatLon(cP.ra, cP.dec), eQ = _eqToEclLatLon(cQ.ra, cQ.dec);
+ let dLon = ((eQ[0] - eP[0] + 540) % 360) - 180; const dLat = eQ[1] - eP[1];
+ // marcadores + arco entre los puntos más cercanos
+ _medirMarcar(P, rad, 0xff5555); if (!cruce) _medirMarcar(Q, rad, 0xff5555);
+ if (A.kind === 'linea' && A.pts) _medirResaltarLinea(A.pts, A.rad, 0xffe066);
+ if (B.kind === 'linea' && B.pts) _medirResaltarLinea(B.pts, B.rad, 0xffe066);
+ if (!cruce && d > 1e-6) {
+ const arc = []; for (let k = 0; k <= 48; k++) { const t = k / 48; const s = Math.sin(d); const v = P.clone().multiplyScalar(Math.sin((1 - t) * d) / s).addScaledVector(Q, Math.sin(t * d) / s); arc.push(v.multiplyScalar(rad)); }
+ const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(arc), new THREE.LineDashedMaterial({ color: 0xff5555, dashSize: 1, gapSize: 0.6, depthTest: false }));
+ l.computeLineDistances(); l.renderOrder = 999; _threeScene.add(l); _threeMedirMarkers.push(l);
+ }
+ _threeMedirPuntos = [{ label: A.label, pos: P.clone().multiplyScalar(rad) }, { label: B.label, pos: Q.clone().multiplyScalar(rad) }];
+ const lbl = document.getElementById('three_medir_label');
+ if (lbl) lbl.textContent = cruce ? _T('md_cruzan_s', 'se cruzan') : `${dDeg.toFixed(3)}°`;
+ threeMedirActualizarEtiqueta();
+ const esVernal = [A.label, B.label].some(s => /vernal|Vernal/.test(s));
+ const res = { n: _threeMedirHistorial.length + 1, a: A.label, b: B.label, tipo: `${A.kind === 'punto' ? 'P' : 'L'}–${B.kind === 'punto' ? 'P' : 'L'}`, d: dDeg, cruce, P: cP, Q: cQ, eP, eQ, dLon, dLat, anios: esVernal ? dDeg * 71.6 : null };
+ _threeMedirHistorial.push(res); _threeMedirUltimo = res;
+ _medirRender({ resultado: res });
+}
+function _medirFila(r) { return `<tr><td>${r.n}</td><td>${r.a}</td><td>${r.b}</td><td>${r.tipo}</td><td style="text-align:right">${r.cruce ? '0 ✕' : r.d.toFixed(4) + '°'}</td><td style="text-align:right">${r.dLon >= 0 ? '+' : ''}${r.dLon.toFixed(4)}°</td></tr>`; }
+function _medirRender(o) {
+ const div = document.getElementById('three_medir_resultado'); if (!div) return;
+ let html = '';
+ const co = (c) => `AR ${(c.ra / 15).toFixed(3)}h (${c.ra.toFixed(3)}°), Dec ${c.dec >= 0 ? '+' : ''}${c.dec.toFixed(3)}°`;
+ if (o && o.aviso) html += o.aviso;
+ else if (o && o.pendiente) html += `${_T('md_A', 'Objeto A')}: <b>${o.pendiente.label}</b> (${o.pendiente.kind === 'punto' ? _T('md_punto', 'punto') : _T('md_linea', 'línea/frontera')}). ${_T('md_elige_segundo', 'Elige el segundo objeto…')}`;
+ else if (o && o.resultado) {
+ const r = o.resultado;
+ html += `<b>${r.a}</b> ↔ <b>${r.b}</b> <span class="small muted">(${r.tipo === 'P–P' ? _T('md_tipo_pp', 'punto–punto') : r.tipo === 'L–L' ? _T('md_tipo_ll', 'línea–línea') : _T('md_tipo_pl', 'punto–línea')})</span><br>`;
+ html += `<span style="font-size:16px;font-weight:700;color:var(--accent2)">${_T('md_dist', 'Distancia angular mínima')}: ${r.cruce ? _T('md_cruzan', 'se cruzan (distancia 0)') : r.d.toFixed(4) + '° (' + _fmtDMS(r.d) + ')'}</span>`;
+ html += `<br><span class="small">${_T('md_cercanos', 'Puntos más cercanos')}: A ${co(r.P)} · λ ${r.eP[0].toFixed(3)}° β ${r.eP[1] >= 0 ? '+' : ''}${r.eP[1].toFixed(3)}°`;
+ if (!r.cruce) html += `<br>&nbsp;&nbsp;&nbsp;&nbsp;B ${co(r.Q)} · λ ${r.eQ[0].toFixed(3)}° β ${r.eQ[1] >= 0 ? '+' : ''}${r.eQ[1].toFixed(3)}°<br>Δλ (${_T('md_dl', 'a lo largo de la eclíptica')}) = <b>${r.dLon >= 0 ? '+' : ''}${r.dLon.toFixed(4)}°</b> · Δβ = ${r.dLat >= 0 ? '+' : ''}${r.dLat.toFixed(4)}°`;
+ html += '</span>';
+ if (r.anios !== null) html += `<br><span class="small">≈ ${r.anios.toFixed(0)} ${_T('md_anios', 'años de precesión (a ≈71,6 años/° — tasa media actual)')}</span>`;
+ html += `<br><span class="small muted">${_T('md_otra', 'Haz clic en otro objeto para empezar una nueva medida.')}</span>`;
+ }
+ if (_threeMedirHistorial.length) {
+ html += `<div style="margin-top:8px"><div class="small" style="font-weight:700">${_T('md_hist', 'Historial de medidas')}</div><div style="overflow:auto;max-height:180px"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr><th>#</th><th>A</th><th>B</th><th></th><th>${_T('md_dist_s', 'Distancia')}</th><th>Δλ</th></tr></thead><tbody>${_threeMedirHistorial.map(_medirFila).join('')}</tbody></table></div>`;
+ html += `<div class="row" style="margin-top:4px"><button class="ghost act" style="font-size:11px;padding:3px 8px" onclick="threeMedirCopiar()">📋 ${_T('md_copiar', 'Copiar (CSV)')}</button><button class="ghost act" style="font-size:11px;padding:3px 8px" onclick="threeMedirLimpiarHistorial()">🗑️ ${_T('md_limpiar', 'Borrar historial')}</button></div></div>`;
+ }
+ div.innerHTML = html;
+}
+function threeMedirLimpiarHistorial() { _threeMedirHistorial = []; _medirRender(null); }
+function threeMedirCopiar() {
+ const head = 'n;A;B;tipo;distancia_deg;cruce;A_RA_deg;A_Dec_deg;A_lambda_deg;A_beta_deg;B_RA_deg;B_Dec_deg;B_lambda_deg;B_beta_deg;dLambda_deg;dBeta_deg';
+ const rows = _threeMedirHistorial.map(r => [r.n, r.a, r.b, r.tipo, r.d.toFixed(5), r.cruce ? 1 : 0, r.P.ra.toFixed(5), r.P.dec.toFixed(5), r.eP[0].toFixed(5), r.eP[1].toFixed(5), r.Q.ra.toFixed(5), r.Q.dec.toFixed(5), r.eQ[0].toFixed(5), r.eQ[1].toFixed(5), r.dLon.toFixed(5), r.dLat.toFixed(5)].join(';'));
+ const csv = [head].concat(rows).join('\n');
+ const ok = () => { const nota = document.getElementById('three_medir_nota'); if (nota) { nota.textContent = _T('md_copiado', 'Copiado al portapapeles.'); setTimeout(() => { nota.textContent = _threeMedirActivo ? _T('md_activo', 'Activo — clic en estrellas, puntos, líneas o fronteras (Shift+clic = punto exacto sobre una línea).') : ''; }, 2500); } };
+ if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(csv).then(ok, () => window.prompt('CSV', csv));
+ else window.prompt('CSV', csv);
+}
+
 
 // ═══ Tooltip al pasar el mouse — funciona en las 3 vistas (movimientos,
 // evento, constelaciones): cada escena registra sus objetos "hoverables"
@@ -6275,6 +6452,7 @@ function threeClearScene() {
  _threeScene.add(new THREE.AmbientLight(0x606060));
  _threeHoverables = [];
  _threeSolMeshes = [];
+ _threeCulturaGroup = null; _threeMedibleExtra = null; _threeVernalGroup = null;
  threeAddStarfield(_threeScene);
 }
 
@@ -7423,7 +7601,7 @@ function railBuildConstFlyoutButtons() {
  const rTip = _railResaltarNombre ? `Resaltando ${_railResaltarNombre} (estrellas + frontera real dorada). Clic para pasar a la siguiente.` : 'Resaltar constelación — clic para recorrer las 12 del zodíaco (atenúa las demás estrellas y dora su frontera real).';
  const resaltarBtn = railBtn(null, rIcon, rTip, () => railCycleResaltar());
  resaltarBtn.classList.toggle('on', !!_railResaltarNombre);
- const medirBtn = railBtn('three_medir_btn_rail', '📐', 'Medir distancia angular — haz clic en dos estrellas o planetas cualesquiera.', () => threeMedirToggle());
+ const medirBtn = railBtn('three_medir_btn_rail', '📐', 'Medir distancia angular — clic en dos objetos: estrellas, planetas, líneas, fronteras o el punto vernal.', () => threeMedirToggle());
  const figurasBtn = railBtn(null, '⭐', 'Figuras de las constelaciones del zodíaco — dibuja/oculta las líneas que conectan sus estrellas reales, una figura simplificada (no el atlas artístico completo).', null);
  figurasBtn.classList.add('figuras-btn');
  figurasBtn.classList.toggle('on', _threeFigurasOn);
@@ -9196,6 +9374,7 @@ function threeDibujarLimitesConstelaciones(modo) {
  const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(v),
  new THREE.LineBasicMaterial({ color: colorBase, transparent: true, opacity: opBase }));
  line.userData.colorBase = colorBase; line.userData.opBase = opBase;
+ line.userData.medibleLabel = _T('md_frontera', 'Frontera IAU/Delporte') + ': ' + (ZODIACO_IAU_ABREV[b.id] ? ZODIACO_IAU_ABREV[b.id] + ' (' + b.id + ')' : b.id);
  g.add(line);
  _threeConstLineById[b.id] = line;
 
@@ -9245,6 +9424,8 @@ function threeDibujarLimitesConstelaciones(modo) {
 // (Acuario). Cada línea es [HIP, RA_grados, Dec_grados].
 const CULTURAS_CIELO = {"griego":{"label":"Griego (Ptolomeo, Almagesto, s.II)","lines":{"Psc":[[[113889,345.9691938,3.82006998],[115227,350.08557117,5.38145156]],[[114971,349.28955677,3.28224524],[115738,351.73293881,1.25583758],[116928,355.51200741,1.7804172],[118268,359.82750994,6.86359373]],[[115227,350.08557117,5.38145156],[115830,351.99236589,6.37909727],[116771,354.98675133,5.62735374],[118268,359.82750994,6.86359373],[1645,5.14943435,8.19024803],[2548,8.09897908,6.95545461],[3786,12.17039736,7.58520186],[4906,15.73606615,7.89007256],[5737,18.43250986,7.57548895],[5346,17.09309979,5.6502213],[6061,19.4499337,3.61452038],[7007,22.54559597,6.14393314],[7884,25.35794814,5.48760445],[8833,28.38890233,3.18747844],[9487,30.51166929,2.76376048],[8198,26.34828629,9.15764102],[7535,24.27483902,12.14151058],[7097,22.87080776,15.34583101],[6706,21.56366085,19.17232096],[5742,18.43723014,24.58376482],[6193,19.86657455,27.26408682],[5544,17.7782219,31.42476555],[5586,17.91494471,30.08972962],[4889,15.70452742,31.80433674],[4510,14.4589515,28.9922356],[3885,12.47128657,27.71031105],[4366,13.99384283,27.20935396],[5131,16.42053152,21.4732162],[5310,16.98795829,20.73932115],[5454,17.45502008,19.6583854]],[[5310,16.98795829,20.73932115],[5742,18.43723014,24.58376482]],[[5310,16.98795829,20.73932115],[5571,17.86330901,21.03467568],[6706,21.56366085,19.17232096]]],"Aqr":[[[106944,324.88868707,2.24376298],[106278,322.88966951,-5.57115593],[104459,317.39830336,-11.37165474],[102618,311.91888574,-9.49568988]],[[106278,322.88966951,-5.57115593],[109139,331.60918894,-13.86954013],[110778,336.64228154,-16.74214759],[112211,340.89688564,-18.83030716]],[[106944,324.88868707,2.24376298],[109074,331.44593869,-0.31982656],[106278,322.88966951,-5.57115593]],[[109074,331.44593869,-0.31982656],[110003,334.20819329,-7.78323706],[111123,337.66172918,-10.67788619],[109139,331.60918894,-13.86954013]],[[111123,337.66172918,-10.67788619],[112716,342.39795761,-13.59253756],[113136,343.6626635,-15.82075994]],[[109074,331.44593869,-0.31982656],[110395,335.41374983,-1.38735315],[112961,343.15360192,-7.57967878],[114341,347.36150879,-21.17248555]],[[110395,335.41374983,-1.38735315],[110672,336.31921857,1.37739245],[111497,338.83887054,-0.11736123],[114855,348.97198728,-9.08769554]],[[115438,350.7429228,-20.10034505],[114855,348.97198728,-9.08769554]]]}},"arabe":{"label":"Árabe (al-Sufi, s.X)","lines":{"Psc":[[[113889,345.9691938,3.82006998],[115227,350.08557117,5.38145156],[115830,351.99236589,6.37909727],[116771,354.98675133,5.62735374],[118268,359.82750994,6.86359373],[116928,355.51200741,1.7804172],[115738,351.73293881,1.25583758],[114971,349.28955677,3.28224524],[113889,345.9691938,3.82006998]],[[118268,359.82750994,6.86359373],[1645,5.14943435,8.19024803],[2548,8.09897908,6.95545461],[3786,12.17039736,7.58520186],[4906,15.73606615,7.89007256],[5737,18.43250986,7.57548895],[5346,17.09309979,5.6502213],[6061,19.4499337,3.61452038],[7007,22.54559597,6.14393314],[7884,25.35794814,5.48760445],[8833,28.38890233,3.18747844],[9487,30.51166929,2.76376048],[8198,26.34828629,9.15764102],[7535,24.27483902,12.14151058],[7097,22.87080776,15.34583101],[6706,21.56366085,19.17232096],[5571,17.86330901,21.03467568],[5742,18.43723014,24.58376482],[6193,19.86657455,27.26408682],[5586,17.91494471,30.08972962],[5544,17.7782219,31.42476555],[4510,14.4589515,28.9922356],[4366,13.99384283,27.20935396],[3885,12.47128657,27.71031105],[5131,16.42053152,21.4732162],[5310,16.98795829,20.73932115],[5454,17.45502008,19.6583854],[6706,21.56366085,19.17232096]]],"Aqr":[[[106944,324.88868707,2.24376298],[108874,330.82845686,-2.15533588]],[[110672,336.31921857,1.37739245],[110960,337.20750231,-0.02006304],[110395,335.41374983,-1.38735315],[109074,331.44593869,-0.31982656],[108874,330.82845686,-2.15533588],[106278,322.88966951,-5.57115593],[106786,324.43767522,-7.85414212],[103401,314.22512443,-9.69751669],[103045,313.16335749,-8.98323782],[102618,311.91888574,-9.49568988]],[[106786,324.43767522,-7.85414212],[109139,331.60918894,-13.86954013],[110778,336.64228154,-16.74214759],[112211,340.89688564,-18.83030716],[112529,341.88828134,-19.61287445]],[[109074,331.44593869,-0.31982656],[111123,337.66172918,-10.67788619],[112716,342.39795761,-13.59253756],[113136,343.6626635,-15.82075994]],[[110960,337.20750231,-0.02006304],[111497,338.83887054,-0.11736123],[112961,343.15360192,-7.57967878],[113996,346.29047874,-7.69381853],[114724,348.58055219,-6.0485268],[114939,349.21229368,-7.72646619],[114855,348.97198728,-9.08769554],[115033,349.47584844,-9.1824899],[115115,349.74021218,-9.610731],[115404,350.66291976,-15.03938012],[116758,354.94598676,-14.22204281],[116971,355.68035357,-14.54474243],[116901,355.44082263,-17.81653327],[117089,356.05025914,-18.27692862],[117629,357.83884091,-18.90915459],[116247,353.31927128,-20.91452506],[115669,351.51173897,-20.64186122],[115438,350.7429228,-20.10034505],[114341,347.36150879,-21.17248555],[114375,347.47865379,-22.45759248],[114119,346.67003033,-23.7431168],[113368,344.41177323,-29.62183701]]]}},"babilonio":{"label":"Babilonio (MUL.APIN, ~1000 a.C.)","lines":{"Psc":[[[6732,21.67352916,19.24056476],[7097,22.87080776,15.34583101],[8198,26.34828629,9.15764102],[9487,30.51166929,2.76376048],[7007,22.54559597,6.14393314],[4906,15.73606615,7.89007256],[3786,12.17039736,7.58520186]],[[5364,17.14693197,-10.181928],[6537,21.00604671,-8.18275372],[9487,30.51166929,2.76376048],[14838,47.90695691,19.72669777]],[[12706,40.82551897,3.23617162],[12387,39.87061789,0.3285168],[11791,38.03931801,-1.03481751],[11021,35.48597927,0.39569203],[11738,37.87534312,2.26720689],[12706,40.82551897,3.23617162]],[[11021,35.48597927,0.39569203],[9487,30.51166929,2.76376048]],[[3693,11.83495908,24.26737703],[6193,19.86657455,27.26408682],[5586,17.91494471,30.08972962],[4436,14.18790699,38.49925513],[5447,17.43248991,35.62083048]],[[4436,14.18790699,38.49925513],[3881,12.45345723,41.07895474],[3231,10.27998074,39.45867141],[3092,9.83165567,30.86122579]],[[2912,9.22016239,33.71935227],[3693,11.83495908,24.26737703]]],"Aqr":[[[110003,334.20819329,-7.78323706],[109139,331.60918894,-13.86954013]],[[115438,350.7429228,-20.10034505],[114855,348.97198728,-9.08769554],[112961,343.15360192,-7.57967878],[110003,334.20819329,-7.78323706],[109074,331.44593869,-0.31982656],[106278,322.88966951,-5.57115593],[109139,331.60918894,-13.86954013],[112716,342.39795761,-13.59253756],[113136,343.6626635,-15.82075994],[114341,347.36150879,-21.17248555]],[[109074,331.44593869,-0.31982656],[107315,326.04641808,9.87500791],[106278,322.88966951,-5.57115593]],[[109074,331.44593869,-0.31982656],[110395,335.41374983,-1.38735315],[114971,349.28955677,3.28224524],[116771,354.98675133,5.62735374]],[[110960,337.20750231,-0.02006304],[111497,338.83887054,-0.11736123],[114724,348.58055219,-6.0485268],[115033,349.47584844,-9.1824899],[116971,355.68035357,-14.54474243],[116901,355.44082263,-17.81653327]],[[110960,337.20750231,-0.02006304],[110672,336.31921857,1.37739245],[118209,359.66837736,-3.55580738],[154,0.48996506,-6.01397169],[355,1.1255098,-10.50949443],[910,2.81628415,-15.46732287],[1170,3.66013628,-18.93268628]]]}},"hindu":{"label":"Hindú (Nakshatras védicos)","lines":{"Psc":[[[113881,345.94305575,28.08245462],[113963,346.1900702,15.20536786]],[[677,2.09653333,29.09082805],[1067,3.30895828,15.18361593]],[[7097,22.87080776,15.34583101],[7710,24.81411531,14.28562593]],[[7710,24.81411531,14.28562593],[8327,26.83993462,10.95369126]],[[8327,26.83993462,10.95369126],[8198,26.34828629,9.15764102]],[[8198,26.34828629,9.15764102],[7456,24.01191556,7.64525355]],[[7456,24.01191556,7.64525355],[6915,22.26296987,7.29422704]],[[5737,18.43250986,7.57548895],[5737,18.43250986,7.57548895]],[[5737,18.43250986,7.57548895],[6915,22.26296987,7.29422704]]],"Aqr":[[[114855,348.97198728,-9.08769554],[112961,343.15360192,-7.57967878]],[[112961,343.15360192,-7.57967878],[113136,343.6626635,-15.82075994]],[[110960,337.20750231,-0.02006304],[112961,343.15360192,-7.57967878]],[[154,0.48996506,-6.01397169],[115033,349.47584844,-9.1824899]],[[115033,349.47584844,-9.1824899],[116971,355.68035357,-14.54474243]],[[115438,350.7429228,-20.10034505],[113136,343.6626635,-15.82075994]],[[113136,343.6626635,-15.82075994],[114341,347.36150879,-21.17248555]],[[113136,343.6626635,-15.82075994],[111449,338.67291135,-20.70785949]]]}},"moderno":{"label":"Occidental moderno (IAU)","lines":{"Psc":[[[4889,15.70452742,31.80433674],[5742,18.43723014,24.58376482]],[[4889,15.70452742,31.80433674],[6193,19.86657455,27.26408682],[5742,18.43723014,24.58376482],[7097,22.87080776,15.34583101],[8198,26.34828629,9.15764102],[9487,30.51166929,2.76376048],[8833,28.38890233,3.18747844],[7884,25.35794814,5.48760445],[7007,22.54559597,6.14393314],[4906,15.73606615,7.89007256],[3760,12.07226858,7.29991977],[1645,5.14943435,8.19024803],[118268,359.82750994,6.86359373],[116771,354.98675133,5.62735374],[117245,356.59807048,3.48687164],[116928,355.51200741,1.7804172],[115738,351.73293881,1.25583758],[114971,349.28955677,3.28224524],[115227,350.08557117,5.38145156],[115830,351.99236589,6.37909727],[116771,354.98675133,5.62735374]]],"Aqr":[[[106278,322.88966951,-5.57115593],[109074,331.44593869,-0.31982656],[110395,335.41374983,-1.38735315],[110960,337.20750231,-0.02006304],[111497,338.83887054,-0.11736123],[112961,343.15360192,-7.57967878],[114855,348.97198728,-9.08769554],[115438,350.7429228,-20.10034505]],[[109074,331.44593869,-0.31982656],[110003,334.20819329,-7.78323706],[109139,331.60918894,-13.86954013]],[[110003,334.20819329,-7.78323706],[111123,337.66172918,-10.67788619],[112716,342.39795761,-13.59253756],[113136,343.6626635,-15.82075994],[114341,347.36150879,-21.17248555]],[[102618,311.91888574,-9.49568988],[106278,322.88966951,-5.57115593]]]}}};
 const CULTURAS_CIELO_ORDEN = ['griego', 'arabe', 'babilonio', 'hindu', 'moderno'];
+const CULTURAS_ESTRELLAS = {"113889":["β Psc",4.48,"Psc"],"115227":["7 Psc",5.05,"Psc"],"114971":["γ Psc",3.7,"Psc"],"115738":["κ Psc",4.95,"Psc"],"116928":["λ Psc",4.49,"Psc"],"118268":["ω Psc",4.03,"Psc"],"115830":["θ Psc",4.27,"Psc"],"116771":["ι Psc",4.13,"Psc"],"1645":["d Psc",5.38,"Psc"],"2548":["51 Psc",5.69,"Psc"],"3786":["δ Psc",4.44,"Psc"],"4906":["ε Psc",4.27,"Psc"],"5737":["ζ Psc A",5.21,"Psc"],"5346":["e Psc",5.51,"Psc"],"6061":["f Psc",5.13,"Psc"],"7007":["μ Psc",4.84,"Psc"],"7884":["ν Psc",4.45,"Psc"],"8833":["ξ Psc",4.61,"Psc"],"9487":["α Psc",3.82,"Psc"],"8198":["ο Psc",4.26,"Psc"],"7535":["π Psc",5.54,"Psc"],"7097":["η Psc",3.62,"Psc"],"6706":["ρ Psc",5.35,"Psc"],"5742":["φ Psc",4.67,"Psc"],"6193":["υ Psc",4.74,"Psc"],"5544":["g Psc",5.15,"Psc"],"5586":["τ Psc",4.51,"Psc"],"4889":["σ Psc",5.5,"Psc"],"4510":["h Psc",5.44,"Psc"],"3885":["65 Psc",5.55,"Psc"],"4366":["k Psc",6.08,"Psc"],"5131":["74 Psc A",5.33,"Psc"],"5310":["ψ² Psc",5.56,"Psc"],"5454":["ψ³ Psc",5.57,"Psc"],"5571":["χ Psc",4.66,"Psc"],"106944":["d Aqr",5.1,"Aqr"],"106278":["β Aqr",2.9,"Aqr"],"104459":["ν Aqr",4.5,"Aqr"],"102618":["ε Aqr",3.78,"Aqr"],"109139":["ι Aqr",4.29,"Aqr"],"110778":["53 Aqr",5.55,"Aqr"],"112211":["g Aqr",4.68,"Aqr"],"109074":["α Aqr",2.95,"Aqr"],"110003":["θ Aqr",4.17,"Aqr"],"111123":["σ Aqr",4.82,"Aqr"],"112716":["τ Aqr",4.05,"Aqr"],"113136":["δ Aqr",3.27,"Aqr"],"110395":["γ Aqr",3.86,"Aqr"],"112961":["λ Aqr",3.73,"Aqr"],"114341":["c02 Aqr",3.68,"Aqr"],"110672":["π Aqr",4.8,"Aqr"],"111497":["η Aqr",4.04,"Aqr"],"114855":["ψ¹ Aqr",4.24,"Aqr"],"115438":["b01 Aqr",3.96,"Aqr"],"108874":["ο Aqr",4.74,"Aqr"],"110960":["ζ Aqr",3.65,"Aqr"],"106786":["ξ Aqr",4.68,"Aqr"],"103401":["7 Aqr",5.49,"Aqr"],"103045":["μ Aqr",4.73,"Aqr"],"112529":["68 Aqr",5.24,"Aqr"],"113996":["83 Aqr",5.44,"Aqr"],"114724":["φ Aqr",4.22,"Aqr"],"114939":["χ Aqr",4.93,"Aqr"],"115033":["ψ² Aqr",4.41,"Aqr"],"115115":["ψ³ Aqr",4.99,"Aqr"],"115404":["97 Aqr",5.19,"Aqr"],"116758":["ω¹ Aqr",4.97,"Aqr"],"116971":["ω² Aqr",4.49,"Aqr"],"116901":["104 Aqr",4.82,"Aqr"],"117089":["i01 Aqr",5.24,"Aqr"],"117629":["i03 Aqr",5.17,"Aqr"],"116247":["b03 Aqr",4.7,"Aqr"],"115669":["b02 Aqr",4.38,"Aqr"],"114375":["89 Aqr",4.71,"Aqr"],"114119":["c01 Aqr",4.48,"Aqr"],"113368":["α PsA",1.17,"PsA"],"6732":["94 Psc",5.5,"Psc"],"5364":["η Cet",3.46,"Cet"],"6537":["θ Cet",3.6,"Cet"],"14838":["δ Ari",4.35,"Ari"],"12706":["γ Cet",3.47,"Cet"],"12387":["δ Cet",4.08,"Cet"],"11791":["75 Cet",5.36,"Cet"],"11021":["69 Cet",5.29,"Cet"],"11738":["HD 15694",5.27,"Cet"],"3693":["ζ And",4.08,"And"],"4436":["μ And",3.86,"And"],"5447":["β And",2.07,"And"],"3881":["ν And",4.53,"And"],"3231":["32 And",5.3,"And"],"3092":["δ And",3.27,"And"],"2912":["π And",4.34,"And"],"107315":["ε Peg",2.38,"Peg"],"118209":["27 Psc",4.88,"Psc"],"154":["30 Psc",4.37,"Psc"],"355":["3 Cet",4.99,"Cet"],"910":["6 Cet",4.89,"Cet"],"1170":["7 Cet",4.44,"Cet"],"113881":["β Peg",2.44,"Peg"],"113963":["α Peg",2.49,"Peg"],"677":["α And",2.07,"And"],"1067":["γ Peg",2.83,"Peg"],"7710":["104 Psc",6.74,"Psc"],"8327":["HD 10917",8.83,"Ari"],"7456":["HD 9817",6.78,"Psc"],"6915":["96 Psc",6.54,"Psc"],"111449":["υ Aqr",5.21,"Aqr"],"3760":["62 Psc",5.92,"Psc"],"117245":["19 Psc",4.95,"Psc"]}; // HIP -> [designación SIMBAD, Vmag Hipparcos, constelación IAU/Delporte donde cae]
+const CULTURAS_METODO3 = {"griego":{"aqFin":344.363,"psIni":19.494,"medio":1.928,"anio":1862.0,"aqHips":[111497,114855],"psHips":[4906,5737]},"arabe":{"aqFin":341.523,"psIni":19.494,"medio":0.508,"anio":1963.6,"aqHips":[111497,112961],"psHips":[4906,5737]},"babilonio":{"aqFin":353.751,"psIni":19.001,"medio":6.376,"anio":1543.3,"aqHips":[110672,118209],"psHips":[7007,4906]},"hindu":{"aqFin":341.464,"psIni":28.815,"medio":5.14,"anio":1631.9,"aqHips":[110960,112961],"psHips":[7710,8327]},"moderno":{"aqFin":341.523,"psIni":19.001,"medio":0.262,"anio":1981.3,"aqHips":[111497,112961],"psHips":[7007,4906]}}; // Método 3: último cruce de Acuario, primer cruce de Piscis y punto medio del hueco (longitud eclíptica J2000) + año en que el punto vernal lo alcanza
 const CULTURAS_CIELO_COLOR = { griego: 0xe8b96a, arabe: 0x6ed3c8, babilonio: 0xd97ad9, hindu: 0x8fd15a, moderno: 0x7ea8ff };
 let _threeCulturaGroup = null;
 
@@ -9266,45 +9447,205 @@ function _culturaSpan(lons) {
  for (let i = 0; i < n; i++) { const gap = ((s[(i + 1) % n] - s[i]) + 360) % 360 || 360; if (gap > maxGap) maxGap = gap; }
  return 360 - maxGap;
 }
+function _T(k, es) { const d = window.I18N && window.I18N[document.documentElement.lang]; return (d && d[k]) || es; }
+const _OBLIC_J2000 = 23.4392911;
+// Ecliptica J2000 (lon, lat en grados) -> AR/Dec (grados)
+function _eclLatLonToEq(lonDeg, latDeg) {
+ const l = THREE.MathUtils.degToRad(lonDeg), b = THREE.MathUtils.degToRad(latDeg), e = THREE.MathUtils.degToRad(_OBLIC_J2000);
+ const sd = Math.sin(b) * Math.cos(e) + Math.cos(b) * Math.sin(e) * Math.sin(l);
+ const dec = Math.asin(Math.max(-1, Math.min(1, sd)));
+ const ra = Math.atan2(Math.sin(l) * Math.cos(b) * Math.cos(e) - Math.sin(b) * Math.sin(e), Math.cos(l) * Math.cos(b));
+ return [(THREE.MathUtils.radToDeg(ra) + 360) % 360, THREE.MathUtils.radToDeg(dec)];
+}
+// AR/Dec (grados) -> ecliptica J2000 (lon, lat en grados)
+function _eqToEclLatLon(raDeg, decDeg) {
+ const a = THREE.MathUtils.degToRad(raDeg), d = THREE.MathUtils.degToRad(decDeg), e = THREE.MathUtils.degToRad(_OBLIC_J2000);
+ const lat = Math.asin(Math.max(-1, Math.min(1, Math.sin(d) * Math.cos(e) - Math.cos(d) * Math.sin(e) * Math.sin(a))));
+ const lon = Math.atan2(Math.sin(a) * Math.cos(e) + Math.tan(d) * Math.sin(e), Math.cos(a));
+ return [(THREE.MathUtils.radToDeg(lon) + 360) % 360, THREE.MathUtils.radToDeg(lat)];
+}
+function _raDecToVec(raDeg, decDeg, R) {
+ const ra = THREE.MathUtils.degToRad(raDeg), dec = THREE.MathUtils.degToRad(decDeg);
+ return new THREE.Vector3(R * Math.cos(dec) * Math.cos(ra), R * Math.sin(dec), R * Math.cos(dec) * Math.sin(ra));
+}
+function _fmtDMS(deg) {
+ const s = Math.abs(deg) * 3600; const d = Math.floor(s / 3600), m = Math.floor((s - d * 3600) / 60), sec = s - d * 3600 - m * 60;
+ return (deg < 0 ? '-' : '') + d + '° ' + String(m).padStart(2, '0') + '′ ' + sec.toFixed(1).padStart(4, '0') + '″';
+}
+// Figuras (Psc/Aqr) en las que aparece cada estrella, por cultura -- se calcula una vez desde CULTURAS_CIELO
+let _culturaMembresia = null;
+function _culturaMembresiaCalc() {
+ if (_culturaMembresia) return _culturaMembresia;
+ const m = {};
+ CULTURAS_CIELO_ORDEN.forEach(function (k) {
+ ['Psc', 'Aqr'].forEach(function (grp) {
+ (CULTURAS_CIELO[k].lines[grp] || []).forEach(function (line) { line.forEach(function (p) { (m[p[0]] = m[p[0]] || {})[k] = (m[p[0]] && m[p[0]][k] ? m[p[0]][k] + '+' : '') + grp; }); });
+ });
+ });
+ _culturaMembresia = m; return m;
+}
+const _NOMBRE_FIG = { Psc: 'Piscis', Aqr: 'Acuario' };
+const _NOMBRE_CULT = { griego: 'Griego', arabe: 'Árabe', babilonio: 'Babilonio', hindu: 'Hindú', moderno: 'Occidental moderno' };
+function _culturaEstrellaInfoHTML(hip, ra, dec) {
+ const e = CULTURAS_ESTRELLAS[hip] || ['HIP ' + hip, null, '?'];
+ const [lon, lat] = _eqToEclLatLon(ra, dec);
+ const mem = _culturaMembresiaCalc()[hip] || {};
+ const listaC = Object.keys(mem).map(function (k) { return _T('cult_' + k, _NOMBRE_CULT[k]) + ' (' + mem[k].split('+').map(function (g) { return _T('cult_fig_' + g, _NOMBRE_FIG[g]); }).join('+') + ')'; }).join(' · ');
+ const con = e[2], dentro = (con === 'Psc' || con === 'Aqr');
+ return `<b>${e[0]}</b> <span class="small">(HIP ${hip})</span><br>V = ${e[1] !== null ? e[1].toFixed(2) : '—'}<br>AR ${(ra / 15).toFixed(3)}h (${ra.toFixed(3)}°) · Dec ${dec >= 0 ? '+' : ''}${dec.toFixed(3)}°<br>λ ${lon.toFixed(3)}° · β ${lat >= 0 ? '+' : ''}${lat.toFixed(3)}°<br>${_T('cult_delporte', 'Constelación IAU/Delporte')}: <b>${con}</b>${dentro ? '' : ' <span style="color:#ff8a80">⚠ ' + _T('cult_fuera', 'fuera de Piscis/Acuario') + '</span>'}<br><span class="small">${_T('cult_usada_por', 'Usada por')}: ${listaC || '—'}</span>`;
+}
+let _threeMedibleExtra = null;   // eclíptica/ecuador/meridianos del usuario (medibles)
+let _threeVernalGroup = null;    // punto vernal J2000 + punto vernal de la época elegida
+function _culturaColorHex(c) { return '#' + c.toString(16).padStart(6, '0'); }
+function _arcoMeridianoEcl(lonDeg, R, latMin, latMax, paso) {
+ const v = [];
+ for (let b = latMin; b <= latMax + 1e-9; b += paso) { const [ra, dec] = _eclLatLonToEq(lonDeg, b); v.push(_raDecToVec(ra, dec, R)); }
+ return v;
+}
+function _nuevaLineaMedible(vec, color, label, opts) {
+ opts = opts || {};
+ const mat = opts.dashed ? new THREE.LineDashedMaterial({ color: color, dashSize: 1.2, gapSize: 0.8, transparent: true, opacity: opts.opacity || 0.95 })
+ : new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: opts.opacity || 0.95 });
+ const ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints(vec), mat);
+ if (opts.dashed) ln.computeLineDistances();
+ ln.userData.medibleLabel = label;
+ if (opts.hips) ln.userData.hips = opts.hips;
+ return ln;
+}
 function threeDibujarCulturasCielo(seleccion) {
  if (!_threeScene) return;
  if (_threeCulturaGroup) { _threeScene.remove(_threeCulturaGroup); _threeCulturaGroup = null; }
+ _threeHoverables = _threeHoverables.filter(h => !h.esCultura);
  const panel = document.getElementById('culturas_cielo_info');
- if (!seleccion || seleccion === 'ninguno') { if (panel) panel.innerHTML = ''; return; }
+ if (!seleccion || seleccion === 'ninguno') { if (panel) panel.innerHTML = ''; threeVernalEpocaActualizar(); return; }
  const R = 78; // mismo radio que las fronteras IAU/Delporte -- directamente comparables en tamaño visual
  const claves = seleccion === 'todas' ? CULTURAS_CIELO_ORDEN : [seleccion];
+ const chkNom = document.getElementById('cult_nombres'), chkM3 = document.getElementById('cult_metodo3');
+ const verNombres = chkNom ? chkNom.checked && seleccion !== 'todas' : seleccion !== 'todas';
+ const verM3 = chkM3 ? chkM3.checked : true;
  const g = new THREE.Group();
  let infoHTML = '';
+ const yaEstrella = {}; // evita duplicar esferas cuando una estrella aparece en varias líneas
  claves.forEach(function (key) {
  const cult = CULTURAS_CIELO[key];
  if (!cult) return;
  const color = seleccion === 'todas' ? CULTURAS_CIELO_COLOR[key] : 0xffcc55;
- const extents = {};
+ const extents = {}, nFuera = { Psc: 0, Aqr: 0 }, nEst = { Psc: 0, Aqr: 0 };
+ const estrellasVistas = {};
  ['Psc', 'Aqr'].forEach(function (grp) {
  const lons = [];
+ const colFig = seleccion === 'todas' ? color : (grp === 'Psc' ? 0x2ecc71 : 0x4aa3ff);
  (cult.lines[grp] || []).forEach(function (line) {
  const v = line.map(function (p) {
- const ra = THREE.MathUtils.degToRad(p[1]), dec = THREE.MathUtils.degToRad(p[2]);
  lons.push(_culturaEclLon(p[1], p[2]));
- return new THREE.Vector3(R * Math.cos(dec) * Math.cos(ra), R * Math.sin(dec), R * Math.cos(dec) * Math.sin(ra));
+ return _raDecToVec(p[1], p[2], R);
  });
- const geo = new THREE.BufferGeometry().setFromPoints(v);
- g.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: 0.9 })));
+ const ln = _nuevaLineaMedible(v, seleccion === 'todas' ? color : colFig, `${_T('cult_' + key, _NOMBRE_CULT[key])} — ${_T('cult_fig_' + grp, _NOMBRE_FIG[grp])}`, { opacity: 0.9, hips: line.map(p => p[0]) });
+ g.add(ln);
+ line.forEach(function (p) {
+ const hip = p[0], marca = grp + hip;
+ if (estrellasVistas[marca]) return; estrellasVistas[marca] = true; nEst[grp]++;
+ const e = CULTURAS_ESTRELLAS[hip] || ['HIP ' + hip, 5, '?'];
+ const dentro = e[2] === grp;
+ if (!dentro) nFuera[grp]++;
+ const pos = _raDecToVec(p[1], p[2], R);
+ const tam = 0.28 + 0.13 * Math.max(0, 6.4 - (e[1] === null ? 5.5 : e[1]));
+ const mesh = new THREE.Mesh(new THREE.SphereGeometry(tam, 10, 10), new THREE.MeshBasicMaterial({ color: seleccion === 'todas' ? color : colFig }));
+ mesh.position.copy(pos); g.add(mesh);
+ _threeHoverables.push({ mesh: mesh, esCultura: true, info: _culturaEstrellaInfoHTML(hip, p[1], p[2]) });
+ if (!dentro) {
+ const ring = new THREE.Mesh(new THREE.RingGeometry(tam * 1.5, tam * 2.1, 20), new THREE.MeshBasicMaterial({ color: 0xff4d4d, side: THREE.DoubleSide }));
+ ring.position.copy(pos); ring.lookAt(0, 0, 0); g.add(ring);
+ }
+ if (verNombres && !yaEstrella[hip + grp]) {
+ yaEstrella[hip + grp] = true;
+ const lab = threeMakeLabel(e[0], dentro ? _culturaColorHex(colFig) : '#ff8a80');
+ lab.scale.set(5, 1.25, 1); lab.position.copy(pos.clone().multiplyScalar(1.0)).add(new THREE.Vector3(0, tam + 1.1, 0));
+ g.add(lab);
+ }
+ });
  });
  extents[grp] = lons.length > 1 ? _culturaSpan(lons) : 0;
  });
+ // Método 3: meridianos eclípticos del último cruce de Acuario, primer cruce de Piscis y punto medio del hueco
+ const m3 = CULTURAS_METODO3[key];
+ if (verM3 && m3) {
+ const nom = _T('cult_' + key, _NOMBRE_CULT[key]);
+ [[m3.aqFin, 0x4aa3ff, _T('m3_aq', 'último cruce de Acuario'), false], [m3.psIni, 0x2ecc71, _T('m3_ps', 'primer cruce de Piscis'), false], [m3.medio, 0xff5555, _T('m3_medio', 'punto medio del hueco (Método 3)'), true]].forEach(function (t) {
+ g.add(_nuevaLineaMedible(_arcoMeridianoEcl(t[0], R * 1.002, -34, 34, 1), t[1], `${nom}: ${t[2]} λ=${t[0].toFixed(2)}°`, { dashed: t[3] }));
+ const [ra0, dec0] = _eclLatLonToEq(t[0], 0);
+ const mk = new THREE.Mesh(new THREE.SphereGeometry(t[3] ? 0.75 : 0.5, 12, 12), new THREE.MeshBasicMaterial({ color: t[1] }));
+ mk.position.copy(_raDecToVec(ra0, dec0, R)); g.add(mk);
+ _threeHoverables.push({ mesh: mk, esCultura: true, info: `<b>${nom}: ${t[2]}</b><br>λ = ${t[0].toFixed(3)}° (eclíptica J2000)<br>AR ${(ra0 / 15).toFixed(3)}h · Dec ${dec0 >= 0 ? '+' : ''}${dec0.toFixed(3)}°${t[3] ? '<br>' + _T('m3_anio', 'El punto vernal lo alcanza hacia el año') + ' <b>≈' + Math.round(m3.anio) + '</b>' : ''}` });
+ if (t[3] && verNombres) {
+ const lab = threeMakeLabel('★ ' + nom + ' ≈' + Math.round(m3.anio), '#ff8a80'); lab.scale.set(9, 2.2, 1);
+ lab.position.copy(_raDecToVec(ra0, dec0, R)).add(new THREE.Vector3(0, -5, 0)); g.add(lab);
+ }
+ });
+ }
  const hex = '#' + color.toString(16).padStart(6, '0');
- infoHTML += `<div style="margin-bottom:6px"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${hex};margin-right:6px"></span><b>${cult.label}</b> — Piscis: ${extents.Psc.toFixed(1)}° · Acuario: ${extents.Aqr.toFixed(1)}° <span class="small muted">(extensión eclíptica de la figura)</span></div>`;
+ const m3txt = m3 ? ` · ${_T('m3_hueco', 'hueco')} ${((m3.psIni - m3.aqFin + 360) % 360).toFixed(1)}° · ${_T('m3_medio_s', 'medio')} λ ${m3.medio.toFixed(2)}° → ≈${Math.round(m3.anio)}` : '';
+ infoHTML += `<div style="margin-bottom:6px"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${hex};margin-right:6px"></span><b>${cult.label}</b> — ${_T('cult_fig_Psc', 'Piscis')}: ${extents.Psc.toFixed(1)}° (${nEst.Psc} ★, ${nFuera.Psc} ${_T('cult_fuera_s', 'fuera de Delporte')}) · ${_T('cult_fig_Aqr', 'Acuario')}: ${extents.Aqr.toFixed(1)}° (${nEst.Aqr} ★, ${nFuera.Aqr} ${_T('cult_fuera_s', 'fuera de Delporte')})${m3txt} <span class="small muted">(${_T('cult_ext_nota', 'extensión eclíptica de la figura')})</span></div>`;
  });
  _threeScene.add(g);
  _threeCulturaGroup = g;
  if (panel) panel.innerHTML = infoHTML || '<span class="small muted">Sin datos para esta selección.</span>';
+ threeVernalEpocaActualizar();
+}
+// Punto vernal J2000 (la línea roja que termina en +X) y punto vernal de la ÉPOCA elegida (misma casilla
+// que las fronteras precesadas): ambos son objetos medibles y con información al pasar el mouse.
+function threeVernalEpocaActualizar() {
+ if (!_threeScene) return;
+ if (_threeVernalGroup) { _threeScene.remove(_threeVernalGroup); _threeVernalGroup = null; }
+ _threeHoverables = _threeHoverables.filter(h => !h.esVernal);
+ const hayFronteras = !!(_threeConstBoundsGroup), hayCult = !!(_threeCulturaGroup);
+ if (_threeMedirActivo) threeMedirExtrasAsegurar();
+ if (!hayFronteras && !hayCult && !_threeMedirActivo) return;
+ const R = 78;
+ const g = new THREE.Group();
+ const epInput = document.getElementById('const_limites_epoca');
+ const epoca = epInput ? (parseFloat(epInput.value) || 2000) : 2000;
+ // J2000
+ const v0 = new THREE.Mesh(new THREE.SphereGeometry(0.7, 12, 12), new THREE.MeshBasicMaterial({ color: 0xc0392b }));
+ v0.position.set(R, 0, 0); g.add(v0);
+ _threeHoverables.push({ mesh: v0, esVernal: true, info: `<b>${_T('vern_j2000', 'Punto vernal J2000 (0° Aries) — la línea roja')}</b><br>AR 0° · Dec 0° · λ 0°<br>${_T('vern_j2000_n', 'Dirección fija del equinoccio de marzo del año 2000; hoy cae dentro de Piscis.')}` });
+ // Época elegida
+ const [raV, decV] = precessRaDecNewcomb(0, 0, epoca, 2000.0);
+ const vE = new THREE.Mesh(new THREE.SphereGeometry(0.95, 14, 14), new THREE.MeshBasicMaterial({ color: 0xffd23f }));
+ vE.position.copy(_raDecToVec(raV, decV, R)); g.add(vE);
+ const [lonV, latV] = _eqToEclLatLon(raV, decV);
+ _threeHoverables.push({ mesh: vE, esVernal: true, info: `<b>${_T('vern_epoca', 'Punto vernal de la época')} ${epoca}</b><br>AR ${(raV / 15).toFixed(4)}h (${raV.toFixed(4)}°) · Dec ${decV >= 0 ? '+' : ''}${decV.toFixed(4)}°<br>λ (J2000) = ${lonV.toFixed(4)}° · β = ${latV >= 0 ? '+' : ''}${latV.toFixed(4)}°<br><span class="small">${_T('vern_epoca_n', 'Precesión rigurosa de Newcomb; medible contra estrellas y fronteras.')}</span>` });
+ const lab = threeMakeLabel('★ ' + _T('vern_epoca_s', 'Punto vernal') + ' ' + (Math.abs(epoca - 2000) < 0.5 ? 'J2000' : epoca), '#ffd23f'); lab.scale.set(9, 2.2, 1);
+ lab.position.copy(_raDecToVec(raV, decV, R)).add(new THREE.Vector3(0, 3.2, 0)); g.add(lab);
+ _threeScene.add(g); _threeVernalGroup = g;
 }
 function threeCulturasCieloChanged() {
  const sel = document.getElementById('culturas_cielo_sel');
  const val = sel ? sel.value : 'ninguno';
  _railCulturaEstado = val; // mantiene el ícono del riel sincronizado con este select
  threeDibujarCulturasCielo(val);
+}
+// Meridianos eclípticos del usuario (λ elegida) + eclíptica y ecuador como líneas medibles
+function threeMedirExtrasAsegurar() {
+ if (!_threeScene) return;
+ if (!_threeMedibleExtra || _threeMedibleExtra.parent !== _threeScene) {
+ _threeMedibleExtra = new THREE.Group(); _threeScene.add(_threeMedibleExtra);
+ const ecl = [], ecu = [];
+ for (let l = 0; l <= 360; l += 1) { const [ra, dec] = _eclLatLonToEq(l, 0); ecl.push(_raDecToVec(ra, dec, 78.2)); ecu.push(_raDecToVec(l, 0, 78.2)); }
+ _threeMedibleExtra.add(_nuevaLineaMedible(ecl, 0x2A9D6B, _T('md_eclip', 'Eclíptica (β = 0°)'), { opacity: 0.8 }));
+ _threeMedibleExtra.add(_nuevaLineaMedible(ecu, 0x2A6BD8, _T('md_ecuador', 'Ecuador celeste (Dec = 0°)'), { opacity: 0.7 }));
+ }
+}
+function threeMeridianoAgregar() {
+ threeMedirExtrasAsegurar();
+ const inp = document.getElementById('meridiano_lon'); const lam = parseFloat(inp && inp.value);
+ if (isNaN(lam)) return;
+ _threeMedibleExtra.add(_nuevaLineaMedible(_arcoMeridianoEcl(lam, 78.3, -60, 60, 1), 0xff9f43, `${_T('md_meridiano', 'Meridiano eclíptico')} λ=${lam.toFixed(3)}°`, { dashed: true }));
+}
+function threeMeridianosQuitar() {
+ if (!_threeMedibleExtra) return;
+ _threeMedibleExtra.children.filter(c => c.isLine && c.userData.medibleLabel && c.userData.medibleLabel.indexOf('λ=') >= 0 && c.material.isLineDashedMaterial)
+ .forEach(c => _threeMedibleExtra.remove(c));
 }
 
 function threeLimitesChanged() {
@@ -9313,6 +9654,7 @@ function threeLimitesChanged() {
  const bar = document.getElementById('const_epoca_bar');
  if (bar) bar.style.display = (sel && sel.value !== 'ninguno') ? 'flex' : 'none';
  threeActualizarSeparacionVernal();
+ threeVernalEpocaActualizar();
 }
 
 // ═══ Fecha exacta <-> año fraccionario, y separación angular del punto
