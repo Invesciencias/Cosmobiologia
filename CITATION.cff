@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "Si usas este software o sus textos, cítalo así."
+title: "Cosmobiología — plataforma de análisis estadístico falseable"
+type: software
+authors:
+  - family-names: "Serrano Suárez"
+    given-names: "David Auresy"
+  - name: "Fundación Invesciencias"
+repository-code: "https://github.com/Invesciencias/Cosmobiologia"
+url: "https://invesciencias.github.io/Cosmobiologia/"
+license: MIT
+date-released: "2026-10-30"
+keywords: ["cosmobiología", "estadística", "modelo nulo", "replicación", "falseabilidad"]
