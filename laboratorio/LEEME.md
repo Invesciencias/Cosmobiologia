@@ -16,14 +16,14 @@ Cabecera con el logo nuevo de Invesciencias dentro de un huevo blanco sobre la b
 
 ## Versión 0.5: pisos de detección y congruencia
 
-- **Explicación de los pisos de detección** dentro de la página (botón «Pisos de detección» en la cabecera, y enlaces desde la Compuerta 1 y la 3a): qué es un piso, las dos escalas (RR para un rasgo «sí o no»; % de variación de la tasa para una variable continua), los dos umbrales D_A (barrido) y D_B (una prueba) con sus constantes, una calculadora con gráfico y las reglas de uso. Remite a `piso_deteccion.py`, `test_piso_deteccion.py` y `NOTA_PISO_DETECCION.md` del repositorio.
+- **Explicación de los pisos de detección** dentro de la página (botón «Pisos de detección» en la cabecera, y enlaces desde la Compuerta 1 y la 3a): qué es un piso, las dos escalas (RR para un rasgo «sí o no»; % de variación de la tasa para una variable continua), los dos umbrales D_A (barrido) y D_B (una prueba) con sus constantes, una calculadora con gráfico y las reglas de uso. Remite a `codigo/piso_deteccion.py`, `codigo/test_piso_deteccion.py` y `docs/NOTA_PISO_DETECCION.md` del repositorio.
 - **Congruencia comprobada.** Los pisos de la página coinciden con los de `piso_deteccion.py` (diferencia máxima 0 en nueve combinaciones de n y f) y la Compuerta 1 reproduce los valores del proyecto (marea y sismos F = 3,17; estacionalidad F = 0,066; marea y huracanes F ≈ 10,9 con la curva, 12,3 en el proyecto, que incluye el error de lugar).
 - **Prueba bilateral.** Si en el paso 1 eliges «Bilateral», la Compuerta 1 sube el piso un 12,7 % (2,8016 en lugar de 2,4866) y usa 1,96 como umbral de significación. Con eso el ejemplo de marea y sismos pasa de «con costo» (F = 3,17) a «no analizable en principio» (F = 4,02, por encima del tope de 4). `piso_deteccion.py` es solo unilateral.
 - **Unidad de dependencia.** El paso 2 respeta lo elegido en el paso 1: «cada evento es independiente» fuerza el tamaño efectivo igual al número de eventos, y avisa si elegiste «columna» sin indicar cuál o si indicaste una columna con «secuencia».
 
 ## Versión 0.4: conexión con la plataforma y el repositorio
 
-- **Conjuntos del proyecto.** En el paso 2 hay una lista para cargar datos directamente del repositorio de GitHub. Hoy trae `eventos_gcmt_mecanismo.csv` y `eventos_gcmt_marea.csv` (6.035 sismos GCMT, 1976–2026). Al cargarlos se rellena la ficha de datos y aparece un **aviso de uso**: son el conjunto de descubrimiento de varios hallazgos del proyecto y no sirven para replicarlos. El registro anota qué conjunto se usó (`conjunto_proyecto`).
+- **Conjuntos del proyecto.** En el paso 2 hay una lista para cargar datos directamente del repositorio de GitHub. Hoy trae `datos/eventos_gcmt_mecanismo.csv` y `datos/eventos_gcmt_marea.csv` (6.035 sismos GCMT, 1976–2026). Al cargarlos se rellena la ficha de datos y aparece un **aviso de uso**: son el conjunto de descubrimiento de varios hallazgos del proyecto y no sirven para replicarlos. El registro anota qué conjunto se usó (`conjunto_proyecto`).
 - **Para añadir más conjuntos:** sube el CSV a la raíz del repositorio y añade una entrada a la lista `DATASETS` del script de `index.html` (archivo, título, aviso y ficha). Revisa antes su licencia: Global CMT y USGS permiten su uso con cita; otras fuentes, como EM-DAT, tienen condiciones propias.
 - **Tormenta desde el identificador.** Si el archivo trae `event_id` con el formato de HURDAT2 (`nhc_AL011900_…`), el Laboratorio ofrece usar la tormenta como unidad de dependencia.
 - **Formato compatible.** Cualquier `eventos_*.csv` de la plataforma (columnas `datetime_utc`, `latitude`, `longitude`) se puede cargar como archivo.
@@ -108,3 +108,6 @@ Solo se publica el registro que la persona decide enviar: hipótesis, resumen de
 - Cuaderno de Colab para la Compuerta 2 y traducción al inglés.
 - Pruebas automáticas contra los casos publicados (marea y sismos, marea y huracanes, estacionalidad, Mercurio–Urano, R3).
 - Revisar las políticas de la base Supabase del explorador: permite insertar y modificar eventos a cualquiera.
+
+---
+Desarrollo: David Auresy Serrano Suárez · Fundación Invesciencias. Código MIT, textos CC BY 4.0 (ver `LICENCIAS.md` en la raíz del repositorio).

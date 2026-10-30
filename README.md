@@ -62,7 +62,7 @@ Antes que cualquier resultado, la pregunta es **cuál es el efecto más pequeño
 | **RR = 1,02 (escala de marea, Tanaka)** | **642.649** ✗ fuera de alcance |
 
 **Dos pisos, según el diseño.** La fórmula de arriba es el piso para un **barrido de ~400 rasgos** (D_A, umbral z = 3,88). Para **una sola prueba fijada de antemano** (unilateral, α = 0,05, potencia 80 %) el piso es D_B: `RR_min = 1 + 2,4866·√((1−f)/(n·f))`. Con D_B, el efecto RR = 1,02 con f = 5 % necesitaría unos 293.700 eventos en lugar de 642.649: sigue fuera de alcance. Para prueba bilateral el factor sube a 2,80 (1,96 + 0,84).
-Código y pruebas: [`piso_deteccion.py`](piso_deteccion.py) · [`test_piso_deteccion.py`](test_piso_deteccion.py) (14 pruebas) · [`NOTA_PISO_DETECCION.md`](NOTA_PISO_DETECCION.md). El Laboratorio incluye una explicación y una calculadora de los pisos.
+Código y pruebas: [`piso_deteccion.py`](codigo/piso_deteccion.py) · [`test_piso_deteccion.py`](codigo/test_piso_deteccion.py) (14 pruebas) · [`NOTA_PISO_DETECCION.md`](docs/NOTA_PISO_DETECCION.md). El Laboratorio incluye una explicación y una calculadora de los pisos.
 
 **Consecuencia práctica:** los efectos sutiles (mareas, ~1-2%) no se pueden probar contando eventos discretos, por muchos que se acumulen. Requieren análisis espectral sobre series continuas, donde la potencia viene de la longitud de la serie.
 
@@ -74,8 +74,8 @@ Código y pruebas: [`piso_deteccion.py`](piso_deteccion.py) · [`test_piso_detec
 
 ```bash
 pip install skyfield pandas numpy requests python-dateutil
-python generar_data_js.py     # genera data.js
-python compute_features.py    # genera features.js
+python codigo/generar_data_js.py     # genera data.js
+python codigo/compute_features.py    # genera features.js
 ```
 Luego abre `explorador.html` con doble clic (la portada es `index.html`) — funciona sin servidor.
 
@@ -173,67 +173,40 @@ Distribución obtenida (Frohlich 1992): inversa 43,9% · desgarre 22,9% · norma
 ## Estructura del repositorio
 
 ```
-cosmobiologia/
-├── index.html                    # Portada (una pantalla, ES/EN/FR)
-├── explorador.html               # Explorador completo (antes index.html)
-├── evaluacion.html               # Cuestionario antes y después del curso
-├── translations.js               # Textos ES/EN/FR del explorador
-├── logo-invesciencias.png
+Cosmobiologia/
+├── index.html                  # Portada (una pantalla, ES/EN/FR)
+├── explorador.html             # Explorador completo
+├── evaluacion.html             # Cuestionario antes y después del curso
+├── data.js · features.js       # Datos embebidos que lee el explorador (se generan con codigo/)
+├── translations.js             # Textos ES/EN/FR del explorador
+├── favicon* · apple-touch-icon.png · logo-invesciencias.png
+├── README.md · LICENSE · LICENSE-CC-BY-4.0.txt · LICENCIAS.md · CITATION.cff
 │
-├── LABORATORIO
-│   ├── laboratorio/index.html    # Laboratorio de las tres compuertas
-│   ├── laboratorio/panel.html    # Panel del curso (lee issues con la etiqueta «registro»)
-│   ├── laboratorio/LEEME.md      # Cómo funciona y cómo se publica
-│   └── .github/ISSUE_TEMPLATE/registro-hipotesis.yml
+├── laboratorio/                # Laboratorio de las tres compuertas
+│   ├── index.html · panel.html · LEEME.md
 │
-├── PISOS DE DETECCIÓN
-│   ├── piso_deteccion.py         # D_A, D_B, razón de exceso, MDE
-│   ├── test_piso_deteccion.py    # 14 pruebas
-│   ├── NOTA_PISO_DETECCION.md
-│   ├── k2_step1_pisos.py
-│   └── K2_pisos_exactos.csv
+├── .github/ISSUE_TEMPLATE/     # Formulario de registro de hipótesis
 │
-├── MOTOR ASTRONÓMICO
-│   ├── charts.py                 # Cartas de eventos (Skyfield + JPL DE421)
-│   ├── precession_engine.py      # Precesión IAU 2006 + nutación IAU 2000A
-│   ├── directions.py             # Direcciones primarias (ARMC)
-│   ├── duplas.py                 # Duplas y tripletas (TCC)
-│   └── cycloidal_engine.py       # Geodinámica cicloidal de Llona
+├── codigo/                     # Todo el código Python (ver codigo/README.md)
+│   ├── nullmodel.py                                               (estadística)
+│   ├── piso_deteccion.py · test_piso_deteccion.py · k2_step1_pisos.py  (pisos de detección)
+│   ├── charts.py · marea_tensor.py · mecanismo_focal.py · decluster.py  (astronomía y geofísica)
+│   ├── topocentric_polich_page_3d.py                              (visualización)
+│   ├── descargar_*.py · convertir_sismos.py                       (descarga y conversión)
+│   └── generar_data_js.py · compute_features.py                   (generación web)
 │
-├── GEOFÍSICA
-│   ├── mecanismo_focal.py        # Tensor de momento GCMT → tipo de falla (Frohlich 1992)
-│   ├── marea_tensor.py           # Esfuerzo de Coulomb mareal sobre el plano de falla
-│   └── decluster.py              # Declusterización Gardner-Knopoff
+├── datos/                      # Datos de entrada que lee el Laboratorio y el explorador
+│   ├── eventos_gcmt_mecanismo.csv · eventos_gcmt_marea.csv
+│   ├── chess_games/ · oklahoma_game_data.json
 │
-├── ESTADÍSTICA
-│   ├── nullmodel.py              # Modelo nulo emparejado + FDR + split validation
-│   ├── mixed_models.py           # LMM / GLMM
-│   ├── estratificar_sismos.py    # Análisis por subgrupos
-│   ├── epidemiology.py           # Módulo epidemiológico
-│   └── interpretacion_diversificada.py
+├── resultados/                 # Tablas de resultados (z, RR, q) y pisos exactos
 │
-├── VISUALIZACIÓN
-│   └── topocentric_polich_page_3d.py   # Esfera topocéntrica Polich-Page (Plotly)
-│
-├── DESCARGA Y CONVERSIÓN
-│   ├── descargar_sismos_masivo.py, descargar_gcmt.py, descargar_solar.py,
-│   │   descargar_huracanes.py, descargar_eonet.py, descargar_volcanes.py,
-│   │   descargar_sismos_impacto.py
-│   └── convertir_sismos.py, convertir_emdat.py, convertir_inundaciones.py,
-│       convertir_gauquelin.py
-│
-├── GENERACIÓN WEB
-│   ├── generar_data_js.py        # → data.js
-│   └── compute_features.py       # → features.js
-│
-└── DOCUMENTACIÓN
-    ├── README.md                 # Este archivo
-    ├── README_METODOLOGIA.md     # Decisiones técnicas detalladas
-    ├── COMPARABILIDAD_EVENTOS.md # Qué rasgos valen para cada dominio
-    ├── FUENTES_DATOS.md          # Guía de fuentes por dominio
-    ├── OSF_PREREGISTRO.md        # Plantillas de pre-registro
-    └── SETUP_SUPABASE.md         # Nube compartida
+└── docs/                       # Documentación
+    ├── README_METODOLOGIA.md · FUENTES_DATOS.md · NOTA_PISO_DETECCION.md
+    ├── REPORTE_INVESCIENCIAS.md · SETUP_SUPABASE.md · LEEME.txt
 ```
+
+**Cómo ejecutar el código:** desde la **carpeta raíz**, con `python codigo/nombre.py`. Los scripts leen y escriben en la carpeta desde donde se ejecutan (por ejemplo `data.js` y `features.js` quedan en la raíz, donde los espera el explorador).
 
 `data.js`, `features.js`, `eventos.csv` y `de421.bsp` **no están en el repositorio** — se generan localmente.
 
@@ -265,22 +238,23 @@ Marco del artículo publicado, aplicado también a los resultados propios:
 
 ```bash
 # 1. Mecanismo focal desde GCMT
-python mecanismo_focal.py archivo.ndk        # autoverificación incluida
+python codigo/mecanismo_focal.py archivo.ndk        # autoverificación incluida
 
 # 2. Modelo nulo estratificado por tipo de falla
 python -c "
+import sys; sys.path.insert(0, 'codigo')
 import pandas as pd, nullmodel
-df = pd.read_csv('eventos_gcmt_mecanismo.csv')
+df = pd.read_csv('datos/eventos_gcmt_mecanismo.csv')
 for t in ['inversa','normal','desgarre']:
     r = nullmodel.run_null_test(df[df.tipo_falla==t], k=200, verbose=False)
-    r.to_csv(f'resultados_falla_{t}.csv', index=False)
+    r.to_csv(f'resultados/resultados_falla_{t}.csv', index=False)
 "
 
 # 3. Esfuerzo mareal de Coulomb (validaciones físicas en el módulo)
-python -c "import marea_tensor as mt; print(mt.serie_dcff_rapida(35,140,200,15,90,__import__('datetime').datetime(2011,3,11,5,46)))"
+python -c "import sys; sys.path.insert(0, 'codigo'); import marea_tensor as mt; print(mt.serie_dcff_rapida(35,140,200,15,90,__import__('datetime').datetime(2011,3,11,5,46)))"
 
 # 4. Esfera topocéntrica Polich-Page → HTML interactivo
-python topocentric_polich_page_3d.py
+python codigo/topocentric_polich_page_3d.py
 ```
 
 ---

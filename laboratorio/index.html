@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Laboratorio de las tres compuertas</title>
+<link rel="icon" type="image/png" sizes="64x64" href="../favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <meta name="description" content="Aprende a probar una hipótesis en tres compuertas: detectabilidad, evidencia corregida y replicación. Tus datos no salen de tu equipo.">
 <style>
 :root{
@@ -423,13 +427,14 @@ dialog dt{font-weight:700;margin-top:10px} dialog dd{margin:0 0 0 0;color:var(--
     </ol>
 
     <h3>6. Dónde está el código y qué reproduce</h3>
-    <p>El cálculo está en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/piso_deteccion.py" target="_blank" rel="noopener"><code>piso_deteccion.py</code></a> (solo librería estándar) con sus pruebas en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/test_piso_deteccion.py" target="_blank" rel="noopener"><code>test_piso_deteccion.py</code></a>, y la explicación escrita en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/NOTA_PISO_DETECCION.md" target="_blank" rel="noopener"><code>NOTA_PISO_DETECCION.md</code></a>. Esta página hace el mismo cálculo y da los mismos valores publicados:</p>
+    <p>El cálculo está en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/codigo/piso_deteccion.py" target="_blank" rel="noopener"><code>piso_deteccion.py</code></a> (solo librería estándar) con sus pruebas en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/codigo/test_piso_deteccion.py" target="_blank" rel="noopener"><code>test_piso_deteccion.py</code></a>, y la explicación escrita en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/docs/NOTA_PISO_DETECCION.md" target="_blank" rel="noopener"><code>NOTA_PISO_DETECCION.md</code></a>. Esta página hace el mismo cálculo y da los mismos valores publicados:</p>
     <div class="scroll"><table class="t"><tr><th>Caso</th><th>Valor</th></tr><tr><td>Réplica R1 (D<sub>B</sub>, n = 581, f = 0,0501)</td><td>1,449</td></tr><tr><td>Mercurio–Urano 1976–99 (D<sub>B</sub>, n = 2.731, f = 0,0463)</td><td>1,216</td></tr><tr><td>README (D<sub>A</sub>, n = 3.730, f = 5 %)</td><td>1,263</td></tr><tr><td>Marea y sismos, F (Compuerta 1)</td><td>3,17</td></tr><tr><td>Marea y huracanes, F (Compuerta 1)</td><td>12,3 en el proyecto; la página da una estimación aproximada</td></tr></table></div>
   </section>
 
   </div>
 </div>
 </main>
+<footer style="max-width:1060px;margin:0 auto;padding:14px 16px 28px;font-size:.85rem;color:#53696a;border-top:1px solid #d3e0db">Desarrollo: David Auresy Serrano Suárez · Fundación Invesciencias · Código MIT, textos CC BY 4.0</footer>
 
 <dialog id="glos"><h2>Glosario</h2><dl id="glosList"></dl><form method="dialog"><button class="btn" style="margin-top:12px">Cerrar</button></form></dialog>
 
@@ -904,12 +909,12 @@ $("dlDossier").addEventListener("click", ()=>{ const sp=spec(), g=S.g1, L=[]; co
 /* ------------------------------------------------------------------ v0.4: conjuntos del proyecto (GitHub) y tormenta desde event_id */
 function stormOf(s){ const m=String(s||"").match(/^nhc_([A-Z]{2}\d{6})_/); return m?m[1]:"?"; }
 const DATASETS = [
-  {id:"gcmt_mecanismo", file:"eventos_gcmt_mecanismo.csv", titulo:"Sismos GCMT con mecanismo, M ≥ 6, 1976–2026 (6.035)",
+  {id:"gcmt_mecanismo", file:"datos/eventos_gcmt_mecanismo.csv", titulo:"Sismos GCMT con mecanismo, M ≥ 6, 1976–2026 (6.035)",
    aviso:"Este es el conjunto de descubrimiento de varios hallazgos del proyecto (por ejemplo Júpiter en el Descendente, 1976–2026). Úsalo para practicar o para análisis nuevos, no para replicar esos hallazgos: sería reutilizar datos.",
-   ficha:{fichaFuente:"Global CMT (copia del repositorio Invesciencias/Cosmobiologia: eventos_gcmt_mecanismo.csv)", fichaLic:"Verifica las condiciones de uso de Global CMT (globalcmt.org). Cita: Dziewonski et al. 1981; Ekström et al. 2012.", fichaHora:"Tiempo del centroide, al segundo", fichaLugar:"Centroide; error de varios km", fichaCob:"M ≥ 6; enero de 1976 a abril de 2026", fichaArt:"Incluye réplicas; magnitud Mw de GCMT"}},
-  {id:"gcmt_marea", file:"eventos_gcmt_marea.csv", titulo:"Sismos GCMT preparados para la marea, M ≥ 6, 1976–2026 (6.035)",
+   ficha:{fichaFuente:"Global CMT (copia del repositorio Invesciencias/Cosmobiologia: datos/eventos_gcmt_mecanismo.csv)", fichaLic:"Verifica las condiciones de uso de Global CMT (globalcmt.org). Cita: Dziewonski et al. 1981; Ekström et al. 2012.", fichaHora:"Tiempo del centroide, al segundo", fichaLugar:"Centroide; error de varios km", fichaCob:"M ≥ 6; enero de 1976 a abril de 2026", fichaArt:"Incluye réplicas; magnitud Mw de GCMT"}},
+  {id:"gcmt_marea", file:"datos/eventos_gcmt_marea.csv", titulo:"Sismos GCMT preparados para la marea, M ≥ 6, 1976–2026 (6.035)",
    aviso:"Son los mismos 6.035 sismos del conjunto anterior. Aplica el mismo aviso: es el conjunto de descubrimiento de varios hallazgos del proyecto.",
-   ficha:{fichaFuente:"Global CMT (copia del repositorio Invesciencias/Cosmobiologia: eventos_gcmt_marea.csv)", fichaLic:"Verifica las condiciones de uso de Global CMT (globalcmt.org). Cita: Dziewonski et al. 1981; Ekström et al. 2012.", fichaHora:"Tiempo del centroide, al segundo", fichaLugar:"Centroide; error de varios km", fichaCob:"M ≥ 6; enero de 1976 a abril de 2026", fichaArt:"Incluye réplicas; magnitud Mw de GCMT"}}
+   ficha:{fichaFuente:"Global CMT (copia del repositorio Invesciencias/Cosmobiologia: datos/eventos_gcmt_marea.csv)", fichaLic:"Verifica las condiciones de uso de Global CMT (globalcmt.org). Cita: Dziewonski et al. 1981; Ekström et al. 2012.", fichaHora:"Tiempo del centroide, al segundo", fichaLugar:"Centroide; error de varios km", fichaCob:"M ≥ 6; enero de 1976 a abril de 2026", fichaArt:"Incluye réplicas; magnitud Mw de GCMT"}}
 ];
 $("projSel").innerHTML = '<option value="">(elige un conjunto)</option>' + DATASETS.map(d=>`<option value="${d.id}">${esc(d.titulo)}</option>`).join("");
 $("projLoad").addEventListener("click", async ()=>{ const d=DATASETS.find(x=>x.id===$("projSel").value); const note=$("projNote"); $("dataErr").textContent="";

@@ -4635,7 +4635,7 @@ function switchResultDomain(){
 }
 function loadResults(ev){const f=ev.target.files[0];if(f)Papa.parse(f,{header:true,dynamicTyping:true,skipEmptyLines:true,complete:r=>{results=r.data;afterLoad();}});}
 function tryAutoLoad(){
- fetch('resultados_estadisticos.csv').then(r=>r.ok?r.text():Promise.reject()).then(t=>{
+ fetch('resultados/resultados_estadisticos.csv').then(r=>r.ok?r.text():Promise.reject()).then(t=>{
  results=Papa.parse(t,{header:true,dynamicTyping:true,skipEmptyLines:true}).data;afterLoad();
  }).catch(()=>alert('No se pudo cargar automáticamente. Usa el botón de archivo (requiere servidor local).'));
 }
@@ -11808,7 +11808,7 @@ function ajLoadGame(idx){
  document.getElementById('aj_game_select').value = idx;
  document.getElementById('aj_board').innerHTML = '<p class="small muted">Cargando partida…</p>';
  if(AJ_TIMER){ clearInterval(AJ_TIMER); AJ_TIMER=null; }
- fetch('chess_games/'+meta.file).then(r=>r.json()).then(data=>{
+ fetch('datos/chess_games/'+meta.file).then(r=>r.json()).then(data=>{
   AJ_GAME = data;
   AJ_CHESS = new Chess();
   document.getElementById('aj_slider').max = data.moves.length;
@@ -12014,7 +12014,7 @@ let SI_TIMER = null;
 function sismosInit(){
  if(SI_GAME || document.getElementById('si_movelist').dataset.loading) return;
  document.getElementById('si_movelist').dataset.loading = '1';
- fetch('oklahoma_game_data.json').then(r=>r.json()).then(data=>{
+ fetch('datos/oklahoma_game_data.json').then(r=>r.json()).then(data=>{
   SI_GAME = data.events;
   document.getElementById('si_slider').max = SI_GAME.length - 1;
   const list = document.getElementById('si_movelist');

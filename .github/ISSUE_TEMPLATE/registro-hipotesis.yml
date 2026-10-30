@@ -1,0 +1,69 @@
+name: Registro de hipótesis (Laboratorio de las tres compuertas)
+description: Registra tu hipótesis y su recorrido por las compuertas. La fecha la pone GitHub y el registro es público.
+title: "[Registro] "
+labels: ["registro"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Este formulario normalmente se abre desde el **Laboratorio** (`laboratorio/index.html`), que ya rellena los campos.
+        **Solo se publica este registro**: tus datos no se suben. Evita incluir datos personales.
+  - type: dropdown
+    id: cohorte
+    attributes:
+      label: Grupo
+      options:
+        - Curso Invesciencias 2026
+        - Otro grupo o investigación externa
+    validations:
+      required: true
+  - type: dropdown
+    id: compuerta
+    attributes:
+      label: Dónde vas
+      options:
+        - Paso 0. Hipótesis fijada
+        - Compuerta 1. Detectabilidad
+        - Compuerta 2. Evidencia corregida
+        - Compuerta 3. Replicación
+        - Informe final
+    validations:
+      required: true
+  - type: input
+    id: veredicto
+    attributes:
+      label: Veredicto de la Compuerta 1
+      description: Por ejemplo, «Analizable con costo: muestra ×3,2».
+    validations:
+      required: false
+  - type: input
+    id: huella
+    attributes:
+      label: Huella SHA-256 del registro
+      description: La calcula el Laboratorio. Sirve para comprobar que el registro no cambió.
+    validations:
+      required: true
+  - type: textarea
+    id: registro_json
+    attributes:
+      label: Registro (JSON)
+      description: Lo genera el Laboratorio; no lo edites a mano.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: ayuda
+    attributes:
+      label: ¿En qué te gustaría ayuda?
+      description: Opcional. Lo leerá el equipo del curso.
+    validations:
+      required: false
+  - type: checkboxes
+    id: consentimiento
+    attributes:
+      label: Consentimiento
+      options:
+        - label: Entiendo que este registro es público y queda con la fecha que le pone GitHub.
+          required: true
+        - label: No incluye datos personales ni datos que no pueda compartir.
+          required: true
