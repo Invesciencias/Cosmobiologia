@@ -4445,12 +4445,14 @@ function renderEvents(){
  if(dp)dp.textContent=started?'tu conjunto (guardado en este navegador)':'mostrando datos de ejemplo (sismos USGS)';
  const tb=document.querySelector('#evtable tbody');tb.innerHTML='';
  events.slice(-200).reverse().forEach(e=>{
- tb.insertAdjacentHTML('beforeend',`<tr><td>${e.event_id}</td><td>${e.domain}</td><td>${e.datetime_utc}</td><td>${e.latitude}</td><td>${e.longitude}</td><td>${e.place||''}</td><td>${e.value||''}</td></tr>`);
+ tb.insertAdjacentHTML('beforeend',`<tr><td>${escH(e.event_id)}</td><td>${escH(e.domain)}</td><td>${escH(e.datetime_utc)}</td><td>${escH(e.latitude)}</td><td>${escH(e.longitude)}</td><td>${escH(e.place||'')}</td><td>${escH(e.value||'')}</td></tr>`);
  });
 }
 function clearEvents(){if(confirm('¿Vaciar todos los eventos para empezar de cero?')){events=[];save();}}
 
 function importBulk(){parseCSVText(document.getElementById('bulk').value);}
+// Escapa texto que viene de fuera (CSV importado, nube compartida, almacenamiento local) antes de ponerlo en HTML.
+function escH(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function importFile(ev){const f=ev.target.files[0];if(f)Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>mergeRows(r.data)});}
 
 // ── Fuentes externas ──────────────────────────────────────────────────────────
@@ -4610,7 +4612,7 @@ function populateDomainResults(){
  // Orden preferido: confirmado primero, luego por tamaño/interés
  const order=['sismo_M6plus','sismo_M6plus_confirmatorio','sismo_M6plus_exploratorio','sismo_M5plus','sismo','sismo_impacto','huracanes','huracan','inundacion','tormenta_solar','erupcion','sequia','tormenta','temperatura_extrema','incendio','deslizamiento'];
  const sorted=[...doms].sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return(ia<0?99:ia)-(ib<0?99:ib);});
- sel.innerHTML=sorted.map(d=>`<option value="${d}">${domainLabel(d)}</option>`).join('');
+ sel.innerHTML=sorted.map(d=>`<option value="${escH(d)}">${escH(domainLabel(d))}</option>`).join('');
  }
 }
 const DOMAIN_WARN={
@@ -4753,12 +4755,12 @@ function renderTable(){
  data.slice(0,400).forEach(r=>{
  const sig=r.p_fdr<0.05;
  tb.insertAdjacentHTML('beforeend',`<tr>
- <td>${prettyName(r.feature)}</td>
+ <td>${escH(prettyName(r.feature))}</td>
  <td>${(+r.obs_freq).toFixed(3)}</td><td>${(+r.null_mean).toFixed(3)}</td>
  <td>${(+r.rel_risk).toFixed(2)}</td><td>${(+r.z_score).toFixed(2)}</td>
  <td>${(+r.p_value).toExponential(1)}</td>
  <td class="${sig?'sig':''}">${(+r.p_fdr).toExponential(1)}</td>
- <td class="${r.direction==='exceso'?'tag-ex':'tag-de'}">${r.direction}</td></tr>`);
+ <td class="${r.direction==='exceso'?'tag-ex':'tag-de'}">${escH(r.direction)}</td></tr>`);
  });
 }
 function sortBy(k){sortAsc=(sortKey===k)?!sortAsc:true;sortKey=k;renderTable();}
@@ -4797,7 +4799,7 @@ function eventNums(){
  yr.push(parseInt(String(e.datetime_utc).slice(0,4)));
  const ip=eventImpact(e);imp.push(ip.deaths||ip.affected||0);
  const itxt=ip.deaths?('<br>☠ '+ip.deaths.toLocaleString()+' muertos'):(ip.affected?('<br>'+ip.affected.toLocaleString()+' afectados'):'');
- txt.push((e.place||e.event_id||'')+'<br>'+String(e.datetime_utc).slice(0,10)+(e.value?(' · '+e.value):'')+itxt);
+ txt.push(escH(e.place||e.event_id||'')+'<br>'+escH(String(e.datetime_utc).slice(0,10))+(e.value?(' · '+escH(e.value)):'')+itxt);
  });
  return {lat,lon,mag,yr,txt,idx,imp,dom:dom_};
 }
@@ -5199,10 +5201,10 @@ function renderHyp(){
  const col={'propuesta':'var(--muted)','pre-registrada':'#ffd166','confirmada':'var(--ok)','rechazada':'var(--excess)'};
  const tb=document.querySelector('#htable tbody');tb.innerHTML='';
  hyps.forEach((h,i)=>{tb.insertAdjacentHTML('beforeend',`<tr>
- <td>${h.domain}</td><td class="small">${h.text}</td>
- <td class="${h.dir==='mayor'?'tag-ex':'tag-de'}">${h.dir}</td>
- <td>${h.author}</td>
- <td><span style="cursor:pointer;color:${col[h.status]}" onclick="cycleStatus(${i})">${h.status} ↻</span></td>
+ <td>${escH(h.domain)}</td><td class="small">${escH(h.text)}</td>
+ <td class="${h.dir==='mayor'?'tag-ex':'tag-de'}">${escH(h.dir)}</td>
+ <td>${escH(h.author)}</td>
+ <td><span style="cursor:pointer;color:${col[h.status]}" onclick="cycleStatus(${i})">${escH(h.status)} ↻</span></td>
  <td><span style="cursor:pointer;color:var(--excess)" onclick="delHyp(${i})">✕</span></td></tr>`);});
 }
 function exportHypotheses(){
