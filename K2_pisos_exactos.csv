@@ -1,0 +1,9 @@
+caso,n,f,EE_rel_binomial,EE_rel_empirica,piso_D_B,piso_D_B_empirico,piso_D_A,piso_reportado_2dec,efecto_RR,razon_exceso_D_B,razon_exceso_D_A,fuente_entradas
+MU 1976-99 (GCMT),2731,0.046315,0.08683,0.0719,1.2159,1.1788,1.3194,,1.3153,0.685,1.013,reproduccion mu_repro K=200 semilla 42
+MU descubrimiento (USGS),3730,0.048102,0.07284,0.05983,1.1811,1.1488,1.2679,1.26,1.3153,0.574,0.85,data.js
+"R1 MU conj, USGS M>=7 1900-75",581,0.0501,0.18065,,1.4492,,1.6645,1.45,1.3153,1.425,2.107,replica_pistas.log
+"R2 M-Pluton cuadr, USGS M>=7 1900-75",581,0.0798,0.14088,,1.3503,,1.5182,1.35,1.172,2.037,3.013,replica_pistas.log
+"R3 Jupiter DSC, GCMT 2000-26 inv. sup.",954,0.0443,0.15038,,1.3739,,1.5531,1.37,1.3737,1.001,1.48,replica_pistas.log
+"R3-ext Jupiter DSC, GCMT M5-5,99 2005-26 decl.",781,0.0506,0.155,,1.3854,,1.5701,1.39,1.3737,1.031,1.526,r3_ampliacion.log
+"R4a apogeo +-1 d, USGS M>=7 1900-75",581,0.073494,0.1473,,1.3663,,1.5418,1.37,1.1169,3.133,4.634,"replica_pistas.log (esperado 42,7)"
+"R4b apogeo +-1 d, GCMT 2000-26",3304,0.073577,0.06173,,1.1535,,1.2271,1.15,1.1169,1.313,1.942,"replica_pistas.log (esperado 243,1)"
