@@ -1,7 +1,7 @@
 # Dependencias del código de codigo/. Instalar con: pip install -r codigo/requirements.txt
 numpy==2.4.6
 pandas==3.0.3
-plotly==7.0.0
+plotly==7.1.0
 python-dateutil==2.9.0.post0
 requests==2.34.2
 skyfield==1.54
