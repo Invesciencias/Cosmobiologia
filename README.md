@@ -1,4 +1,4 @@
-# Cosmobiología — Fundación Invesciencias
+# Cosmobiología: Fundación Invesciencias
 
 Plataforma de análisis estadístico falseable: carga eventos con fecha, hora y lugar, calcula automáticamente las posiciones astronómicas, y prueba si hay asociaciones significativas contra un **modelo nulo emparejado** con corrección FDR y validación cruzada.
 
