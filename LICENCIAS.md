@@ -32,12 +32,27 @@ Los eventos de `data.js`, `features.js`, `datos/` y `resultados/` vienen de cat�
 | **NASA EONET** | Eventos naturales (inundaciones, sequías) | [eonet.gsfc.nasa.gov](https://eonet.gsfc.nasa.gov/) | NASA, *Earth Observatory Natural Event Tracker (EONET)* | `data.js` (750) |
 | **Catálogo GCMT** | Mecanismos focales, Mw ≥ 6 | [globalcmt.org](https://www.globalcmt.org/) | Dziewonski, A. M., Chou, T.-A. y Woodhouse, J. H. (1981), *JGR*, 86(B4), 2825–2852; Ekström, G., Nettles, M. y Dziewoński, A. M. (2012), *PEPI*, 200–201, 1–9 | `datos/eventos_gcmt_*.csv`, `resultados/` |
 | **EM-DAT** | Desastres naturales: inundaciones, tormentas, sequías, incendios, erupciones, temperaturas extremas, deslizamientos y otros | [emdat.be](https://www.emdat.be/) | EM-DAT: The Emergency Events Database, Université catholique de Louvain (UCLouvain), CRED, D. Guha-Sapir, www.emdat.be, Bruselas, Bélgica | `data.js` (9.840 eventos) |
-| **Lichess** | Partidas de ajedrez de torneos (Campeonato Mundial, Candidatos, Norway Chess) | [database.lichess.org](https://database.lichess.org/) · [lichess.org/broadcast](https://lichess.org/broadcast) | Lichess.org, base de datos abierta de partidas (CC0) | `datos/chess_games/` |
+| **Lichess** | Partidas de ajedrez de torneos (Campeonato Mundial, Candidatos, Norway Chess) | [lichess.org/broadcast](https://lichess.org/broadcast) · [database.lichess.org](https://database.lichess.org/) | Lichess.org, base de datos abierta de partidas (CC0) | `datos/chess_games/` |
 | **USGS (Oklahoma)** | Sismos de Oklahoma con posiciones astronómicas calculadas | [earthquake.usgs.gov](https://earthquake.usgs.gov/earthquakes/search/) | Igual que USGS ComCat | `datos/oklahoma_game_data.json` |
 
 - Los datos de **USGS, NOAA y NASA** son de organismos públicos de EE. UU. y de uso libre con cita de la fuente.
 - Los datos de **EM-DAT** se rigen por sus términos de uso (registro y uso no comercial; la redistribución de la base está restringida). Para uso comercial o para volver a distribuirlos, consulta [emdat.be](https://www.emdat.be/) y sus condiciones.
 - Los datos de **Lichess** se publican con licencia CC0 (dominio público).
 - Las **tablas de resultados** calculadas por este proyecto (z, RR, q de FDR) quedan bajo CC BY 4.0, aunque partan de datos de terceros.
+
+### Procedencia exacta de cada conjunto
+
+Cómo se obtuvo cada fuente, para poder reproducirla. Las fechas son las de los archivos de descarga del proyecto.
+
+| Conjunto | Cómo se obtuvo | Detalle |
+|---|---|---|
+| **USGS ComCat** | API FDSN `https://earthquake.usgs.gov/fdsnws/event/1/query` | Sismos de magnitud ≥ 6 de 1900 a 2023 en `data.js` |
+| **NOAA NCEI** | API HazEL del NGDC: `https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/earthquakes` | Base de sismos significativos |
+| **NOAA HURDAT2** | Archivos de texto del NHC: `hurdat2-1851-2023-051124.txt` (Atlántico) y `hurdat2-nepac-1949-2023-042624.txt` (Pacífico nororiental), en `https://www.nhc.noaa.gov/data/hurdat/` | Descarga de junio de 2026 |
+| **NASA DONKI** | API `https://api.nasa.gov/DONKI` | Descarga de junio de 2026 |
+| **NASA EONET** | API v3 `https://eonet.gsfc.nasa.gov/api/v3/events` | 750 eventos; descarga de junio de 2026 |
+| **GCMT** | Catálogo del proyecto Global CMT (`https://www.globalcmt.org/`), formato NDK | 6.035 sismos Mw ≥ 6, 1976–2026; mecanismo clasificado con Frohlich (1992) |
+| **EM-DAT** | Descarga manual en `https://public.emdat.be` (requiere cuenta gratuita), archivo Excel hoja «EM-DAT Data» | 9.840 eventos; descarga del 27 de junio de 2026 |
+| **Lichess** | API pública de transmisiones (*broadcast*) de `https://lichess.org`, partidas en PGN con la hora UTC de cada jugada | El análisis usa 348 partidas de 7 torneos; este repositorio incluye 20 de Candidatos 2024, Norway Chess 2024 y 2025 y los Campeonatos Mundiales FIDE 2021 y 2023 |
 
 Antes de volver a publicar cualquier archivo de datos, revisa los términos de su fuente.
