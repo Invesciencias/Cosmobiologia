@@ -17,8 +17,8 @@
 <style>
  :root{
  /* Paleta Fundación Invesciencias */
- --verde:#3A8C6E; --verde-oscuro:#2A6B52; --verde-profundo:#1A4A38;
- --verde-claro:#5BAF8F; --verde-palido:#E8F5F0; --verde-muy-palido:#F3FAF7;
+ --verde:#008B6E; --verde-oscuro:#00705A; --verde-profundo:#005743;
+ --verde-claro:#85C3B4; --verde-palido:#E8F5F0; --verde-muy-palido:#F3FAF7;
  --oro:#C8A84B; --oro-suave:#E2C97E;
  --bg:#F7F9F8; --panel:#FFFFFF; --panel2:#F3FAF7; --ink:#1A2820;
  --muted:#4A5E56; --accent:#3A8C6E; --accent2:#2A6B52;
@@ -34,8 +34,8 @@
  *{box-sizing:border-box}
  body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
  header{display:flex;align-items:center;gap:16px;padding:16px 28px;background:linear-gradient(100deg,var(--verde-profundo),var(--verde));border-bottom:3px solid var(--oro)}
- header .logo-badge{width:60px;height:60px;flex:0 0 auto;background:#fff;border-radius:14px;padding:6px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
- header .logo-badge img{width:100%;height:100%;object-fit:contain;display:block}
+ header .logo-badge{width:70px;height:88px;flex:0 0 auto;background:#fff;border-radius:50% 50% 50% 50%/56% 56% 44% 44%;display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+ header .logo-badge img{height:64px;width:auto;display:block}
  header h1{margin:0;font-size:20px;letter-spacing:.3px;color:#fff}
  header p{margin:4px 0 0;color:var(--verde-palido);font-size:13px}
  nav{background:var(--panel);border-bottom:1px solid var(--line)}
@@ -174,7 +174,7 @@
 </head>
 <body>
 <header>
- <div class="logo-badge"><img src="logo.jpg" alt="Fundación Invesciencias"></div>
+ <div class="logo-badge"><img src="logo-invesciencias.png" alt="Fundación Invesciencias"></div>
  <div>
  <h1 data-i18n="header_h1">Cosmobiología — Fundación Invesciencias</h1>
  <p data-i18n-html="header_subtitle">Modelo nulo emparejado · FDR · Validación cruzada · 34.503 eventos · 11 dominios · <b style="color:var(--oro)">hacia el principio de investigación de la causalidad por relación estadística</b></p>
@@ -213,6 +213,8 @@
 <div class="nav-entry">
 <button class="active" data-tab="guia" data-i18n="nav_guia">Empieza aquí</button>
 </div>
+<div class="nav-sep"></div>
+<div class="nav-entry"><a href="laboratorio/index.html" style="padding:8px 12px;font-weight:700;color:var(--accent2);text-decoration:none;white-space:nowrap" title="Prueba una hipótesis en tres compuertas: detectabilidad, evidencia corregida y replicación">Laboratorio de las tres compuertas ↗</a></div>
 <div class="nav-sep"></div>
 <div class="nav-group">
 <span class="nav-group-label" data-i18n="navgroup_investigacion">I. Investigación</span>
@@ -7937,15 +7939,31 @@ function threeCiudadSeleccionada() {
 // existir o no tener licencia clara, esos cuerpos usan materiales de
 // color/iluminación mejorados (ver threeGetSolMaterial) en lugar de
 // texturas fotográficas.
-const THREE_EARTH_TEX_URL = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r140/examples/textures/planets/earth_atmos_2048.jpg';
-const THREE_MOON_TEX_URL = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r140/examples/textures/planets/moon_1024.jpg';
+// Cadena de respaldo: copia local (carpeta textures/) primero, luego CDNs.
+// Un solo CDN caído (jsDelivr devolvió 503) dejaba la Tierra negra.
+const THREE_EARTH_TEX_URLS = ['textures/earth_atmos_2048.jpg',
+ 'https://raw.githubusercontent.com/mrdoob/three.js/r140/examples/textures/planets/earth_atmos_2048.jpg',
+ 'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg',
+ 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r140/examples/textures/planets/earth_atmos_2048.jpg'];
+const THREE_MOON_TEX_URLS = ['textures/moon_1024.jpg',
+ 'https://raw.githubusercontent.com/mrdoob/three.js/r140/examples/textures/planets/moon_1024.jpg',
+ 'https://threejs.org/examples/textures/planets/moon_1024.jpg',
+ 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r140/examples/textures/planets/moon_1024.jpg'];
+function threeCargarTexturaConRespaldo(urls) {
+ const tex = new THREE.Texture();
+ (function intentar(i) {
+  if (i >= urls.length) return;
+  new THREE.TextureLoader().load(urls[i], function (t) { tex.image = t.image; tex.needsUpdate = true; }, undefined, function () { intentar(i + 1); });
+ })(0);
+ return tex;
+}
 let _threeEarthTexture = null, _threeMoonTexture = null;
 function threeGetEarthMaterial() {
- if (!_threeEarthTexture) _threeEarthTexture = new THREE.TextureLoader().load(THREE_EARTH_TEX_URL);
+ if (!_threeEarthTexture) _threeEarthTexture = threeCargarTexturaConRespaldo(THREE_EARTH_TEX_URLS);
  return new THREE.MeshStandardMaterial({ map: _threeEarthTexture });
 }
 function threeGetMoonMaterial() {
- if (!_threeMoonTexture) _threeMoonTexture = new THREE.TextureLoader().load(THREE_MOON_TEX_URL);
+ if (!_threeMoonTexture) _threeMoonTexture = threeCargarTexturaConRespaldo(THREE_MOON_TEX_URLS);
  return new THREE.MeshStandardMaterial({ map: _threeMoonTexture, roughness: 1.0 });
 }
 // Textura procedural para las galaxias del Mapa Cósmico (ver FAMOUS_DEEP_SKY)
