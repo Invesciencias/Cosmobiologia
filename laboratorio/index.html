@@ -7,20 +7,13 @@
 <meta name="description" content="Aprende a probar una hipótesis en tres compuertas: detectabilidad, evidencia corregida y replicación. Tus datos no salen de tu equipo.">
 <style>
 :root{
-  --bg:#f2f7f5; --card:#ffffff; --ink:#14282b; --muted:#53696a; --line:#d3e0db; --soft:#e5f1ed;
-  --brand:#008b6e; --brand-2:#85c3b4; --brand-3:#a6d4c9; --gris:#898a8c; --gris-2:#cfd0d2;
+  --bg:#ffffff; --card:#ffffff; --ink:#14282b; --muted:#53696a; --line:#d3e0db; --soft:#e5f1ed;
+  --brand:#007a60; --brand-2:#85c3b4; --brand-3:#a6d4c9; --gris:#898a8c; --gris-2:#cfd0d2;
   --accent:#00705a; --accent-ink:#ffffff;
   --ok:#007a5a; --ok-bg:#dff3ec; --mid:#9a6200; --mid-bg:#fbefd0; --bad:#b24a00; --bad-bg:#fbe3d3;
   --focus:#0072B2; --radius:10px;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0f1a18; --card:#172623; --ink:#e6f0ed; --muted:#9db5af; --line:#2b403b; --soft:#1e312d;
-    --brand:#006e57;
-    --accent:#5fd0b3; --accent-ink:#04231c;
-    --ok:#4fd1a5; --ok-bg:#12372d; --mid:#f0b94d; --mid-bg:#3a2d10; --bad:#f08a4b; --bad-bg:#3d2312;
-  }
-}
+
 :root[data-theme="dark"]{
   --bg:#0f1a18; --card:#172623; --ink:#e6f0ed; --muted:#9db5af; --line:#2b403b; --soft:#1e312d;
   --brand:#006e57;
@@ -28,6 +21,7 @@
   --ok:#4fd1a5; --ok-bg:#12372d; --mid:#f0b94d; --mid-bg:#3a2d10; --bad:#f08a4b; --bad-bg:#3d2312;
 }
 *{box-sizing:border-box}
+:root{color-scheme:light}
 html{font-size:16px}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.55}
 a{color:var(--accent)}
@@ -40,7 +34,7 @@ header.top{background:var(--brand);color:#fff;border-radius:0 0 46px 46px/0 0 20
 .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
 .top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:22px;flex-wrap:wrap}
 .brand{font-family:"Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif;font-size:1.25rem;font-weight:700;color:#fff}
-.brand small{display:block;font-family:system-ui,sans-serif;font-weight:400;font-size:.8rem;color:#d6efe8}
+.brand small{display:block;font-family:system-ui,sans-serif;font-weight:400;font-size:.8rem;color:#eefaf6}
 nav.links{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:.9rem}
 nav.links button{all:unset;cursor:pointer;color:#fff;text-decoration:underline}
 nav.links a{color:#fff}
@@ -157,7 +151,7 @@ dialog dt{font-weight:700;margin-top:10px} dialog dd{margin:0 0 0 0;color:var(--
 <body>
 <header class="top"><div class="wrap">
   <div class="brandrow"><a class="egg" href="https://invesciencias.github.io/Cosmobiologia/" aria-label="Fundación Invesciencias"><img src="logo-invesciencias.png" alt="Invesciencias"></a><div class="brand">Laboratorio de las tres compuertas<small>Fundación Invesciencias · Marco Falseable de Cosmobiología</small></div></div>
-  <nav class="links"><button id="openFloors" type="button">Pisos de detección</button><button id="openGlos" type="button">Glosario</button><a href="panel.html">Panel del curso</a><a href="../index.html">Explorador (exploratorio)</a><a href="LEEME.md">Cómo funciona</a></nav>
+  <nav class="links"><button id="openFloors" type="button">Pisos de detección</button><button id="openGlos" type="button">Glosario</button><a href="panel.html">Panel del curso</a><a href="../explorador.html">Explorador (exploratorio)</a><a href="LEEME.md">Cómo funciona</a></nav>
 </div></header>
 
 <main class="wrap">

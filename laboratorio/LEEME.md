@@ -2,6 +2,14 @@
 
 Versión 0.5. Una página para probar una hipótesis en tres compuertas: **detectabilidad**, **evidencia corregida** y **replicación**. No sustituye al explorador (`../index.html`), que sigue siendo exploratorio.
 
+## Estructura del sitio (v0.7)
+
+- `index.html`: portada corta de una pantalla (pregunta, tres caminos, ruta de tres pasos), en español, inglés y francés.
+- `explorador.html`: el explorador completo (antes era `index.html`). Acepta enlaces a una pestaña, por ejemplo `explorador.html#tablero`. Cada pestaña empieza con una frase de qué se puede hacer y qué no se puede concluir.
+- `evaluacion.html`: cuestionario de 8 preguntas, antes y después del curso, con descarga local y un apartado para combinar archivos y calcular la ganancia normalizada.
+- `laboratorio/`: el Laboratorio y el panel.
+- Verde de las bandas: `#007A60` (6 : 1 de contraste con el texto blanco; el Pantone puro `#008B6E` da 4,3 : 1 y no basta para texto pequeño).
+
 ## Marca (v0.6)
 
 Cabecera con el logo nuevo de Invesciencias dentro de un huevo blanco sobre la banda verde corporativa (Pantone 335 C ≈ #008B6E; tonos #85C3B4 y #A6D4C9; grises #898A8C y #CFD0D2). Archivo del logo: `logo-invesciencias.png` (junto a `index.html` y `panel.html`; otra copia en la raíz para el explorador).
