@@ -19,29 +19,25 @@ Este proyecto usa **dos licencias** propias, una para cada tipo de material, má
 Para citar el programa de investigación, usa también:
 > Serrano, D. (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. *Circular Astronómica RAC*, N.º 1027, septiembre 2026, pp. 8–11.
 
-## Datos de terceros que contiene el repositorio
+## Fuentes y créditos de los datos
 
-Los eventos de `data.js`, `features.js`, `datos/` y `resultados/` vienen de catálogos públicos. Cada fuente tiene sus propias condiciones; esta tabla resume cómo se tratan aquí.
+Los eventos de `data.js`, `features.js`, `datos/` y `resultados/` vienen de catálogos públicos. Cada fuente tiene sus propias condiciones; **esta licencia no las modifica**. Aquí se indica de dónde sale cada conjunto y cómo citarlo.
 
-| Fuente | Dónde aparece | Condiciones (resumen) | Estado |
-|---|---|---|---|
-| **USGS ComCat** (sismos) | `data.js` (13.870 eventos), `features.js` | Datos del gobierno de EE. UU., de uso libre; se pide citar a la fuente | Se mantiene |
-| **NOAA NCEI** (sismos significativos) | `data.js` (4.080) | Datos abiertos de NOAA; se pide citar | Se mantiene |
-| **NOAA HURDAT2** (huracanes) | `data.js` (2.494) | Datos abiertos de NOAA; se pide citar | Se mantiene |
-| **NASA DONKI** (tormentas solares) | `data.js` (3.469) | Datos abiertos de NASA; se pide citar | Se mantiene |
-| **NASA EONET** (eventos naturales) | `data.js` (750) | Datos abiertos de NASA; se pide citar | Se mantiene |
-| **Catálogo GCMT** (mecanismos focales) | `datos/eventos_gcmt_*.csv`, `resultados/` | Libre para investigación con cita (Dziewonski et al. 1981; Ekström et al. 2012) | Se mantiene, con cita |
-| **EM-DAT** (CRED/UCLouvain: desastres) | `data.js` (9.840 eventos: inundaciones, tormentas, sequías, incendios, etc.) | Exige registro y uso no comercial, y restringe la redistribución de la base. **Hay que revisar sus términos y pedir permiso antes de seguir publicándola.** | **Pendiente de decisión** |
-| **Partidas de ajedrez** | `datos/chess_games/` | Registros de partidas de torneos públicos (FIDE, Candidates, Norway Chess); confirmar la fuente exacta de descarga | Se mantiene; confirmar fuente |
-| **Eventos de Oklahoma** | `datos/oklahoma_game_data.json` | Derivados de sismos USGS más posiciones astronómicas calculadas | Se mantiene |
+| Fuente | Qué contiene | Dónde conseguirla | Cómo citarla | Dónde aparece aquí |
+|---|---|---|---|---|
+| **USGS ComCat** | Sismos | [earthquake.usgs.gov](https://earthquake.usgs.gov/earthquakes/search/) | U.S. Geological Survey, Earthquake Hazards Program, *ANSS Comprehensive Earthquake Catalog (ComCat)* | `data.js` (13.870 eventos) |
+| **NOAA NCEI** | Sismos significativos | [ncei.noaa.gov](https://www.ncei.noaa.gov/products/natural-hazards/tsunamis-earthquakes-volcanoes/earthquakes) | NOAA National Centers for Environmental Information, *Significant Earthquake Database* | `data.js` (4.080) |
+| **NOAA HURDAT2** | Huracanes del Atlántico y Pacífico | [nhc.noaa.gov/data](https://www.nhc.noaa.gov/data/#hurdat) | Landsea, C. W. y Franklin, J. L. (2013), *Atlantic Hurricane Database Uncertainty and Presentation of a New Database Format*, Monthly Weather Review | `data.js` (2.494) |
+| **NASA DONKI** | Tormentas solares y geomagnéticas | [ccmc.gsfc.nasa.gov/tools/DONKI](https://ccmc.gsfc.nasa.gov/tools/DONKI/) | NASA CCMC, *Space Weather Database of Notifications, Knowledge, Information (DONKI)* | `data.js` (3.469) |
+| **NASA EONET** | Eventos naturales (inundaciones, sequías) | [eonet.gsfc.nasa.gov](https://eonet.gsfc.nasa.gov/) | NASA, *Earth Observatory Natural Event Tracker (EONET)* | `data.js` (750) |
+| **Catálogo GCMT** | Mecanismos focales, Mw ≥ 6 | [globalcmt.org](https://www.globalcmt.org/) | Dziewonski, A. M., Chou, T.-A. y Woodhouse, J. H. (1981), *JGR*, 86(B4), 2825–2852; Ekström, G., Nettles, M. y Dziewoński, A. M. (2012), *PEPI*, 200–201, 1–9 | `datos/eventos_gcmt_*.csv`, `resultados/` |
+| **EM-DAT** | Desastres naturales: inundaciones, tormentas, sequías, incendios, erupciones, temperaturas extremas, deslizamientos y otros | [emdat.be](https://www.emdat.be/) | EM-DAT: The Emergency Events Database, Université catholique de Louvain (UCLouvain), CRED, D. Guha-Sapir, www.emdat.be, Bruselas, Bélgica | `data.js` (9.840 eventos) |
+| **Lichess** | Partidas de ajedrez de torneos (Campeonato Mundial, Candidatos, Norway Chess) | [database.lichess.org](https://database.lichess.org/) · [lichess.org/broadcast](https://lichess.org/broadcast) | Lichess.org, base de datos abierta de partidas (CC0) | `datos/chess_games/` |
+| **USGS (Oklahoma)** | Sismos de Oklahoma con posiciones astronómicas calculadas | [earthquake.usgs.gov](https://earthquake.usgs.gov/earthquakes/search/) | Igual que USGS ComCat | `datos/oklahoma_game_data.json` |
 
-Las **tablas de resultados** calculadas por este proyecto (z, RR, q de FDR) sí quedan bajo CC BY 4.0, aunque partan de datos de terceros.
-
-> **Aviso sobre EM-DAT.** Es la fuente con más restricciones y representa unos 9.840 de los 34.503 eventos de `data.js`. Antes de mantenerla pública conviene consultar los términos en `emdat.be`, pedir permiso a CRED o sustituir esos eventos por una fuente abierta.
+- Los datos de **USGS, NOAA y NASA** son de organismos públicos de EE. UU. y de uso libre con cita de la fuente.
+- Los datos de **EM-DAT** se rigen por sus términos de uso (registro y uso no comercial; la redistribución de la base está restringida). Para uso comercial o para volver a distribuirlos, consulta [emdat.be](https://www.emdat.be/) y sus condiciones.
+- Los datos de **Lichess** se publican con licencia CC0 (dominio público).
+- Las **tablas de resultados** calculadas por este proyecto (z, RR, q de FDR) quedan bajo CC BY 4.0, aunque partan de datos de terceros.
 
 Antes de volver a publicar cualquier archivo de datos, revisa los términos de su fuente.
-
-## Decisiones pendientes
-
-- Qué hacer con los eventos EM-DAT de `data.js` (pedir permiso, retirarlos o sustituirlos).
-- Confirmar la fuente exacta de las partidas de ajedrez de `datos/chess_games/`.

@@ -310,7 +310,7 @@ Cada módulo trae autoverificación contra hechos conocidos, no solo tests de hu
 
 - **Código** (`.py`, `.html`, `.js`): [MIT](LICENSE).
 - **Textos, figuras y tablas propias**: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Se puede reutilizar citando a la Fundación Invesciencias.
-- **Datos de terceros**: conservan la licencia de su fuente original. La tabla de fuentes y condiciones está en [LICENCIAS.md](LICENCIAS.md).
+- **Datos de terceros**: conservan la licencia de su fuente original. Las fuentes, con enlaces y la forma de citarlas, están en [LICENCIAS.md](LICENCIAS.md#fuentes-y-créditos-de-los-datos).
 - **Logo y nombre de Invesciencias**: propiedad de la Fundación Invesciencias, derechos reservados (no incluidos en MIT ni CC BY).
 
 Detalles, forma de citar y avisos sobre datos: [LICENCIAS.md](LICENCIAS.md). Al publicar resultados obtenidos con esta herramienta, cita el repositorio y el artículo de la Circular RAC.
