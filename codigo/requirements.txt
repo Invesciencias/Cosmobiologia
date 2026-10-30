@@ -1,5 +1,5 @@
 # Dependencias del código de codigo/. Instalar con: pip install -r codigo/requirements.txt
-numpy==2.4.6
+numpy==2.5.4
 pandas==3.0.3
 plotly==7.0.0
 python-dateutil==2.9.0.post0
