@@ -3,15 +3,16 @@ Cómo subir y mantener este repositorio
 
 Estructura (ver también README.md en la raíz):
 
-  Raíz: index.html, explorador.html, evaluacion.html, translations.js,
-        data.js, features.js, favicon*, logo-invesciencias.png, README.md,
-        LICENSE, LICENSE-CC-BY-4.0.txt, LICENCIAS.md, CITATION.cff
+  Raíz: index.html, explorador.html, evaluacion.html, README.md, LICENSE, CITATION.cff
   laboratorio/   El Laboratorio de las tres compuertas y su panel
-  .github/       Formulario de registro de hipótesis
   codigo/        Todo el código Python
   datos/         Datos de entrada (GCMT, partidas de ajedrez, Oklahoma)
   resultados/    Tablas de resultados
   docs/          Documentación
+  js/            data.js, features.js y translations.js (los lee el explorador)
+  imagenes/      Logo, favicon e íconos, y la animación de la portada
+  licencias/     LICENCIAS.md (fuentes y créditos) y texto de CC BY 4.0
+  .github/       Formulario de registro de hipótesis
 
 Para subir cambios desde la interfaz web de GitHub:
 
@@ -23,8 +24,7 @@ Para subir cambios desde la interfaz web de GitHub:
 4. Espera 1-2 minutos y recarga https://invesciencias.github.io/Cosmobiologia/
    con Ctrl+F5.
 
-El explorador necesita que data.js, features.js y translations.js estén en la
-raíz, y que datos/ y resultados/ conserven sus nombres, porque las páginas los
+El explorador necesita que js/, datos/ y resultados/ conserven sus nombres, porque las páginas los
 cargan por ruta. Si abres explorador.html con doble clic en tu computador, los
 navegadores bloquean fetch() de archivos locales (los tableros de ajedrez y la
 tabla precargada no cargan); en GitHub Pages, servido por https://, sí cargan.

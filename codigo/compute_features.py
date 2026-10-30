@@ -40,11 +40,13 @@ print(f"{mat.shape[1]} características, densidad media {mat.sum(1).mean():.1f}/
 # Por evento: índices de características presentes
 event_feats = [np.nonzero(row)[0].tolist() for row in mat]
 
-with open("features.js", "w", encoding="utf-8") as f:
+import os
+os.makedirs("js", exist_ok=True)
+with open("js/features.js", "w", encoding="utf-8") as f:
     f.write("// Características de carta por evento (índices presentes). "
             "Regenerar: python compute_features.py\n")
     f.write("window.FEATURE_NAMES=" + json.dumps(feature_names, separators=(",", ":")) + ";\n")
     f.write("window.EVENT_FEATURES=" + json.dumps(event_feats, separators=(",", ":")) + ";\n")
 
 import os
-print(f"features.js generado: {os.path.getsize('features.js')/1e6:.2f} MB")
+print(f"features.js generado: {os.path.getsize('js/features.js')/1e6:.2f} MB")

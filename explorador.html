@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cosmobiología — Invesciencias | Captura y Análisis de Eventos</title>
-<link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="64x64" href="imagenes/favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="imagenes/favicon-32.png">
+<link rel="shortcut icon" href="imagenes/favicon.ico">
+<link rel="apple-touch-icon" href="imagenes/apple-touch-icon.png">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>emailjs.init('XBIzr9RsmfE4vp4z6');</script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
@@ -15,9 +15,9 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-<script src="data.js"></script>
-<script src="features.js"></script>
-<script src="translations.js"></script>
+<script src="js/data.js"></script>
+<script src="js/features.js"></script>
+<script src="js/translations.js"></script>
 <style>
  :root{
  /* Paleta Fundación Invesciencias */
@@ -202,7 +202,7 @@
 <body>
 <a class="skip-link" href="#main" data-i18n="skip_main">Saltar al contenido</a>
 <header>
- <div class="logo-badge"><img src="logo-invesciencias.png" alt="Fundación Invesciencias"></div>
+ <div class="logo-badge"><img src="imagenes/logo-invesciencias.png" alt="Fundación Invesciencias"></div>
  <div>
  <h1 class="marca"><span class="marca-t1" data-i18n="header_t1">Cosmobiología</span><span class="marca-t2" data-i18n="header_t2">Fundación Invesciencias</span></h1>
  <p data-i18n="header_sub2">Plataforma abierta para poner a prueba, con rigor, la relación entre eventos del planeta y ciclos astronómicos</p>
@@ -221,7 +221,7 @@
  <p style="margin:0 0 10px"><b>What this platform does:</b>Tests whether planetary configurations (aspects, lunar phases, tidal forces) are statistically associated with natural extreme events — earthquakes, hurricanes, volcanic eruptions, floods, and other disasters — using a rigorous matched null model and pre-registered hypotheses.</p>
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0">
  <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
- <b style="color:var(--oro)">34,503 events</b><br>11 domains: earthquakes, hurricanes, floods, solar storms, disasters (EM-DAT), and more
+ <b style="color:var(--oro)">24,663 events published</b><br>5 open-data domains: earthquakes, hurricanes, floods, solar storms, droughts (the analysis also used EM-DAT disaster records, which are not redistributed)
  </div>
  <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px">
  <b style="color:var(--oro)">Matched null model</b><br>K=200 controls per event, ±30 days, same location — eliminates slow-planet artifacts
@@ -286,7 +286,7 @@
  <!-- HERO -->
  <div class="card hero-new">
  <h2 data-i18n="hero2_h2">¿Cuándo puedo creer en un resultado entre eventos y ciclos astronómicos?</h2>
- <p data-i18n-html="hero2_p">Esta plataforma te ayuda a responder con rigor: primero comprueba si tus datos <i>podrían</i> mostrar un efecto, luego corrige las trampas estadísticas y al final mira si otro grupo lo repite. Usa más de <b>34.000</b> eventos reales de <b>11</b> dominios, comparados contra un modelo nulo emparejado. <b>No afirmamos que el efecto exista:</b> enseñamos a ponerlo a prueba.</p>
+ <p data-i18n-html="hero2_p">Esta plataforma te ayuda a responder con rigor: primero comprueba si tus datos <i>podrían</i> mostrar un efecto, luego corrige las trampas estadísticas y al final mira si otro grupo lo repite. Usa más de <b>24.000</b> eventos reales de <b>5</b> dominios de fuentes abiertas, comparados contra un modelo nulo emparejado. <b>No afirmamos que el efecto exista:</b> enseñamos a ponerlo a prueba.</p>
  <div class="row">
  <a class="act hero-main" href="laboratorio/index.html" data-i18n="hero2_lab">Probar mi hipótesis en el Laboratorio</a>
  <button class="ghost act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="hero_btn_tablero">Explorar resultados</button>
@@ -864,10 +864,11 @@
       <tbody>
        <tr><td style="padding:4px 8px">Sismos M≥6 — catálogo <b>USGS</b></td><td style="padding:4px 8px;text-align:right"><b>13.870</b></td><td style="padding:4px 8px">1900–2023</td></tr>
        <tr><td style="padding:4px 8px">Sismos M≥6 — NOAA NCEI (significativos)</td><td style="padding:4px 8px;text-align:right">2.437</td><td style="padding:4px 8px">—</td></tr>
-       <tr><td style="padding:4px 8px">Sismos M≥6 — EM-DAT (con impacto)</td><td style="padding:4px 8px;text-align:right">675</td><td style="padding:4px 8px">—</td></tr>
+       <tr><td style="padding:4px 8px">Sismos M≥6 — EM-DAT (con impacto; usados en el análisis, no se redistribuyen aquí)</td><td style="padding:4px 8px;text-align:right">675</td><td style="padding:4px 8px">—</td></tr>
        <tr style="border-top:1px solid var(--border);font-weight:700"><td style="padding:5px 8px">Total sísmico M≥6</td><td style="padding:5px 8px;text-align:right">16.982</td><td style="padding:5px 8px">1900–2026</td></tr>
        <tr style="background:rgba(255,200,0,.08)"><td style="padding:5px 8px">↳ subconjunto usado en el resultado Mercurio–Urano</td><td style="padding:5px 8px;text-align:right"><b>3.730</b></td><td style="padding:5px 8px">USGS, 2000–2024</td></tr>
-       <tr style="border-top:1px solid var(--border)"><td style="padding:5px 8px">Total de la plataforma (11 dominios)</td><td style="padding:5px 8px;text-align:right">34.503</td><td style="padding:5px 8px">1900–2026</td></tr>
+       <tr style="border-top:1px solid var(--border)"><td style="padding:5px 8px">Total del análisis (11 dominios, incluye EM-DAT)</td><td style="padding:5px 8px;text-align:right">34.503</td><td style="padding:5px 8px">1900–2026</td></tr>
+       <tr><td style="padding:5px 8px"><b>Publicado en este sitio</b> (fuentes abiertas, 5 dominios)</td><td style="padding:5px 8px;text-align:right"><b>24.663</b></td><td style="padding:5px 8px">1900–2026</td></tr>
       </tbody>
      </table>
     </div>
@@ -1137,7 +1138,7 @@
  <tr><td>Ciencias sociales</td><td>Conflictos, delitos, decisiones</td><td>Fecha + georreferencia</td></tr>
  </tbody>
  </table>
- <p class="small muted" style="margin-top:10px">Los datos ya cargados incluyen <b id="hero_n_events2">34.503</b> eventos de <b id="hero_n_domains2">11</b> dominios. Ver la pestaña <b>Fuentes</b> para saber cómo añadir los tuyos.</p>
+ <p class="small muted" style="margin-top:10px">Los datos ya cargados incluyen <b id="hero_n_events2">24.663</b> eventos de <b id="hero_n_domains2">5</b> dominios. Ver la pestaña <b>Fuentes</b> para saber cómo añadir los tuyos.</p>
  </div>
 
  <!-- FAQ ESENCIAL -->
@@ -1806,7 +1807,7 @@
  <thead><tr><th>Qué es</th><th>Archivo(s)</th><th>Para qué sirve</th><th>Cómo se usa</th></tr></thead>
  <tbody>
   <tr><td><b>Esta página</b></td><td><code>index.html</code></td><td>Todo el sitio (mapa 3D, tablero, mapa/grilla, didáctica) en un solo archivo, sin build ni dependencias de servidor.</td><td>Abrir directo en el navegador, o servir con cualquier host estático.</td></tr>
-  <tr><td><b>Catálogo de eventos</b></td><td><code>data.js</code>, <code>features.js</code></td><td>Los 34.503 eventos de los 11 dominios, ya con sus rasgos astronómicos precalculados (aspectos, casas, fase lunar).</td><td>Se cargan automáticamente al abrir la página. Para tu propio análisis: son arrays JS/JSON planos, cárgalos con cualquier lenguaje.</td></tr>
+  <tr><td><b>Catálogo de eventos</b></td><td><code>js/data.js</code>, <code>js/features.js</code></td><td>Los 24.663 eventos publicados (5 dominios de fuentes abiertas), ya con sus rasgos astronómicos precalculados (aspectos, casas, fase lunar).</td><td>Se cargan automáticamente al abrir la página. Para tu propio análisis: son arrays JS/JSON planos, cárgalos con cualquier lenguaje.</td></tr>
   <tr><td><b>Motor astronómico</b></td><td><code>charts.py</code>, <code>marea_tensor.py</code>, <code>mecanismo_focal.py</code></td><td>Posiciones planetarias (Skyfield + JPL DE421), casas topocéntricas Polich-Page, tensor de marea sobre plano de falla.</td><td><code>from charts import compute_charts; compute_charts(fechas, lat, lon, topocentric=True, house_system='polich_page')</code></td></tr>
   <tr><td><b>Modelo estadístico</b></td><td><code>nullmodel.py</code>, <code>compute_features.py</code></td><td>El modelo nulo emparejado + corrección FDR que corre cada resultado del Tablero.</td><td><code>python nullmodel.py tu_catalogo.csv 200 --include-angles</code> — ver <a href="#" onclick="return irA('ayuda','met_nulo')">Metodología → ¿Por qué un modelo nulo?</a></td></tr>
   <tr><td><b>Descargadores de catálogo</b></td><td><code>descargar_sismos_masivo.py</code>, <code>descargar_huracanes.py</code>, <code>descargar_volcanes.py</code></td><td>Bajan catálogos públicos actualizados (USGS, NOAA, Smithsonian) directo a CSV.</td><td><code>python descargar_sismos_masivo.py</code> — un comando, sin clave de API.</td></tr>
@@ -3335,7 +3336,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
  </div>
  <p class="small" style="margin:0 0 8px" data-i18n-html="met_exp2_p1">En 1975, Ferríz Olivares advertía que procesar la casuística cosmobiológica a mano requería <em>"más de seis meses de trabajo manual para un solo esquema"</em>. Propuso que los <em>"centros de cómputo y la cibernética"</em> serían la herramienta decisiva para validar la Teoría a escala masiva.</p>
- <p class="small" style="margin:0" data-i18n-html="met_exp2_p2">Esta plataforma procesa <b>34 503 eventos en 11 dominios</b>, calcula 398 configuraciones astronómicas por evento y genera la distribución nula con 200 réplicas de control — en minutos, con código abierto en Python + NASA JPL DE421. Lo que Ferríz Olivares vislumbró como necesario en 1975 es hoy el pipeline estándar de la plataforma.</p>
+ <p class="small" style="margin:0" data-i18n-html="met_exp2_p2">Esta plataforma procesó <b>34 503 eventos en 11 dominios</b> (en este sitio se publican 24 663: los de EM-DAT no se redistribuyen), calcula 398 configuraciones astronómicas por evento y genera la distribución nula con 200 réplicas de control — en minutos, con código abierto en Python + NASA JPL DE421. Lo que Ferríz Olivares vislumbró como necesario en 1975 es hoy el pipeline estándar de la plataforma.</p>
  </div>
 
  <!-- Bloque 3: Ciencia-Síntesis / Biocibernética cósmica -->

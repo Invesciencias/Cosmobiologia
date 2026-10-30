@@ -12,6 +12,6 @@ Todo el código Python del proyecto, en una sola carpeta. Los scripts se importa
 | Geofísica | `mecanismo_focal.py`, `marea_tensor.py`, `decluster.py` |
 | Visualización | `topocentric_polich_page_3d.py` |
 | Descarga y conversión | `descargar_huracanes.py`, `descargar_sismos_masivo.py`, `descargar_volcanes.py`, `convertir_sismos.py` |
-| Generación de la web | `generar_data_js.py` (→ `data.js`), `compute_features.py` (→ `features.js`) |
+| Generación de la web | `generar_data_js.py` (→ `js/data.js`), `compute_features.py` (→ `js/features.js`) |
 
 Licencia del código: MIT (ver `../LICENSE`).

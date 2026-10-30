@@ -2,7 +2,7 @@
 
 Plataforma de análisis estadístico falseable: carga eventos con fecha, hora y lugar, calcula automáticamente las posiciones astronómicas, y prueba si hay asociaciones significativas contra un **modelo nulo emparejado** con corrección FDR y validación cruzada.
 
-**Estado actual:** 34.503 eventos en 11 dominios · 6.035 sismos con mecanismo focal · límite de detección caracterizado.
+**Estado actual:** 24.663 eventos publicados (el análisis usó 34.503, ver «El corpus») · 6.035 sismos con mecanismo focal · límite de detección caracterizado.
 
 📄 Extiende el programa de investigación propuesto en: Serrano, D. (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. Circular Astronómica RAC, N.º 1027, septiembre 2026, pp. 8–11. Red de Astronomía de Colombia.
 
@@ -26,6 +26,16 @@ La portada del sitio responde a una sola pregunta: **¿cuándo puedo creer en un
 | **Verificar tu hipótesis** | Prueba una hipótesis en tres compuertas y regístrala públicamente | `laboratorio/` |
 
 Ruta para quien llega por primera vez: **entender** (Principios y Métodos) → **mirar un ejemplo** (Laboratorio, ejemplos precargados) → **probar con tus datos** (Laboratorio, paso 3).
+
+### Los tres movimientos de la portada
+
+![Animación esquemática: dial de la precesión, esfera de casas topocéntrica y tres trazos de la cicloide de Llona](imagenes/movimientos.gif)
+
+*Esquema animado. Las proporciones y las velocidades no son reales. En el sitio, cada figura se puede tocar para ver su explicación: [invesciencias.github.io/Cosmobiologia](https://invesciencias.github.io/Cosmobiologia/).*
+
+- **Cicloide de Llona** (los tres trazos de abajo). Es la curva que traza un punto de la corteza terrestre al combinar la rotación diaria con el avance de la Tierra en su órbita (TCC, Parte XIV). Cada trazo es una proporción distinta entre ambas velocidades: normal (verde), cero, con cúspides (dorado) y regresiva, con bucles (verde claro). En la Tierra real ocurre el caso normal; los otros dos son de referencia.
+- **Esfera de casas topocéntrica** (la rueda de arriba a la derecha). Divide el cielo visto desde el lugar y la hora exactos de un evento en 12 casas, con el horizonte y el meridiano como ejes, y sitúa los planetas respecto al sitio donde ocurrió el evento, no solo respecto al centro de la Tierra. Código: [`codigo/topocentric_polich_page_3d.py`](codigo/topocentric_polich_page_3d.py).
+- **Precesión de los equinoccios** (el dial de arriba a la izquierda). El eje de la Tierra describe un círculo muy lento, de unos 25.772 años, y el punto vernal retrocede por el zodiaco. Por eso la «era» de Piscis o Acuario depende de cómo se definan las fronteras entre constelaciones: dos sistemas dan fechas distintas. La pestaña «Eras precesionales» del explorador los compara.
 
 ### Las tres compuertas
 
@@ -74,8 +84,8 @@ Código y pruebas: [`piso_deteccion.py`](codigo/piso_deteccion.py) · [`test_pis
 
 ```bash
 pip install skyfield pandas numpy requests python-dateutil
-python codigo/generar_data_js.py     # genera data.js
-python codigo/compute_features.py    # genera features.js
+python codigo/generar_data_js.py     # genera js/data.js
+python codigo/compute_features.py    # genera js/features.js
 ```
 Luego abre `explorador.html` con doble clic (la portada es `index.html`) — funciona sin servidor.
 
@@ -113,8 +123,23 @@ Escena única a escala logarítmica real (Tierra → Sistema Solar → estrellas
 
 ## El corpus
 
-| Fuente | Eventos |
-|---|---|
+El análisis usó **34.503 eventos en 11 dominios**. En este repositorio se publican **24.663** (5 dominios de fuentes abiertas); los eventos de **EM-DAT** (9.840) se usaron en el análisis pero **no se redistribuyen**, porque sus términos de uso no lo permiten. Del análisis con EM-DAT se publican solo los resultados agregados, con su cita. Detalles y fuentes: [licencias/LICENCIAS.md](licencias/LICENCIAS.md#fuentes-y-créditos-de-los-datos).
+
+| Fuente | Eventos publicados aquí | Dominio |
+|---|---|---|
+| **Total publicado** | **24.663** | 5 dominios |
+| USGS ComCat | 13.870 | sismos |
+| NOAA NCEI | 4.080 | sismos |
+| NASA DONKI | 3.469 | tormentas solares |
+| NOAA HURDAT2 | 2.494 | huracanes |
+| NASA EONET | 750 | inundaciones y sequías |
+| EM-DAT (solo en el análisis) | 9.840 | no se redistribuye |
+
+**Desglose sísmico M≥6 usado en el análisis:** USGS 13.870 (1900–2023) · NOAA NCEI 2.437 · EM-DAT 675 · **total 16.982**.
+Subconjunto de análisis principal: **3.730** sismos M≥6 de USGS (2000–2024).
+**GCMT con mecanismo focal:** 6.035 sismos Mw≥6 (1976–2026), clasificados por tipo de falla.
+
+---|---|
 | **Total (11 dominios)** | **34.503** |
 | Sismos (todas las fuentes) | 18.648 |
 | Inundaciones | 5.016 |
@@ -177,38 +202,23 @@ Cosmobiologia/
 ├── index.html                  # Portada (una pantalla, ES/EN/FR)
 ├── explorador.html             # Explorador completo
 ├── evaluacion.html             # Cuestionario antes y después del curso
-├── data.js · features.js       # Datos embebidos que lee el explorador (se generan con codigo/)
-├── translations.js             # Textos ES/EN/FR del explorador
-├── favicon* · apple-touch-icon.png · logo-invesciencias.png
-├── README.md · LICENSE · LICENSE-CC-BY-4.0.txt · LICENCIAS.md · CITATION.cff
+├── README.md · LICENSE · CITATION.cff
 │
-├── laboratorio/                # Laboratorio de las tres compuertas
-│   ├── index.html · panel.html · LEEME.md
-│
-├── .github/ISSUE_TEMPLATE/     # Formulario de registro de hipótesis
-│
+├── laboratorio/                # Laboratorio de las tres compuertas (index, panel, LEEME)
 ├── codigo/                     # Todo el código Python (ver codigo/README.md)
-│   ├── nullmodel.py                                               (estadística)
-│   ├── piso_deteccion.py · test_piso_deteccion.py · k2_step1_pisos.py  (pisos de detección)
-│   ├── charts.py · marea_tensor.py · mecanismo_focal.py · decluster.py  (astronomía y geofísica)
-│   ├── topocentric_polich_page_3d.py                              (visualización)
-│   ├── descargar_*.py · convertir_sismos.py                       (descarga y conversión)
-│   └── generar_data_js.py · compute_features.py                   (generación web)
-│
-├── datos/                      # Datos de entrada que lee el Laboratorio y el explorador
-│   ├── eventos_gcmt_mecanismo.csv · eventos_gcmt_marea.csv
-│   ├── chess_games/ · oklahoma_game_data.json
-│
+├── datos/                      # GCMT, partidas de ajedrez y Oklahoma
 ├── resultados/                 # Tablas de resultados (z, RR, q) y pisos exactos
-│
-└── docs/                       # Documentación
-    ├── README_METODOLOGIA.md · FUENTES_DATOS.md · NOTA_PISO_DETECCION.md
-    ├── REPORTE_INVESCIENCIAS.md · SETUP_SUPABASE.md · LEEME.txt
+├── docs/                       # Documentación
+├── js/                         # data.js, features.js, translations.js (los lee el explorador)
+├── imagenes/                   # Logo, favicon e íconos
+├── licencias/                  # LICENCIAS.md (con fuentes y créditos) y texto de CC BY 4.0
+└── .github/ISSUE_TEMPLATE/     # Formulario de registro de hipótesis
 ```
 
-**Cómo ejecutar el código:** desde la **carpeta raíz**, con `python codigo/nombre.py`. Los scripts leen y escriben en la carpeta desde donde se ejecutan (por ejemplo `data.js` y `features.js` quedan en la raíz, donde los espera el explorador).
+**Cómo ejecutar el código:** desde la **carpeta raíz**, con `python codigo/nombre.py`. Los scripts leen y escriben en la carpeta desde donde se ejecutan; los que generan la web (`generar_data_js.py`, `compute_features.py`) escriben en `js/`.
 
-`data.js`, `features.js`, `eventos.csv` y `de421.bsp` **no están en el repositorio** — se generan localmente.
+
+`eventos.csv` y `de421.bsp` **no están en el repositorio** — se generan localmente. `js/data.js` y `js/features.js` sí están, ya generados (sin EM-DAT).
 
 ---
 
@@ -309,11 +319,11 @@ Cada módulo trae autoverificación contra hechos conocidos, no solo tests de hu
 ## Licencias
 
 - **Código** (`.py`, `.html`, `.js`): [MIT](LICENSE).
-- **Textos, figuras y tablas propias**: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Se puede reutilizar citando a la Fundación Invesciencias.
-- **Datos de terceros**: conservan la licencia de su fuente original. Las fuentes, con enlaces y la forma de citarlas, están en [LICENCIAS.md](LICENCIAS.md#fuentes-y-créditos-de-los-datos).
+- **Textos, figuras y tablas propias**: [CC BY 4.0](licencias/LICENSE-CC-BY-4.0.txt). Se puede reutilizar citando a la Fundación Invesciencias.
+- **Datos de terceros**: conservan la licencia de su fuente original. Las fuentes, con enlaces y la forma de citarlas, están en [licencias/LICENCIAS.md](licencias/LICENCIAS.md#fuentes-y-créditos-de-los-datos).
 - **Logo y nombre de Invesciencias**: propiedad de la Fundación Invesciencias, derechos reservados (no incluidos en MIT ni CC BY).
 
-Detalles, forma de citar y avisos sobre datos: [LICENCIAS.md](LICENCIAS.md). Al publicar resultados obtenidos con esta herramienta, cita el repositorio y el artículo de la Circular RAC.
+Detalles, forma de citar y avisos sobre datos: [licencias/LICENCIAS.md](licencias/LICENCIAS.md). Al publicar resultados obtenidos con esta herramienta, cita el repositorio y el artículo de la Circular RAC.
 
 ---
 

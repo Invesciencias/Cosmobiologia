@@ -12,7 +12,7 @@ Versión 0.5. Una página para probar una hipótesis en tres compuertas: **detec
 
 ## Marca (v0.6)
 
-Cabecera con el logo nuevo de Invesciencias dentro de un huevo blanco sobre la banda verde corporativa (Pantone 335 C ≈ #008B6E; tonos #85C3B4 y #A6D4C9; grises #898A8C y #CFD0D2). Archivo del logo: `logo-invesciencias.png` (junto a `index.html` y `panel.html`; otra copia en la raíz para el explorador).
+Cabecera con el logo nuevo de Invesciencias dentro de un huevo blanco sobre la banda verde corporativa (Pantone 335 C ≈ #008B6E; tonos #85C3B4 y #A6D4C9; grises #898A8C y #CFD0D2). Archivo del logo: `imagenes/logo-invesciencias.png` (en la raíz del repositorio; lo usan todas las páginas).
 
 ## Versión 0.5: pisos de detección y congruencia
 
@@ -110,4 +110,4 @@ Solo se publica el registro que la persona decide enviar: hipótesis, resumen de
 - Revisar las políticas de la base Supabase del explorador: permite insertar y modificar eventos a cualquiera.
 
 ---
-Desarrollo: David Auresy Serrano Suárez · Fundación Invesciencias. Código MIT, textos CC BY 4.0 (ver `LICENCIAS.md` en la raíz del repositorio).
+Desarrollo: David Auresy Serrano Suárez · Fundación Invesciencias. Código MIT, textos CC BY 4.0 (ver `licencias/LICENCIAS.md`).

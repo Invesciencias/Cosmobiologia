@@ -18,7 +18,8 @@ events = ev.to_dict(orient="records")
 res = pd.read_csv("resultados_estadisticos.csv")
 results = res.where(pd.notnull(res), None).to_dict(orient="records")
 
-with open("data.js", "w", encoding="utf-8") as f:
+os.makedirs("js", exist_ok=True)
+with open("js/data.js", "w", encoding="utf-8") as f:
     f.write("// Datos de ejemplo embebidos (Fase 1: sismos USGS).\n")
     f.write("// Regenerar con: python generar_data_js.py\n")
     f.write("window.DEFAULT_EVENTS=" + json.dumps(events, separators=(",", ":"), ensure_ascii=False) + ";\n")
@@ -26,4 +27,4 @@ with open("data.js", "w", encoding="utf-8") as f:
 
 import os
 print(f"data.js generado: {len(events)} eventos, {len(results)} resultados, "
-      f"{os.path.getsize('data.js')/1e6:.2f} MB")
+      f"{os.path.getsize('js/data.js')/1e6:.2f} MB")
