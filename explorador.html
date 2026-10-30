@@ -7983,16 +7983,9 @@ function threeCiudadSeleccionada() {
 // existir o no tener licencia clara, esos cuerpos usan materiales de
 // color/iluminación mejorados (ver threeGetSolMaterial) en lugar de
 // texturas fotográficas.
-// Cadena de respaldo: copia local (carpeta textures/) primero, luego CDNs.
-// Un solo CDN caído (jsDelivr devolvió 503) dejaba la Tierra negra.
-const THREE_EARTH_TEX_URLS = ['textures/earth_atmos_2048.jpg',
- 'https://raw.githubusercontent.com/mrdoob/three.js/r140/examples/textures/planets/earth_atmos_2048.jpg',
- 'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg',
- 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r140/examples/textures/planets/earth_atmos_2048.jpg'];
-const THREE_MOON_TEX_URLS = ['textures/moon_1024.jpg',
- 'https://raw.githubusercontent.com/mrdoob/three.js/r140/examples/textures/planets/moon_1024.jpg',
- 'https://threejs.org/examples/textures/planets/moon_1024.jpg',
- 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r140/examples/textures/planets/moon_1024.jpg'];
+// Texturas de la Tierra y la Luna: imágenes de la NASA (ver licencias/LICENCIAS.md), guardadas en imagenes/texturas/.
+const THREE_EARTH_TEX_URLS = ['imagenes/texturas/tierra_2048.jpg'];
+const THREE_MOON_TEX_URLS = ['imagenes/texturas/luna_1024.jpg'];
 function threeCargarTexturaConRespaldo(urls) {
  const tex = new THREE.Texture();
  (function intentar(i) {
