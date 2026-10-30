@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: "Serrano Suárez"
     given-names: "David Auresy"
-  - name: "Fundación Invesciencias"
+    affiliation: "Fundación Invesciencias"
 repository-code: "https://github.com/Invesciencias/Cosmobiologia"
 url: "https://invesciencias.github.io/Cosmobiologia/"
 license: MIT
