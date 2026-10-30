@@ -6,7 +6,36 @@ Plataforma de análisis estadístico falseable: carga eventos con fecha, hora y 
 
 📄 Extiende el programa de investigación propuesto en: Serrano, D. (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. Circular Astronómica RAC, N.º 1027, septiembre 2026, pp. 8–11. Red de Astronomía de Colombia.
 
+👤 **Desarrollo:** David Auresy Serrano Suárez · Fundación Invesciencias
+
 🌐 **Sitio:** https://invesciencias.github.io/Cosmobiologia/
+🧪 **Laboratorio de las tres compuertas:** https://invesciencias.github.io/Cosmobiologia/laboratorio/
+
+> **Este proyecto no afirma que exista un efecto cosmobiológico.** Ofrece un método para ponerlo a prueba con rigor y una plataforma abierta para que otros lo repitan. Los resultados que se muestran son pistas por replicar, no hallazgos confirmados.
+
+---
+
+## Por dónde empezar
+
+La portada del sitio responde a una sola pregunta: **¿cuándo puedo creer en un resultado entre eventos y ciclos astronómicos?** Tiene tres caminos:
+
+| Camino | Qué hace | Dónde |
+|---|---|---|
+| **Aprender** | Principios de la teoría, métodos estadísticos, glosario y casos didácticos | `explorador.html` (Principios y Métodos, Ajedrez, Sismos, Eras precesionales) |
+| **Explorar datos** | Tablero estadístico, mapa y grilla, captura de eventos y fuentes de datos | `explorador.html` |
+| **Verificar tu hipótesis** | Prueba una hipótesis en tres compuertas y regístrala públicamente | `laboratorio/` |
+
+Ruta para quien llega por primera vez: **entender** (Principios y Métodos) → **mirar un ejemplo** (Laboratorio, ejemplos precargados) → **probar con tus datos** (Laboratorio, paso 3).
+
+### Las tres compuertas
+
+Un resultado solo merece confianza si pasa, en orden, tres controles:
+
+1. **Detectabilidad.** ¿Estos datos podrían mostrar el efecto que busco? Se calcula el tamaño de muestra efectivo (no cada réplica cuenta como un dato), la atenuación por error de hora o lugar y el *piso de detección*. Si el diseño no puede ver un efecto de ese tamaño, un resultado nulo no dice nada. Categorías: *Analizable*, *Analizable con costo*, *No analizable en principio*.
+2. **Evidencia corregida.** Fechas de control emparejadas (misma hora UTC, otros días), error estándar con la unidad de dependencia correcta, placebos y corrección por comparaciones múltiples.
+3. **Replicación.** Solo cuenta una réplica **independiente** (sin eventos compartidos con el descubrimiento) e **informativa** (con piso de detección por debajo del efecto original).
+
+El **Laboratorio** guía ese recorrido: los datos se leen y se calculan **en tu navegador** (no se suben a ningún servidor), se descarga un dossier y, si quieres, se registra la hipótesis como *issue* público de GitHub con huella SHA-256 y fecha. El **Panel del curso** (`laboratorio/panel.html`) lista los registros. El **cuestionario** (`evaluacion.html`) mide, antes y después del curso, qué se aprendió.
 
 ---
 
@@ -32,6 +61,9 @@ Antes que cualquier resultado, la pregunta es **cuál es el efecto más pequeño
 | RR = 1,05 (muy pequeño) | 102.824 |
 | **RR = 1,02 (escala de marea, Tanaka)** | **642.649** ✗ fuera de alcance |
 
+**Dos pisos, según el diseño.** La fórmula de arriba es el piso para un **barrido de ~400 rasgos** (D_A, umbral z = 3,88). Para **una sola prueba fijada de antemano** (unilateral, α = 0,05, potencia 80 %) el piso es D_B: `RR_min = 1 + 2,4866·√((1−f)/(n·f))`. Con D_B, el efecto RR = 1,02 con f = 5 % necesitaría unos 293.700 eventos en lugar de 642.649: sigue fuera de alcance. Para prueba bilateral el factor sube a 2,80 (1,96 + 0,84).
+Código y pruebas: [`piso_deteccion.py`](piso_deteccion.py) · [`test_piso_deteccion.py`](test_piso_deteccion.py) (14 pruebas) · [`NOTA_PISO_DETECCION.md`](NOTA_PISO_DETECCION.md). El Laboratorio incluye una explicación y una calculadora de los pisos.
+
 **Consecuencia práctica:** los efectos sutiles (mareas, ~1-2%) no se pueden probar contando eventos discretos, por muchos que se acumulen. Requieren análisis espectral sobre series continuas, donde la potencia viene de la longitud de la serie.
 
 > Advertencia medida, no teórica: **una de las cinco réplicas con fechas inventadas produjo 2 rasgos con FDR<0,05**. Ningún hallazgo aislado, por corregido que esté, sustituye la replicación en datos independientes.
@@ -45,14 +77,19 @@ pip install skyfield pandas numpy requests python-dateutil
 python generar_data_js.py     # genera data.js
 python compute_features.py    # genera features.js
 ```
-Luego abre `index.html` con doble clic — funciona sin servidor.
+Luego abre `explorador.html` con doble clic (la portada es `index.html`) — funciona sin servidor.
 
 ---
 
 ## Qué hay en la web
 
+La web se organiza en cuatro grupos de pestañas (**Aprender**, **Explorar datos**, **Verificar tu hipótesis**, **Aplicaciones**). Cada pestaña empieza con una frase sobre qué se puede hacer ahí y qué no se puede concluir. Está disponible en español, inglés y francés; la traducción de las pestañas internas del explorador está en curso.
+
 | Sección | Contenido |
 |---|---|
+| **Portada** (`index.html`) | La pregunta, los tres caminos, la ruta para principiantes y una animación de la cicloide de Llona, la esfera de casas y la precesión (clic para ver la explicación de cada una) |
+| **Laboratorio de las tres compuertas** (`laboratorio/`) | Hipótesis, datos, detectabilidad, evidencia y replicación, dossier y registro público |
+| **Cuestionario** (`evaluacion.html`) | Ocho preguntas antes y después del curso; combina archivos y calcula la ganancia normalizada |
 | **Empieza aquí** | Mapa Cósmico 3D · publicación en la RAC · los tres niveles de evidencia |
 | **Captura de eventos** | Alta manual, importación CSV, sincronización con Supabase |
 | **Tablero estadístico** | Volcano plot, barras de significancia, tabla FDR por dominio |
@@ -137,8 +174,24 @@ Distribución obtenida (Frohlich 1992): inversa 43,9% · desgarre 22,9% · norma
 
 ```
 cosmobiologia/
-├── index.html                    # Aplicación web completa
-├── translations.js               # Textos ES/EN
+├── index.html                    # Portada (una pantalla, ES/EN/FR)
+├── explorador.html               # Explorador completo (antes index.html)
+├── evaluacion.html               # Cuestionario antes y después del curso
+├── translations.js               # Textos ES/EN/FR del explorador
+├── logo-invesciencias.png
+│
+├── LABORATORIO
+│   ├── laboratorio/index.html    # Laboratorio de las tres compuertas
+│   ├── laboratorio/panel.html    # Panel del curso (lee issues con la etiqueta «registro»)
+│   ├── laboratorio/LEEME.md      # Cómo funciona y cómo se publica
+│   └── .github/ISSUE_TEMPLATE/registro-hipotesis.yml
+│
+├── PISOS DE DETECCIÓN
+│   ├── piso_deteccion.py         # D_A, D_B, razón de exceso, MDE
+│   ├── test_piso_deteccion.py    # 14 pruebas
+│   ├── NOTA_PISO_DETECCION.md
+│   ├── k2_step1_pisos.py
+│   └── K2_pisos_exactos.csv
 │
 ├── MOTOR ASTRONÓMICO
 │   ├── charts.py                 # Cartas de eventos (Skyfield + JPL DE421)
@@ -249,6 +302,9 @@ Cada módulo trae autoverificación contra hechos conocidos, no solo tests de hu
 - **Efemérides DE421** cubren 1899–2053. Eventos anteriores deben filtrarse.
 - **Modelo orbital del navegador** (mapa 3D) es kepleriano elíptico simplificado; los cálculos de análisis usan Skyfield + DE421 con precisión sub-arcosegundo.
 - **Límites de constelaciones** vienen precesados a J2000 por la fuente; no se partió del catálogo Delporte B1875 en crudo.
+- **El Laboratorio y el cuestionario están solo en español**; la portada y el menú del explorador están en tres idiomas, pero muchas pestañas internas siguen en español.
+- **La animación de la portada es un esquema**: sus proporciones y velocidades no son reales.
+- Los registros del Laboratorio son públicos y con fecha, pero **no sustituyen un pre-registro formal** (por ejemplo en OSF).
 - Corrección conocida al artículo publicado: la cobertura del conjunto USGS M≥6 es **1900–2023**, no 1973–2024 como aparece impreso. La cifra ("más de 10.000") es correcta: son 13.870.
 
 ---
@@ -259,7 +315,7 @@ Cada módulo trae autoverificación contra hechos conocidos, no solo tests de hu
 > Serrano, D. (2026). El cosmos que habitamos: fuerzas lunares, geomagnéticas y circadianas — evidencia escalonada y un programa de investigación desde Invesciencias. *Circular Astronómica RAC*, N.º 1027, septiembre 2026, pp. 8–11. Red de Astronomía de Colombia.
 
 **Software (APA 7):**
-> Serrano Suárez, D. (2026). *Cosmobiología — plataforma generalizada de cartas de eventos y análisis estadístico falseable* [Software]. Fundación Invesciencias. https://github.com/invesciencias/cosmobiologia
+> Serrano Suárez, D. A. (2026). *Cosmobiología — plataforma generalizada de cartas de eventos y análisis estadístico falseable* [Software]. Fundación Invesciencias. https://github.com/invesciencias/cosmobiologia
 
 ---
 
@@ -276,9 +332,14 @@ Cada módulo trae autoverificación contra hechos conocidos, no solo tests de hu
 
 ---
 
-## Licencia
+## Licencias
 
-MIT — libre para uso académico y de investigación. Al publicar resultados obtenidos con esta herramienta, citar el repositorio y el artículo de la Circular RAC.
+- **Código** (`.py`, `.html`, `.js`): [MIT](LICENSE).
+- **Textos, figuras y tablas propias**: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Se puede reutilizar citando a la Fundación Invesciencias.
+- **Datos de terceros**: conservan la licencia de su fuente original.
+- **Logo y marca**: derechos reservados.
+
+Detalles, forma de citar y avisos sobre datos: [LICENCIAS.md](LICENCIAS.md). Al publicar resultados obtenidos con esta herramienta, cita el repositorio y el artículo de la Circular RAC.
 
 ---
 
