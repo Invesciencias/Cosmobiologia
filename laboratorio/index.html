@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio de las tres compuertas</title>
+<meta name="description" content="Aprende a probar una hipótesis en tres compuertas: detectabilidad, evidencia corregida y replicación. Tus datos no salen de tu equipo.">
+<style>
+:root{
+  --bg:#f2f7f5; --card:#ffffff; --ink:#14282b; --muted:#53696a; --line:#d3e0db; --soft:#e5f1ed;
+  --brand:#008b6e; --brand-2:#85c3b4; --brand-3:#a6d4c9; --gris:#898a8c; --gris-2:#cfd0d2;
+  --accent:#00705a; --accent-ink:#ffffff;
+  --ok:#007a5a; --ok-bg:#dff3ec; --mid:#9a6200; --mid-bg:#fbefd0; --bad:#b24a00; --bad-bg:#fbe3d3;
+  --focus:#0072B2; --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1a18; --card:#172623; --ink:#e6f0ed; --muted:#9db5af; --line:#2b403b; --soft:#1e312d;
+    --brand:#006e57;
+    --accent:#5fd0b3; --accent-ink:#04231c;
+    --ok:#4fd1a5; --ok-bg:#12372d; --mid:#f0b94d; --mid-bg:#3a2d10; --bad:#f08a4b; --bad-bg:#3d2312;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1a18; --card:#172623; --ink:#e6f0ed; --muted:#9db5af; --line:#2b403b; --soft:#1e312d;
+  --brand:#006e57;
+  --accent:#5fd0b3; --accent-ink:#04231c;
+  --ok:#4fd1a5; --ok-bg:#12372d; --mid:#f0b94d; --mid-bg:#3a2d10; --bad:#f08a4b; --bad-bg:#3d2312;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.55}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+header.top{background:var(--brand);color:#fff;border-radius:0 0 46px 46px/0 0 20px 20px;margin-bottom:22px}
+.egg{flex:0 0 auto;width:84px;height:104px;background:#fff;border-radius:50% 50% 50% 50%/56% 56% 44% 44%;display:grid;place-items:center;box-shadow:0 6px 16px rgba(0,50,38,.30);margin-bottom:0;position:relative;z-index:2}
+.egg img{height:76px;width:auto;display:block}
+.brandrow{display:flex;gap:16px;align-items:center}
+
+.wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+.top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:22px;flex-wrap:wrap}
+.brand{font-family:"Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif;font-size:1.25rem;font-weight:700;color:#fff}
+.brand small{display:block;font-family:system-ui,sans-serif;font-weight:400;font-size:.8rem;color:#d6efe8}
+nav.links{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+nav.links button{all:unset;cursor:pointer;color:#fff;text-decoration:underline}
+nav.links a{color:#fff}
+nav.links button:focus-visible,nav.links a:focus-visible{outline-color:#fff}
+main.wrap{padding-top:20px;padding-bottom:70px}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px}
+@media (max-width:820px){.layout{grid-template-columns:minmax(0,1fr)}}
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;position:sticky;top:12px;align-self:start}
+@media (max-width:820px){ol.steps{flex-direction:row;overflow-x:auto;position:static;padding-bottom:6px}}
+ol.steps button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:var(--radius);border:1px solid transparent;white-space:nowrap;width:100%;box-sizing:border-box}
+ol.steps button:hover{background:var(--soft)}
+ol.steps button[aria-current="step"]{background:var(--card);border-color:var(--line);font-weight:600}
+ol.steps .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;background:var(--soft);color:var(--muted);flex:none}
+ol.steps button[aria-current="step"] .n{background:var(--accent);color:var(--accent-ink)}
+ol.steps .done .n{background:var(--ok);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+#panes{min-width:0}
+h1,h2,h3{font-family:"Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif;line-height:1.2;margin:0 0 .5rem;text-wrap:balance}
+h1{font-size:1.9rem} h2{font-size:1.45rem} h3{font-size:1.08rem}
+p{margin:.4rem 0 .9rem;max-width:68ch}
+.muted{color:var(--muted)} .small{font-size:.86rem}
+.lede{font-size:1.08rem}
+.why{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;background:var(--soft);border-radius:var(--radius);padding:12px 16px;margin:10px 0 16px;font-size:.92rem}
+.why b{color:var(--accent)}
+.analogy{border-left:4px solid var(--mid);background:var(--mid-bg);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;max-width:72ch}
+.reassure{border:1px dashed var(--ok);background:var(--ok-bg);color:var(--ink);padding:10px 14px;border-radius:8px;margin:12px 0;max-width:72ch}
+.note{border-left:4px solid var(--accent);background:var(--soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;max-width:72ch}
+.quote{border-left:4px solid var(--mid);background:var(--soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0}
+.hero-svg{width:100%;height:auto;margin:10px 0}
+.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+@media (max-width:700px){.doors{grid-template-columns:1fr}}
+.door{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;background:var(--soft)}
+.door .k{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.door b{display:block;margin:2px 0 4px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}
+@media (max-width:760px){.gallery{grid-template-columns:1fr}}
+.ex{border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:var(--card);display:flex;flex-direction:column;gap:6px}
+.ex h3{margin:0}
+.ex .learn{font-size:.88rem;color:var(--muted);flex:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:700px){.grid2{grid-template-columns:1fr}}
+label{display:block;font-weight:600;font-size:.92rem;margin:12px 0 4px}
+label .hint{display:block;font-weight:400;color:var(--muted);font-size:.82rem}
+.lab{display:flex;gap:6px;align-items:baseline;justify-content:space-between}
+.info{all:unset;cursor:pointer;flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:.78rem;color:var(--accent);font-weight:700;background:var(--soft)}
+.info[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
+.help{background:var(--soft);border-radius:8px;padding:8px 12px;font-size:.86rem;margin:2px 0 6px}
+.help i{color:var(--muted)}
+input[type=text],input[type=number],select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+textarea{min-height:76px;resize:vertical}
+input[type=file]{width:100%}
+input[type=range]{width:100%}
+details{margin:10px 0}
+details>summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details.adv{border:1px solid var(--line);border-radius:var(--radius);padding:8px 14px;background:var(--card)}
+button.btn{font:inherit;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:9px 16px;border-radius:8px;font-weight:600}
+button.btn.ghost{background:transparent;color:var(--accent)}
+button.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-weight:700;font-size:.82rem}
+.b-ok{background:var(--ok-bg);color:var(--ok)} .b-mid{background:var(--mid-bg);color:var(--mid)} .b-bad{background:var(--bad-bg);color:var(--bad)}
+.verdict{border-radius:var(--radius);padding:16px 18px;margin:14px 0;border:1px solid var(--line)}
+.verdict.ok{background:var(--ok-bg);border-color:var(--ok)} .verdict.mid{background:var(--mid-bg);border-color:var(--mid)} .verdict.bad{background:var(--bad-bg);border-color:var(--bad)}
+.verdict .big{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:1.3rem;font-weight:700;margin:4px 0 6px}
+.todo{margin:8px 0 0;padding-left:1.2rem}
+table.t{width:100%;border-collapse:collapse;font-size:.9rem;margin:10px 0;font-variant-numeric:tabular-nums}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+table.t th{color:var(--muted);font-weight:600;font-size:.8rem}
+.scroll{overflow-x:auto}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.kv div{background:var(--soft);border-radius:8px;padding:10px 12px}
+.kv .v{font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums}
+.kv .l{font-size:.78rem;color:var(--muted)}
+.bars{display:flex;align-items:flex-end;gap:2px;height:60px;margin:6px 0}
+.bars i{flex:1;background:var(--accent);opacity:.75;min-height:1px;border-radius:2px 2px 0 0}
+.chartbox{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;margin:12px 0}
+.chartbox figcaption{font-size:.84rem;color:var(--muted);margin-top:4px}
+svg.chart{width:100%;height:auto;display:block}
+svg text{fill:var(--ink);font-family:system-ui,sans-serif}
+svg .mut{fill:var(--muted)}
+.whatif{background:var(--soft);border-radius:var(--radius);padding:14px 16px;margin:16px 0}
+.whatif .sl{display:grid;grid-template-columns:200px 1fr 90px;gap:10px;align-items:center;margin:8px 0}
+@media (max-width:700px){.whatif .sl{grid-template-columns:1fr}}
+.whatif output{font-weight:700;font-variant-numeric:tabular-nums}
+pre{background:var(--soft);padding:12px;border-radius:8px;overflow:auto;font-size:.8rem;max-height:280px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace}
+.hash{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;word-break:break-all;background:var(--soft);padding:8px 10px;border-radius:8px}
+.hidden{display:none}
+.pill{display:inline-block;background:var(--soft);border-radius:999px;padding:2px 10px;font-size:.78rem;margin-right:6px}
+.err{color:var(--bad);font-weight:600}
+.summary{border:2px solid var(--accent);border-radius:var(--radius);padding:16px 18px;margin:12px 0}
+.summary dl{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;margin:8px 0}
+.summary dt{color:var(--muted);font-size:.86rem} .summary dd{margin:0}
+dialog{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);color:var(--ink);max-width:640px;width:calc(100% - 32px);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog dt{font-weight:700;margin-top:10px} dialog dd{margin:0 0 0 0;color:var(--muted)}
+.tema{border:2px solid var(--accent);border-radius:var(--radius);padding:16px 20px;margin:0 0 20px;background:var(--soft)}
+.tema .k{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.tema h2{margin:4px 0 6px;font-size:1.5rem}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chips button{font:inherit;cursor:pointer;border:1px solid var(--accent);background:var(--card);color:var(--accent);padding:6px 12px;border-radius:999px;font-weight:600}
+.subq{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-style:italic;font-size:1.08rem;color:var(--accent);margin:0 0 10px}
+.predict{border:2px dashed var(--mid);background:var(--mid-bg);border-radius:var(--radius);padding:12px 16px;margin:14px 0}
+.opt{display:block;font-weight:400;margin:6px 0}
+.quiz{margin:20px 0}
+.qcard{border:1px solid var(--line);border-radius:var(--radius);padding:10px 14px;margin:12px 0;background:var(--card)}
+.qq{font-weight:600;margin:0 0 6px;max-width:none}
+.fb{margin-top:6px;font-size:.92rem}
+.fb-ok{background:var(--ok-bg);color:var(--ink);border-left:4px solid var(--ok);padding:8px 12px;border-radius:0 8px 8px 0}
+.fb-no{background:var(--bad-bg);color:var(--ink);border-left:4px solid var(--bad);padding:8px 12px;border-radius:0 8px 8px 0}
+@media (prefers-reduced-motion:no-preference){.verdict{transition:background .2s}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brandrow"><a class="egg" href="https://invesciencias.github.io/Cosmobiologia/" aria-label="Fundación Invesciencias"><img src="logo-invesciencias.png" alt="Invesciencias"></a><div class="brand">Laboratorio de las tres compuertas<small>Fundación Invesciencias · Marco Falseable de Cosmobiología</small></div></div>
+  <nav class="links"><button id="openFloors" type="button">Pisos de detección</button><button id="openGlos" type="button">Glosario</button><a href="panel.html">Panel del curso</a><a href="../index.html">Explorador (exploratorio)</a><a href="LEEME.md">Cómo funciona</a></nav>
+</div></header>
+
+<main class="wrap">
+<div class="layout">
+  <ol class="steps" id="steps" aria-label="Pasos"></ol>
+
+  <div id="panes">
+
+  <!-- 0 Inicio -->
+  <section class="card" data-step="0">
+    <div class="tema"><span class="k">Tema del curso</span><h2>¿Cuándo puedo creerle a un resultado sobre eventos y ciclos astronómicos?</h2><p style="margin:0 0 4px">Es el principio de la causalidad por relación estadística: la interpretación correcta de los resultados. Se responde con tres preguntas, que son las tres compuertas:</p><div class="chips"><button type="button" data-go="3">1. ¿Mis datos podían verlo?</button><button type="button" data-go="4">2. ¿Se sostiene al corregir?</button><button type="button" data-go="4">3. ¿Se repite en datos distintos?</button></div></div>
+    <h1>Antes de preguntar si hay un efecto, pregunta si tus datos podían verlo</h1>
+    <p class="lede">Esta herramienta te acompaña paso a paso por tres compuertas. Cuanto más lejos llega un resultado, más información da. Uno que se detiene en la primera, aunque salga «no significativo», <b>no demuestra nada</b>: solo dice que esos datos no podían ver el efecto.</p>
+
+    <svg class="hero-svg" viewBox="0 0 720 230" role="img" aria-label="Dos recorridos por las tres compuertas. Mercurio–Urano pasa la primera y la segunda y se detiene en la tercera con z de 5,27 a 0,61. El nulo de marea y sismos se detiene en la primera: el diseño solo detectaba efectos de 1,78 por ciento o más y se buscaba 1 por ciento.">
+      <g font-size="13">
+        <rect x="190" y="14" width="150" height="196" rx="10" style="fill:var(--soft);stroke:var(--line)"/>
+        <rect x="360" y="14" width="150" height="196" rx="10" style="fill:var(--soft);stroke:var(--line)"/>
+        <rect x="530" y="14" width="150" height="196" rx="10" style="fill:var(--soft);stroke:var(--line)"/>
+        <text x="265" y="38" text-anchor="middle" font-weight="700">1. ¿Podías verlo?</text>
+        <text x="435" y="38" text-anchor="middle" font-weight="700">2. ¿Se sostiene?</text>
+        <text x="605" y="38" text-anchor="middle" font-weight="700">3. ¿Se repite?</text>
+        <text x="265" y="54" text-anchor="middle" class="mut" font-size="11">detectabilidad</text>
+        <text x="435" y="54" text-anchor="middle" class="mut" font-size="11">evidencia corregida</text>
+        <text x="605" y="54" text-anchor="middle" class="mut" font-size="11">replicación</text>
+        <text x="10" y="105" font-weight="700">Un hallazgo</text><text x="10" y="121" class="mut" font-size="11">Mercurio–Urano</text>
+        <line x1="150" y1="110" x2="605" y2="110" style="stroke:var(--muted);stroke-width:3"/>
+        <circle cx="265" cy="110" r="14" style="fill:var(--ok)"/><path d="M258 110 l5 5 l9 -10" style="stroke:#fff;stroke-width:3;fill:none"/>
+        <circle cx="435" cy="110" r="14" style="fill:var(--ok)"/><path d="M428 110 l5 5 l9 -10" style="stroke:#fff;stroke-width:3;fill:none"/>
+        <circle cx="605" cy="110" r="14" style="fill:var(--bad)"/><path d="M599 104 l12 12 M611 104 l-12 12" style="stroke:#fff;stroke-width:3"/>
+        <text x="605" y="142" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--bad)">z de 5,27 a 0,61</text>
+        <text x="605" y="157" text-anchor="middle" class="mut" font-size="11">en datos independientes</text>
+        <text x="10" y="185" font-weight="700">Un resultado nulo</text><text x="10" y="201" class="mut" font-size="11">marea y sismos</text>
+        <line x1="150" y1="190" x2="265" y2="190" style="stroke:var(--muted);stroke-width:3"/>
+        <line x1="265" y1="190" x2="605" y2="190" style="stroke:var(--muted);stroke-width:2;stroke-dasharray:3 5"/>
+        <circle cx="265" cy="190" r="14" style="fill:var(--bad)"/><path d="M259 184 l12 12 M271 184 l-12 12" style="stroke:#fff;stroke-width:3"/>
+        <text x="285" y="208" font-size="11" class="mut">se detiene aquí: solo veía efectos ≥ 1,78 % y se buscaba 1 %</text>
+      </g>
+    </svg>
+
+    <div class="analogy"><b>Una forma de pensarlo.</b> Compuerta 1: ¿mi balanza puede pesar una pluma? Compuerta 2: ¿pregunté a personas distintas o varias veces a la misma familia? Compuerta 3: ¿probé con otra moneda, o con la misma moneda de siempre?</div>
+
+    <h2 style="margin-top:20px">Aprende con un ejemplo guiado</h2>
+    <p class="muted">Son tres casos reales del proyecto, ya cargados. En cada uno puedes mover controles y ver qué cambia.</p>
+    <div class="gallery">
+      <div class="ex"><span class="pill" style="width:fit-content">Intermedio</span><h3>Marea y sismos</h3><div class="learn">Un resultado «no significativo» con 371.186 sismos. ¿Quería decir que no hay efecto? Aprenderás por qué no, y cuánta muestra faltaba.</div><button class="btn ghost" data-ex="marea_sismos">Abrir este ejemplo</button></div>
+      <div class="ex"><span class="pill" style="width:fit-content">Intermedio</span><h3>Marea y huracanes</h3><div class="learn">Las posiciones de los huracanes se anotan cada 6 horas. Aprenderás qué hace un error de hora a un efecto que cambia en horas.</div><button class="btn ghost" data-ex="marea_huracanes">Abrir este ejemplo</button></div>
+      <div class="ex"><span class="pill" style="width:fit-content">Inicial</span><h3>Estacionalidad de los ciclones</h3><div class="learn">Un efecto enorme y conocido. Sirve para ver cómo se ve una compuerta en verde y para comprobar que el método sí detecta algo cuando hay algo.</div><button class="btn ghost" data-ex="estacionalidad">Abrir este ejemplo</button></div>
+    </div>
+
+    <details><summary>Qué vas a poder hacer al terminar</summary><ul><li>Explicar por qué un resultado «no significativo» puede no decir nada, y calcular qué efecto podían ver tus datos.</li><li>Recorrer las tres compuertas con un caso propio y justificar cada decisión.</li><li>Localizar y describir una base de eventos de tu ciencia: fuente, licencia, precisión de hora y lugar, cobertura.</li><li>Formular una hipótesis medible a partir del libro o de la literatura, fijarla antes de ver datos y comparar cómo se aplica en dos ciencias.</li><li>Distinguir una réplica real de una reutilización de datos, y saber si podía ver el efecto.</li><li>Leer un resultado nulo o un rojo como información.</li></ul><p class="small muted">Estas capacidades se desprenden del tema; se practican en cada paso.</p></details>
+    <h2 style="margin-top:22px">O prueba tu propia hipótesis</h2>
+    <div class="reassure"><b>Aquí no puedes dañar nada.</b> Tus datos no salen de tu equipo, todo se calcula en este navegador, y puedes volver atrás o empezar de nuevo cuando quieras. Lo único que se publica, si tú decides enviarlo, es un registro pequeño.</div>
+    <p class="muted small">Esta herramienta no afirma nada sobre si la marea, los astros u otra variable influyen en los eventos. Solo ayuda a saber cuándo un resultado puede interpretarse.</p>
+    <div class="row"><button class="btn" data-go="1">Empezar con mi hipótesis</button><button class="btn ghost" id="resetAll">Empezar de nuevo (borra el borrador)</button></div>
+  </section>
+
+  <!-- 1 Hipótesis -->
+  <section class="card hidden" data-step="1">
+    <h2>1. Tu hipótesis, antes de ver resultados</h2>
+    <p class="subq">¿Qué estoy preguntando exactamente, y qué tendría que pasar para convencerme?</p>
+    <div class="why"><b>Qué haces</b><span>Escribes qué esperas y qué efecto te interesa.</span><b>Por qué importa</b><span>Si fijas la pregunta antes de mirar los datos, el resultado no puede cambiarla a su favor. Es la mejor defensa contra engañarse a uno mismo.</span><b>Cuánto tarda</b><span>5 minutos. Si dudas, usa «Rellenar con un ejemplo» y cámbialo.</span></div>
+    <div class="row" style="margin-top:0"><button class="btn ghost" id="fillEx">Rellenar con un ejemplo</button></div>
+
+    <h3 style="margin-top:16px">Lo esencial</h3>
+    <div id="fieldsEss"></div>
+
+    <details class="adv"><summary>Opciones avanzadas (tienen valores razonables; ábrelas cuando las entiendas)</summary><div id="fieldsAdv"></div></details>
+
+    <div class="row"><button class="btn" data-go="2">Siguiente: mis datos</button></div>
+  </section>
+
+  <!-- 2 Datos -->
+  <section class="card hidden" data-step="2">
+    <h2>2. Tus datos</h2>
+    <p class="subq">¿Cuánta información independiente tengo, y con qué precisión?</p>
+    <div class="why"><b>Qué haces</b><span>Cargas el archivo de eventos, o estimas cuántos tendrás.</span><b>Por qué importa</b><span>Lo que cuenta no es cuántos eventos tienes sino cuánta <i>información independiente</i> aportan. Eventos que vienen en grupos (réplicas de un sismo, registros de una misma tormenta) se parecen entre sí.</span><b>Tranquilo</b><span>El archivo se lee aquí mismo y no se sube a ningún sitio.</span></div>
+
+    <svg class="hero-svg" viewBox="0 0 640 110" role="img" aria-label="Ocho eventos independientes aportan ocho piezas de información. Ocho eventos en dos grupos aportan cerca de dos.">
+      <g font-size="12">
+        <text x="10" y="16" font-weight="700">8 eventos independientes</text>
+        <g style="fill:var(--accent)"><circle cx="30" cy="60" r="7"/><circle cx="75" cy="40" r="7"/><circle cx="120" cy="80" r="7"/><circle cx="165" cy="50" r="7"/><circle cx="210" cy="75" r="7"/><circle cx="255" cy="45" r="7"/><circle cx="85" cy="85" r="7"/><circle cx="235" cy="90" r="7"/></g>
+        <text x="10" y="106" class="mut">≈ 8 piezas de información</text>
+        <text x="340" y="16" font-weight="700">8 eventos en 2 grupos (réplicas)</text>
+        <g style="fill:var(--bad)"><circle cx="390" cy="50" r="7"/><circle cx="403" cy="60" r="7"/><circle cx="380" cy="64" r="7"/><circle cx="398" cy="42" r="7"/><circle cx="560" cy="70" r="7"/><circle cx="573" cy="58" r="7"/><circle cx="550" cy="58" r="7"/><circle cx="566" cy="80" r="7"/></g>
+        <ellipse cx="392" cy="53" rx="30" ry="26" style="fill:none;stroke:var(--muted);stroke-dasharray:4 4"/><ellipse cx="562" cy="69" rx="30" ry="26" style="fill:none;stroke:var(--muted);stroke-dasharray:4 4"/>
+        <text x="340" y="106" class="mut">≈ 2 a 3 piezas de información (el «tamaño efectivo»)</text>
+      </g>
+    </svg>
+
+    <div class="grid2">
+      <div><label><input type="radio" name="modo" value="datos" checked> Tengo un archivo CSV</label></div>
+      <div><label><input type="radio" name="modo" value="plan"> Todavía no tengo datos (quiero planificar)</label></div>
+    </div>
+    <div id="boxDatos">
+      <p class="small muted">El archivo necesita una fila por evento. Con estas columnas (los nombres pueden variar; podrás indicarlos):</p>
+      <div class="scroll"><table class="t"><tr><th>datetime_utc</th><th>latitude</th><th>longitude</th><th>unit (opcional)</th></tr><tr><td>2015-04-25T06:11:26Z</td><td>28.23</td><td>84.73</td><td>secuencia_12</td></tr><tr><td>2015-04-25T06:45:21Z</td><td>28.30</td><td>84.75</td><td>secuencia_12</td></tr></table></div>
+      <div class="row" style="margin-top:6px"><button class="btn ghost" id="tplCsv">Descargar plantilla CSV</button><button class="btn ghost" id="sampleCsv">Usar datos de práctica (sintéticos)</button></div>
+      <label for="projSel">…o carga un conjunto del proyecto<span class="hint">Se descarga del repositorio de GitHub (hace falta conexión). Cada uno trae su aviso de uso.</span></label>
+      <div class="row" style="margin-top:0"><select id="projSel" style="max-width:420px"></select><button class="btn ghost" id="projLoad" type="button">Cargar</button></div>
+      <div id="projNote" class="note small hidden" role="status"></div>
+      <label for="file">Archivo CSV de eventos</label>
+      <input type="file" id="file" accept=".csv,.txt,text/csv">
+      <div id="map" class="hidden">
+        <div class="grid2">
+          <div><label for="cT">Columna de hora (UTC)</label><select id="cT"></select></div>
+          <div><label for="cLat">Latitud</label><select id="cLat"></select></div>
+          <div><label for="cLon">Longitud</label><select id="cLon"></select></div>
+          <div><label for="cU">Unidad (opcional)</label><select id="cU"></select></div>
+        </div>
+        <div class="row"><button class="btn" id="analyze">Revisar mis datos</button></div>
+      </div>
+      <p class="err" id="dataErr" role="alert"></p>
+      <div id="dataOut" aria-live="polite"></div>
+    </div>
+    <div id="boxPlan" class="hidden">
+      <p class="small muted">Si aún no tienes el archivo, estima cuántos eventos esperas y qué tan agrupados vendrán. Con 1,0 los eventos serían independientes; en catálogos de sismos suele ser algo mayor (1,84 en el que usó el proyecto).</p>
+      <div class="grid2">
+        <div><label for="pN">Número de eventos esperados</label><input type="number" id="pN" value="371186"></div>
+        <div><label for="pDeff">Efecto de diseño (cuánto se agrupan)<span class="hint">1 = independientes</span></label><input type="number" id="pDeff" step="any" value="1.84"></div>
+      </div>
+    </div>
+    <details class="adv"><summary>Ficha de tus datos (recomendada)</summary>
+      <p class="small muted">Describir tus datos es parte del método: de esto depende qué efecto podías ver. Si no lo sabes, escribe «no lo sé»: también es información.</p>
+      <div class="grid2">
+        <div><label for="fichaFuente">Fuente o catálogo</label><input type="text" id="fichaFuente" placeholder="USGS ComCat, descarga de 2026"></div>
+        <div><label for="fichaLic">Licencia o condiciones de uso</label><input type="text" id="fichaLic" placeholder="Verifícala en la página de la fuente"></div>
+        <div><label for="fichaHora">Precisión de la hora</label><input type="text" id="fichaHora" placeholder="al segundo / al minuto / solo la fecha"></div>
+        <div><label for="fichaLugar">Precisión del lugar</label><input type="text" id="fichaLugar" placeholder="± 15 km"></div>
+        <div><label for="fichaCob">Cobertura y completitud</label><input type="text" id="fichaCob" placeholder="completo desde M 4,5 a partir de 1973"></div>
+        <div><label for="fichaArt">Artefactos conocidos</label><input type="text" id="fichaArt" placeholder="cambio de tipo de magnitud en 1990"></div>
+      </div></details>
+    <details><summary>Dónde buscar datos de eventos</summary>
+      <ul class="small"><li>Sismos: <a href="https://earthquake.usgs.gov/data/comcat/" target="_blank" rel="noopener">USGS ComCat</a> y <a href="https://www.globalcmt.org" target="_blank" rel="noopener">Global CMT</a> (mecanismos focales).</li><li>Ciclones tropicales: <a href="https://www.nhc.noaa.gov/data/#hurdat" target="_blank" rel="noopener">HURDAT2 (NOAA)</a>.</li><li>Desastres: <a href="https://www.emdat.be" target="_blank" rel="noopener">EM-DAT</a>.</li><li>Otras ciencias: busca el registro oficial de tu campo y revisa la precisión de la hora y quién lo mantiene.</li></ul>
+      <p class="small muted">Verifica siempre la licencia y las condiciones de uso en la propia fuente antes de reutilizar o redistribuir.</p></details>
+    <div class="row"><button class="btn" data-go="3" id="toG1">Siguiente: Compuerta 1</button></div>
+  </section>
+
+  <!-- 3 Compuerta 1 -->
+  <section class="card hidden" data-step="3">
+    <h2>3. Compuerta 1: ¿podían tus datos ver el efecto?</h2>
+    <p class="subq">Primera pregunta del tema: ¿mis datos podían verlo?</p>
+    <div class="why"><b>Qué haces</b><span>Pulsas «Calcular». No tienes que introducir resultados.</span><b>Por qué importa</b><span>Si tus datos solo pueden ver efectos grandes y tú buscas uno pequeño, un resultado «no significativo» no significa «no hay efecto»: significa «no podía verlo».</span><b>Cómo leer el semáforo</b><span><span class="badge b-ok">Verde</span> podías verlo · <span class="badge b-mid">Ámbar</span> posible con más datos o más precisión · <span class="badge b-bad">Rojo</span> con estos datos no se puede responder. <b>Rojo no es un fracaso:</b> es información para decidir qué conseguir.</span></div>
+    <div id="guide"></div>
+    <div id="refBox"></div>
+    <div class="predict" id="predBox"><h3>Antes de calcular, apuesta</h3><p style="margin-bottom:6px">Con los datos que describiste, ¿podrían verse efectos del tamaño que buscas?</p>
+      <label class="opt"><input type="radio" name="pg1" value="ok"> Sí, claramente (verde)</label>
+      <label class="opt"><input type="radio" name="pg1" value="mid"> Sí, pero con más datos o con la hora más precisa (ámbar)</label>
+      <label class="opt"><input type="radio" name="pg1" value="bad"> No, ni siquiera ampliando lo que fijé como máximo (rojo)</label>
+      <label for="pconf" style="display:inline-block;margin-right:8px">¿Qué tan seguro o segura estás?</label><select id="pconf" style="width:auto"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select>
+      <label class="opt"><input type="checkbox" id="pskip"> Prefiero no apostar esta vez</label>
+      <p class="small muted" style="margin-bottom:0">No hay respuestas malas: apostar y comparar es una de las mejores formas de afinar la intuición.</p></div>
+    <div class="row"><button class="btn" id="runG1">Calcular</button></div>
+    <div id="g1Out" aria-live="polite"></div>
+    <div id="g1After"></div>
+  </section>
+
+  <!-- 4 Compuertas 2 y 3 -->
+  <section class="card hidden" data-step="4">
+    <h2>4. Compuertas 2 y 3</h2>
+    <p class="subq">Segunda y tercera preguntas: ¿se sostiene al corregir?, ¿se repite en datos distintos?</p>
+    <div class="why"><b>Qué haces</b><span>Preparas el análisis corregido (2) y compruebas si una réplica sirve (3).</span><b>Por qué importa</b><span>Un hallazgo que se sostiene al corregir y que se repite en datos distintos tiene mucho más peso que uno que no.</span></div>
+
+    <h3>Compuerta 2: ¿se sostiene al corregir?</h3>
+    <p>Es el análisis completo: se compara cada evento con fechas de control, se cuenta como unidad la secuencia o la tormenta (no cada evento), y se comprueba que la prueba esté calibrada. Se ejecuta con el código del proyecto en un cuaderno; aquí preparas su configuración.</p>
+    <div class="row"><button class="btn ghost" id="dlCfg">Descargar configuración (JSON)</button><span class="pill">Cuaderno de Colab: próximamente</span></div>
+    <div id="quiz2"></div>
+
+    <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+    <h3>Compuerta 3: ¿se repite en datos distintos?</h3>
+    <div class="analogy"><b>Antes de gastar tiempo en una réplica, comprueba dos cosas:</b> que los datos sean <i>de verdad</i> distintos de los del descubrimiento, y que la réplica <i>tenga capacidad</i> de ver el efecto. Una réplica que comparte eventos con el descubrimiento, o que no podía verlo, no puede confirmar ni contradecir nada.</div>
+
+    <details open><summary>3a. ¿Podía la réplica detectar el efecto? (informatividad)</summary>
+    <p class="small muted">Introduce el efecto que quieres replicar (RR del descubrimiento), cuántos eventos tiene la réplica y con qué frecuencia aparece el rasgo en las fechas de control. <button type="button" class="btn ghost" data-floors style="padding:2px 10px">¿Cómo se calcula el piso?</button></p>
+    <div class="grid2">
+      <div><label for="rEff">Efecto que se replica (RR del descubrimiento)</label><input type="number" id="rEff" step="any" value="1.315"></div>
+      <div><label for="rN">Eventos de la réplica</label><input type="number" id="rN" value="2731"></div>
+      <div><label for="rF">Frecuencia base del rasgo en los controles<span class="hint">Por ejemplo 0,0463 (4,63 %)</span></label><input type="number" id="rF" step="any" value="0.0463"></div>
+      <div><label for="rFloor">… o directamente el piso de detección (RR)<span class="hint">Si lo conoces, déjalo aquí y la frecuencia se ignora</span></label><input type="number" id="rFloor" step="any" placeholder="vacío"></div>
+    </div>
+    <label for="pinf">Antes de calcular, apuesta: ¿podía esta réplica ver el efecto?</label><select id="pinf" style="max-width:340px"><option value="">(elige o salta)</option><option value="ok">Sí, podía</option><option value="mid">En el límite</option><option value="bad">No podía</option></select>
+    <div class="row"><button class="btn" id="runInf">Calcular</button><button class="btn ghost" id="exMU">Ejemplo: Mercurio–Urano</button><button class="btn ghost" id="exR3">Ejemplo: Júpiter en el Descendente (R3)</button></div>
+    <div id="infOut" aria-live="polite"></div>
+    </details>
+
+    <details open><summary>3b. ¿Son independientes los dos conjuntos? (eventos y periodos compartidos)</summary>
+    <p class="small muted">Sube el archivo del descubrimiento y el de la réplica. La página cuenta cuántos eventos de la réplica ya estaban en el descubrimiento.</p>
+    <div class="grid2">
+      <div><label for="fD">Archivo del descubrimiento (CSV)</label><input type="file" id="fD" accept=".csv,.txt"></div>
+      <div><label for="fR">Archivo de la réplica (CSV)</label><input type="file" id="fR" accept=".csv,.txt"></div>
+      <div><label for="tolT">Tolerancia de hora (s)<span class="hint">Más grande si son catálogos distintos</span></label><input type="number" id="tolT" value="60"></div>
+      <div><label for="tolX">Tolerancia de lugar (grados)</label><input type="number" id="tolX" step="any" value="0.5"></div>
+    </div>
+    <label><input type="checkbox" id="sameCat"> Vienen del mismo catálogo o fuente</label>
+    <div class="row"><button class="btn" id="runInd">Comparar</button></div>
+    <p class="err" id="indErr" role="alert"></p>
+    <div id="indOut" aria-live="polite"></div>
+    </details>
+    <div id="quiz3"></div>
+  </section>
+
+  <!-- 5 Registro -->
+  <section class="card hidden" data-step="5">
+    <h2>5. Tu registro</h2>
+    <p class="subq">¿Qué dejo registrado, y qué aprendí?</p>
+    <div class="why"><b>Qué haces</b><span>Revisas el resumen de tu recorrido y, si quieres, lo registras en GitHub.</span><b>Por qué importa</b><span>Un registro con fecha deja constancia de que fijaste la pregunta antes de ver el resultado, y permite que el equipo del curso te ayude.</span><b>Tú decides</b><span>No se envía nada hasta que pulses el último botón y confirmes en GitHub. Lo que se publica es este resumen, no tus datos.</span></div>
+    <div id="sumOut"></div>
+    <div id="goodOut"></div>
+    <div id="regOut"></div>
+    <h3 style="margin-top:20px">Para ti: reflexión y dossier</h3>
+    <label for="reflexion">¿Qué te sorprendió? ¿Qué cambiarías de tu hipótesis o de tus datos?<span class="hint">Opcional. Queda en tu dossier, no en el registro público.</span></label>
+    <textarea id="reflexion"></textarea>
+    <div class="row"><button class="btn ghost" id="dlDossier" type="button">Descargar mi dossier (.md)</button></div>
+    <div class="row">
+      <button class="btn" id="mkReg">Preparar registro</button>
+      <button class="btn ghost" id="cpReg" disabled>Copiar JSON</button>
+      <button class="btn ghost" id="dlReg" disabled>Descargar JSON</button>
+      <button class="btn" id="ghReg" disabled>Registrar en GitHub (abre un formulario)</button>
+    </div>
+    <p class="muted small">Al registrarlo se abre un formulario de GitHub con los campos rellenos. La fecha la pone GitHub al enviarlo. Necesitas una cuenta de GitHub.</p>
+  </section>
+
+  <!-- 6 Pisos de detección (explicación, fuera del recorrido) -->
+  <section class="card hidden" data-step="6">
+    <h2>Cómo funcionan los pisos de detección</h2>
+    <p class="subq">¿Cuál es el efecto más pequeño que mis datos podían ver?</p>
+    <div class="row" style="margin-top:0"><button class="btn ghost" id="backFloors" type="button">← Volver a donde estabas</button></div>
+
+    <h3 style="margin-top:16px">1. La idea</h3>
+    <p>El <b>piso de detección</b> es el efecto más pequeño que tu diseño vería con buena probabilidad (80 %), usando una prueba unilateral con nivel 5 %. Es como la balanza que no pesa una pluma: si tu efecto queda por debajo del piso, un resultado «no significativo» no te dice nada sobre él.</p>
+    <ul>
+      <li><b>Más eventos independientes</b> → el piso baja. Pero baja despacio: duplicar la muestra lo reduce a ≈ 71 % (÷ √2), no a la mitad.</li>
+      <li><b>Rasgo más raro</b> (frecuencia base f pequeña) → el piso sube.</li>
+      <li><b>Error en la hora o el lugar</b> de los eventos → el piso sube (atenuación).</li>
+      <li><b>Eventos agrupados</b> → cuenta el tamaño efectivo, no el número de filas.</li>
+    </ul>
+
+    <h3>2. Dos escalas del mismo concepto (no se comparan entre sí)</h3>
+    <div class="scroll"><table class="t"><tr><th>Tipo de pregunta</th><th>Ejemplo</th><th>Cómo se expresa el piso</th></tr>
+      <tr><td>Un rasgo «sí o no»</td><td>¿Está Júpiter en el Descendente cuando ocurre el sismo?</td><td>Un RR mínimo detectable (por ejemplo 1,22)</td></tr>
+      <tr><td>Una variable continua</td><td>El levantamiento del suelo por la marea</td><td>Un % de variación de la tasa (por ejemplo 1,78 %)</td></tr></table></div>
+    <p><b>Para una variable continua</b> (lo que calcula la Compuerta 1) el piso se reescala desde una referencia medida y se degrada por el error de medida:</p>
+    <p class="hash">piso sin error = referencia × √(n de referencia ÷ tu n efectivo)<br>piso con error = piso sin error ÷ a   (a = atenuación, 0 &lt; a ≤ 1)<br>F = (piso con error ÷ efecto de interés)²</p>
+
+    <h3>3. Para un rasgo «sí o no»: dos umbrales, según el diseño</h3>
+    <p>Con f la frecuencia del rasgo en las fechas de control y n el número de eventos, el error relativo es <code>EE = √((1 − f) ÷ (n·f))</code>. Hay dos pisos, y <b>se compara cada efecto con el de su propio diseño</b>:</p>
+    <div class="scroll"><table class="t"><tr><th>Piso</th><th>Fórmula</th><th>Cuándo</th></tr>
+      <tr><td><b>D<sub>A</sub></b> (barrido)</td><td>1 + 3,88 × 0,948 × EE</td><td>Un descubrimiento hecho mirando unos 400 rasgos a la vez. 3,88 es el techo de ruido medido en esos barridos y 0,948 un factor empírico de calibración: son constantes medidas, no deducidas.</td></tr>
+      <tr><td><b>D<sub>B</sub></b> (una prueba)</td><td>1 + 2,4866 × EE</td><td>Una réplica de una sola hipótesis fijada antes de mirar. 2,4866 ≈ 1,6449 + 0,8416: el valor z de una prueba unilateral al 5 % más el de una potencia del 80 %.</td></tr></table></div>
+    <div class="analogy"><b>Por qué no se mezclan.</b> Un barrido de muchos rasgos exige más evidencia para no confundir un azar con un hallazgo, así que su piso es más alto. Comparar el efecto de una réplica con el piso del barrido (o al revés) cambia la conclusión: en este proyecto, mezclarlos llevó a clasificar mal una réplica.</div>
+
+    <h3>4. Pruébalo</h3>
+    <div class="grid2">
+      <div><label for="flN">Número de eventos (o tamaño efectivo)</label><input type="number" id="flN" value="3730" step="any"></div>
+      <div><label for="flF">Frecuencia base f del rasgo en los controles</label><input type="number" id="flF" value="0.05" step="any"></div>
+      <div><label for="flE">Efecto que quieres comparar (RR, opcional)</label><input type="number" id="flE" value="" step="any" placeholder="por ejemplo 1,315"></div>
+    </div>
+    <div class="row"><button class="btn" id="flRun" type="button">Calcular</button><button class="btn ghost" id="flR1" type="button">Réplica R1</button><button class="btn ghost" id="flMU" type="button">Mercurio–Urano (1976–99)</button><button class="btn ghost" id="flReadme" type="button">Descubrimiento del README</button></div>
+    <div id="flOut" aria-live="polite"></div>
+
+    <h3>5. Reglas para usarlos bien</h3>
+    <ol>
+      <li>Compara un efecto con el piso <b>de su propio diseño</b> (barrido con D<sub>A</sub>, una prueba con D<sub>B</sub>).</li>
+      <li>Una réplica es <b>informativa</b> si su razón de exceso (piso − 1) ÷ (efecto − 1) es 1 o menos.</li>
+      <li>Con eventos agrupados, usa el tamaño efectivo y no las filas: de lo contrario el piso sale demasiado optimista.</li>
+      <li>La frecuencia f se <b>mide</b> en las fechas de control; no se supone.</li>
+      <li>Los pisos de esta página y de <code>piso_deteccion.py</code> son para una prueba <b>unilateral</b>. Si tu prueba es bilateral, el factor 2,4866 pasa a 2,80 (1,96 + 0,84) y el piso sube cerca de un 13 %; la Compuerta 1 lo aplica cuando eliges «Bilateral» en el paso 1.</li>
+      <li>Son pisos nominales (suponen una proporción binomial). Si el diseño es otro, hay que recalcularlos con el nulo propio.</li>
+    </ol>
+
+    <h3>6. Dónde está el código y qué reproduce</h3>
+    <p>El cálculo está en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/piso_deteccion.py" target="_blank" rel="noopener"><code>piso_deteccion.py</code></a> (solo librería estándar) con sus pruebas en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/test_piso_deteccion.py" target="_blank" rel="noopener"><code>test_piso_deteccion.py</code></a>, y la explicación escrita en <a href="https://github.com/Invesciencias/Cosmobiologia/blob/main/NOTA_PISO_DETECCION.md" target="_blank" rel="noopener"><code>NOTA_PISO_DETECCION.md</code></a>. Esta página hace el mismo cálculo y da los mismos valores publicados:</p>
+    <div class="scroll"><table class="t"><tr><th>Caso</th><th>Valor</th></tr><tr><td>Réplica R1 (D<sub>B</sub>, n = 581, f = 0,0501)</td><td>1,449</td></tr><tr><td>Mercurio–Urano 1976–99 (D<sub>B</sub>, n = 2.731, f = 0,0463)</td><td>1,216</td></tr><tr><td>README (D<sub>A</sub>, n = 3.730, f = 5 %)</td><td>1,263</td></tr><tr><td>Marea y sismos, F (Compuerta 1)</td><td>3,17</td></tr><tr><td>Marea y huracanes, F (Compuerta 1)</td><td>12,3 en el proyecto; la página da una estimación aproximada</td></tr></table></div>
+  </section>
+
+  </div>
+</div>
+</main>
+
+<dialog id="glos"><h2>Glosario</h2><dl id="glosList"></dl><form method="dialog"><button class="btn" style="margin-top:12px">Cerrar</button></form></dialog>
+
+<script>
+"use strict";
+const REPO = "Invesciencias/Cosmobiologia";           // cambia aquí el repositorio donde se registran las hipótesis
+const TEMPLATE = "registro-hipotesis.yml";
+const VERSION = "laboratorio-0.5";
+
+/* ------------------------------------------------------------------ referencias (resultados ya publicados en el proyecto) */
+const TIDE_CURVE = [[1,1],[1.605787,0.999999],[2.578553,0.999997],[4.140609,1],[6.648938,1],[10.676782,0.999993],[17.144643,0.999994],[27.530653,0.999973],[44.208378,1],[70.989261,0.999944],[113.993667,0.999962],[183.049606,0.999868],[293.938769,0.999546],[472.003201,0.998462],[757.936839,0.996163],[1217.085502,0.990329],[1954.380684,0.975522],[3138.32007,0.936797],[5039.475137,0.853833],[8092.326176,0.686156],[12994.55621,0.441936],[20866.495916,0.246045],[33507.158288,0.162448],[53805.375903,0.139314],[86400,0.131596]];
+const PRESETS = {
+  tide_uz:      {nombre:"Marea terrestre (levantamiento vertical)", mdeRef:1.78, nRef:201494, curve:TIDE_CURVE,
+                 fuente:"Réplica confirmatoria de marea y sismos: el efecto mínimo detectable fue 1,78 % con un tamaño efectivo de 201.494 (371.186 sismos en 145.829 secuencias)."},
+  solar_season: {nombre:"Estacionalidad solar", mdeRef:41.9, nRef:1973, curve:null,
+                 fuente:"Control positivo con huracanes del Atlántico: el efecto mínimo detectable fue 41,9 % con 1.973 tormentas."},
+  otra:         {nombre:"Otra variable", mdeRef:null, nRef:null, curve:null, fuente:"Introduce tú el efecto mínimo detectable de referencia y el tamaño efectivo con que se obtuvo."}
+};
+const BOOK = [
+ {id:"",label:"No, parto de otra idea"},
+ {id:"PV-01",label:"PV-01 Repetición horaria en un mismo lugar",pag:"TCC-143, p. 760",dice:"Si en un lugar un segundo temblor ocurre a la misma hora que otro, con uno o varios días de intervalo, y otros siguen a esa hora, forman «una serie periódica de repeticiones sismogénicas del primero».",nodice:"El tamaño del «lugar», el rango de días, la tolerancia de «igual hora» y el mínimo de repeticiones."},
+ {id:"PV-02",label:"PV-02 Sin temblores en los círculos polares",pag:"TCC-145, p. 763",dice:"La rotación cicloidal explicaría «la carencia de temblores dentro de los círculos polares de la Tierra».",nodice:"Qué es «carencia» (ausencia o escasez)."},
+ {id:"PV-03",label:"PV-03 Horas de recrudescencia diaria",pag:"TCC-145, p. 763; TCC-158, p. 774",dice:"Hay «horas de recrudescencia que diariamente ofrecen casi todos los fenómenos geodinámicos y geofísicos susceptibles de tener una causa mecánica».",nodice:"Cuáles son esas horas y de cuánto es el exceso."},
+ {id:"PV-04",label:"PV-04 Dependencia de la latitud",pag:"TCC-129, p. 721; TCC-142, p. 760",dice:"La energía de la oscilación norte–sur será «muy fuerte hasta los 30° de latitud norte y sur, y muy débil desde los 60°, siendo nula en los polos».",nodice:"No afirma que la sismicidad siga ese gradiente; esa unión es interpretación."},
+ {id:"PV-05",label:"PV-05 Ritmo undecenal",pag:"TCC-148, pp. 767–768",dice:"Los temblores más recios están «relacionados con aquel gran ritmo undecenal que experimenta el Sistema Planetario».",nodice:"El período exacto, la fase y si vale globalmente o solo para Lima y Callao."},
+ {id:"PV-06",label:"PV-06 Repetición a 19 años",pag:"TCC-153, p. 770",dice:"Las catástrofes de Arequipa «podrían repetirse dentro de otros 19 años en el mismo lugar».",nodice:"Es una posibilidad sobre un caso, no una regla."},
+ {id:"PV-07",label:"PV-07 Apogeo lunar",pag:"TCC-150, p. 769; TCC-152, p. 770",dice:"Los temblores del 2 al 9 de mayo de 1940 «han sido determinados por el apogeo de la Luna».",nodice:"No es una regla general; no da ventana de días ni tamaño de efecto."},
+ {id:"PV-08",label:"PV-08 Perigeo lunar",pag:"TCC-147, p. 766; TCC-152, p. 770",dice:"Un temblor de diciembre de 1941 «estaba en relación con el solsticio de diciembre y con el perigeo de la Luna».",nodice:"Casos anecdóticos que mezclan solsticio y perigeo."},
+ {id:"PV-09",label:"PV-09 Declinación lunar máxima con apogeo",pag:"TCC-152, p. 770",dice:"En febrero de 1943 la declinación máxima y el apogeo «han determinado la citada actividad».",nodice:"Dos condiciones en un solo episodio; sin umbrales."},
+ {id:"PV-10",label:"PV-10 Plutón en configuración poderosa",pag:"TCC-155, p. 771",dice:"Plutón «está siempre en poderosa configuración celeste cuando ocurren violentos terremotos o importantes erupciones volcánicas».",nodice:"Qué es «poderosa configuración», «violentos» o «importantes»; y si «siempre» es estricto o estadístico."},
+ {id:"PV-11",label:"PV-11 Jerarquía de los ejes",pag:"TCC-160, p. 776",dice:"El descendente «resulta en ese momento el punto más débil de la línea del horizonte»; el medio cielo «le sigue en ese momento en índice de sensibilidad».",nodice:"Qué es «sensibilidad» y qué significa «en ese momento»."}
+];
+const GLOS = [
+ ["Efecto de interés","El efecto más pequeño que te importaría detectar. Lo fijas tú antes de mirar, a partir de la literatura o del libro."],
+ ["Efecto mínimo detectable (MDE, «piso»)","El efecto más pequeño que tus datos podían ver con buena probabilidad (80 %). Efectos más pequeños se pierden en el ruido."],
+ ["Tamaño efectivo de muestra","Cuánta información independiente aportan tus eventos. Si vienen en grupos, es menor que el número de filas."],
+ ["Efecto de diseño","Cuántos eventos «valen» como uno solo por venir agrupados: eventos ÷ tamaño efectivo. 1 = independientes."],
+ ["Unidad de dependencia","El grupo cuyos eventos se parecen entre sí: una secuencia de réplicas, una tormenta, un paciente. Se cuenta como un solo bloque."],
+ ["Atenuación (a)","La parte del efecto que sobrevive al error en la hora o el lugar. 1 = nada se pierde; 0,5 = se pierde la mitad."],
+ ["z esperada","Lo que probablemente saldría si el efecto fuera real. Menos de 1,645 (prueba unilateral) o de 1,96 (bilateral) no alcanza significación."],
+ ["F (muestra necesaria ×)","Cuántas veces habría que multiplicar la muestra efectiva para poder ver el efecto buscado."],
+ ["Fechas de control","Fechas cercanas al evento (±3 a ±30 días, misma hora y lugar) con las que se compara. Evitan confundir el efecto con lo que cambia despacio."],
+ ["Unilateral","Se fija antes de ver los datos que solo importa un sentido (más eventos cuando la variable es alta). Da más potencia que mirar los dos sentidos."],
+ ["RR (riesgo relativo)","Cuántas veces más frecuente es el evento cuando se da la condición. 1,00 = ningún efecto."],
+ ["Réplica informativa","Su piso de detección es menor que el efecto que replica. Si no, no puede ni confirmar ni contradecir."],
+ ["Independencia de una réplica","No comparte eventos ni periodo con el descubrimiento. Si los comparte, no es una réplica."],
+ ["Huella SHA-256","Un «sello digital» de un documento: si cambia una sola coma, la huella cambia. Prueba que no se alteró, no cuándo se escribió."],
+ ["Exploratorio y confirmatorio","Exploratorio: miras muchas cosas a ver qué sale. Confirmatorio: fijas una sola pregunta antes de mirar. Solo el segundo prueba algo."]
+];
+const FIELDS_ESS = [
+ ["titulo","Título corto","text","Marea terrestre y sismos","Un nombre corto que reconozcas. Ej.: «Marea terrestre y sismos en Japón»."],
+ ["pregunta","Pregunta","textarea","","Escríbela de forma que pueda resultar falsa. Ej.: «¿Hay más sismos pequeños cuando el suelo está más alto por la marea?»."],
+ ["disc","Tu ciencia o disciplina","discselect","","Elige tu campo para ver cómo suele traducirse el método (qué es un evento, cuál es la unidad, qué precisión de hora esperar). Son sugerencias por validar con el grupo."],
+ ["libro","¿Parte de una afirmación del libro (TCC)?","bookselect","","Opcional. Si la eliges verás qué dice el libro, qué no dice y qué debes decidir tú. Lo que el libro no dice es justo lo que hay que fijar antes de contrastar."],
+ ["cov","Variable (covariable)","select","","La cantidad astronómica o física que sospechas que influye. Si dudas, empieza por la marea terrestre: es la mejor conocida."],
+ ["beta","Efecto de interés","number","1","El efecto más pequeño que te importaría detectar, en % de variación de la tasa de eventos. Ej.: 1 (Métivier et al. 2009 reportó entre 0,5 y 1)."],
+ ["fuente","Fuente de ese efecto","text","Métivier et al. 2009: 0,5 a 1 %","De dónde sale el número anterior: literatura, libro (página)… Un efecto sin fuente es una suposición."],
+ ["evento","Evento","text","Sismos M≥3, catálogo JMA 2000–2024","Qué cuenta como un evento y de dónde sale. Ej.: «Sismos M≥3 del catálogo JMA, 2000–2024»."]
+];
+const FIELDS_ADV = [
+ ["unidad","Unidad de dependencia","unitselect","","Los eventos de una misma unidad se parecen entre sí. Para sismos, usa «secuencia». Si tu archivo ya trae una columna (tormenta, paciente), elige la segunda opción."],
+ ["dir","Dirección","dirselect","","Se fija antes de ver los datos. «Unilateral» dice que esperas más eventos cuando la variable es alta; da más potencia pero te compromete."],
+ ["sigt","Error de hora del evento (σ, segundos)","number","10","Cuánto puede equivocarse la hora registrada. Sismos: unos 10 s. Posiciones de huracanes (cada 6 h): unas 3 h = 10800 s."],
+ ["sigxy","Error de lugar (σ, km)","number","15","Cuánto puede equivocarse la posición. Sismos: unos 15 km. Huracanes: unos 100 km."],
+ ["mfam","Hipótesis que probarás en total (m)","number","1","Cuenta cada variante (otro umbral, otra ventana). Cuantas más pruebes, más fácil es que una salga bien por azar."],
+ ["uso","Uso","usoselect","","Confirmatorio: una pregunta fijada antes de mirar. Exploratorio: mirar a ver qué sale; el informe lo marcará como tal."],
+ ["lmax","Pérdida tolerada L<sub>máx</sub>","number","1.25","Cuánto puede subir el efecto detectable por el error de hora. El diseño original usó 1,25."],
+ ["fmax","Ampliación de muestra alcanzable F<sub>máx</sub>","number","4","Cuántas veces podrías ampliar la muestra efectiva en la práctica. El diseño original usó 4."]
+];
+const EXAMPLES = {
+  marea_sismos:{titulo:"Ejemplo: marea terrestre y sismos", pregunta:"¿Hay más sismos cuando el levantamiento del suelo por la marea es alto?", cov:"tide_uz", evento:"Sismos del catálogo ComCat filtrado (1973–1999 y 2025–2026)", beta:"1", fuente:"Métivier et al. 2009: 0,5 a 1 %", sigt:"10", sigxy:"15", pN:371186, pDeff:1.842,
+    story:"<b>Qué pasó en el proyecto.</b> Con 371.186 sismos salió +0,44 % (p = 0,28): «no significativo». <b>La pregunta de esta compuerta:</b> ¿podían estos datos ver un efecto de 1 %? <b>Prueba esto:</b> en «Qué pasaría si…» sube la muestra ×4 y mira cómo cambia el semáforo."},
+  marea_huracanes:{titulo:"Ejemplo: marea terrestre y huracanes", pregunta:"¿Hay más observaciones de huracanes cuando el levantamiento del suelo por la marea es alto?", cov:"tide_uz", evento:"Posiciones de huracanes del Atlántico desde 1980 (HURDAT2, cada 6 h): 20.477 registros en 707 tormentas", beta:"1", fuente:"Métivier et al. 2009: 0,5 a 1 %", sigt:"10800", sigxy:"100", pN:203144, pDeff:1,
+    story:"<b>Qué pasa aquí.</b> Las posiciones se anotan cada 6 horas, así que la hora tiene un error de unas 3 horas. La marea cambia en horas: ese error borra buena parte del efecto. <b>Prueba esto:</b> en «Qué pasaría si…» baja el error de hora a 10 minutos (≈ 600 s) y mira qué ocurre. (Aquí se usa el tamaño efectivo que reportó el proyecto, 203.144. Con el error de lugar incluido, el proyecto obtuvo ×12,3; esta es una estimación aproximada.)"},
+  estacionalidad:{titulo:"Ejemplo: estacionalidad de los ciclones", pregunta:"¿Nacen más tormentas en la época del año en que el Sol está en cierta posición?", cov:"solar_season", evento:"Génesis de tormentas del Atlántico (HURDAT2)", beta:"163", fuente:"Efecto observado en el proyecto (control positivo; referencia post hoc)", sigt:"10800", sigxy:"100", pN:1973, pDeff:1,
+    story:"<b>Un caso en verde.</b> La estacionalidad de los huracanes es enorme y conocida: sirve para comprobar que el método sí detecta algo cuando hay algo. Como es una referencia observada (post hoc), no es una prueba de nada nuevo. <b>Prueba esto:</b> baja el «efecto de interés» a ×0,25 y mira hasta dónde sigue siendo verde."}
+};
+
+/* ------------------------------------------------------------------ utilidades */
+const $ = id => document.getElementById(id);
+const fmt = (x, d=2) => (x==null||!isFinite(x)) ? "—" : Number(x).toLocaleString("es", {maximumFractionDigits:d, minimumFractionDigits:d});
+const fmtI = x => Number(x).toLocaleString("es", {maximumFractionDigits:0});
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function sha256(buf){ const h = await crypto.subtle.digest("SHA-256", buf); return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join(""); }
+function canon(o){ if(Array.isArray(o)) return "["+o.map(canon).join(",")+"]"; if(o&&typeof o==="object") return "{"+Object.keys(o).sort().map(k=>JSON.stringify(k)+":"+canon(o[k])).join(",")+"}"; return JSON.stringify(o); }
+function parseTime(s){ s=String(s).trim(); if(!s) return NaN; if(/^\d{9,13}(\.\d+)?$/.test(s)){ const v=+s; return v>1e11? v : v*1000; }
+  let t=s.replace(" ","T"); if(!/[zZ]|[+\-]\d\d:?\d\d$/.test(t)) t+="Z"; return Date.parse(t); }
+function interpA(curve, sig){ if(!curve) return 1; if(sig<=curve[0][0]) return curve[0][1]; if(sig>=curve[curve.length-1][0]) return curve[curve.length-1][1];
+  for(let i=1;i<curve.length;i++){ if(sig<=curve[i][0]){ const [x0,y0]=curve[i-1],[x1,y1]=curve[i]; const f=(Math.log(sig)-Math.log(x0))/(Math.log(x1)-Math.log(x0)); return y0+f*(y1-y0); } } return 1; }
+function sigmaForA(curve, target){ if(!curve) return null; for(let i=1;i<curve.length;i++){ if(curve[i][1]<=target){ const [x0,y0]=curve[i-1],[x1,y1]=curve[i]; const f=(y0-target)/(y0-y1); return Math.exp(Math.log(x0)+f*(Math.log(x1)-Math.log(x0))); } } return null; }
+function parseCSV(text){
+  const lines = text.split(/\r?\n/); while(lines.length && !lines[lines.length-1].trim()) lines.pop();
+  if(!lines.length) return {head:[],rows:[]};
+  const first = lines[0]; const delim = (first.split(";").length>first.split(",").length) ? ";" : (first.split("\t").length>first.split(",").length ? "\t" : ",");
+  const split = l => { if(l.indexOf('"')<0) return l.split(delim); const out=[]; let cur="", q=false; for(let i=0;i<l.length;i++){ const c=l[i]; if(q){ if(c==='"'){ if(l[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c; } else if(c==='"') q=true; else if(c===delim){out.push(cur);cur="";} else cur+=c; } out.push(cur); return out; };
+  const head = split(first).map(s=>s.trim().replace(/^﻿/,""));
+  const rows = []; for(let i=1;i<lines.length;i++){ if(lines[i].trim()) rows.push(split(lines[i])); }
+  return {head, rows};
+}
+function guess(head, names){ const low=head.map(h=>h.toLowerCase()); for(const n of names){ const i=low.indexOf(n); if(i>=0) return i; } for(const n of names){ const i=low.findIndex(h=>h.includes(n)); if(i>=0) return i; } return -1; }
+function fillSel(sel, head, idx, optional){ sel.innerHTML = (optional?'<option value="-1">(ninguna)</option>':"") + head.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join(""); sel.value = String(idx>=0?idx:(optional?-1:0)); }
+function dl(name, text, type){ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type:type||"application/json"})); a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
+
+/* ------------------------------------------------------------------ formulario con ayuda */
+function fieldHTML([id,label,type,def,help]){
+  let ctl;
+  if(type==="textarea") ctl=`<textarea id="${id}"></textarea>`;
+  else if(type==="text") ctl=`<input type="text" id="${id}" placeholder="${esc(def)}">`;
+  else if(type==="number") ctl=`<input type="number" id="${id}" step="any" value="${def}">`;
+  else if(type==="select") ctl=`<select id="${id}"><option value="tide_uz">Marea terrestre (levantamiento vertical)</option><option value="solar_season">Estacionalidad solar (posición del Sol en el año)</option><option value="otra">Otra (introduzco referencias)</option></select>`;
+  else if(type==="bookselect") ctl=`<select id="${id}"></select><div id="libroBox" class="hidden"><div class="quote" id="libroTxt"></div><label for="traduccion">Tu traducción a algo medible<span class="hint">Lo que el libro no dice y tú decides: ventana, tamaño del lugar, umbral…</span></label><textarea id="traduccion"></textarea></div>`;
+  else if(type==="discselect") ctl=`<select id="${id}"><option value="sismologia">Sismología</option><option value="clima">Meteorología y ciclones</option><option value="salud">Salud</option><option value="ecologia">Ecología</option><option value="educacion">Educación</option><option value="otra">Otra</option></select><div id="discBox" class="note small"></div>`;
+  else if(type==="unitselect") ctl=`<select id="${id}"><option value="secuencia">Secuencia (celda 2°×2°, hueco ≤ 7 días)</option><option value="columna">Una columna de mi archivo (tormenta, paciente…)</option><option value="evento">Cada evento es independiente (rara vez es cierto)</option></select>`;
+  else if(type==="dirselect") ctl=`<select id="${id}"><option value="exceso">Unilateral: más eventos con el covariable alto</option><option value="bilateral">Bilateral</option></select>`;
+  else if(type==="usoselect") ctl=`<select id="${id}"><option value="confirmatorio">Confirmatorio (preespecificado)</option><option value="exploratorio">Exploratorio</option></select>`;
+  return `<div><div class="lab"><label for="${id}" style="margin:12px 0 4px">${label}</label><button type="button" class="info" aria-expanded="false" aria-controls="h_${id}" aria-label="Ayuda: ${esc(label.replace(/<[^>]+>/g,""))}">?</button></div><div class="help hidden" id="h_${id}">${help}</div>${ctl}</div>`;
+}
+$("fieldsEss").innerHTML = FIELDS_ESS.map(fieldHTML).join("");
+$("fieldsAdv").innerHTML = `<div class="grid2">${FIELDS_ADV.map(fieldHTML).join("")}</div>`;
+document.addEventListener("click", e=>{ const b=e.target.closest("button.info"); if(b){ const h=$(b.getAttribute("aria-controls")); const open=b.getAttribute("aria-expanded")!=="true"; b.setAttribute("aria-expanded",open); h.classList.toggle("hidden",!open); } });
+$("libro").innerHTML = BOOK.map(b=>`<option value="${esc(b.id)}">${esc(b.label)}</option>`).join("");
+$("libro").addEventListener("change", ()=>{ const b=BOOK.find(x=>x.id===$("libro").value); const box=$("libroBox");
+  if(b && b.id){ box.classList.remove("hidden"); $("libroTxt").innerHTML=`<b>${esc(b.pag)}</b><br>${esc(b.dice)}<br><br><b>Qué no dice:</b> ${esc(b.nodice)}`; } else box.classList.add("hidden"); });
+function spec(){ const b=BOOK.find(x=>x.id===$("libro").value);
+  return { titulo:$("titulo").value.trim(), pregunta:$("pregunta").value.trim(),
+    origen_libro: b&&b.id ? {id:b.id, pagina:b.pag, traduccion:$("traduccion").value.trim()} : null,
+    disciplina:$("disc").value, covariable:$("cov").value, evento:$("evento").value.trim(), unidad_dependencia:$("unidad").value, direccion:$("dir").value,
+    efecto_interes:{valor:+$("beta").value, fuente:$("fuente").value.trim()}, sigma_t_s:+$("sigt").value, sigma_xy_km:+$("sigxy").value,
+    familia_m:+$("mfam").value, uso:$("uso").value, perdida_tolerada:+$("lmax").value, tope_muestra:+$("fmax").value }; }
+
+/* ------------------------------------------------------------------ glosario */
+$("glosList").innerHTML = GLOS.map(([t,d])=>`<dt>${esc(t)}</dt><dd>${esc(d)}</dd>`).join("");
+$("openGlos").addEventListener("click", ()=>$("glos").showModal());
+
+/* ------------------------------------------------------------------ autoguardado */
+const AUTO = ["titulo","pregunta","disc","reflexion","fichaFuente","fichaLic","fichaHora","fichaLugar","fichaCob","fichaArt","libro","traduccion","cov","evento","unidad","dir","beta","fuente","sigt","sigxy","mfam","uso","lmax","fmax"];
+function saveDraft(){ try{ const d={}; AUTO.forEach(i=>d[i]=$(i).value); localStorage.setItem("lab-borrador-v2", JSON.stringify(d)); }catch(e){} }
+function loadDraft(){ try{ const d=JSON.parse(localStorage.getItem("lab-borrador-v2")||"null"); if(d){ AUTO.forEach(i=>{ if(d[i]!=null) $(i).value=d[i]; }); $("libro").dispatchEvent(new Event("change")); showDisc(); } }catch(e){} }
+AUTO.forEach(i=>{ $(i).addEventListener("input",saveDraft); $(i).addEventListener("change",saveDraft); });
+$("resetAll").addEventListener("click", ()=>{ try{ localStorage.removeItem("lab-borrador-v2"); }catch(e){} location.reload(); });
+loadDraft();
+
+/* ------------------------------------------------------------------ estado y navegación */
+const STEPS = ["Inicio","Tu hipótesis","Tus datos","Compuerta 1","Compuertas 2 y 3","Tu registro"];
+const S = {step:0, data:null, g1:null, reg:null, fileHash:null, example:null, wi:{mult:1, sig:null, beta:1}};
+function drawSteps(){ $("steps").innerHTML = STEPS.map((n,i)=>`<li><button data-s="${i}" class="${i<S.step?"done":""}" ${i===S.step?'aria-current="step"':""}><span class="n">${i<S.step?"✓":i}</span>${esc(n)}</button></li>`).join(""); }
+function go(n){ S.step=n; document.querySelectorAll("[data-step]").forEach(s=>s.classList.toggle("hidden", +s.dataset.step!==n)); drawSteps(); if(n===3) drawRef(); if(n===5){ drawSummary(); drawGood(); } window.scrollTo({top:0,behavior:"smooth"}); }
+document.addEventListener("click", e=>{ const g=e.target.closest("[data-go]"); if(g){ if(g.dataset.go==="1"){ S.example=null; S.specAtG1=null; S.pred={}; } go(+g.dataset.go); } const b=e.target.closest("#steps button"); if(b){ go(+b.dataset.s); } const x=e.target.closest("[data-ex]"); if(x){ loadExample(x.dataset.ex); } });
+
+/* ------------------------------------------------------------------ paso 2: datos */
+let RAW = null;
+document.querySelectorAll('input[name="modo"]').forEach(r=>r.addEventListener("change", ()=>{ const plan=document.querySelector('input[name="modo"]:checked').value==="plan"; $("boxDatos").classList.toggle("hidden",plan); $("boxPlan").classList.toggle("hidden",!plan); }));
+async function ingest(f){ $("dataErr").textContent=""; $("dataOut").innerHTML=`<p class="muted">Leyendo ${esc(f.name)}…</p>`;
+  try{ const buf=await f.arrayBuffer(); S.fileHash=await sha256(buf); S.fileName=f.name; const text=new TextDecoder("utf-8").decode(buf); RAW=parseCSV(text);
+    const h=RAW.head; $("map").classList.remove("hidden");
+    fillSel($("cT"),h,guess(h,["datetime_utc","time","datetime","fecha","date"])); fillSel($("cLat"),h,guess(h,["latitude","lat"])); fillSel($("cLon"),h,guess(h,["longitude","lon","lng"]));
+    fillSel($("cU"),h,guess(h,["storm_id","unit","unidad","unit_id"]),true);
+    const iid=h.findIndex(x=>x.toLowerCase()==="event_id"); S.idIdx=iid;
+    if(iid>=0 && RAW.rows[0] && /^nhc_[A-Z]{2}\d{6}_/.test(RAW.rows[0][iid]||"")){ $("cU").insertAdjacentHTML("beforeend",'<option value="-2">Tormenta (extraída de event_id)</option>'); if(+$("cU").value<0) $("cU").value="-2"; } $("dataOut").innerHTML=`<p class="muted">${fmtI(RAW.rows.length)} filas leídas. Revisa que las columnas sean las correctas y pulsa «Revisar mis datos».</p>`;
+  }catch(err){ $("dataErr").textContent="No se pudo leer el archivo: "+err.message; } }
+$("file").addEventListener("change", ()=>{ const f=$("file").files[0]; if(f) ingest(f); });
+$("tplCsv").addEventListener("click", ()=>dl("plantilla_eventos.csv","datetime_utc,latitude,longitude,unit\n2015-04-25T06:11:26Z,28.23,84.73,secuencia_12\n2015-04-25T06:45:21Z,28.30,84.75,secuencia_12\n2015-05-12T07:05:19Z,27.81,86.07,secuencia_13\n","text/csv"));
+function sampleCSV(){ let s=12345; const r=()=>{ s=(s*1664525+1013904223)%4294967296; return s/4294967296; }; const rows=["datetime_utc,latitude,longitude,mag"]; const t0=Date.UTC(2010,0,1), span=10*365*86400000;
+  for(let i=0;i<500;i++){ const cl=r()<.5; const la0=cl?30+r()*20:-40+r()*20, lo0=cl?120+r()*30:-80+r()*20; const tm=t0+r()*span; const k=1+Math.floor(-Math.log(1-r())*3);
+    for(let j=0;j<k;j++){ const tt=tm+(j? r()*3*86400000:0); rows.push(new Date(tt).toISOString().replace(/\.\d+Z$/,"Z")+","+(la0+(j?(r()-.5)*.6:0)).toFixed(2)+","+(lo0+(j?(r()-.5)*.6:0)).toFixed(2)+","+(3+r()*3).toFixed(1)); } } return rows.join("\n"); }
+$("sampleCsv").addEventListener("click", async ()=>{ await ingest(new File([sampleCSV()],"datos_de_practica.csv",{type:"text/csv"})); $("analyze").click(); });
+function kish(sizes){ let s=0,s2=0; for(const x of sizes){ s+=x; s2+=x*x; } return s2>0 ? s*s/s2 : 0; }
+function buildUnits(t, lat, lon, ucol){
+  const n=t.length;
+  if(ucol){ const m=new Map(); for(let i=0;i<n;i++) m.set(ucol[i],(m.get(ucol[i])||0)+1); return [...m.values()]; }
+  const order=[...Array(n).keys()].sort((a,b)=>t[a]-t[b]); const last=new Map(), cnt=new Map(); let id=0; const seq=new Map(); const GAP=7*86400000;
+  for(const i of order){ const key=Math.floor(lat[i]/2)+"|"+Math.floor(lon[i]/2); const lt=last.get(key); if(lt===undefined || t[i]-lt>GAP){ id++; seq.set(key,id); cnt.set(id,0); } last.set(key,t[i]); const sid=seq.get(key); cnt.set(sid,cnt.get(sid)+1); }
+  return [...cnt.values()];
+}
+function summarize(ct, cl, co, cu, modoU){
+  const t=[],la=[],lo=[],u=[]; let bad=0, dup=0; const seen=new Set(); let q0=0, secs0=0;
+  for(const r of RAW.rows){ const tt=parseTime(r[ct]), a=parseFloat(r[cl]), b=parseFloat(r[co]); if(!isFinite(tt)||!isFinite(a)||!isFinite(b)){bad++;continue;}
+    const k=tt+"|"+a+"|"+b; if(seen.has(k)){dup++;} seen.add(k);
+    t.push(tt); la.push(a); lo.push(b); if(cu>=0) u.push(r[cu]); else if(cu===-2) u.push(stormOf(r[S.idIdx])); const d=new Date(tt); if(d.getUTCSeconds()===0&&d.getUTCMilliseconds()===0) secs0++; if(d.getUTCMinutes()===0&&d.getUTCSeconds()===0) q0++; }
+  const n=t.length; if(!n) throw new Error("No hay filas válidas. Revisa las columnas de hora, latitud y longitud.");
+  const hours=new Array(24).fill(0); for(const tt of t) hours[new Date(tt).getUTCHours()]++;
+  const sizes = modoU==="evento" ? new Array(n).fill(1) : buildUnits(t,la,lo,(cu>=0||cu===-2)?u:null); const nef=kish(sizes);
+  let mn=Infinity,mx=-Infinity; for(const tt of t){ if(tt<mn)mn=tt; if(tt>mx)mx=tt; }
+  return {n, bad, dup, units:sizes.length, nef, deff:n/nef, hours, fracSec0:secs0/n, fracHour0:q0/n, tmin:new Date(mn).toISOString(), tmax:new Date(mx).toISOString(), unitMode: modoU==="evento"?"eventos independientes (supuesto)":(cu===-2?"tormenta (event_id)":(cu>=0?"columna":"secuencia"))};
+}
+$("analyze").addEventListener("click", ()=>{ $("dataErr").textContent="";
+  try{ const d=summarize(+$("cT").value,+$("cLat").value,+$("cLon").value,+$("cU").value,$("unidad").value); S.data=d; const mx=Math.max(...d.hours);
+    const warns=[]; if(d.fracSec0>0.5) warns.push(`El ${fmt(d.fracSec0*100,0)} % de las horas tiene segundos exactamente en cero: la hora podría estar redondeada (afecta a variables que cambian en horas).`);
+    if(d.fracHour0>0.2) warns.push(`El ${fmt(d.fracHour0*100,0)} % de los eventos cae en una hora en punto: posible cuantización de la hora.`);
+    if(d.dup>0) warns.push(`${fmtI(d.dup)} filas repetidas (misma hora y lugar): revisa duplicados.`);
+    if(d.bad>0) warns.push(`${fmtI(d.bad)} filas no se pudieron leer y se omitieron.`);
+    const mu=$("unidad").value, cuv=+$("cU").value;
+    if(mu==="columna" && cuv===-1) warns.push("En el paso 1 elegiste «una columna de mi archivo» pero no indicaste cuál: se usaron secuencias.");
+    if(mu==="secuencia" && cuv!==-1) warns.push("Indicaste una columna de unidad: se usó esa columna en lugar de las secuencias.");
+    if(mu==="evento") warns.push("Elegiste «cada evento es independiente»: el tamaño efectivo es igual al número de eventos. Rara vez es cierto; si hay réplicas o registros de una misma tormenta, el piso saldrá demasiado optimista.");
+    $("dataOut").innerHTML=`<div class="kv"><div><div class="v">${fmtI(d.n)}</div><div class="l">eventos válidos</div></div><div><div class="v">${fmtI(d.units)}</div><div class="l">unidades (${d.unitMode})</div></div><div><div class="v">${fmtI(d.nef)}</div><div class="l">tamaño efectivo de muestra</div></div><div><div class="v">${fmt(d.deff,2)}</div><div class="l">efecto de diseño (eventos ÷ tamaño efectivo)</div></div></div>
+      <div class="note small"><b>Cómo leerlo.</b> Tienes ${fmtI(d.n)} filas, pero por venir agrupadas equivalen a unos ${fmtI(d.nef)} eventos independientes. Ese es el número que cuenta para saber qué efecto podías detectar. ${d.deff<1.15?"Aquí casi no hay agrupamiento.":"Cuanto mayor es el efecto de diseño, más pesa el agrupamiento."}</div>
+      <p class="small muted">Periodo: ${esc(d.tmin.slice(0,10))} a ${esc(d.tmax.slice(0,10))}. Huella del archivo: <span class="hash">${S.fileHash.slice(0,16)}…</span></p>
+      <p class="small"><b>Eventos por hora UTC.</b> Si el registro fuera uniforme, las barras serían parecidas; picos muy marcados pueden indicar un artefacto de registro.</p><div class="bars" role="img" aria-label="Distribución de eventos por hora UTC">${d.hours.map(h=>`<i style="height:${Math.max(2,100*h/mx)}%" title="${h}"></i>`).join("")}</div>
+      ${warns.length?`<div class="note"><b>Avisos (no son errores: son cosas que mirar)</b><ul>${warns.map(w=>`<li>${esc(w)}</li>`).join("")}</ul></div>`:'<p class="small" style="color:var(--ok)">No se detectaron avisos en estas comprobaciones básicas.</p>'}`;
+  }catch(err){ $("dataErr").textContent=err.message; } });
+
+/* ------------------------------------------------------------------ Compuerta 1: cálculo */
+function nefInput(){ if(document.querySelector('input[name="modo"]:checked').value==="plan"){ const n=+$("pN").value, df=Math.max(.01,+$("pDeff").value||1); return {n, nef:n/df, deff:df, units:null, modo:"planificacion"}; }
+  if(!S.data) return null; return {n:S.data.n, nef:S.data.nef, deff:S.data.deff, units:S.data.units, modo:"datos"}; }
+function drawRef(){ const p=PRESETS[$("cov").value]; const custom=$("cov").value==="otra";
+  $("guide").innerHTML = S.example ? `<div class="analogy">${EXAMPLES[S.example].story}<br><br><b>Primero apuesta (más abajo) y luego pulsa «Calcular».</b></div>` : `<div class="analogy"><b>La pregunta de esta compuerta.</b> Con la cantidad de eventos que tienes y la precisión de su hora, ¿qué es lo más pequeño que podrías ver? Si es más grande que el efecto que buscas, un resultado nulo no te dirá nada.</div>`;
+  $("refBox").innerHTML = `<p>Para estimarlo, la página parte de un caso ya medido en el proyecto y lo ajusta a tu muestra y a tu error de hora. No necesitas tocar nada si usas una variable de la lista.</p>
+   <div class="note"><b>Referencia:</b> ${esc(p.fuente)}</div>
+   <details class="adv" ${custom?"open":""}><summary>Ver o cambiar la referencia (avanzado)</summary><div class="grid2"><div><label for="refM">Efecto mínimo detectable de referencia</label><input type="number" id="refM" step="any" value="${p.mdeRef??""}" ${custom?"":"readonly"}></div>
+   <div><label for="refN">Tamaño efectivo con que se midió</label><input type="number" id="refN" step="any" value="${p.nRef??""}" ${custom?"":"readonly"}></div>
+   <div><label for="aOv">Atenuación a (opcional)<span class="hint">Vacía = se usa la curva de la variable. Si tu error de lugar es grande, introduce la que obtengas del cuaderno.</span></label><input type="number" id="aOv" step="any" placeholder="automática"></div></div></details>`; }
+function compute(o){ // o: mdeRef,nRef,nef,a,beta,Lmax,Fmax
+  const mdeNom=o.mdeRef*Math.sqrt(o.nRef/o.nef), mdeDeg=mdeNom/o.a, L=1/o.a, F=Math.pow(mdeDeg/o.beta,2), x=mdeDeg/o.beta;
+  let cat, cls; if(F<=1 && L<=o.Lmax){cat="Analizable";cls="ok";} else if(F<=1 || F<=o.Fmax){cat="Analizable con costo";cls="mid";} else {cat="No analizable en principio";cls="bad";}
+  return {mdeNom,mdeDeg,L,F,x,cat,cls,a:o.a}; }
+function gate1(){ const sp=spec(); const p=PRESETS[sp.covariable]; const inp=nefInput(); if(!inp) throw new Error("Falta el paso 2: sube tus datos o elige «Todavía no tengo datos».");
+  const mdeRef=+$("refM").value, nRef=+$("refN").value; if(!(mdeRef>0&&nRef>0)) throw new Error("Introduce el efecto mínimo detectable de referencia y su tamaño efectivo.");
+  if(!(sp.efecto_interes.valor>0)) throw new Error("El efecto de interés debe ser mayor que cero (paso 1).");
+  const ov=parseFloat($("aOv").value); const a = isFinite(ov)&&ov>0 ? ov : interpA(p.curve, sp.sigma_t_s);
+  const beta=sp.efecto_interes.valor, Lmax=sp.perdida_tolerada, Fmax=sp.tope_muestra;
+  const bil=sp.direccion==="bilateral", zf=bil?2.8016/2.4866:1; const mdeEff=mdeRef*zf; const c=compute({mdeRef:mdeEff,nRef,nef:inp.nef,a,beta,Lmax,Fmax}); const falta=[];
+  if(c.F>1) falta.push(`muestra: tamaño efectivo × ${fmt(c.F,1)}`+` (≈ ${fmtI(inp.n*c.F)} eventos con la misma dependencia)`);
+  if(c.L>Lmax){ const sg=sigmaForA(p.curve,1/Lmax); falta.push(`resolución: atenuación a ≥ ${fmt(1/Lmax,2)}`+(sg?`, es decir, error de hora σ ≤ ${sg<3600?fmt(sg/60,1)+" min":fmt(sg/3600,1)+" h"}`:"")); }
+  S.base={mdeRef:mdeEff,zf,nRef,nef:inp.nef,n:inp.n,beta,Lmax,Fmax,a0:a,curve:p.curve,sig0:sp.sigma_t_s,aOv:(isFinite(ov)&&ov>0)?ov:null};
+  return {referencia:{covariable:sp.covariable,mde_ref:mdeRef,n_ref:nRef,fuente:p.fuente}, n_eventos:inp.n, n_efectivo:Math.round(inp.nef), deff:+inp.deff.toFixed(3), modo:inp.modo,
+    a:+a.toFixed(4), L:+c.L.toFixed(3), mde_nominal:+c.mdeNom.toFixed(4), mde_degradado:+c.mdeDeg.toFixed(4), x:+c.x.toFixed(3), F_req:+c.F.toFixed(3), z_esperada:+((bil?2.8016:2.4866)/c.x).toFixed(3), bilateral:bil,
+    categoria:c.cat, clase:c.cls, falta, efecto_interes:beta}; }
+
+/* ------------------------------------------------------------------ gráficos (SVG) */
+function tickList(v0,v1){ const c=[0.01,0.02,0.05,0.1,0.2,0.5,1,2,5,10,20,50,100,200,500,1000]; const t=c.filter(v=>v>=v0&&v<=v1); return t.length>8? t.filter((_,i)=>i%2===0):t; }
+function anchorFor(x,W){ return x<110?"start":(x>W-110?"end":"middle"); }
+function chartDetect(g){
+  const W=520,H=200,L=24,R=24,y0=118; const vals=[g.efecto_interes,g.mde_degradado,g.mde_nominal]; const v0=Math.min(...vals)/2.5, v1=Math.max(...vals)*2.5;
+  const lx=v=>L+(Math.log(v)-Math.log(v0))/(Math.log(v1)-Math.log(v0))*(W-L-R); const xe=lx(g.efecto_interes), xd=lx(g.mde_degradado), xn=lx(g.mde_nominal);
+  const col = g.clase==="ok"?"var(--ok)":(g.clase==="mid"?"var(--mid)":"var(--bad)");
+  let s=`<rect x="${L}" y="${y0-34}" width="${Math.max(0,xd-L)}" height="34" rx="4" style="fill:var(--muted);opacity:.22"/>`;
+  s+=`<text x="${L+8}" y="${y0-14}" font-size="12" class="mut">${xd-L>150?"Efectos que tus datos no podrían ver":""}</text>`;
+  s+=`<line x1="${L}" y1="${y0}" x2="${W-R}" y2="${y0}" style="stroke:var(--muted);stroke-width:1.5"/>`;
+  tickList(v0,v1).forEach(t=>{ const x=lx(t); s+=`<line x1="${x}" y1="${y0}" x2="${x}" y2="${y0+5}" style="stroke:var(--muted)"/><text x="${x}" y="${y0+18}" font-size="11" text-anchor="middle" class="mut">${fmt(t, t<1?2:(t<10?1:0))}</text>`; });
+  if(Math.abs(Math.log(g.mde_nominal/g.mde_degradado))>0.04){ s+=`<circle cx="${xn}" cy="${y0}" r="6" style="fill:var(--card);stroke:var(--muted);stroke-width:2"/><text x="${xn}" y="${y0+40}" font-size="11" text-anchor="${anchorFor(xn,W)}" class="mut">sin error de hora: ${fmt(g.mde_nominal,2)}</text>`; }
+  s+=`<circle cx="${xd}" cy="${y0}" r="8" style="fill:${col}"/><text x="${xd}" y="${y0+58}" font-size="12" font-weight="700" text-anchor="${anchorFor(xd,W)}">lo mínimo que verías: ${fmt(g.mde_degradado,2)}</text>`;
+  s+=`<path d="M${xe} ${y0-52} l8 10 l-8 10 l-8 -10 z" style="fill:var(--ink)"/><line x1="${xe}" y1="${y0-32}" x2="${xe}" y2="${y0}" style="stroke:var(--ink);stroke-dasharray:3 3"/><text x="${xe}" y="${y0-60}" font-size="12" font-weight="700" text-anchor="${anchorFor(xe,W)}">efecto que buscas: ${fmt(g.efecto_interes,2)}</text>`;
+  s+=xe<xd? `<text x="${(xe+xd)/2}" y="${y0-72}" font-size="11" class="mut" text-anchor="middle"></text>` : "";
+  const verdictLine = xe>=xd ? "El efecto que buscas queda a la derecha de lo mínimo que verías: sí podías verlo." : "El efecto que buscas queda en la zona gris: tus datos no podían verlo.";
+  return `<figure class="chartbox"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(verdictLine)} Efecto buscado ${fmt(g.efecto_interes,2)}; efecto mínimo detectable ${fmt(g.mde_degradado,2)}.">${s}</svg><figcaption>${verdictLine} Escala logarítmica.</figcaption></figure>`; }
+function chartAtt(curve, sigma, a, Lmax){ if(!curve) return "";
+  const W=520,H=210,L=44,R=16,T=14,B=40; const x=v=>L+(Math.log(v)-Math.log(1))/(Math.log(86400)-Math.log(1))*(W-L-R), y=v=>T+(1-v)*(H-T-B);
+  let s=`<line x1="${L}" y1="${y(0)}" x2="${W-R}" y2="${y(0)}" style="stroke:var(--muted)"/><line x1="${L}" y1="${y(1)}" x2="${L}" y2="${y(0)}" style="stroke:var(--muted)"/>`;
+  [0,0.5,1].forEach(v=>{ s+=`<text x="${L-6}" y="${y(v)+4}" font-size="11" text-anchor="end" class="mut">${v}</text>`; });
+  [[1,"1 s"],[60,"1 min"],[3600,"1 h"],[86400,"1 día"]].forEach(([v,l])=>{ s+=`<line x1="${x(v)}" y1="${y(0)}" x2="${x(v)}" y2="${y(0)+5}" style="stroke:var(--muted)"/><text x="${x(v)}" y="${y(0)+18}" font-size="11" text-anchor="middle" class="mut">${l}</text>`; });
+  s+=`<line x1="${L}" y1="${y(1/Lmax)}" x2="${W-R}" y2="${y(1/Lmax)}" style="stroke:var(--mid);stroke-dasharray:5 4"/><text x="${W-R}" y="${y(1/Lmax)-4}" font-size="11" text-anchor="end" style="fill:var(--mid)">mínimo tolerado: a = ${fmt(1/Lmax,2)}</text>`;
+  s+=`<polyline points="${curve.map(p=>x(p[0]).toFixed(1)+","+y(p[1]).toFixed(1)).join(" ")}" style="fill:none;stroke:var(--accent);stroke-width:2.5"/>`;
+  const sx=x(Math.max(1,Math.min(86400,sigma))); s+=`<line x1="${sx}" y1="${T}" x2="${sx}" y2="${y(0)}" style="stroke:var(--ink);stroke-dasharray:3 3"/><circle cx="${sx}" cy="${y(a)}" r="6" style="fill:var(--ink)"/><text x="${sx+(sx>W-200?-10:10)}" y="${a>0.88?y(a)+26:y(a)-10}" font-size="12" font-weight="700" text-anchor="${sx>W-200?"end":"start"}">tu error: a = ${fmt(a,2)}</text>`;
+  s+=`<text x="${(L+W-R)/2}" y="${H-6}" font-size="11" text-anchor="middle" class="mut">error de hora del evento</text>`;
+  return `<figure class="chartbox"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Curva de atenuación de la variable según el error de hora. Con tu error la atenuación es ${fmt(a,2)}.">${s}</svg><figcaption>Cuanto mayor es el error de hora, menos del efecto sobrevive (la curva baja). Esta variable cambia en horas: por debajo de unos minutos casi no pierde nada, hacia 3 horas pierde la mitad.</figcaption></figure>`; }
+function chartSample(nef,F,Fmax){
+  const W=520,H=128,L=20,R=20,y=50; const need=nef*Math.max(F,1), top=Math.max(need,nef*Fmax)*1.08; const x=v=>L+v/top*(W-L-R);
+  let s=`<rect x="${L}" y="${y-14}" width="${x(nef)-L}" height="28" rx="4" style="fill:var(--accent)"/>`;
+  if(F>1) s+=`<rect x="${x(nef)}" y="${y-14}" width="${x(need)-x(nef)}" height="28" rx="4" style="fill:none;stroke:var(--bad);stroke-width:2;stroke-dasharray:5 3"/>`;
+  s+=`<line x1="${x(nef*Fmax)}" y1="${y-26}" x2="${x(nef*Fmax)}" y2="${y+26}" style="stroke:var(--mid);stroke-width:2"/><text x="${x(nef*Fmax)}" y="${y+62}" font-size="11" text-anchor="${anchorFor(x(nef*Fmax),W)}" style="fill:var(--mid)">tope que fijaste (× ${fmt(Fmax,0)})</text>`;
+  s+=`<text x="${L}" y="${y-22}" font-size="12" font-weight="700">tu tamaño efectivo: ${fmtI(nef)}</text>`;
+  s+=F>1?`<text x="${x(need)}" y="${y+42}" font-size="12" font-weight="700" text-anchor="${anchorFor(x(need),W)}" style="fill:var(--bad)">necesario: ${fmtI(need)} (× ${fmt(F,1)})</text>`:`<text x="${L}" y="${y+42}" font-size="12" style="fill:var(--ok)">alcanza</text>`;
+  return `<figure class="chartbox"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tamaño efectivo actual ${fmtI(nef)} frente al necesario ${fmtI(need)}.">${s}</svg><figcaption>Barra llena: lo que tienes. Recuadro de rayas: lo que falta para poder ver el efecto buscado.</figcaption></figure>`; }
+function chartInf(eff,floor,cls){
+  const W=520,H=120,L=24,R=24,y=70; const v0=1, v1=Math.max(eff,floor)*1.06; const x=v=>L+(v-v0)/(v1-v0)*(W-L-R);
+  let s=`<rect x="${x(1)}" y="${y-18}" width="${x(floor)-x(1)}" height="22" rx="4" style="fill:var(--muted);opacity:.25"/><line x1="${L}" y1="${y+4}" x2="${W-R}" y2="${y+4}" style="stroke:var(--muted);stroke-width:1.5"/>`;
+  s+=`<text x="${x(1)+6}" y="${y-4}" font-size="11" class="mut">${x(floor)-x(1)>120?"zona que la réplica no podía ver":""}</text>`;
+  s+=`<circle cx="${x(floor)}" cy="${y+4}" r="7" style="fill:${cls==="ok"?"var(--ok)":(cls==="mid"?"var(--mid)":"var(--bad)")}"/><text x="${x(floor)}" y="${y+34}" font-size="12" font-weight="700" text-anchor="${anchorFor(x(floor),W)}">piso de la réplica: ${fmt(floor,3)}</text>`;
+  s+=`<path d="M${x(eff)} ${y-34} l7 9 l-7 9 l-7 -9 z" style="fill:var(--ink)"/><text x="${x(eff)}" y="${y-40}" font-size="12" font-weight="700" text-anchor="${anchorFor(x(eff),W)}">efecto a replicar: ${fmt(eff,3)}</text>`;
+  s+=`<text x="${L}" y="${y+22}" font-size="11" class="mut">RR = 1 (sin efecto)</text>`;
+  return `<figure class="chartbox"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="El efecto a replicar ${fmt(eff,3)} frente al piso de detección de la réplica ${fmt(floor,3)}.">${s}</svg><figcaption>Si el efecto (rombo) queda a la derecha del piso (círculo), la réplica podía verlo. Si queda en la zona gris, no.</figcaption></figure>`; }
+function chartInd(shared,total){
+  const W=520,H=84,L=20,R=20,y=44; const w=W-L-R, ws=w*shared/total;
+  let s=`<rect x="${L}" y="${y-14}" width="${w}" height="28" rx="4" style="fill:var(--ok-bg);stroke:var(--ok)"/><rect x="${L}" y="${y-14}" width="${Math.max(ws,shared>0?3:0)}" height="28" rx="4" style="fill:var(--bad)"/>`;
+  s+=`<text x="${L}" y="${y-22}" font-size="12" font-weight="700">de ${fmtI(total)} eventos de la réplica:</text><text x="${L}" y="${y+34}" font-size="12" style="fill:var(--bad)">${fmtI(shared)} ya estaban en el descubrimiento (${fmt(100*shared/total,1)} %)</text><text x="${W-R}" y="${y+34}" font-size="12" text-anchor="end" style="fill:var(--ok)">${fmtI(total-shared)} son nuevos</text>`;
+  return `<figure class="chartbox"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${fmtI(shared)} de ${fmtI(total)} eventos de la réplica ya estaban en el descubrimiento.">${s}</svg></figure>`; }
+
+/* ------------------------------------------------------------------ Compuerta 1: presentación */
+function nextSteps(g, sp){ const L=[];
+  if(g.categoria==="Analizable") return `<p><b>Qué puedes hacer ahora:</b> seguir a la Compuerta 2 con confianza. Aun así, recuerda que «podía verlo» no significa «lo verá».</p>`;
+  if(g.F_req>1) L.push(`<b>Conseguir más eventos</b> (≈ ${fmtI(g.n_eventos*g.F_req)} con la misma dependencia). Pregunta si hay otros catálogos, otros años o una región más densa.`);
+  if(g.L>sp.perdida_tolerada) L.push(`<b>Conseguir la hora con más precisión.</b> El error de hora hace perder buena parte del efecto.`);
+  L.push(`<b>Revisar si el efecto de interés es realista.</b> ¿De dónde salió? Un efecto mayor se detecta con menos datos, pero solo si es verdad.`);
+  L.push(`<b>Usarlo como exploratorio.</b> Puedes seguir, pero el informe quedará marcado como tal y un resultado no se leerá como prueba.`);
+  L.push(`<b>Elegir otra pregunta o conjunto de datos</b> donde sí haya capacidad. Es una decisión válida, no un fracaso.`);
+  return `<p><b>Qué puedes hacer ahora:</b></p><ul class="todo">${L.map(x=>`<li>${x}</li>`).join("")}</ul>`; }
+function friendly(g){ return g.categoria==="Analizable" ? "Tus datos podían ver el efecto buscado." : g.categoria==="Analizable con costo" ? "Con estos datos todavía no podrías decidir, pero es alcanzable." : "Con estos datos y el tope que fijaste, la pregunta no se puede responder todavía."; }
+function whatIfHTML(){ const b=S.base; const hasCurve=!!b.curve;
+  return `<div class="whatif"><h3>Qué pasaría si…</h3><p class="small muted">Mueve los controles y mira cómo cambia el semáforo. No cambia tu registro: es para entender qué conseguir.</p>
+  <div class="sl"><label for="wiMult" style="margin:0">Muestra efectiva ×</label><input type="range" id="wiMult" min="0" max="1.3" step="0.01" value="0"><output id="wiMultV">× 1,0</output></div>
+  <div class="sl"><label for="wiSig" style="margin:0">Error de hora ${hasCurve?"":"(esta variable no depende de la hora)"}</label><input type="range" id="wiSig" min="0" max="4.94" step="0.01" value="${Math.log10(Math.max(1,b.sig0)).toFixed(2)}" ${hasCurve?"":"disabled"}><output id="wiSigV"></output></div>
+  <div class="sl"><label for="wiBeta" style="margin:0">Efecto de interés ×</label><input type="range" id="wiBeta" min="-0.7" max="0.5" step="0.01" value="0"><output id="wiBetaV">× 1,0</output></div>
+  <div id="wiOut" aria-live="polite"></div><div class="row" style="margin-top:6px"><button class="btn ghost" id="wiReset" type="button">Volver a mis valores</button></div></div>`; }
+function sigText(s){ return s<60?fmt(s,0)+" s":(s<3600?fmt(s/60,1)+" min":fmt(s/3600,1)+" h"); }
+function updateWhatIf(){ const b=S.base; const mult=Math.pow(10,+$("wiMult").value), sg=Math.pow(10,+$("wiSig").value), bm=Math.pow(10,+$("wiBeta").value);
+  $("wiMultV").textContent="× "+fmt(mult,1); $("wiSigV").textContent=b.curve?sigText(sg):"—"; $("wiBetaV").textContent="× "+fmt(bm,2);
+  const a = b.curve ? interpA(b.curve, sg) : (b.aOv||1); const c=compute({mdeRef:b.mdeRef,nRef:b.nRef,nef:b.nef*mult,a,beta:b.beta*bm,Lmax:b.Lmax,Fmax:b.Fmax});
+  const g={efecto_interes:b.beta*bm, mde_nominal:c.mdeNom, mde_degradado:c.mdeDeg, clase:c.cls};
+  $("wiOut").innerHTML=`<div class="verdict ${c.cls}" style="margin:8px 0"><span class="badge b-${c.cls}">${c.cat}</span> <span class="small">F = ${fmt(c.F,2)} · atenuación a = ${fmt(c.a,2)} · el efecto mínimo que verías: ${fmt(c.mdeDeg,2)}</span></div>`+chartDetect(g); }
+function wireWhatIf(){ ["wiMult","wiSig","wiBeta"].forEach(i=>$(i).addEventListener("input",updateWhatIf)); $("wiReset").addEventListener("click",()=>{ $("wiMult").value=0; $("wiBeta").value=0; $("wiSig").value=Math.log10(Math.max(1,S.base.sig0)).toFixed(2); updateWhatIf(); }); updateWhatIf(); }
+function renderG1(g, sp){ const lo=g.efecto_interes/2; const F2=Math.pow(g.mde_degradado/lo,2); const cat2 = F2<=1&&g.L<=sp.perdida_tolerada ? "Analizable" : (F2<=1||F2<=sp.tope_muestra ? "Analizable con costo":"No analizable en principio");
+  const p=PRESETS[sp.covariable];
+  return `<div class="verdict ${g.clase}"><span class="badge b-${g.clase}">${g.categoria}</span><div class="big">${friendly(g)}</div>
+   <div>Tu diseño detectaría efectos de <b>${fmt(g.mde_degradado,2)}</b> o más; el efecto buscado es <b>${fmt(g.efecto_interes,2)}</b>. Si el efecto fuera real, lo más probable es que saliera una z de <b>${fmt(g.z_esperada,2)}</b>; para considerarlo significativo hace falta más de ${g.bilateral?"1,96 (prueba bilateral)":"1,645"}.</div>
+   ${g.falta.length?`<p style="margin-top:10px"><b>Qué falta:</b> ${g.falta.map(esc).join(" · ")}</p>`:""}
+   ${g.categoria==="No analizable en principio"?`<p class="small"><b>Esto no es un error tuyo.</b> Es información: dice qué habría que conseguir antes de gastar tiempo en el análisis.</p>`:""}</div>
+   ${chartDetect({efecto_interes:g.efecto_interes,mde_nominal:g.mde_nominal,mde_degradado:g.mde_degradado,clase:g.clase})}
+   ${g.F_req>1?chartSample(g.n_efectivo,g.F_req,sp.tope_muestra):""}
+   ${p.curve?chartAtt(p.curve, sp.sigma_t_s, g.a, sp.perdida_tolerada):""}
+   ${nextSteps(g,sp)}
+   ${whatIfHTML()}
+   <p class="small"><button type="button" class="btn ghost" data-floors>¿Cómo se calcula este mínimo? (pisos de detección)</button></p>
+   <details><summary>Ver los números y qué significan</summary>
+   <div class="kv"><div><div class="v">${fmtI(g.n_efectivo)}</div><div class="l">tamaño efectivo de muestra</div></div><div><div class="v">${fmt(g.a,3)}</div><div class="l">atenuación a</div></div><div><div class="v">${fmt(g.mde_nominal,2)}</div><div class="l">efecto mínimo sin error de medida</div></div><div><div class="v">${fmt(g.mde_degradado,2)}</div><div class="l">efecto mínimo con error de medida</div></div><div><div class="v">${fmt(g.F_req,2)}</div><div class="l">F: muestra necesaria ×</div></div></div>
+   <div class="scroll"><table class="t"><tr><th>Efecto de interés</th><th>Valor</th><th>Muestra necesaria ×</th><th>Categoría</th></tr><tr><td>El declarado</td><td>${fmt(g.efecto_interes,2)}</td><td>${fmt(g.F_req,1)}</td><td>${g.categoria}</td></tr><tr><td>La mitad (extremo bajo del rango publicado)</td><td>${fmt(lo,2)}</td><td>${fmt(F2,1)}</td><td>${cat2}</td></tr></table></div>
+   <div class="note small">Estimación con valores de referencia: asume que tu catálogo se comporta como el de referencia. La Compuerta 2 la recalcula con tus datos. Regla: analizable si F ≤ 1 y L ≤ ${fmt(sp.perdida_tolerada,2)}; con costo si F ≤ ${fmt(sp.tope_muestra,0)}; no analizable en principio si F > ${fmt(sp.tope_muestra,0)}.</div></details>`; }
+$("runG1").addEventListener("click", ()=>{ try{ if(!predOK()){ $("g1Out").innerHTML='<p class="err">Antes de calcular, apuesta (o marca que prefieres no apostar). Es parte del aprendizaje.</p>'; return; } const sp=spec(); const g=gate1(); S.g1=g; if(!S.specAtG1) S.specAtG1=canon(sp); $("g1Out").innerHTML=renderG1(g,sp); wireWhatIf(); afterG1(g,sp); }catch(e){ $("g1Out").innerHTML=`<p class="err">${esc(e.message)}</p>`; } });
+
+/* ------------------------------------------------------------------ ejemplos guiados */
+function setPlan(n,df){ const r=document.querySelector('input[name="modo"][value="plan"]'); r.checked=true; r.dispatchEvent(new Event("change")); $("pN").value=n; $("pDeff").value=df; }
+function fillFrom(ex){ ["titulo","pregunta","cov","evento","beta","fuente","sigt","sigxy"].forEach(k=>{ if(ex[k]!=null) $(k).value=ex[k]; }); $("libro").value=""; $("libro").dispatchEvent(new Event("change")); saveDraft(); }
+function loadExample(key){ const ex=EXAMPLES[key]; S.example=key; S.g1=null; S.specAtG1=null; S.pred={}; fillFrom(ex); setPlan(ex.pN,ex.pDeff); go(3); resetPred(); $("g1Out").innerHTML=""; $("g1After").innerHTML=""; }
+$("fillEx").addEventListener("click", ()=>{ fillFrom(EXAMPLES.marea_sismos); });
+
+/* ------------------------------------------------------------------ paso 4: configuración y Compuerta 3 */
+$("dlCfg").addEventListener("click", ()=>{ const sp=spec(); const cfg={input_csv:S.fileName||"tus_datos.csv", output_dir:"calibre_out", time_col:"time", lat_col:"latitude", lon_col:"longitude", unit_col:null,
+  covariate: sp.covariable==="otra"?"tide_uz":sp.covariable, sigma_t_seconds:sp.sigma_t_s, sigma_xy_km:sp.sigma_xy_km, n_controls:20, offset_min_days:3, offset_max_days:30, n_placebo:300, alpha:0.05, power_target:0.8, seed:20261016,
+  seq_cell_deg:2.0, seq_gap_days:7.0, deltas:[0.25,0.5,0.75,1.0,1.5,2.0]};
+  dl("calibre_config.json", JSON.stringify(cfg,null,2)); });
+function informative(effect, n, f, floorIn){ const floor = floorIn>0 ? floorIn : 1+2.4866*Math.sqrt((1-f)/(n*f)); const ratio=(floor-1)/(effect-1);
+  const cls = ratio<=0.95?"ok":(ratio<=1.05?"mid":"bad"); const t = ratio<=0.95?"Informativa":(ratio<=1.05?"En el límite: no se puede decir que sea informativa":"No informativa: no podía decidir");
+  return {floor,ratio,cls,t}; }
+$("runInf").addEventListener("click", ()=>{ const eff=+$("rEff").value, n=+$("rN").value, f=+$("rF").value, fl=parseFloat($("rFloor").value); if(!(eff>1)){ $("infOut").innerHTML='<p class="err">El efecto replicado debe ser un RR mayor que 1.</p>'; return; }
+  if(!(fl>0) && !(n>0&&f>0&&f<1)){ $("infOut").innerHTML='<p class="err">Introduce n y la frecuencia base, o el piso de detección.</p>'; return; }
+  const r=informative(eff,n,f,fl); S.inf={efecto:eff,n,f,piso:+r.floor.toFixed(4),razon_exceso:+r.ratio.toFixed(3),veredicto:r.t};
+  const lesson = r.cls==="ok" ? "Esta réplica sí podía ver el efecto: si de verdad existiera, habría aparecido. Por eso su resultado sí cuenta, sea cual sea." : (r.cls==="mid" ? "Está justo en el borde: no se puede sostener que fuera informativa. Un resultado nulo aquí no contradice el efecto." : "Esta réplica no podía ver el efecto. Un resultado nulo no contradice nada y uno positivo tampoco lo confirma con solidez.");
+  $("infOut").innerHTML=`<div class="verdict ${r.cls}"><span class="badge b-${r.cls}">${r.t}</span><div class="big">${lesson}</div><div>Piso de detección: <b>${fmt(r.floor,3)}</b>. Efecto replicado: <b>${fmt(eff,3)}</b>. Razón de exceso = (piso − 1) ÷ (efecto − 1) = <b>${fmt(r.ratio,2)}</b>. Es informativa si es 1 o menos.</div></div>${chartInf(eff,r.floor,r.cls)}<p class="small muted">Piso para una prueba única preespecificada (unilateral, α = 0,05, potencia 80 %): 1 + 2,4866·√((1 − f) ÷ (n·f)). No es el umbral de un barrido de muchos rasgos.</p>`; });
+$("exMU").addEventListener("click", ()=>{ $("rEff").value="1.315"; $("rN").value="2731"; $("rF").value="0.0463"; $("rFloor").value=""; $("runInf").click(); });
+$("exR3").addEventListener("click", ()=>{ $("rEff").value="1.374"; $("rN").value="954"; $("rF").value="0.0443"; $("rFloor").value=""; $("runInf").click(); });
+async function loadTimes(file){ const buf=await file.arrayBuffer(); const csv=parseCSV(new TextDecoder("utf-8").decode(buf)); const h=csv.head;
+  const it=guess(h,["datetime_utc","time","datetime","fecha","date"]), ia=guess(h,["latitude","lat"]), io=guess(h,["longitude","lon","lng"]); if(it<0||ia<0||io<0) throw new Error(`En «${file.name}» no encontré columnas de hora, latitud y longitud.`);
+  const ev=[]; for(const r of csv.rows){ const t=parseTime(r[it]), a=parseFloat(r[ia]), b=parseFloat(r[io]); if(isFinite(t)&&isFinite(a)&&isFinite(b)) ev.push([t,a,b]); } ev.sort((p,q)=>p[0]-q[0]); return ev; }
+$("runInd").addEventListener("click", async ()=>{ $("indErr").textContent=""; const fd=$("fD").files[0], fr=$("fR").files[0]; if(!fd||!fr){ $("indErr").textContent="Elige los dos archivos."; return; }
+  try{ const tolT=(+$("tolT").value||60)*1000, tolX=+$("tolX").value||0.5; const D=await loadTimes(fd), R=await loadTimes(fr); const dt=D.map(e=>e[0]); let shared=0;
+    const lb=(x)=>{ let lo=0,hi=dt.length; while(lo<hi){ const m=(lo+hi)>>1; if(dt[m]<x) lo=m+1; else hi=m; } return lo; };
+    for(const e of R){ let i=lb(e[0]-tolT), hit=false; while(i<D.length && D[i][0]<=e[0]+tolT){ if(Math.abs(D[i][1]-e[1])<=tolX && Math.abs(D[i][2]-e[2])<=tolX){ hit=true; break; } i++; } if(hit) shared++; }
+    const dmin=D[0][0], dmax=D[D.length-1][0], rmin=R[0][0], rmax=R[R.length-1][0]; const overlap = Math.min(dmax,rmax)>=Math.max(dmin,rmin); const same=$("sameCat").checked;
+    let cls, cat, lesson; if(shared>0){cls="bad";cat="No independiente: comparte eventos con el descubrimiento";lesson="Esto no cuenta como réplica: parte de los datos ya estaban en el descubrimiento. Busca eventos de otro periodo o de otro catálogo.";} else if(overlap){cls="mid";cat="Parcialmente independiente: no comparte eventos, pero los periodos se solapan";lesson="No comparten eventos, pero los periodos coinciden. Es más débil que una réplica en otro periodo.";} else if(same){cls="mid";cat="Parcialmente independiente: periodos distintos, pero el mismo catálogo";lesson="Periodos distintos, pero el mismo catálogo podría repetir sus propios artefactos. Es aceptable, pero dilo.";} else {cls="ok";cat="Plenamente independiente";lesson="Eventos y periodos distintos, y catálogo distinto: es una réplica en sentido pleno.";}
+    S.ind={eventos_replica:R.length,eventos_descubrimiento:D.length,compartidos:shared,fraccion_compartida:+(shared/R.length).toFixed(4),periodos_solapados:overlap,mismo_catalogo:same,clasificacion:cat};
+    $("indOut").innerHTML=`<div class="verdict ${cls}"><span class="badge b-${cls}">${cat}</span><div class="big">${lesson}</div><div class="small">Descubrimiento: ${new Date(dmin).toISOString().slice(0,10)} a ${new Date(dmax).toISOString().slice(0,10)}. Réplica: ${new Date(rmin).toISOString().slice(0,10)} a ${new Date(rmax).toISOString().slice(0,10)}. Tolerancia: ${fmt(tolT/1000,0)} s y ${fmt(tolX,2)}°.</div></div>${chartInd(shared,R.length)}`;
+  }catch(e){ $("indErr").textContent=e.message; } });
+
+/* ------------------------------------------------------------------ paso 5: resumen y registro */
+function drawSummary(){ const sp=spec(); const g=S.g1;
+  $("sumOut").innerHTML=`<div class="summary"><h3>Tu recorrido</h3><dl>
+    <dt>Hipótesis</dt><dd>${esc(sp.titulo||"(sin título)")}${sp.pregunta?`<br><span class="muted small">${esc(sp.pregunta)}</span>`:""}</dd>
+    <dt>Efecto de interés</dt><dd>${fmt(sp.efecto_interes.valor,2)} % <span class="muted small">(${esc(sp.efecto_interes.fuente||"sin fuente")})</span></dd>
+    <dt>Uso</dt><dd>${sp.uso==="confirmatorio"?"Confirmatorio":"Exploratorio"}${sp.origen_libro?` · parte de ${esc(sp.origen_libro.id)} del libro`:""}</dd>
+    <dt>Compuerta 1</dt><dd>${g?`<span class="badge b-${g.clase}">${g.categoria}</span> ${esc(friendly(g))}${g.falta.length?`<br><span class="small muted">Falta: ${g.falta.map(esc).join(" · ")}</span>`:""}`:'<span class="err">todavía no calculada (paso 3)</span>'}</dd>
+    <dt>Compuerta 3</dt><dd>${S.inf||S.ind?`${S.inf?esc(S.inf.veredicto):""}${S.inf&&S.ind?" · ":""}${S.ind?esc(S.ind.clasificacion):""}`:'<span class="muted">sin revisar (opcional)</span>'}</dd></dl></div>`; }
+function record(){ const sp=spec(); const d=S.data; return { version:VERSION, especificacion:sp,
+  datos: d ? {modo:"datos", archivo_sha256:S.fileHash, n_eventos:d.n, n_unidades:d.units, n_efectivo:Math.round(d.nef), efecto_diseno:+d.deff.toFixed(3), periodo:[d.tmin.slice(0,10),d.tmax.slice(0,10)], unidad_modo:d.unitMode} : {modo:"planificacion", n_eventos:+$("pN").value||null, efecto_diseno:+$("pDeff").value||null},
+  compuerta1: S.g1 ? {categoria:S.g1.categoria, falta:S.g1.falta, mde_nominal:S.g1.mde_nominal, mde_degradado:S.g1.mde_degradado, atenuacion:S.g1.a, F_req:S.g1.F_req, z_esperada:S.g1.z_esperada, referencia:S.g1.referencia} : null,
+  compuerta3: (S.inf||S.ind) ? {informatividad:S.inf||null, independencia:S.ind||null} : null,
+  disciplina:sp.disciplina, ficha_datos:fichaObj(), conjunto_proyecto:S.proj||null, cambio_hipotesis_tras_ver_resultado:(S.specAtG1?canon(spec())!==S.specAtG1:null),
+  creado_en_navegador:new Date().toISOString() }; }
+let LAST=null;
+$("mkReg").addEventListener("click", async ()=>{ const sp=spec(); if(!sp.titulo||!sp.pregunta){ $("regOut").innerHTML='<p class="err">Falta el título o la pregunta (paso 1).</p>'; return; } if(!S.g1){ $("regOut").innerHTML='<p class="err">Calcula primero la Compuerta 1 (paso 3).</p>'; return; }
+  const rec=record(); const h=await sha256(new TextEncoder().encode(canon(rec))); LAST={rec,h}; const json=JSON.stringify(rec,null,2);
+  $("regOut").innerHTML=`<p><b>Huella SHA-256 de tu registro</b></p><div class="hash">${h}</div><p class="small muted">Es como un sello digital: si alguien cambia una sola coma del registro, la huella cambia.</p><details><summary>Ver el registro completo (JSON)</summary><pre>${esc(json)}</pre></details>`; ["cpReg","dlReg","ghReg"].forEach(i=>$(i).disabled=false); });
+$("cpReg").addEventListener("click", ()=>{ navigator.clipboard.writeText(JSON.stringify(LAST.rec,null,2)); });
+$("dlReg").addEventListener("click", ()=>{ dl("registro_"+LAST.h.slice(0,8)+".json", JSON.stringify(LAST.rec,null,2)); });
+$("ghReg").addEventListener("click", ()=>{ const g=LAST.rec.compuerta1; const comp = LAST.rec.compuerta3 ? "Compuerta 3. Replicación" : "Compuerta 1. Detectabilidad";
+  const ver = g ? g.categoria + (g.falta.length? ": "+g.falta[0] : "") : "";
+  const q = new URLSearchParams({template:TEMPLATE, title:"[Registro] "+LAST.rec.especificacion.titulo, compuerta:comp, veredicto:ver, huella:LAST.h, registro_json:JSON.stringify(LAST.rec)});
+  window.open(`https://github.com/${REPO}/issues/new?`+q.toString(), "_blank", "noopener"); });
+
+/* ------------------------------------------------------------------ v0.3: didáctica (tema, apuestas, comprobaciones, cálculo guiado, buenas prácticas, dossier) */
+const DISC = {
+  sismologia:{n:"Sismología", evento:"sismos de un catálogo (USGS ComCat, GCMT, JMA…)", unidad:"la secuencia de réplicas (celda de 2° y hueco de días)", hora:"al segundo (≈ 10 s)", nota:"Variables que cambian en horas, como la marea, sí se ven con esa precisión."},
+  clima:{n:"Meteorología y ciclones", evento:"génesis, intensidad máxima o posiciones de tormentas (HURDAT2)", unidad:"la tormenta", hora:"posiciones cada 6 h (≈ 3 h de error)", nota:"Una variable que cambia en horas pierde buena parte del efecto con ese error; una anual, no."},
+  salud:{n:"Salud", evento:"ingresos hospitalarios, consultas, partos…", unidad:"paciente, servicio o día, según el diseño", hora:"de minutos a la fecha sola", nota:"No subas datos individuales: trabaja con conteos agregados. Hay confusores de calendario fuertes (día de la semana, estaciones)."},
+  ecologia:{n:"Ecología", evento:"floraciones, avistamientos, nacimientos…", unidad:"individuo, sitio o temporada", hora:"a menudo solo la fecha (≈ 7 h de error, como en las partidas de ajedrez del proyecto)", nota:"Con la fecha sola, una variable que cambia en horas se atenúa mucho."},
+  educacion:{n:"Educación", evento:"entregas, asistencia, calificaciones…", unidad:"estudiante o curso", hora:"fecha o día de la semana", nota:"El calendario escolar (exámenes, vacaciones) es un confusor fuerte."},
+  otra:{n:"Otra", evento:"lo que cuenta como un evento en tu ciencia", unidad:"el grupo cuyos eventos se parecen entre sí", hora:"la que tenga tu registro", nota:"Si no sabes qué poner, usa las preguntas de ayuda («?»)."}
+};
+document.addEventListener("change", e=>{ if(e.target && e.target.id==="disc") showDisc(); });
+function showDisc(){ const d=DISC[$("disc").value]; const b=$("discBox"); if(!d){ b.classList.add("hidden"); return; } b.classList.remove("hidden");
+  b.innerHTML=`<b>Cómo suele traducirse el método en ${esc(d.n)}</b> <span class="muted">(sugerencia por validar con el grupo)</span><ul><li><b>Evento:</b> ${esc(d.evento)}</li><li><b>Unidad de dependencia:</b> ${esc(d.unidad)}</li><li><b>Precisión de la hora:</b> ${esc(d.hora)}</li></ul><p style="margin:0">${esc(d.nota)}</p>`; }
+
+/* ---- preguntas de comprobación */
+const QUIZ = {
+ q1:{q:"En marea y sismos salió +0,44 % con p = 0,28, y el efecto mínimo que esos datos podían ver era 1,78 %. ¿Qué conclusión es correcta?",
+   o:["No hay efecto de la marea.","Esos datos no podían distinguir un efecto de 1 % de cero: el resultado no decide.","La marea sí tiene un efecto pequeño.","Hay que repetir el estudio con los mismos sismos."],ok:1,
+   e:["«No significativo» no es «no hay efecto». Con un mínimo detectable de 1,78 %, un efecto de 1 % pasaba inadvertido.","Exacto. Con un efecto mínimo detectable mayor que el buscado, el resultado es compatible con cero y también con el efecto de 1 %.","Tampoco puedes afirmarlo: +0,44 % con p = 0,28 es compatible con cero.","Repetir con la misma muestra tendría la misma limitación. Hace falta más muestra efectiva o más precisión."]},
+ q2:{q:"Duplicas la muestra efectiva. ¿Cómo cambia el efecto mínimo que podrías ver?",
+   o:["Se reduce a la mitad.","Se reduce a cerca del 71 % (se divide por √2).","No cambia.","Se duplica."],ok:1,
+   e:["Sería así si el efecto mínimo fuera proporcional a 1/n, pero es proporcional a 1/√n. Para reducirlo a la mitad hace falta cuadruplicar la muestra.","Sí: el efecto mínimo detectable varía como 1/√n. Duplicar la muestra lo reduce a ≈ 71 %; cuadruplicarla, a la mitad.","Más datos siempre reducen el efecto mínimo detectable, aunque despacio.","Al revés: con más datos se detectan efectos más pequeños."]},
+ q3:{q:"Tu variable cambia en horas y la hora de tus eventos tiene un error de 3 horas. ¿Qué pasa?",
+   o:["Nada: el error se compensa al promediar muchos eventos.","Se pierde parte del efecto y sube el efecto mínimo detectable.","El error crea falsos positivos.","Solo importa si el error es sistemático."],ok:1,
+   e:["Un error aleatorio no desaparece al promediar: debilita la asociación entre la variable y el evento (atenuación).","Sí. El error de medida aleatorio atenúa el efecto: hace falta más muestra para verlo, o una hora más precisa.","El error de medida aleatorio tiende a esconder efectos reales, no a inventarlos.","El error aleatorio también atenúa; el sistemático añade otros problemas."]},
+ q4:{q:"Tienes 8 réplicas del mismo sismo en tu catálogo. ¿Cuántas «piezas de información independiente» aportan?",
+   o:["8, una por evento.","Bastante menos que 8, porque se parecen entre sí.","Más que 8, por ser réplicas.","Depende solo de su magnitud."],ok:1,
+   e:["Cuentas filas, no información: los eventos de una misma secuencia comparten causa y fase.","Sí. Por eso se cuenta la secuencia como unidad y se calcula un tamaño efectivo menor que el número de filas.","Las réplicas no añaden información independiente; la reducen.","La magnitud no determina cuánto se parecen los eventos entre sí."]},
+ q5:{q:"Pruebas 20 variantes de tu hipótesis y una sale con p = 0,03. ¿Qué haces?",
+   o:["Lo celebro y lo publico.","Cuento que probé 20, corrijo por multiplicidad o lo trato como exploratorio.","Pruebo otras 20 hasta que otra salga igual.","Olvido las otras 19."],ok:1,
+   e:["Con 20 pruebas, es esperable que alguna salga por debajo de 0,05 por azar.","Sí. Declara cuántas pruebas hiciste (el campo «m») y corrige, o marca el hallazgo como exploratorio.","Eso aumenta aún más las posibilidades de un falso positivo.","Ocultar las pruebas que no salieron es lo que más engaña."]},
+ q6:{q:"Caso real. Descubrimiento: 2.652 fallas inversas del catálogo con mecanismo (1976–2026). «Réplica»: 954 fallas inversas del mismo catálogo en 2000–2026. ¿Es una réplica?",
+   o:["Sí, es otro periodo.","No: las 954 ya estaban dentro de las 2.652 (36 % de los eventos del descubrimiento).","Sí, porque es el mismo estrato.","Depende del p-valor."],ok:1,
+   e:["El descubrimiento ya cubría 1976–2026; 2000–2026 es una parte de ese mismo conjunto.","Exacto. Una réplica debe usar eventos distintos; reutilizar una parte del descubrimiento no es replicar. Este caso se detectó en el propio proyecto.","Usar el mismo estrato es correcto, pero los eventos no pueden ser los mismos.","El p-valor no cambia el hecho de que los eventos se repiten."]},
+ q7:{q:"Una réplica tiene un piso de detección de 1,45 y el efecto a replicar es 1,32. Sale «no significativa». ¿Qué dice?",
+   o:["Contradice el hallazgo original.","No podía verlo: es inconclusa.","Confirma que no hay efecto.","Es informativa."],ok:1,
+   e:["Para contradecirlo, la réplica tendría que haber podido verlo.","Sí. Un piso (1,45) mayor que el efecto (1,32) significa que no podía detectarlo; su resultado nulo no decide.","Sin capacidad de detección, un nulo no confirma nada.","Es informativa solo si su piso es menor que el efecto."]}
+};
+const QSETS = {g1:["q1","q2","q3"], g2:["q4","q5"], g3:["q6","q7"]};
+S.quiz = S.quiz||{}; S.hand = S.hand||{}; S.pred = S.pred||{};
+function renderQuiz(boxId, ids){ const box=$(boxId); if(!box) return;
+  box.innerHTML=`<div class="quiz"><h3>Comprueba lo que entendiste</h3><p class="small muted">Sin nota ni consecuencias: sirve para ver si la idea quedó clara.</p>${ids.map(id=>{ const Q=QUIZ[id]; return `<div class="qcard" role="group" aria-labelledby="ql_${id}"><p class="qq" id="ql_${id}">${esc(Q.q)}</p>${Q.o.map((t,i)=>`<label class="opt"><input type="radio" name="${id}" value="${i}"> ${esc(t)}</label>`).join("")}<div class="row" style="margin-top:6px"><button type="button" class="btn ghost" data-chk="${id}">Comprobar</button></div><div class="fb" id="fb_${id}" aria-live="polite"></div></div>`; }).join("")}</div>`; }
+document.addEventListener("click", e=>{ const b=e.target.closest("[data-chk]"); if(!b) return; const id=b.dataset.chk, Q=QUIZ[id]; const r=document.querySelector(`input[name="${id}"]:checked`); const fb=$("fb_"+id);
+  if(!r){ fb.innerHTML='<span class="err">Elige una respuesta.</span>'; return; } const i=+r.value, ok=i===Q.ok; S.quiz[id]={elegida:i,acierto:ok};
+  fb.innerHTML=`<div class="${ok?"fb-ok":"fb-no"}"><b>${ok?"Correcto.":"Todavía no."}</b> ${esc(ok?Q.e[i].replace(/^(Sí|Exacto)[.:,]\s*/,""):Q.e[i])}${ok?"":` <br><b>La respuesta es:</b> ${esc(Q.o[Q.ok].replace(/\.$/,""))}. ${esc(Q.e[Q.ok].replace(/^(Sí|Exacto)[.:,]\s*/,""))}`}</div>`; });
+
+/* ---- apuesta antes de calcular */
+function resetPred(){ document.querySelectorAll('input[name="pg1"]').forEach(r=>r.checked=false); if($("pskip")) $("pskip").checked=false; if($("pconf")) $("pconf").value="3"; }
+function predOK(){ return !!document.querySelector('input[name="pg1"]:checked') || ($("pskip") && $("pskip").checked); }
+function afterG1(g, sp){ const pr=document.querySelector('input[name="pg1"]:checked'); let cmp="";
+  if(pr){ const lab={ok:"Analizable (verde)",mid:"Analizable con costo (ámbar)",bad:"No analizable en principio (rojo)"}; const conf=+$("pconf").value, hit=pr.value===g.clase; S.pred.g1={elegido:pr.value,seguridad:conf,acierto:hit};
+    cmp=`<div class="note"><b>Tu apuesta:</b> ${lab[pr.value]}, con seguridad ${conf} de 5. <b>Resultado:</b> ${esc(g.categoria)}. ${hit?"Coincidió. Lo importante no es acertar sino saber por qué: mira los gráficos y comprueba que tu razón era la correcta.":"No coincidió, y eso enseña más que acertar: la intuición sobre cuánta muestra o precisión hacen falta suele fallar."}${(!hit&&conf>=4)?" Estabas muy seguro o segura: es la señal más útil para revisar tu intuición.":""}</div>`; }
+  else S.pred.g1=null;
+  const b=S.base; const nom=g.mde_nominal;
+  const hand=`<div class="whatif" id="hand"><h3>Calcúlalo tú, paso a paso</h3><p class="small muted">Así sale el número que viste. Primero un paso resuelto, después uno a medias y al final lo haces tú.</p>
+   <p><b>Paso 1 (resuelto).</b> Efecto mínimo sin error de hora = referencia${b.zf>1?" (ajustada ×"+fmt(b.zf,2)+" por ser bilateral)":""} × √(n de referencia ÷ tu n) = ${fmt(b.mdeRef,2)} × √(${fmtI(b.nRef)} ÷ ${fmtI(b.nef)}) = <b>${fmt(nom,2)}</b>.</p>
+   <p><b>Paso 2 (completa).</b> Con el error de hora, el efecto mínimo = ${fmt(nom,2)} ÷ a, con a = ${fmt(g.a,3)}. Escribe el resultado: <input id="h2" type="text" inputmode="decimal" style="width:7em"> <button type="button" class="btn ghost" data-hchk="2">Comprobar</button> <span id="h2f" aria-live="polite"></span></p>
+   <p><b>Paso 3 (tú solo).</b> F = (efecto mínimo con error ÷ efecto de interés)². Calcula F y elige la categoría: <input id="h3" type="text" inputmode="decimal" style="width:7em"> <select id="h3c"><option value="">(categoría)</option><option>Analizable</option><option>Analizable con costo</option><option>No analizable en principio</option></select> <button type="button" class="btn ghost" data-hchk="3">Comprobar</button> <span id="h3f" aria-live="polite"></span></p>
+   <p class="small muted">Regla: analizable si F ≤ 1 y la pérdida L ≤ ${fmt(sp.perdida_tolerada,2)}; con costo si F ≤ ${fmt(sp.tope_muestra,0)}; no analizable en principio si F > ${fmt(sp.tope_muestra,0)}.</p></div>`;
+  $("g1After").innerHTML = cmp + hand + `<div id="quizG1"></div>`; renderQuiz("quizG1", QSETS.g1); }
+function num(s){ return parseFloat(String(s).replace(",",".")); }
+document.addEventListener("click", e=>{ const b=e.target.closest("[data-hchk]"); if(!b||!S.g1) return; const g=S.g1;
+  if(b.dataset.hchk==="2"){ const v=num($("h2").value), t=g.mde_degradado, ok=isFinite(v)&&Math.abs(v-t)/t<=0.03; S.hand.paso2=ok; $("h2f").innerHTML=ok?`<span class="fb-ok">Correcto: ${fmt(t,2)}.</span>`:`<span class="fb-no">No coincide. Divide ${fmt(g.mde_nominal,2)} entre ${fmt(g.a,3)}: ${fmt(t,2)}.</span>`; }
+  else { const v=num($("h3").value), t=g.F_req, okv=isFinite(v)&&Math.abs(v-t)<=Math.max(0.05*t,0.05), okc=$("h3c").value===g.categoria; S.hand.paso3=okv&&okc;
+    $("h3f").innerHTML=(okv&&okc)?`<span class="fb-ok">Correcto: F = ${fmt(t,2)} y ${esc(g.categoria)}.</span>`:`<span class="fb-no">${okv?"F está bien":"F no coincide"} (${fmt(t,2)} = (${fmt(g.mde_degradado,2)} ÷ ${fmt(g.efecto_interes,2)})²)${okc?"":"; revisa la categoría con la regla de abajo"}.</span>`; } });
+
+/* ---- paso 4: apuesta de la réplica y comprobaciones */
+renderQuiz("quiz2", QSETS.g2); renderQuiz("quiz3", QSETS.g3);
+const _runInf=$("runInf");
+_runInf.addEventListener("click", ()=>{ const p=$("pinf").value; if(!p||!S.inf||!$("infOut").querySelector(".verdict")) return; const cls=$("infOut").querySelector(".verdict").classList.contains("ok")?"ok":($("infOut").querySelector(".verdict").classList.contains("mid")?"mid":"bad"); const lab={ok:"Sí podía",mid:"En el límite",bad:"No podía"}; S.pred.inf={elegido:p,acierto:p===cls};
+  $("infOut").insertAdjacentHTML("afterbegin",`<div class="note small"><b>Tu apuesta:</b> ${lab[p]}. ${p===cls?"Coincidió.":"No coincidió: fíjate en dónde queda el rombo respecto al círculo."}</div>`); });
+
+/* ---- buenas prácticas del recorrido y dossier */
+function fichaObj(){ const o={}; [["fuente","fichaFuente"],["licencia","fichaLic"],["precision_hora","fichaHora"],["precision_lugar","fichaLugar"],["cobertura","fichaCob"],["artefactos","fichaArt"]].forEach(([k,id])=>{ const v=($(id)&&$(id).value||"").trim(); if(v) o[k]=v; }); return o; }
+function goodList(){ const sp=spec(); const unchanged = S.specAtG1 ? canon(sp)===S.specAtG1 : null; return [
+  [!!(sp.pregunta&&sp.efecto_interes.valor>0), "Escribiste la pregunta y el efecto de interés antes de calcular."],
+  [!!sp.efecto_interes.fuente, "Documentaste de dónde sale el efecto de interés."],
+  [unchanged===true, unchanged===false?"Cambiaste la hipótesis después de ver el resultado: el registro lo marcará como «derivado después» (es honesto, pero ya no es confirmatorio)." : (unchanged===true?"No cambiaste la hipótesis después de ver el resultado." : "Aún no calculaste la Compuerta 1; cuando lo hagas, procura no cambiar la hipótesis después de ver el resultado.")],
+  [!!(S.pred.g1), "Apostaste antes de ver el resultado de la Compuerta 1."],
+  [Object.keys(fichaObj()).length>=3, "Rellenaste la ficha de tus datos (fuente, licencia, precisión…)."],
+  [!!(S.inf||S.ind), "Revisaste si una réplica era informativa o independiente."]
+]; }
+function drawGood(){ const L=goodList(); const qa=Object.values(S.quiz), nq=qa.length, ok=qa.filter(x=>x.acierto).length;
+  $("goodOut").innerHTML=`<div class="summary"><h3>Buenas prácticas de tu recorrido</h3><ul style="list-style:none;padding:0;margin:6px 0">${L.map(([o,t])=>`<li>${o?"✓":"○"} ${esc(t)}</li>`).join("")}</ul><p class="small muted">Lo que cuenta es el proceso, no que el resultado salga verde.${nq?` Comprobaciones: ${ok} de ${nq} acertadas a la primera respuesta registrada.`:""}</p></div>`; }
+$("dlDossier").addEventListener("click", ()=>{ const sp=spec(), g=S.g1, L=[]; const qlab=id=>QUIZ[id].q;
+  L.push("# Mi dossier del Laboratorio de las tres compuertas","","*Este documento es tuyo: no se publica.*","","## Tema","¿Cuándo puedo creerle a un resultado sobre eventos y ciclos astronómicos?","",
+   "## Mi hipótesis",`- Título: ${sp.titulo}`,`- Pregunta: ${sp.pregunta}`,`- Disciplina: ${(DISC[sp.disciplina]||{}).n||sp.disciplina}`,`- Efecto de interés: ${sp.efecto_interes.valor} (${sp.efecto_interes.fuente||"sin fuente"})`,`- Uso: ${sp.uso}`,sp.origen_libro?`- Afirmación del libro: ${sp.origen_libro.id} (${sp.origen_libro.pagina}); mi traducción: ${sp.origen_libro.traduccion}`:"","",
+   "## Compuerta 1", g?`- Veredicto: ${g.categoria}`:"- Sin calcular",g?`- Efecto mínimo con error de medida: ${g.mde_degradado}; F = ${g.F_req}`:"", g&&g.falta.length?`- Falta: ${g.falta.join("; ")}`:"",
+   S.pred.g1?`- Mi apuesta: ${S.pred.g1.elegido} (seguridad ${S.pred.g1.seguridad}/5), ${S.pred.g1.acierto?"acertó":"no acertó"}`:"- No hice apuesta","");
+  L.push("## Lo que comprobé"); Object.entries(S.quiz).forEach(([id,r])=>L.push(`- ${qlab(id)} → ${r.acierto?"correcto":"incorrecto"}`)); if(!Object.keys(S.quiz).length) L.push("- (sin respuestas)");
+  L.push("","## Buenas prácticas"); goodList().forEach(([o,t])=>L.push(`- [${o?"x":" "}] ${t}`));
+  L.push("","## Reflexión",($("reflexion").value||"(sin escribir)"),"");
+  dl("mi_dossier.md", L.filter(x=>x!==undefined).join("\n"), "text/markdown"); });
+
+/* ------------------------------------------------------------------ v0.4: conjuntos del proyecto (GitHub) y tormenta desde event_id */
+function stormOf(s){ const m=String(s||"").match(/^nhc_([A-Z]{2}\d{6})_/); return m?m[1]:"?"; }
+const DATASETS = [
+  {id:"gcmt_mecanismo", file:"eventos_gcmt_mecanismo.csv", titulo:"Sismos GCMT con mecanismo, M ≥ 6, 1976–2026 (6.035)",
+   aviso:"Este es el conjunto de descubrimiento de varios hallazgos del proyecto (por ejemplo Júpiter en el Descendente, 1976–2026). Úsalo para practicar o para análisis nuevos, no para replicar esos hallazgos: sería reutilizar datos.",
+   ficha:{fichaFuente:"Global CMT (copia del repositorio Invesciencias/Cosmobiologia: eventos_gcmt_mecanismo.csv)", fichaLic:"Verifica las condiciones de uso de Global CMT (globalcmt.org). Cita: Dziewonski et al. 1981; Ekström et al. 2012.", fichaHora:"Tiempo del centroide, al segundo", fichaLugar:"Centroide; error de varios km", fichaCob:"M ≥ 6; enero de 1976 a abril de 2026", fichaArt:"Incluye réplicas; magnitud Mw de GCMT"}},
+  {id:"gcmt_marea", file:"eventos_gcmt_marea.csv", titulo:"Sismos GCMT preparados para la marea, M ≥ 6, 1976–2026 (6.035)",
+   aviso:"Son los mismos 6.035 sismos del conjunto anterior. Aplica el mismo aviso: es el conjunto de descubrimiento de varios hallazgos del proyecto.",
+   ficha:{fichaFuente:"Global CMT (copia del repositorio Invesciencias/Cosmobiologia: eventos_gcmt_marea.csv)", fichaLic:"Verifica las condiciones de uso de Global CMT (globalcmt.org). Cita: Dziewonski et al. 1981; Ekström et al. 2012.", fichaHora:"Tiempo del centroide, al segundo", fichaLugar:"Centroide; error de varios km", fichaCob:"M ≥ 6; enero de 1976 a abril de 2026", fichaArt:"Incluye réplicas; magnitud Mw de GCMT"}}
+];
+$("projSel").innerHTML = '<option value="">(elige un conjunto)</option>' + DATASETS.map(d=>`<option value="${d.id}">${esc(d.titulo)}</option>`).join("");
+$("projLoad").addEventListener("click", async ()=>{ const d=DATASETS.find(x=>x.id===$("projSel").value); const note=$("projNote"); $("dataErr").textContent="";
+  if(!d){ note.classList.remove("hidden"); note.textContent="Elige primero un conjunto de la lista."; return; }
+  note.classList.remove("hidden"); note.textContent="Descargando "+d.file+" de GitHub…";
+  try{ const r=await fetch(`https://raw.githubusercontent.com/${REPO}/main/${d.file}`); if(!r.ok) throw new Error("GitHub respondió "+r.status+". ¿El archivo está en el repositorio y la rama se llama main?");
+    const text=await r.text(); S.proj=d.id; await ingest(new File([text], d.file, {type:"text/csv"}));
+    Object.entries(d.ficha).forEach(([k,v])=>{ if($(k)){ $(k).value=v; $(k).dispatchEvent(new Event("input")); } });
+    note.innerHTML=`<b>Aviso de uso.</b> ${esc(d.aviso)}`; $("analyze").click();
+  }catch(e){ note.textContent=""; $("dataErr").textContent="No se pudo cargar el conjunto: "+e.message+" Puedes descargarlo del repositorio y subirlo como archivo."; } });
+
+/* ------------------------------------------------------------------ v0.5: explicación de los pisos de detección */
+const Z_A=3.88, C_A=0.948, Z_B=2.4866;
+function floorsRR(n,f){ const ee=Math.sqrt((1-f)/(n*f)); return {ee, A:1+Z_A*C_A*ee, B:1+Z_B*ee}; }
+function openFloors(){ if(S.step!==6) S.back=S.step; go(6); }
+document.addEventListener("click", e=>{ if(e.target.closest("[data-floors]")) openFloors(); });
+$("openFloors").addEventListener("click", openFloors);
+$("backFloors").addEventListener("click", ()=>go(S.back||0));
+function chartFloors(n,f){
+  const W=520,H=230,L=46,R=16,T=14,B=44; const n0=100,n1=1e6; const a0=floorsRR(n0,f); const yMax=Math.max(1.5,a0.A*1.04), yMin=1;
+  const x=v=>L+(Math.log(v)-Math.log(n0))/(Math.log(n1)-Math.log(n0))*(W-L-R), y=v=>T+(1-(Math.min(v,yMax)-yMin)/(yMax-yMin))*(H-T-B);
+  const pts=k=>{ let s=[]; for(let i=0;i<=60;i++){ const nn=n0*Math.pow(n1/n0,i/60); s.push(x(nn).toFixed(1)+","+y(floorsRR(nn,f)[k]).toFixed(1)); } return s.join(" "); };
+  let s=`<line x1="${L}" y1="${y(1)}" x2="${W-R}" y2="${y(1)}" style="stroke:var(--muted)"/><line x1="${L}" y1="${T}" x2="${L}" y2="${y(1)}" style="stroke:var(--muted)"/>`;
+  [1,1.5,2,2.5].filter(v=>v<=yMax).forEach(v=>{ s+=`<text x="${L-6}" y="${y(v)+4}" font-size="11" text-anchor="end" class="mut">${fmt(v,1)}</text><line x1="${L}" y1="${y(v)}" x2="${W-R}" y2="${y(v)}" style="stroke:var(--line)"/>`; });
+  [[100,"100"],[1e3,"1.000"],[1e4,"10.000"],[1e5,"100.000"],[1e6,"1 millón"]].forEach(([v,l])=>{ s+=`<text x="${x(v)}" y="${y(1)+16}" font-size="11" text-anchor="middle" class="mut">${l}</text>`; });
+  s+=`<polyline points="${pts("A")}" style="fill:none;stroke:var(--bad);stroke-width:2.5"/><polyline points="${pts("B")}" style="fill:none;stroke:var(--accent);stroke-width:2.5"/>`;
+  s+=`<text x="${L+8}" y="${T+14}" font-size="12" font-weight="700" style="fill:var(--bad)">D_A: barrido (más alto)</text><text x="${L+8}" y="${T+30}" font-size="12" font-weight="700" style="fill:var(--accent)">D_B: una prueba</text>`;
+  if(n>=n0&&n<=n1){ const fl=floorsRR(n,f); const xn=x(n); s+=`<line x1="${xn}" y1="${T}" x2="${xn}" y2="${y(1)}" style="stroke:var(--ink);stroke-dasharray:3 3"/><circle cx="${xn}" cy="${y(fl.A)}" r="5" style="fill:var(--bad)"/><circle cx="${xn}" cy="${y(fl.B)}" r="5" style="fill:var(--accent)"/>`; }
+  s+=`<text x="${(L+W-R)/2}" y="${H-8}" font-size="11" text-anchor="middle" class="mut">número de eventos (escala logarítmica); con f = ${fmt(f,3)}</text>`;
+  return `<figure class="chartbox"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Piso de detección en función del número de eventos para f igual a ${fmt(f,3)}: la curva del barrido queda por encima de la de una sola prueba, y ambas bajan al aumentar n.">${s}</svg><figcaption>Los dos pisos bajan al crecer n, siempre despacio (como 1/√n), y el del barrido es el más alto. El punto marca tu n.</figcaption></figure>`; }
+function runFloors(){ const n=+$("flN").value, f=+$("flF").value, e=parseFloat($("flE").value);
+  if(!(n>0)||!(f>0&&f<1)){ $("flOut").innerHTML='<p class="err">Introduce n mayor que 0 y una frecuencia f entre 0 y 1.</p>'; return; }
+  const r=floorsRR(n,f); let ex="";
+  if(e>1){ const rb=(r.B-1)/(e-1), ra=(r.A-1)/(e-1); const cb=rb<=0.95?"ok":(rb<=1.05?"mid":"bad"), ca=ra<=0.95?"ok":(ra<=1.05?"mid":"bad");
+    ex=`<div class="scroll"><table class="t"><tr><th>Para un efecto RR = ${fmt(e,3)}</th><th>Razón de exceso</th><th>Lectura</th></tr><tr><td>Con D<sub>B</sub> (una prueba)</td><td>${fmt(rb,2)}</td><td><span class="badge b-${cb}">${cb==="ok"?"informativa":(cb==="mid"?"en el límite":"no informativa")}</span></td></tr><tr><td>Con D<sub>A</sub> (barrido)</td><td>${fmt(ra,2)}</td><td><span class="badge b-${ca}">${ca==="ok"?"informativa":(ca==="mid"?"en el límite":"no informativa")}</span></td></tr></table></div><p class="small muted">Usa la fila que corresponde a tu diseño. El mismo efecto puede ser «informativo» con una definición y «no informativo» con la otra.</p>`; }
+  $("flOut").innerHTML=`<div class="kv"><div><div class="v">${fmt(r.B,3)}</div><div class="l">piso D_B (una prueba)</div></div><div><div class="v">${fmt(r.A,3)}</div><div class="l">piso D_A (barrido)</div></div><div><div class="v">${fmt(r.ee,4)}</div><div class="l">error relativo EE</div></div></div>${ex}${chartFloors(n,f)}`; }
+$("flRun").addEventListener("click", runFloors);
+$("flR1").addEventListener("click", ()=>{ $("flN").value=581; $("flF").value=0.0501; $("flE").value=1.315; runFloors(); });
+$("flMU").addEventListener("click", ()=>{ $("flN").value=2731; $("flF").value=0.0463; $("flE").value=1.315; runFloors(); });
+$("flReadme").addEventListener("click", ()=>{ $("flN").value=3730; $("flF").value=0.05; $("flE").value=""; runFloors(); });
+
+showDisc();
+drawSteps(); go(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel del curso</title>
+<style>
+:root{--bg:#f2f7f5;--card:#fff;--ink:#14282b;--muted:#53696a;--line:#d3e0db;--soft:#e5f1ed;--brand:#008b6e;--accent:#00705a;--ok:#007a5a;--ok-bg:#dff3ec;--mid:#9a6200;--mid-bg:#fbefd0;--bad:#b24a00;--bad-bg:#fbe3d3;--focus:#0072B2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a18;--card:#172623;--ink:#e6f0ed;--muted:#9db5af;--line:#2b403b;--soft:#1e312d;--brand:#006e57;--accent:#5fd0b3;--ok:#4fd1a5;--ok-bg:#12372d;--mid:#f0b94d;--mid-bg:#3a2d10;--bad:#f08a4b;--bad-bg:#3d2312}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5}
+a{color:var(--accent)} :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+header{background:var(--brand);color:#fff;border-radius:0 0 46px 46px/0 0 20px 20px;margin-bottom:22px}
+header a{color:#fff}
+.egg{flex:0 0 auto;width:84px;height:104px;background:#fff;border-radius:50% 50% 50% 50%/56% 56% 44% 44%;display:grid;place-items:center;box-shadow:0 6px 16px rgba(0,50,38,.30);margin-bottom:0;position:relative;z-index:2}
+.egg img{height:76px;width:auto;display:block}
+.brandrow{display:flex;gap:16px;align-items:center}
+
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:14px;padding-bottom:14px}
+h1{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:1.5rem;margin:0}
+main{padding:20px 16px 60px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.kv div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.kv .v{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}.kv .l{font-size:.8rem;color:var(--muted)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0}
+select,input[type=text]{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+button{font:inherit;cursor:pointer;border:1px solid var(--accent);background:transparent;color:var(--accent);padding:8px 14px;border-radius:8px;font-weight:600}
+.scroll{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-weight:700;font-size:.78rem;white-space:nowrap}
+.ok{background:var(--ok-bg);color:var(--ok)}.mid{background:var(--mid-bg);color:var(--mid)}.bad{background:var(--bad-bg);color:var(--bad)}
+.flag{display:inline-block;background:var(--bad-bg);color:var(--bad);border-radius:6px;padding:1px 7px;font-size:.78rem;margin:1px 3px 1px 0}
+.muted{color:var(--muted)} .small{font-size:.85rem}
+.note{border-left:4px solid var(--accent);background:var(--soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="brandrow"><a class="egg" href="https://invesciencias.github.io/Cosmobiologia/" aria-label="Fundación Invesciencias"><img src="logo-invesciencias.png" alt="Invesciencias"></a><h1>Panel del curso</h1></div><nav><a href="index.html">Laboratorio</a></nav></div></header>
+<main class="wrap">
+  <p class="muted">Registros públicos del Laboratorio, leídos de los «issues» de GitHub con la etiqueta <code>registro</code>. Sirve para ver en qué compuerta va cada investigación y a quién ayudar.</p>
+  <div class="kv" id="kpis"></div>
+  <div class="bar">
+    <label>Grupo <select id="fGrupo"><option value="">Todos</option></select></label>
+    <label>Veredicto <select id="fVer"><option value="">Todos</option><option>Analizable</option><option>Analizable con costo</option><option>No analizable en principio</option></select></label>
+    <label><input type="checkbox" id="fAyuda"> Solo los que piden ayuda</label>
+    <button id="demo">Ver datos de ejemplo</button><button id="reload">Recargar</button>
+  </div>
+  <div class="note small" id="msg">Cargando…</div>
+  <div class="scroll"><table><thead><tr><th>Fecha</th><th>Quién</th><th>Título</th><th>Variable</th><th>Va en</th><th>Veredicto C1</th><th>Avisos</th><th>Ayuda</th></tr></thead><tbody id="rows"></tbody></table></div>
+</main>
+<script>
+"use strict";
+const REPO="Invesciencias/Cosmobiologia";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let DATA=[];
+function section(body,name){ const re=new RegExp("###\\s*"+name+"\\s*\\n+([\\s\\S]*?)(?=\\n###\\s|$)","i"); const m=(body||"").match(re); return m?m[1].trim():""; }
+function parse(issue){ const b=issue.body||""; let rec=null; const fence=b.match(/```json\s*([\s\S]*?)```/); const js=fence?fence[1]:section(b,"Registro \\(JSON\\)"); try{ rec=JSON.parse(js); }catch(e){}
+  const ayuda=section(b,"¿En qué te gustaría ayuda\\?"); const flags=[]; const g=rec&&rec.compuerta1; const c3=rec&&rec.compuerta3;
+  if(g&&g.categoria==="No analizable en principio") flags.push("Compuerta 1 en rojo");
+  if(g&&g.categoria==="Analizable con costo") flags.push("falta muestra o resolución");
+  if(rec&&rec.especificacion&&rec.especificacion.uso==="exploratorio") flags.push("exploratorio");
+  if(rec&&rec.cambio_hipotesis_tras_ver_resultado===true) flags.push("hipótesis cambiada tras ver el resultado");
+  if(c3&&c3.independencia&&/No independiente/.test(c3.independencia.clasificacion)) flags.push("réplica no independiente");
+  if(c3&&c3.informatividad&&/No informativa/.test(c3.informatividad.veredicto)) flags.push("réplica no informativa");
+  return {fecha:issue.created_at.slice(0,10), quien:issue.user.login, url:issue.html_url, titulo:issue.title.replace(/^\[Registro\]\s*/,""), grupo:section(b,"Grupo"), compuerta:section(b,"Dónde vas"),
+    veredicto:(g&&g.categoria)||section(b,"Veredicto de la Compuerta 1")||"", cov:rec&&rec.especificacion?rec.especificacion.covariable:"", disc:rec&&rec.disciplina?rec.disciplina:"", ayuda:ayuda&&!/^_No response_$/i.test(ayuda)?ayuda:"", flags}; }
+function render(){ const fg=$("fGrupo").value, fv=$("fVer").value, fa=$("fAyuda").checked; const rows=DATA.filter(r=>(!fg||r.grupo===fg)&&(!fv||r.veredicto.startsWith(fv))&&(!fa||r.ayuda));
+  $("rows").innerHTML=rows.map(r=>{ const cls=/^Analizable$/.test(r.veredicto)?"ok":(/costo/.test(r.veredicto)?"mid":(r.veredicto?"bad":"")); return `<tr><td>${esc(r.fecha)}</td><td>${esc(r.quien)}</td><td><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.titulo)}</a></td><td>${esc(r.cov)}${r.disc?` <span class="muted small">· ${esc(r.disc)}</span>`:""}</td><td>${esc(r.compuerta)}</td><td>${r.veredicto?`<span class="badge ${cls}">${esc(r.veredicto)}</span>`:""}</td><td>${r.flags.map(f=>`<span class="flag">${esc(f)}</span>`).join("")}</td><td>${esc(r.ayuda)}</td></tr>`; }).join("")||`<tr><td colspan="8" class="muted">No hay registros con estos filtros.</td></tr>`;
+  const n=DATA.length, c1=DATA.filter(r=>/^Analizable$/.test(r.veredicto)).length, cc=DATA.filter(r=>/costo/.test(r.veredicto)).length, nb=DATA.filter(r=>/^No analizable/.test(r.veredicto)).length, ay=DATA.filter(r=>r.ayuda).length;
+  $("kpis").innerHTML=[[n,"registros"],[c1,"analizables"],[cc,"analizables con costo"],[nb,"no analizables en principio"],[ay,"piden ayuda"]].map(([v,l])=>`<div><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+  const gs=[...new Set(DATA.map(r=>r.grupo).filter(Boolean))]; const cur=$("fGrupo").value; $("fGrupo").innerHTML='<option value="">Todos</option>'+gs.map(g=>`<option>${esc(g)}</option>`).join(""); $("fGrupo").value=cur; }
+async function load(){ $("msg").textContent="Cargando…";
+  try{ const r=await fetch(`https://api.github.com/repos/${REPO}/issues?labels=registro&state=all&per_page=100`,{headers:{Accept:"application/vnd.github+json"}}); if(!r.ok) throw new Error("GitHub respondió "+r.status+(r.status===403?" (límite de consultas; espera unos minutos)":""));
+    const js=(await r.json()).filter(i=>!i.pull_request); DATA=js.map(parse); $("msg").textContent=DATA.length?`${DATA.length} registros leídos de github.com/${REPO}.`:"Todavía no hay registros con la etiqueta «registro». Cuando alguien registre una hipótesis desde el Laboratorio aparecerá aquí. Puedes ver cómo se vería con «Ver datos de ejemplo»."; render();
+  }catch(e){ DATA=[]; $("msg").textContent="No se pudieron leer los registros: "+e.message; render(); } }
+$("demo").addEventListener("click",()=>{ DATA=[
+ {fecha:"2026-11-03",quien:"participante-1",url:"#",titulo:"Marea terrestre y sismos en Japón",grupo:"Curso Invesciencias 2026",compuerta:"Compuerta 1. Detectabilidad",veredicto:"Analizable con costo",cov:"tide_uz",ayuda:"No sé cómo estimar la ampliación de muestra.",flags:["falta muestra o resolución"]},
+ {fecha:"2026-11-05",quien:"participante-2",url:"#",titulo:"Apogeo lunar y sismos M≥6",grupo:"Curso Invesciencias 2026",compuerta:"Compuerta 2. Evidencia corregida",veredicto:"Analizable",cov:"otra",ayuda:"",flags:[]},
+ {fecha:"2026-11-07",quien:"participante-3",url:"#",titulo:"Marea y huracanes con hora a 6 h",grupo:"Curso Invesciencias 2026",compuerta:"Compuerta 1. Detectabilidad",veredicto:"No analizable en principio",cov:"tide_uz",disc:"clima",ayuda:"¿Se puede mejorar la hora de los registros?",flags:["Compuerta 1 en rojo","hipótesis cambiada tras ver el resultado"]},
+ {fecha:"2026-11-10",quien:"investigador-externo",url:"#",titulo:"Réplica de una pista en otro catálogo",grupo:"Otro grupo o investigación externa",compuerta:"Compuerta 3. Replicación",veredicto:"Analizable",cov:"otra",ayuda:"",flags:["réplica no independiente"]}];
+  $("msg").textContent="Datos de ejemplo (no son registros reales)."; render(); });
+["fGrupo","fVer","fAyuda"].forEach(i=>$(i).addEventListener("change",render)); $("reload").addEventListener("click",load); load();
+</script>
+</body>
+</html>
