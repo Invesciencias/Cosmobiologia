@@ -2,6 +2,22 @@
 
 Versión 0.5. Una página para probar una hipótesis en tres compuertas: **detectabilidad**, **evidencia corregida** y **replicación**. No sustituye al explorador (`../index.html`), que sigue siendo exploratorio.
 
+## Gráficas de muchos eventos (v0.8, en Python)
+
+`graficas_evento.py` dibuja, para cualquier archivo de eventos (`datetime_utc`, `latitude`, `longitude` y, si se declusteriza, `value`):
+
+- **la rueda de anillos**: un anillo por planeta y una casilla por cada 10° del zodiaco (líneas verdes: signos de 30°); el color es el z frente a fechas control del mismo lugar (naranja: menos eventos que el azar; verde: más);
+- **el planeta por casa topocéntrica** (Polich y Page);
+- **la campana de «decidir antes de mirar»**: exceso, déficit o ambos.
+
+Uso, desde la raíz del repositorio:
+
+```
+python laboratorio/graficas_evento.py datos/eventos_gcmt_marea.csv --salida graficas --declusterizar
+```
+
+Usa `charts.py` y `decluster.py` del repositorio (carpeta `codigo/`). Escribe `rueda_anillos.png`, `planeta_por_casa.png` y `campana_lado.png` y muestra cuántas casillas pasan de ±1,96 frente a las que da el azar (5 %). Son gráficas **descriptivas**: la hipótesis y el lado (exceso o déficit) se escriben antes de mirarlas; los planetas lentos salen pálidos porque no distinguen un evento de otro. Todavía no están dentro de la página del Laboratorio (que corre en el navegador); se generan con este script y se pueden subir o enlazar desde el registro de la hipótesis.
+
 ## Estructura del sitio (v0.7)
 
 - `index.html`: portada corta de una pantalla (pregunta, tres caminos, ruta de tres pasos), en español, inglés y francés.
