@@ -1446,6 +1446,14 @@
  <p class="small muted" data-i18n="tablero_compare_note">La línea en z=±2.8 marca el umbral aproximado de significancia. Barras en direcciones opuestas entre dominios sugieren que no hay un mecanismo común. Usa "solo aspectos planeta–planeta" para la comparación menos sesgada.</p>
  </div>
 
+
+ <!-- FIGURA: dupletas y tripletas (esperado con fechas control) -->
+ <div class="card" style="border-left:4px solid var(--oro)">
+ <h2>Antes de calcular: más condiciones, menos eventos</h2>
+ <p class="small">Cada condición que sumas reduce los eventos y multiplica las pruebas posibles. El esperado de una dupla o tripleta <b>no sale de multiplicar frecuencias</b>, sino de fechas control (mismo lugar y hora, otros días): los rasgos comparten geometría y no son independientes. Ejemplo con 2.416 terremotos de M ≥ 6 sin réplicas: una dupla con 7 eventos conjuntos esperaba 8,7 ± 2,6 por fechas control; una tripleta con 6 eventos esperaba 0,9 por producto de frecuencias, pero 5,2 por fechas control. Contar dos veces la misma condición da 555 observados contra 127 «esperados» por producto.</p>
+ <a href="imagenes/dupletas_tripletas.png" target="_blank" rel="noopener" title="Abrir la figura en grande"><img src="imagenes/dupletas_tripletas.png" alt="Tres paneles: una dupla con 7 eventos conjuntos frente a 8,7 esperados por fechas control; una tripleta Luna–Mercurio–Plutón con 6 observados, 0,9 esperados por producto y 5,2 por fechas control; y el embudo de pruebas con 558 rasgos, 155.403 duplas y 28.801.356 tripletas. Abajo, la trampa de contar dos veces la misma condición." style="width:100%;max-width:1100px;border-radius:10px;border:1px solid var(--line)" loading="lazy" width="1100" height="619"></a>
+ <p class="small muted">Los números son de un ejemplo con sismos, no de los datos cargados en la calculadora de abajo. Un z de la calculadora no es un valor p corregido: úsala para explorar y pre-registra antes de concluir.</p>
+ </div>
  <!-- CALCULADORA DE DUPLAS (copia ligera en el Tablero) -->
  <div class="card" style="border-left:4px solid var(--accent2)">
  <h2>Calculadora de duplas y tripletas</h2>
@@ -1692,6 +1700,7 @@
  </div>
  <div id="cielo_aspectos_txt"></div>
  <div style="overflow:auto"><table id="cielo_tabla"><thead><tr><th>Cuerda</th><th>Aspecto</th><th>Eventos</th><th>Esperados</th><th>z</th></tr></thead><tbody></tbody></table></div>
+ <p class="small"><a href="#tablero" onclick="document.querySelector('[data-tab=tablero]').click();return false">¿Y las combinaciones de dos o tres condiciones (dupletas y tripletas)? Mira la figura y la calculadora en el Tablero estadístico.</a></p>
  <p class="small muted">Azul: más eventos que en fechas control. Naranja: menos. Cada cuerda une dos planetas; con 10 planetas, 45 pares y 5 aspectos hay 225 comparaciones, y el azar da varias cuerdas por sí solo.</p>
  </div>
  </div>
@@ -2334,6 +2343,14 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  </div>
  </div>
 
+
+ <!-- FIGURA: dupletas y tripletas (misma figura que en el Tablero) -->
+ <div class="card" style="border-left:4px solid var(--oro)">
+ <h2>Antes de calcular: más condiciones, menos eventos</h2>
+ <p class="small">Cada condición que sumas reduce los eventos y multiplica las pruebas posibles. El esperado de una dupla o tripleta <b>no sale de multiplicar frecuencias</b>, sino de fechas control (mismo lugar y hora, otros días): los rasgos comparten geometría y no son independientes. Ejemplo con 2.416 terremotos de M ≥ 6 sin réplicas: una dupla con 7 eventos conjuntos esperaba 8,7 ± 2,6 por fechas control; una tripleta con 6 eventos esperaba 0,9 por producto de frecuencias, pero 5,2 por fechas control. Contar dos veces la misma condición da 555 observados contra 127 «esperados» por producto.</p>
+ <a href="imagenes/dupletas_tripletas.png" target="_blank" rel="noopener" title="Abrir la figura en grande"><img src="imagenes/dupletas_tripletas.png" alt="Tres paneles: una dupla con 7 eventos conjuntos frente a 8,7 esperados por fechas control; una tripleta Luna–Mercurio–Plutón con 6 observados, 0,9 esperados por producto y 5,2 por fechas control; y el embudo de pruebas con 558 rasgos, 155.403 duplas y 28.801.356 tripletas. Abajo, la trampa de contar dos veces la misma condición." style="width:100%;max-width:1100px;border-radius:10px;border:1px solid var(--line)" loading="lazy" width="1100" height="619"></a>
+ <p class="small muted">Los números son de un ejemplo con sismos, no de los datos cargados en la calculadora de abajo. Un z de la calculadora no es un valor p corregido: úsala para explorar y pre-registra antes de concluir.</p>
+ </div>
  <!-- ═══════ CALCULADORA DE DUPLAS / TRIPLETAS ═══════ -->
  <div id="met_duplas" class="card" style="border-left:4px solid var(--accent2)">
  <h2 id="met_duplas">Calculadora de duplas y tripletas (TCC cap. 16)</h2>
