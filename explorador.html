@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.plot.ly; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://api.emailjs.com https://raw.githubusercontent.com https://api.github.com https://cdn.plot.ly https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cosmobiología — Fundación Invesciencias">
+<meta property="og:title" content="Cosmobiología: ¿cuándo puedo creer en un patrón entre eventos y el cielo?">
+<meta property="og:description" content="Pon a prueba una hipótesis con tres compuertas, fechas control y cielos desplazados. Explora el cielo de miles de terremotos y mira por qué casi todo es azar.">
+<meta property="og:image" content="https://invesciencias.github.io/Cosmobiologia/imagenes/og_cosmobiologia.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="La bóveda celeste con cuerdas entre planetas sobre la curva del azar">
+<meta property="og:url" content="https://invesciencias.github.io/Cosmobiologia/">
+<meta name="twitter:card" content="summary_large_image">
+
 <title>Cosmobiología — Invesciencias | Captura y Análisis de Eventos</title>
 <link rel="icon" type="image/png" sizes="64x64" href="imagenes/favicon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="imagenes/favicon-32.png">
@@ -21,6 +31,7 @@
 <script src="js/cielo_ui.js"></script>
 <script src="js/ajedrez_bandas.js"></script>
 <script src="js/accesibilidad.js"></script>
+<script src="js/navegacion.js"></script>
 <script src="js/features.js"></script>
 <script src="js/translations.js"></script>
 <style>
@@ -222,6 +233,44 @@ code, pre, kbd { overflow-wrap: anywhere; }
   header { flex-wrap: wrap; gap: 10px; }
   header > div[style*="margin-left:auto"] { margin-left: 0 !important; flex-wrap: wrap; }
 }
+
+/* ── Navegación: idioma, camino sugerido, copiar enlace, recorrido guiado ── */
+#lang-sel{display:inline-flex;border:1.5px solid var(--oro);border-radius:20px;overflow:hidden}
+#lang-sel button{background:transparent;color:var(--oro);border:0;padding:7px 12px;font-weight:700;font-size:13px;cursor:pointer;min-width:42px}
+#lang-sel button.on{background:var(--oro);color:#1a2820}
+#lang-sel button:focus-visible{outline:2px solid #fff;outline-offset:-3px}
+.camino{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 14px;padding:10px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;font-size:13px}
+.camino-t{font-weight:700;color:var(--verde-profundo,#005743);margin-right:4px}
+.camino a{text-decoration:none;color:var(--ink);padding:4px 10px;border-radius:16px;border:1px solid transparent}
+.camino a b{display:inline-block;min-width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:var(--line);margin-right:4px;font-size:12px}
+.camino a:hover{border-color:var(--verde)}
+.camino a.cur{background:var(--verde);color:#fff}
+.camino a.cur b{background:rgba(255,255,255,.28);color:#fff}
+.camino-sep{color:var(--muted,#53696a)}
+.camino-sig{margin-left:auto;background:var(--oro);color:#1a2820!important;font-weight:700}
+.copiar-enlace{background:transparent;border:1px solid var(--line);color:var(--muted,#53696a);border-radius:14px;padding:3px 10px;font-size:12px;cursor:pointer;margin:0 0 12px}
+.copiar-enlace:hover{border-color:var(--verde);color:var(--ink)}
+#tour{display:none;position:fixed;right:18px;bottom:18px;z-index:1000;width:min(400px,calc(100vw - 24px));background:#fff;color:var(--ink);border:2px solid var(--verde);border-radius:16px;box-shadow:0 12px 36px rgba(0,60,45,.28);padding:14px 16px}
+#tour h3{margin:6px 0 6px;font-size:17px;color:var(--verde-profundo,#005743)}
+#tour p{margin:0 0 10px;font-size:14px;line-height:1.5}
+#tour .tour-cab{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted,#53696a);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+#tour .tour-x{background:transparent;border:0;font-size:16px;cursor:pointer;color:var(--muted,#53696a)}
+#tour .tour-act{display:block;width:100%;margin:0 0 12px}
+#tour .tour-pie{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+#tour .tour-punto{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line);margin-right:5px}
+#tour .tour-punto.on{background:var(--verde)}
+#tour button:disabled{opacity:.45;cursor:default}
+@media (max-width:700px){#tour{right:8px;left:8px;bottom:8px;width:auto}.camino-sig{margin-left:0}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+/* móvil: la barra de pestañas es una sola tira que se desliza (antes ocupaba media pantalla) */
+@media (max-width:700px){
+  nav .nav-inner{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:4px;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  nav .nav-group,nav .nav-entry{flex:none}
+  nav .nav-group-buttons{flex-wrap:nowrap}
+  nav .nav-group-label{display:none}
+  nav .nav-sep{margin:8px 2px}
+  nav button,nav a.nav-lab{white-space:nowrap}
+}
 </style>
 </head>
 <body>
@@ -234,7 +283,7 @@ code, pre, kbd { overflow-wrap: anywhere; }
  </div>
  <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
  <a class="back-cover" href="index.html" data-i18n="back_cover">← Portada</a>
- <button id="lang-toggle" onclick="toggleLang()" style="padding:7px 16px;border-radius:20px;border:1.5px solid var(--oro);background:transparent;color:var(--oro);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">English</button>
+ <div id="lang-sel" role="group" aria-label="Idioma / Language"><button type="button" data-l="es" aria-pressed="true" class="on">ES</button><button type="button" data-l="en" aria-pressed="false">EN</button><button type="button" data-l="fr" aria-pressed="false">FR</button></div>
  </div>
 
 </header>
@@ -315,6 +364,7 @@ code, pre, kbd { overflow-wrap: anywhere; }
  <p data-i18n-html="hero2_p">Esta plataforma te ayuda a responder con rigor: primero comprueba si tus datos <i>podrían</i> mostrar un efecto, luego corrige las trampas estadísticas y al final mira si otro grupo lo repite. Usa más de <b>24.000</b> eventos reales de <b>5</b> dominios de fuentes abiertas, comparados contra un modelo nulo emparejado. <b>No afirmamos que el efecto exista:</b> enseñamos a ponerlo a prueba.</p>
  <div class="row">
  <a class="act hero-main" href="laboratorio/index.html" data-i18n="hero2_lab">Probar mi hipótesis en el Laboratorio</a>
+ <button class="ghost act" type="button" onclick="iniciarRecorrido()" data-tour-btn>▶ Recorrido guiado (3 min)</button>
  <button class="ghost act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="hero_btn_tablero">Explorar resultados</button>
  <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()" data-i18n="hero_btn_mapa">Ver el mapa</button>
  </div>
@@ -1717,11 +1767,13 @@ code, pre, kbd { overflow-wrap: anywhere; }
  <div id="cielo_aviso" class="hint" style="display:none;margin:10px 0;border-left-color:var(--oro)" role="alert"></div>
  <div class="card">
  <h2 data-i18n="cielo_h2_rueda">Muchas cartas en una rueda</h2>
+ <button type="button" class="ghost act" style="font-size:12px;padding:3px 10px;margin:0 0 8px" onclick="guardarImagen('cielo_rueda','rueda_de_cartas')" data-guardar>⬇ Guardar imagen</button>
  <div id="cielo_rueda"></div>
  <p class="small" id="cielo_rueda_txt"></p>
  </div>
  <div class="card">
  <h2 data-i18n="cielo_h2_asp">Los aspectos entre planetas: ¿se salen del azar?</h2>
+ <button type="button" class="ghost act" style="font-size:12px;padding:3px 10px;margin:0 0 8px" onclick="guardarImagen('cielo_aspectos','rueda_de_aspectos');guardarImagen('cielo_hist','azar_cielos_desplazados')" data-guardar>⬇ Guardar imagen</button>
  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
  <div style="flex:1 1 340px"><div id="cielo_aspectos"></div></div>
  <div style="flex:1 1 340px"><div id="cielo_hist"></div></div>
@@ -3806,6 +3858,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p class="small muted" data-i18n-html="ajb_p">Cada fila es un planeta. Cada tramo de color es el tiempo que ese planeta pasa en una casa de la carta del instante (casas topocéntricas de Polich y Page, recalculadas cada 2 minutos); el número es la casa. El corte entre dos tramos es un <b>cambio de casa</b>. Las líneas rojas marcan las seis jugadas de mayor pérdida de ventaja. Los planetas casi no se mueven en unas horas: lo que cambia es la carta, porque las casas giran, una cada unas dos horas.</p>
  <div class="row"><div><label for="ajb_sel">Partida</label><select id="ajb_sel" onchange="ajbDibujar()"><option>Cargando…</option></select></div></div>
  <p class="small" id="ajb_info" role="status" aria-live="polite"></p>
+ <button type="button" class="ghost act" style="font-size:12px;padding:3px 10px;margin:0 0 8px" onclick="guardarImagen('ajb_fig','bandas_de_casas')" data-guardar>⬇ Guardar imagen</button>
  <div id="ajb_fig"></div>
  <div class="hint" style="margin:10px 0;border-left-color:var(--oro)" data-i18n-html="ajb_aviso"><b>Supuesto sin verificar:</b> los archivos de partida traen la fecha y la hora de cada jugada, pero no la hora de inicio. La hora local de inicio y la sede de cada torneo están escritas de memoria y deben cotejarse con el calendario oficial; si el inicio real difiere, las bandas se desplazan. <b>Qué se concluye:</b> con las 20 partidas (2.508 jugadas, 302 con algún cambio de casa) no hay relación detectable entre los cambios de casa y la pérdida de ventaja (p = 0,41), y el resultado cambia según la hora de inicio supuesta, así que no es robusto. Además, cuanto más tarda un jugador en mover, más probable es que cambie alguna casa: hay que condicionar por el reloj.</div>
  </div>
