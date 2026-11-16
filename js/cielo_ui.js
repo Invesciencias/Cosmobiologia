@@ -68,7 +68,7 @@
     var modoTxt = u.modo === "simetrica" ? "sin réplicas (Gardner–Knopoff, ventana simétrica)" : (u.modo === "despues" ? "sin réplicas (solo posteriores)" : "sin declusterizar");
     $("cielo_resumen").textContent = fmt(u.n) + " eventos usados de " + fmt(u.bruto) + " seleccionados · " + modoTxt + " · efemérides de 1970 a 2033: los eventos fuera de ese rango se omiten.";
     // rueda de cartas
-    var cont = $("cielo_rueda"); cont.innerHTML = ""; var W = 640, H = 560, cx = 250, cy = 280, r0 = 56, dr = 16.5, vmax = 2.6, svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img", "aria-label": "Rueda de cartas: un anillo por planeta, 36 sectores de 10 grados, coloreados por z" }); svg.style.maxWidth = "640px";
+    var cont = $("cielo_rueda"); cont.innerHTML = ""; var W = 740, H = 560, cx = 250, cy = 280, r0 = 56, dr = 16.5, vmax = 2.6, svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img", "aria-label": "Rueda de cartas: un anillo por planeta, 36 sectores de 10 grados, coloreados por z" }); svg.style.maxWidth = "740px";
     var nSec = 36, fuera = 0, pos = 0, neg = 0;
     for (var p = 0; p < 10; p++) for (var s = 0; s < nSec; s++) {
       var z = u.sec.Z[p][s]; if (Math.abs(z) > 1.96) { fuera++; if (z > 0) pos++; else neg++; }
@@ -80,9 +80,9 @@
       svg.appendChild(el("line", { x1: Pa[0], y1: Pa[1], x2: Pb[0], y2: Pb[1], stroke: "#007a60", "stroke-width": "1.8" }));
       var g = el("text", { x: Pg[0], y: Pg[1], "text-anchor": "middle", "dominant-baseline": "central", "font-size": "17", fill: "#007a60" }, Cielo.SIGNOS[k]); svg.appendChild(g);
     }
-    for (var q = 0; q < 10; q++) svg.appendChild(el("text", { x: 470, y: cy + (q - 4.5) * 24, "font-size": "13", fill: INK, "dominant-baseline": "central" }, Cielo.GLIFOS[q] + "  " + Cielo.PLAN[q]));
-    svg.appendChild(el("text", { x: 470, y: 118, "font-size": "12", fill: "#007a60", "font-weight": "700" }, "Cada anillo es un planeta;"));
-    svg.appendChild(el("text", { x: 470, y: 134, "font-size": "12", fill: "#007a60", "font-weight": "700" }, "el Sol está al centro."));
+    for (var q = 0; q < 10; q++) svg.appendChild(el("text", { x: 530, y: cy + (q - 4.5) * 24, "font-size": "13", fill: INK, "dominant-baseline": "central" }, Cielo.GLIFOS[q] + "  " + Cielo.PLAN[q]));
+    svg.appendChild(el("text", { x: 530, y: 118, "font-size": "12", fill: "#007a60", "font-weight": "700" }, "Cada anillo es un planeta;"));
+    svg.appendChild(el("text", { x: 530, y: 134, "font-size": "12", fill: "#007a60", "font-weight": "700" }, "el Sol está al centro."));
     cont.appendChild(svg);
     var zmaxS = 0, pS = 0, sS = 0; for (var p2 = 0; p2 < 10; p2++) for (var s2 = 0; s2 < nSec; s2++) { var zz = Math.abs(u.sec.Z[p2][s2]); if (zz > zmaxS) { zmaxS = zz; pS = p2; sS = s2; } }
     $("cielo_rueda_txt").textContent = "Casillas fuera de ±1,96: " + fuera + " (" + pos + " verdes y " + neg + " naranjas); el azar da unas 18 de 360. El mayor |z| es " + zmaxS.toFixed(2).replace(".", ",") + " (" + Cielo.PLAN[pS] + ", " + (sS * 10) + "°–" + (sS * 10 + 10) + "°). Verde: más eventos que en fechas control; naranja: menos. Los planetas lentos (Júpiter hacia afuera) salen casi blancos porque no distinguen un evento de otro; Sol, Mercurio y Venus se mueven juntos, así que sus casillas vecinas no son pruebas independientes.";
