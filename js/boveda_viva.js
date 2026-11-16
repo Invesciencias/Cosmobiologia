@@ -6,11 +6,11 @@
   "use strict";
   if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var TX = {
-    es: { t1: "Probamos muchos aspectos entre planetas…", t2: "Uno parece destacar…", t3: "…pero con cielos desplazados también aparece: era azar.", t4: "Por eso comparamos con el azar antes de creer.", um: "umbral corregido", cap: "Animación esquemática: el observador mira pares de planetas; cada cuerda cae en la curva del azar." },
-    en: { t1: "We test many aspects between planets…", t2: "One seems to stand out…", t3: "…but with shifted skies it also appears: it was chance.", t4: "That is why we compare with chance before believing.", um: "corrected threshold", cap: "Schematic animation: the observer looks at pairs of planets; each chord lands on the chance curve." },
-    fr: { t1: "Nous testons de nombreux aspects entre planètes…", t2: "L'un semble ressortir…", t3: "…mais avec des ciels décalés il apparaît aussi : c'était le hasard.", t4: "C'est pourquoi nous comparons au hasard avant de croire.", um: "seuil corrigé", cap: "Animation schématique : l'observateur regarde des paires de planètes ; chaque corde tombe sur la courbe du hasard." }
+    es: { t1: "Probamos muchos aspectos entre planetas…", t2: "Uno parece destacar…", t3: "…pero con cielos desplazados también aparece: era azar.", t4: "Por eso comparamos con el azar antes de creer.", um: "umbral corregido", rep: "↻ clic para repetir", cap: "Animación esquemática: el observador mira pares de planetas; cada cuerda cae en la curva del azar." },
+    en: { t1: "We test many aspects between planets…", t2: "One seems to stand out…", t3: "…but with shifted skies it also appears: it was chance.", t4: "That is why we compare with chance before believing.", um: "corrected threshold", rep: "↻ click to replay", cap: "Schematic animation: the observer looks at pairs of planets; each chord lands on the chance curve." },
+    fr: { t1: "Nous testons de nombreux aspects entre planètes…", t2: "L'un semble ressortir…", t3: "…mais avec des ciels décalés il apparaît aussi : c'était le hasard.", t4: "C'est pourquoi nous comparons au hasard avant de croire.", um: "seuil corrigé", rep: "↻ clic pour rejouer", cap: "Animation schématique : l'observateur regarde des paires de planètes ; chaque corde tombe sur la courbe du hasard." }
   };
-  var CX = 450, HY = 470, RR = 335, BW = 900, BH = 703, LOOP = 15, N = 11, SX = 130, DEPTH = 165;
+  var FIN = 12.9, CX = 450, HY = 470, RR = 335, BW = 900, BH = 703, LOOP = 15, N = 11, SX = 130, DEPTH = 165;
   var CHORDS = [[0, 6], [2, 9], [1, 7], [4, 10], [3, 8], [5, 9], [0, 4], [2, 6], [1, 10]], ZS = [0.3, -0.7, 0.9, -0.2, 1.2, -1.1, 0.5, 0.1, -0.4], GOLD = [0, 8];
   var logo = new Image(); logo.src = "imagenes/logo-invesciencias.png";
   function lang() { var l = document.documentElement.lang || "es"; return TX[l] ? l : "es"; }
@@ -20,7 +20,7 @@
 
   function Viva(img) {
     var cv = document.createElement("canvas"); cv.setAttribute("role", "img"); cv.setAttribute("aria-label", img.getAttribute("alt") || ""); cv.style.cssText = "width:100%;height:auto;aspect-ratio:" + BW + "/" + BH + ";display:block;border-radius:12px";
-    img.parentNode.replaceChild(cv, img); var ctx = cv.getContext("2d"), W = 0, t0 = performance.now(), raf = 0, vis = true, last = 0, z = 0, aim = -1.2, shown = 0;
+    img.parentNode.replaceChild(cv, img); var ctx = cv.getContext("2d"), W = 0, t0 = performance.now(), raf = 0, vis = true, last = 0, z = 0, aim = -1.2, fin = 0, inicio = false;
     var cap = cv.parentNode.querySelector("figcaption"); if (cap) cap.textContent = TX[lang()].cap;
     function size() { var r = cv.getBoundingClientRect(); if (!r.width) return false; var d = Math.min(window.devicePixelRatio || 1, 2); W = r.width; cv.width = Math.round(W * d); cv.height = Math.round(W * BH / BW * d); ctx.setTransform(d * W / BW, 0, 0, d * W / BW, 0, 0); return true; }
     function pos(i, s) { var u = i / (N - 1) + s; if (u > 1.0001) u -= 1.1; var a = Math.max(0, Math.min(1, u)) * Math.PI; return { x: CX - RR * Math.cos(a), y: HY - RR * Math.sin(a), al: u < 0 || u > 1 ? 0 : 1 }; }
@@ -31,7 +31,7 @@
     }
     function curvaY(zz) { return HY + 14 + DEPTH * Math.exp(-zz * zz / 2); }
     function frame(ts) {
-      raf = 0; if (!vis) return; var t = ((ts - t0) / 1000) % LOOP, dt = last ? Math.min((ts - last) / 1000, 0.1) : 0.016; last = ts; var tx = TX[lang()];
+      raf = 0; if (!vis) return; var tot = (ts - t0) / 1000, quieta = tot >= LOOP + FIN, t = quieta ? FIN : tot % LOOP, dt = last ? Math.min((ts - last) / 1000, 0.1) : 0.016; last = ts; var tx = TX[lang()];
       // escena
       var g = ctx.createLinearGradient(0, 0, 0, BH); g.addColorStop(0, "#00805f"); g.addColorStop(1, "#006a52"); ctx.fillStyle = g; ctx.fillRect(0, 0, BW, BH);
       STARS.forEach(function (v, i) { if (i % 2) return; var x = v * BW, y = STARS[(i + 31) % 150] * (HY - 20); ctx.globalAlpha = 0.25 + 0.4 * STARS[(i + 7) % 150]; ctx.fillStyle = "#fff"; ctx.fillRect(x, y, 2, 2); }); ctx.globalAlpha = 1;
@@ -80,14 +80,15 @@
       ctx.beginPath(); ctx.arc(px, py, 5, 0, 6.2832); ctx.fillStyle = "#00513f"; ctx.fill();
       // leyenda
       var msg = estado === 1 ? tx.t1 : estado === 2 ? tx.t2 : estado === 3 ? tx.t3 : estado === 4 ? tx.t4 : ""; ctx.textAlign = "left"; ctx.font = "600 25px system-ui,sans-serif"; ctx.fillStyle = "rgba(255,255,255," + (msg ? 0.96 : 0) + ")"; ctx.fillText(msg, 36, 48, BW - 72);
+      if (quieta) { ctx.textAlign = "right"; ctx.font = "600 21px system-ui,sans-serif"; ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillText(tx.rep, BW - 30, BH - 22); if (!fin) fin = ts; if (ts - fin > 900) { raf = 0; return; } } else fin = 0;
       raf = requestAnimationFrame(frame);
     }
-    function start() { if (!raf && vis && size()) raf = requestAnimationFrame(frame); }
-    window.addEventListener("resize", function () { size(); });
-    if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { vis = e[0].isIntersecting; if (vis) { last = 0; start(); } else if (raf) { cancelAnimationFrame(raf); raf = 0; } }).observe(cv);
-    cv.addEventListener("click", function () { t0 = performance.now(); z = 0; });
+    function start() { if (!raf && vis && size()) { if (!inicio) { inicio = true; t0 = performance.now(); } raf = requestAnimationFrame(frame); } }
+    window.addEventListener("resize", function () { if (size()) { fin = 0; if (!raf && vis) raf = requestAnimationFrame(frame); } });
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { vis = e[0].isIntersecting; if (vis) { last = 0; if (fin) { t0 = performance.now(); z = 0; fin = 0; } start(); } else if (raf) { cancelAnimationFrame(raf); raf = 0; } }).observe(cv);
+    cv.addEventListener("click", function () { t0 = performance.now(); z = 0; fin = 0; last = 0; if (!raf) start(); });
     new MutationObserver(function () { if (cap) cap.textContent = TX[lang()].cap; }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
-    document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("nav button")) setTimeout(function () { last = 0; if (size() && !raf) start(); }, 80); });
+    document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("nav button")) setTimeout(function () { last = 0; fin = 0; if (!raf) start(); }, 80); });
     start();
   }
   function iniciar() { [].forEach.call(document.querySelectorAll(".ay-fig img[src*='boveda_curva'], .hero-fig img[src*='boveda_curva']"), Viva); }
