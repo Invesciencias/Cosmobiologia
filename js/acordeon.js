@@ -24,7 +24,8 @@
   };
   var ABIERTAS = { como_h2: 1 };            // «¿Cómo funciona el método?» arranca abierta
   var OBJETIVOS = { guia: { desde: 3, hasta: 9 }, ayuda: { desde: 2, hasta: 999 } };   // posición entre las tarjetas de la sección
-  var REDIBUJAR = ["renderDensidadHallazgo", "llonaSimular", "precesionSimular", "actualizarEraPrecesional", "potenciaGrafico"];
+  var TEXTO_LARGO = { captura: { formularios: true, abierta: /Registrar/i }, fuentes: {}, hipotesis: {}, epidemiologia: {}, historia_social: {}, sismos: {}, eras_precesionales: {} };
+  var REDIBUJAR =["renderDensidadHallazgo", "llonaSimular", "precesionSimular", "actualizarEraPrecesional", "potenciaGrafico"];
 
   function lang() { var l = document.documentElement.lang || "es"; return TX[l] ? l : "es"; }
   function recortar(t, n) { t = t.replace(/\s+/g, " ").trim(); if (t.length <= n) return t; var c = t.slice(0, n); c = c.slice(0, Math.max(c.lastIndexOf(" "), 60)); return c.replace(/[,.;:\s]+$/, "") + "…"; }
@@ -49,19 +50,81 @@
   function controles(sec) {
     if (sec.querySelector(":scope > .ac-ctl")) return; var t = TX[lang()], d = document.createElement("div"); d.className = "ac-ctl";
     d.innerHTML = '<button type="button" class="ghost act" data-ac="abrir"></button> <button type="button" class="ghost act" data-ac="cerrar"></button> <span class="small muted ac-pista"></span>';
-    var primero = sec.querySelector(":scope > details.acordeon"); if (primero) sec.insertBefore(d, primero);
+    var primero = sec.querySelector(":scope > .ac-grupo, :scope > details.acordeon"); if (primero) sec.insertBefore(d, primero);
   }
   function textoControles() { var t = TX[lang()]; document.querySelectorAll(".ac-ctl").forEach(function (d) { d.querySelector('[data-ac=abrir]').textContent = "▾ " + t.abrir; d.querySelector('[data-ac=cerrar]').textContent = "▴ " + t.cerrar; d.querySelector(".ac-pista").textContent = t.pista; }); }
+
+
+  /* ---------- grupos de «Principios y Métodos» ---------- */
+  var GRUPOS = [
+    { id: "marco", color: "var(--accent2)", ico: "🔭", orden: ["met_marco", "met_casas_h2", "met_precesion", "met_cineticos", "met_params_h2", "met_codigos", "met_notacion", "met_glosario"],
+      es: ["Marco científico (astronomía)", "Qué calculamos y con qué: posiciones, casas, precesión, notación y glosario."], en: ["Scientific framework (astronomy)", "What we compute and with what: positions, houses, precession, notation and glossary."], fr: ["Cadre scientifique (astronomie)", "Ce que nous calculons et avec quoi : positions, maisons, précession, notation et glossaire."] },
+    { id: "principios", color: "#8e44ad", ico: "★", orden: ["met_principios", "met_tcc_expertos", "met_diversificada", "met_llona", "met_gauquelin", "ref_ferriz"],
+      es: ["Principios de la Cosmobiología", "Qué dice la TCC y cómo se lee: los principios, la geodinámica de Llona, Gauquelin y las referencias."], en: ["Principles of Cosmobiology", "What the TCC says and how to read it: the principles, Llona's geodynamics, Gauquelin and the references."], fr: ["Principes de la Cosmobiologie", "Ce que dit la TCC et comment la lire : les principes, la géodynamique de Llona, Gauquelin et les références."] },
+    { id: "estadistica", color: "var(--verde)", ico: "📐", orden: ["met_nulo", "met_fdr", "met_split", "met_estrat", "met_artefactos", "met_potencia", "met_lmm", "met_flujo"],
+      es: ["Estadística (matemática)", "Cómo se pone a prueba una idea: modelo nulo, comparaciones múltiples, validación, artefactos, potencia y flujo de trabajo."], en: ["Statistics (mathematics)", "How an idea is put to the test: null model, multiple comparisons, validation, artefacts, power and workflow."], fr: ["Statistiques (mathématiques)", "Comment une idée est mise à l'épreuve : modèle nul, comparaisons multiples, validation, artefacts, puissance et flux de travail."] },
+    { id: "herramientas", color: "var(--oro)", ico: "🧮", orden: ["__antes_de_calcular", "met_duplas"],
+      es: ["Herramientas interactivas", "Calculadoras reales, no solo lectura."], en: ["Interactive tools", "Real calculators, not just reading."], fr: ["Outils interactifs", "De vrais calculateurs, pas seulement de la lecture."] }
+  ];
+  var NSEC = { es: "secciones", en: "sections", fr: "sections" };
+  function claveGrupo(d) {
+    var h = d.querySelector("summary h2"); if (d.id) return d.id;
+    if (d.querySelector(".ac-cuerpo img[src*='dupletas_tripletas']")) return "__antes_de_calcular";
+    return (h && (h.id || h.getAttribute("data-i18n") || h.getAttribute("data-i18n-html"))) || "";
+  }
+  function ultimoGrupo(sec) { var g = sec.querySelectorAll(":scope > .ac-grupo"); return g.length ? g[g.length - 1] : null; }
+  function agrupar(sec) {
+    if (sec.querySelector(":scope > .ac-grupo")) return; var det = {}, quedan = [];
+    [].forEach.call(sec.querySelectorAll(":scope > details.acordeon"), function (d) { var k = claveGrupo(d); if (k && !det[k]) det[k] = d; else quedan.push(d); });
+    var ref = sec.querySelector(":scope > details.acordeon"); if (!ref) return;
+    var marcador = document.createComment("grupos"); ref.parentNode.insertBefore(marcador, ref);
+    GRUPOS.forEach(function (g) {
+      var caja = document.createElement("div"); caja.className = "ac-grupo"; caja.id = "grupo_" + g.id; caja.style.setProperty("--gc", g.color);
+      caja.innerHTML = '<div class="ac-grupo-cab"><span class="ac-grupo-ico" aria-hidden="true">' + g.ico + '</span><div class="ac-grupo-txt"><h2 class="ac-grupo-t"></h2><p class="ac-grupo-d"></p></div><span class="ac-grupo-n"></span></div>';
+      marcador.parentNode.insertBefore(caja, marcador); var n = 0;
+      g.orden.forEach(function (k) { if (det[k]) { caja.appendChild(det[k]); delete det[k]; n++; } }); caja.setAttribute("data-n", n);
+    });
+    marcador.remove();
+    Object.keys(det).forEach(function (k) { var u = ultimoGrupo(sec); if (u) u.appendChild(det[k]); });
+    quedan.forEach(function (d) { var u = ultimoGrupo(sec); if (u) u.appendChild(d); });
+    /* las tarjetas del índice llevan a su grupo */
+    [["met_marco", "marco"], ["met_principios", "principios"], ["met_nulo", "estadistica"], ["met_duplas", "herramientas"]].forEach(function (par) { sec.querySelectorAll('.navquick-card[onclick*="' + par[0] + '"]').forEach(function (c) { c.setAttribute("onclick", "document.getElementById('grupo_" + par[1] + "').scrollIntoView({behavior:'smooth',block:'start'})"); }); });
+  }
+  function pintarGrupos() {
+    var l = lang();
+    GRUPOS.forEach(function (g) {
+      var caja = $("grupo_" + g.id); if (!caja) return; var t = g[l] || g.es;
+      caja.querySelector(".ac-grupo-t").textContent = t[0]; caja.querySelector(".ac-grupo-d").textContent = t[1]; caja.querySelector(".ac-grupo-n").textContent = caja.getAttribute("data-n") + " " + NSEC[l];
+    });
+  }
+  /* enlaces internos (#id) que apuntan dentro de una sección plegada: se abre antes de saltar */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || a.hasAttribute("data-camino") || a.hasAttribute("data-toc")) return;
+    var id = a.getAttribute("href").slice(1); if (!id) return; var el = $(id); if (!el) return; var cerrado = false; for (var p = el.parentElement; p; p = p.parentElement) if (p.tagName === "DETAILS" && !p.open) cerrado = true;
+    if (cerrado) { window.abrirDetalles(el); setTimeout(function () { el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); }
+  });
 
   function iniciar() {
     Object.keys(OBJETIVOS).forEach(function (id) {
       var sec = $(id); if (!sec) return; var o = OBJETIVOS[id];
       var tarjetas = [].filter.call(sec.children, function (c) { return c.classList && c.classList.contains("card"); });
       tarjetas.forEach(function (c, i) { if (i >= o.desde && i <= o.hasta && c.id !== "registro_card" && c.id !== "guiaDatos" && c.querySelector(":scope > h2")) convertir(c); });
+      if (id === "ayuda") agrupar(sec);
       controles(sec);
     });
-    pintarTeasers(); textoControles();
-    new MutationObserver(function () { pintarTeasers(); textoControles(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+    /* otras pestañas con texto largo: se pliegan las tarjetas de lectura; las que tienen gráficos o tablas se dejan abiertas */
+    Object.keys(TEXTO_LARGO).forEach(function (id) {
+      var sec = $(id); if (!sec) return; var f = TEXTO_LARGO[id], n = 0;
+      [].filter.call(sec.children, function (c) { return c.classList && c.classList.contains("card") && c.tagName !== "DETAILS"; }).forEach(function (c) {
+        var guia = c.id === "guiaDatos" || c.querySelector("#guiaDatos");
+        if (!c.querySelector(":scope > h2") || c.textContent.length < 500 || (!guia && c.querySelector("canvas,svg,table,.js-plotly-plot,[id^=plot],[id$=plot]"))) return;
+        if (!f.formularios && c.querySelector("input,select,textarea")) return;
+        var d = convertir(c); if (d && f.abierta && f.abierta.test(d.querySelector("summary h2").textContent)) d.open = true; if (d) n++;
+      });
+      if (n > 1) controles(sec);
+    });
+    pintarTeasers(); textoControles(); pintarGrupos();
+    new MutationObserver(function () { pintarTeasers(); textoControles(); pintarGrupos(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
   }
 
   /* abrir las secciones que contienen un elemento (para enlaces, índice y buscador) */
@@ -76,7 +139,7 @@
   document.addEventListener("toggle", function (e) { var d = e.target; if (d && d.classList && d.classList.contains("acordeon") && d.open) redibujar(d); }, true);
   document.addEventListener("click", function (e) {
     var b = e.target.closest && e.target.closest("[data-ac]"); if (!b) return; var sec = b.closest("section"), abrir = b.getAttribute("data-ac") === "abrir";
-    sec.querySelectorAll(":scope > details.acordeon").forEach(function (d) { d.open = abrir; });
+    sec.querySelectorAll("details.acordeon").forEach(function (d) { d.open = abrir; });
   });
   /* irA(tab, id): abre la sección que contiene el destino */
   var _irA = null;

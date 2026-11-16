@@ -334,6 +334,17 @@ details.acordeon[open] > summary{border-bottom:1px solid var(--line);border-radi
 details.acordeon > .ac-cuerpo{padding:14px 20px 20px}
 .ac-ctl{margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .ac-ctl button{font-size:12px;padding:4px 12px}
+
+/* ── Grupos dentro de «Principios y Métodos» ── */
+.ac-grupo{margin:0 0 28px}
+.ac-grupo-cab{display:flex;align-items:center;gap:14px;padding:14px 18px;margin:0 0 12px;border-radius:14px;background:var(--panel2);border:1px solid var(--line);border-left:8px solid var(--gc,var(--verde))}
+.ac-grupo-ico{font-size:26px;line-height:1}
+.ac-grupo-txt{flex:1;min-width:0}
+.ac-grupo-t{margin:0;font-size:18px;color:var(--ink)}
+.ac-grupo-d{margin:2px 0 0;font-size:13px;color:var(--muted,#53696a);line-height:1.4}
+.ac-grupo-n{font-size:12px;font-weight:700;color:var(--muted,#53696a);white-space:nowrap}
+.ac-grupo > details.acordeon{border-left:5px solid var(--gc,var(--verde))!important}
+@media (max-width:700px){.ac-grupo-cab{padding:12px 12px;gap:10px}.ac-grupo-t{font-size:16px}.ac-grupo-n{display:none}}
 </style>
 </head>
 <body>
@@ -1673,7 +1684,7 @@ details.acordeon > .ac-cuerpo{padding:14px 20px 20px}
  </div>
 
  <div class="card">
- <h2 data-i18n="mapa_temporal_h2">Distribución temporal <span id="time_scope" class="small muted">(todos los eventos)</span></h2>
+ <h2><span data-i18n="mapa_temporal_h2">Distribución temporal</span> <span id="time_scope" class="small muted">(todos los eventos)</span></h2>
  <div class="row"><button class="ghost act" onclick="clearCell()" data-i18n="mapa_ver_todos">Ver todos los eventos</button></div>
  <div id="timehist" style="height:320px"></div>
  </div>
@@ -5100,9 +5111,9 @@ function renderTime(){
  const idx=subsetIndices(true);
  const years=idx.map(i=>parseInt(String(events[i].datetime_utc).slice(0,4))).filter(y=>!isNaN(y));
  const scope=document.getElementById('time_scope');
- if(selectedCell){const c=selectedCell;
+ if(scope){ if(selectedCell){const c=selectedCell;
  scope.textContent=`(celda lon ${c.lonMin}…${c.lonMax}°, lat ${c.latMin}…${c.latMax}° · ${years.length} eventos)`;
- }else scope.textContent=`(todos los eventos · ${years.length})`;
+ }else scope.textContent=`(todos los eventos · ${years.length})`; }
  Plotly.react('timehist',[{
  x:years,type:'histogram',xbins:{size:1},marker:{color:'#3A8C6E'}
  }],{...PLOTBG,margin:{t:6,b:40,l:50,r:10},bargap:.05,
