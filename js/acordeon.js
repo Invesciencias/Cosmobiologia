@@ -24,7 +24,7 @@
   };
   var ABIERTAS = { como_h2: 1 };            // «¿Cómo funciona el método?» arranca abierta
   var OBJETIVOS = { guia: { desde: 3, hasta: 9 }, ayuda: { desde: 2, hasta: 999 } };   // posición entre las tarjetas de la sección
-  var TEXTO_LARGO = { captura: { formularios: true, abierta: /Registrar/i }, fuentes: {}, hipotesis: {}, epidemiologia: {}, historia_social: {}, sismos: {}, eras_precesionales: {} };
+  var TEXTO_LARGO = { captura: { formularios: true, abierta: /Registrar/i }, fuentes: { todo: true, formularios: true }, hipotesis: {}, epidemiologia: {}, historia_social: {}, sismos: {}, eras_precesionales: {} };
   var REDIBUJAR =["renderDensidadHallazgo", "llonaSimular", "precesionSimular", "actualizarEraPrecesional", "potenciaGrafico"];
 
   function lang() { var l = document.documentElement.lang || "es"; return TX[l] ? l : "es"; }
@@ -121,7 +121,8 @@
       var sec = $(id); if (!sec) return; var f = TEXTO_LARGO[id], n = 0;
       [].filter.call(sec.children, function (c) { return c.classList && c.classList.contains("card") && c.tagName !== "DETAILS"; }).forEach(function (c) {
         var guia = c.id === "guiaDatos" || c.querySelector("#guiaDatos");
-        if (!c.querySelector(":scope > h2") || c.textContent.length < 500 || (!guia && c.querySelector("canvas,svg,table,.js-plotly-plot,[id^=plot],[id$=plot]"))) return;
+        if (!c.querySelector(":scope > h2") || c.querySelector(".js-plotly-plot,canvas")) return;
+        if (!f.todo && (c.textContent.length < 500 || (!guia && c.querySelector("svg,table,[id^=plot],[id$=plot]")))) return;
         if (!f.formularios && c.querySelector("input,select,textarea")) return;
         var d = convertir(c); if (d && f.abierta && f.abierta.test(d.querySelector("summary h2").textContent)) d.open = true; if (d) n++;
       });
