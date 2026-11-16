@@ -117,5 +117,10 @@
     if (!ch.length) { var tr0 = tb.insertRow(), cc = tr0.insertCell(); cc.colSpan = 5; cc.textContent = "Ninguna comparación pasa ±1,96."; }
   }
 
-  window.cieloInit = iniciar; window.cieloCalcular = calcular; window.cieloAlCambiarDominio = alCambiarDominio;
+  function ejemplo() {
+    var d = $("cielo_dominio"); if (!d.options.length) iniciar(); d.value = "sismo"; alCambiarDominio();
+    $("cielo_vmin").value = 6; $("cielo_y0").value = 2000; $("cielo_y1").value = 2024; $("cielo_declust").value = "simetrica"; $("cielo_modo").value = "dias"; $("cielo_placebos").value = "100";
+    calcular(); var m = $("cielo_msg"); if (m && m.scrollIntoView) m.scrollIntoView({ block: "center" });
+  }
+  window.cieloInit = iniciar; window.cieloEjemplo = ejemplo; window.cieloCalcular = calcular; window.cieloAlCambiarDominio = alCambiarDominio;
 })();

@@ -20,6 +20,7 @@
 <script src="js/cielo.js"></script>
 <script src="js/cielo_ui.js"></script>
 <script src="js/ajedrez_bandas.js"></script>
+<script src="js/accesibilidad.js"></script>
 <script src="js/features.js"></script>
 <script src="js/translations.js"></script>
 <style>
@@ -280,7 +281,7 @@ code, pre, kbd { overflow-wrap: anywhere; }
 <div class="nav-group-buttons">
 <button data-tab="tablero" data-i18n="nav_tablero">Tablero estadístico</button>
 <button data-tab="mapa" data-i18n="nav_mapa">Mapa y grilla</button>
-<button data-tab="cielo">Cielo y eventos</button>
+<button data-tab="cielo" data-i18n="nav_cielo">Cielo y eventos</button>
 <button data-tab="captura" data-i18n="nav_captura">Captura de eventos</button>
 <button data-tab="fuentes" data-i18n="nav_fuentes">Fuentes de datos</button>
 </div>
@@ -328,6 +329,10 @@ code, pre, kbd { overflow-wrap: anywhere; }
  <div class="navquick-card" style="border-color:var(--accent2)" onclick="document.querySelector('[data-tab=tablero]').click()">
  <div class="nq-title" data-i18n="nav_quick_ver">Ver resultados</div>
  <div class="nq-desc" data-i18n="nav_quick_tablero_desc">Tablero — elige un dominio, explora el volcano plot</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--oro)" onclick="document.querySelector('[data-tab=cielo]').click()">
+ <div class="nq-title" data-i18n="nq_cielo_title">Ver el cielo de los eventos</div>
+ <div class="nq-desc" data-i18n="nq_cielo_desc">Cielo y eventos — una carta por evento en una sola rueda y las 225 comparaciones frente al azar</div>
  </div>
  <div class="navquick-card" style="border-color:var(--verde)" onclick="document.querySelector('[data-tab=mapa]').click()">
  <div class="nq-title" data-i18n="nav_quick_mapa">Ver los datos en el mapa</div>
@@ -1687,9 +1692,10 @@ code, pre, kbd { overflow-wrap: anywhere; }
 
 <!-- ===================== HIPÓTESIS Y EXPANSIÓN ===================== -->
 <section id="cielo" style="display:none">
-<p class="tab-lead">Puedes ver el cielo de un conjunto de eventos (una carta por evento, en una sola rueda) y comparar cuántas relaciones entre planetas salen fuera de lo esperado con las que daría el azar. <b>No puedes concluir</b> que una casilla o una cuerda destacada sea un hallazgo: con cientos de comparaciones, algunas salen solas. Todo se calcula en tu navegador con efemérides de 1970 a 2033.</p>
+<p class="tab-lead" data-i18n-html="lead_cielo">Puedes ver el cielo de un conjunto de eventos (una carta por evento, en una sola rueda) y comparar cuántas relaciones entre planetas salen fuera de lo esperado con las que daría el azar. <b>No puedes concluir</b> que una casilla o una cuerda destacada sea un hallazgo: con cientos de comparaciones, algunas salen solas. Todo se calcula en tu navegador con efemérides de 1970 a 2033.</p>
  <div class="card">
- <h2>Elige los eventos</h2>
+ <h2 data-i18n="cielo_h2">Elige los eventos</h2>
+ <div class="hint" style="margin:8px 0;border-left-color:var(--accent2)"><b data-i18n="cielo_ejemplo">Ejemplo guiado en 3 pasos: sismos de M ≥ 6, 2000–2024</b><br><span data-i18n-html="cielo_ejemplo_p"><b>1.</b> Elegimos los sismos de magnitud 6 o más entre 2000 y 2024. <b>2.</b> Quitamos las réplicas (Gardner–Knopoff), para que una secuencia grande no cuente como muchos eventos. <b>3.</b> Calculamos las 225 comparaciones y las ponemos frente a 100 cielos desplazados en el tiempo. Pulsa el botón y compara «la real» con lo que da el azar.</span><br><button class="ghost act" style="margin-top:8px" onclick="cieloEjemplo()" data-i18n="cielo_ejemplo_btn">Probar el ejemplo</button></div>
  <p class="small muted">Se usan los eventos cargados en la plataforma (los de ejemplo, o los que hayas cargado en «Captura de eventos»). Cada evento se compara con seis fechas control del mismo lugar y la misma hora (±18, ±24 y ±30 días).</p>
  <div class="row">
  <div><label for="cielo_dominio">Dominio</label><select id="cielo_dominio" onchange="cieloAlCambiarDominio()"><option value="sismo">sismo</option></select></div>
@@ -1701,8 +1707,8 @@ code, pre, kbd { overflow-wrap: anywhere; }
  <div><label for="cielo_placebos">Cielos desplazados</label><select id="cielo_placebos"><option value="100">100 (rápido)</option><option value="300" selected>300</option><option value="1000">1.000 (lento)</option></select></div>
  </div>
  <p class="small muted" id="cielo_nota_dom"></p>
- <div class="hint" style="margin:10px 0;border-left-color:var(--oro)"><b>Importante:</b> sin quitar las réplicas, unas pocas secuencias grandes pueden crear señales falsas (así nació el «hallazgo» de Mercurio–Urano, que no sobrevivió). Déjalo activado para sismos.</div>
- <button id="cielo_ir" class="act" onclick="cieloCalcular()">Calcular</button>
+ <div class="hint" style="margin:10px 0;border-left-color:var(--oro)" data-i18n-html="cielo_aviso_react"><b>Importante:</b> sin quitar las réplicas, unas pocas secuencias grandes pueden crear señales falsas (así nació el «hallazgo» de Mercurio–Urano, que no sobrevivió). Déjalo activado para sismos.</div>
+ <button id="cielo_ir" class="act" onclick="cieloCalcular()" data-i18n="cielo_calcular">Calcular</button>
  <progress id="cielo_barra" value="0" max="100" style="display:none;width:100%;margin-top:10px"></progress>
  <p class="small" id="cielo_msg" role="status" aria-live="polite"></p>
  </div>
@@ -1710,19 +1716,19 @@ code, pre, kbd { overflow-wrap: anywhere; }
  <p class="small muted" id="cielo_resumen"></p>
  <div id="cielo_aviso" class="hint" style="display:none;margin:10px 0;border-left-color:var(--oro)" role="alert"></div>
  <div class="card">
- <h2>Muchas cartas en una rueda</h2>
+ <h2 data-i18n="cielo_h2_rueda">Muchas cartas en una rueda</h2>
  <div id="cielo_rueda"></div>
  <p class="small" id="cielo_rueda_txt"></p>
  </div>
  <div class="card">
- <h2>Los aspectos entre planetas: ¿se salen del azar?</h2>
+ <h2 data-i18n="cielo_h2_asp">Los aspectos entre planetas: ¿se salen del azar?</h2>
  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
  <div style="flex:1 1 340px"><div id="cielo_aspectos"></div></div>
  <div style="flex:1 1 340px"><div id="cielo_hist"></div></div>
  </div>
  <div id="cielo_aspectos_txt"></div>
  <div style="overflow:auto"><table id="cielo_tabla"><thead><tr><th>Cuerda</th><th>Aspecto</th><th>Eventos</th><th>Esperados</th><th>z</th></tr></thead><tbody></tbody></table></div>
- <p class="small"><a href="#tablero" onclick="document.querySelector('[data-tab=tablero]').click();return false">¿Y las combinaciones de dos o tres condiciones (dupletas y tripletas)? Mira la figura y la calculadora en el Tablero estadístico.</a></p>
+ <p class="small"><a href="#tablero" onclick="document.querySelector('[data-tab=tablero]').click();return false" data-i18n="cielo_enlace_dup">¿Y las combinaciones de dos o tres condiciones (dupletas y tripletas)? Mira la figura y la calculadora en el Tablero estadístico.</a></p>
  <p class="small muted">Azul: más eventos que en fechas control. Naranja: menos. Cada cuerda une dos planetas; con 10 planetas, 45 pares y 5 aspectos hay 225 comparaciones, y el azar da varias cuerdas por sí solo.</p>
  </div>
  </div>
@@ -3796,12 +3802,12 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
 
  <div class="card" id="ajBandas">
- <h2>Los cambios de casa durante la partida</h2>
- <p class="small muted">Cada fila es un planeta. Cada tramo de color es el tiempo que ese planeta pasa en una casa de la carta del instante (casas topocéntricas de Polich y Page, recalculadas cada 2 minutos); el número es la casa. El corte entre dos tramos es un <b>cambio de casa</b>. Las líneas rojas marcan las seis jugadas de mayor pérdida de ventaja. Los planetas casi no se mueven en unas horas: lo que cambia es la carta, porque las casas giran, una cada unas dos horas.</p>
+ <h2 data-i18n="ajb_h2">Los cambios de casa durante la partida</h2>
+ <p class="small muted" data-i18n-html="ajb_p">Cada fila es un planeta. Cada tramo de color es el tiempo que ese planeta pasa en una casa de la carta del instante (casas topocéntricas de Polich y Page, recalculadas cada 2 minutos); el número es la casa. El corte entre dos tramos es un <b>cambio de casa</b>. Las líneas rojas marcan las seis jugadas de mayor pérdida de ventaja. Los planetas casi no se mueven en unas horas: lo que cambia es la carta, porque las casas giran, una cada unas dos horas.</p>
  <div class="row"><div><label for="ajb_sel">Partida</label><select id="ajb_sel" onchange="ajbDibujar()"><option>Cargando…</option></select></div></div>
  <p class="small" id="ajb_info" role="status" aria-live="polite"></p>
  <div id="ajb_fig"></div>
- <div class="hint" style="margin:10px 0;border-left-color:var(--oro)"><b>Supuesto sin verificar:</b> los archivos de partida traen la fecha y la hora de cada jugada, pero no la hora de inicio. La hora local de inicio y la sede de cada torneo están escritas de memoria y deben cotejarse con el calendario oficial; si el inicio real difiere, las bandas se desplazan. <b>Qué se concluye:</b> con las 20 partidas (2.508 jugadas, 302 con algún cambio de casa) no hay relación detectable entre los cambios de casa y la pérdida de ventaja (p = 0,41), y el resultado cambia según la hora de inicio supuesta, así que no es robusto. Además, cuanto más tarda un jugador en mover, más probable es que cambie alguna casa: hay que condicionar por el reloj.</div>
+ <div class="hint" style="margin:10px 0;border-left-color:var(--oro)" data-i18n-html="ajb_aviso"><b>Supuesto sin verificar:</b> los archivos de partida traen la fecha y la hora de cada jugada, pero no la hora de inicio. La hora local de inicio y la sede de cada torneo están escritas de memoria y deben cotejarse con el calendario oficial; si el inicio real difiere, las bandas se desplazan. <b>Qué se concluye:</b> con las 20 partidas (2.508 jugadas, 302 con algún cambio de casa) no hay relación detectable entre los cambios de casa y la pérdida de ventaja (p = 0,41), y el resultado cambia según la hora de inicio supuesta, así que no es robusto. Además, cuanto más tarda un jugador en mover, más probable es que cambie alguna casa: hay que condicionar por el reloj.</div>
  </div>
 </section>
 

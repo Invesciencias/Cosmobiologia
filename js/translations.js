@@ -3,6 +3,23 @@
 // Uso: window.I18N[lang][key]
 window.I18N = {
   es: {
+    // ── Cielo y eventos, bandas de ajedrez, accesibilidad (nov. 2026) ──
+    nav_cielo: "Cielo y eventos",
+    nq_cielo_title: "Ver el cielo de los eventos",
+    nq_cielo_desc: "Cielo y eventos — una carta por evento en una sola rueda y las 225 comparaciones frente al azar",
+    lead_cielo: "Puedes ver el cielo de un conjunto de eventos (una carta por evento, en una sola rueda) y comparar cuántas relaciones entre planetas salen fuera de lo esperado con las que daría el azar. <b>No puedes concluir</b> que una casilla o una cuerda destacada sea un hallazgo: con cientos de comparaciones, algunas salen solas. Todo se calcula en tu navegador con efemérides de 1970 a 2033.",
+    cielo_h2: "Elige los eventos",
+    cielo_ejemplo: "Ejemplo guiado en 3 pasos: sismos de M ≥ 6, 2000–2024",
+    cielo_ejemplo_p: "<b>1.</b> Elegimos los sismos de magnitud 6 o más entre 2000 y 2024. <b>2.</b> Quitamos las réplicas (Gardner–Knopoff), para que una secuencia grande no cuente como muchos eventos. <b>3.</b> Calculamos las 225 comparaciones y las ponemos frente a 100 cielos desplazados en el tiempo. Pulsa el botón y compara «la real» con lo que da el azar.",
+    cielo_ejemplo_btn: "Probar el ejemplo",
+    cielo_calcular: "Calcular",
+    cielo_aviso_react: "<b>Importante:</b> sin quitar las réplicas, unas pocas secuencias grandes pueden crear señales falsas (así nació el «hallazgo» de Mercurio–Urano, que no sobrevivió). Déjalo activado para sismos.",
+    cielo_h2_rueda: "Muchas cartas en una rueda",
+    cielo_h2_asp: "Los aspectos entre planetas: ¿se salen del azar?",
+    cielo_enlace_dup: "¿Y las combinaciones de dos o tres condiciones (dupletas y tripletas)? Mira la figura y la calculadora en el Tablero estadístico.",
+    ajb_h2: "Los cambios de casa durante la partida",
+    ajb_p: "Cada fila es un planeta. Cada tramo de color es el tiempo que ese planeta pasa en una casa de la carta del instante (casas topocéntricas de Polich y Page, recalculadas cada 2 minutos); el número es la casa. El corte entre dos tramos es un <b>cambio de casa</b>. Las líneas rojas marcan las seis jugadas de mayor pérdida de ventaja. Los planetas casi no se mueven en unas horas: lo que cambia es la carta, porque las casas giran, una cada unas dos horas.",
+    ajb_aviso: "<b>Supuesto sin verificar:</b> los archivos de partida traen la fecha y la hora de cada jugada, pero no la hora de inicio. La hora local de inicio y la sede de cada torneo están escritas de memoria y deben cotejarse con el calendario oficial; si el inicio real difiere, las bandas se desplazan. <b>Qué se concluye:</b> con las 20 partidas (2.508 jugadas, 302 con algún cambio de casa) no hay relación detectable entre los cambios de casa y la pérdida de ventaja (p = 0,41), y el resultado cambia según la hora de inicio supuesta, así que no es robusto. Además, cuanto más tarda un jugador en mover, más probable es que cambie alguna casa: hay que condicionar por el reloj.",
     // ── Correcciones de noviembre de 2026: Mercurio–Urano no sobrevive ──
     hero2_estado2: "Estado de los resultados (noviembre de 2026)",
     hero_estado2: "<b>Ningún resultado ha sobrevivido a las tres compuertas.</b> El caso más estudiado, Mercurio–Urano en sismos M≥6, daba z = +5,2 y parecía el primer resultado positivo, pero el exceso se apoyaba en las réplicas: al quitarlas baja a RR 1,10 (z = +1,3), no se repite en otro catálogo (GCMT 1976–99, z ≈ +0,9) ni con 48.000 sismos nuevos de M 5 (RR entre 0,99 y 1,02). <b>No sobrevive.</b> Es el mejor ejemplo de por qué existen las compuertas: el método detectó su propio falso positivo.",
@@ -1031,6 +1048,23 @@ window.I18N = {
   },
 
   en: {
+    // ── Cielo y eventos, bandas de ajedrez, accesibilidad (nov. 2026) ──
+    nav_cielo: "Sky and events",
+    nq_cielo_title: "See the sky of the events",
+    nq_cielo_desc: "Sky and events — one chart per event in a single wheel and the 225 comparisons against chance",
+    lead_cielo: "You can see the sky of a set of events (one chart per event, in a single wheel) and compare how many relationships between planets fall outside what is expected with how many chance would give. <b>You cannot conclude</b> that a highlighted cell or chord is a finding: with hundreds of comparisons, some appear by themselves. Everything is computed in your browser with ephemerides from 1970 to 2033.",
+    cielo_h2: "Choose the events",
+    cielo_ejemplo: "Guided example in 3 steps: M ≥ 6 earthquakes, 2000–2024",
+    cielo_ejemplo_p: "<b>1.</b> We choose earthquakes of magnitude 6 or more between 2000 and 2024. <b>2.</b> We remove aftershocks (Gardner–Knopoff), so that one large sequence does not count as many events. <b>3.</b> We compute the 225 comparisons and set them against 100 skies shifted in time. Press the button and compare «the real one» with what chance gives.",
+    cielo_ejemplo_btn: "Try the example",
+    cielo_calcular: "Compute",
+    cielo_aviso_react: "<b>Important:</b> without removing aftershocks, a few large sequences can create false signals (that is how the Mercury–Uranus «finding» was born, and it did not survive). Keep it on for earthquakes.",
+    cielo_h2_rueda: "Many charts in one wheel",
+    cielo_h2_asp: "Aspects between planets: do they stand out from chance?",
+    cielo_enlace_dup: "And combinations of two or three conditions (duplets and triplets)? See the figure and the calculator in the Statistical dashboard.",
+    ajb_h2: "House changes during the game",
+    ajb_p: "Each row is a planet. Each coloured stretch is the time that planet spends in one house of the chart of the moment (Polich–Page topocentric houses, recomputed every 2 minutes); the number is the house. The cut between two stretches is a <b>house change</b>. Red lines mark the six moves with the largest loss of advantage. Planets barely move in a few hours: what changes is the chart, because the houses rotate, about one every two hours.",
+    ajb_aviso: "<b>Unverified assumption:</b> the game files give the date and the time of each move, but not the start time. The local start time and the venue of each tournament are written from memory and must be checked against the official schedule; if the real start differs, the bands shift. <b>What we conclude:</b> with the 20 games (2,508 moves, 302 with some house change) there is no detectable relationship between house changes and loss of advantage (p = 0.41), and the result changes with the assumed start time, so it is not robust. Also, the longer a player takes to move, the more likely some house changes: we must condition on the clock.",
     // ── Correcciones de noviembre de 2026: Mercurio–Urano no sobrevive ──
     hero2_estado2: "Status of the results (November 2026)",
     hero_estado2: "<b>No result has survived the three gates.</b> The most studied case, Mercury–Uranus in M≥6 earthquakes, gave z = +5.2 and looked like the first positive result, but the excess rested on aftershocks: once they are removed it drops to RR 1.10 (z = +1.3), and it does not repeat in another catalog (GCMT 1976–99, z ≈ +0.9) or with 48,000 new M 5 earthquakes (RR between 0.99 and 1.02). <b>It does not survive.</b> It is the best example of why the gates exist: the method caught its own false positive.",
@@ -2063,6 +2097,23 @@ window.I18N = {
   },
 
   fr: {
+    // ── Cielo y eventos, bandas de ajedrez, accesibilidad (nov. 2026) ──
+    nav_cielo: "Ciel et événements",
+    nq_cielo_title: "Voir le ciel des événements",
+    nq_cielo_desc: "Ciel et événements — un thème par événement dans une seule roue et les 225 comparaisons face au hasard",
+    lead_cielo: "Vous pouvez voir le ciel d'un ensemble d'événements (un thème par événement, dans une seule roue) et comparer combien de relations entre planètes sortent de l'attendu avec celles que donnerait le hasard. <b>Vous ne pouvez pas conclure</b> qu'une case ou une corde mise en évidence soit une découverte : avec des centaines de comparaisons, certaines apparaissent toutes seules. Tout est calculé dans votre navigateur avec des éphémérides de 1970 à 2033.",
+    cielo_h2: "Choisissez les événements",
+    cielo_ejemplo: "Exemple guidé en 3 étapes : séismes M ≥ 6, 2000–2024",
+    cielo_ejemplo_p: "<b>1.</b> Nous choisissons les séismes de magnitude 6 ou plus entre 2000 et 2024. <b>2.</b> Nous retirons les répliques (Gardner–Knopoff), pour qu'une grande séquence ne compte pas comme plusieurs événements. <b>3.</b> Nous calculons les 225 comparaisons et les confrontons à 100 ciels décalés dans le temps. Appuyez sur le bouton et comparez « le réel » avec ce que donne le hasard.",
+    cielo_ejemplo_btn: "Essayer l'exemple",
+    cielo_calcular: "Calculer",
+    cielo_aviso_react: "<b>Important :</b> sans retirer les répliques, quelques grandes séquences peuvent créer de faux signaux (c'est ainsi qu'est né le « résultat » Mercure–Uranus, qui n'a pas survécu). Laissez-le activé pour les séismes.",
+    cielo_h2_rueda: "Beaucoup de thèmes dans une roue",
+    cielo_h2_asp: "Les aspects entre planètes : sortent-ils du hasard ?",
+    cielo_enlace_dup: "Et les combinaisons de deux ou trois conditions (duplets et triplets) ? Voyez la figure et le calculateur dans le Tableau statistique.",
+    ajb_h2: "Les changements de maison pendant la partie",
+    ajb_p: "Chaque ligne est une planète. Chaque tronçon de couleur est le temps que cette planète passe dans une maison du thème de l'instant (maisons topocentriques de Polich et Page, recalculées toutes les 2 minutes) ; le numéro est la maison. La coupure entre deux tronçons est un <b>changement de maison</b>. Les lignes rouges marquent les six coups de plus grande perte d'avantage. Les planètes bougent à peine en quelques heures : ce qui change, c'est le thème, car les maisons tournent, environ une toutes les deux heures.",
+    ajb_aviso: "<b>Hypothèse non vérifiée :</b> les fichiers de parties donnent la date et l'heure de chaque coup, mais pas l'heure de début. L'heure locale de début et le lieu de chaque tournoi sont écrits de mémoire et doivent être vérifiés avec le calendrier officiel ; si le début réel diffère, les bandes se décalent. <b>Ce qu'on en conclut :</b> avec les 20 parties (2 508 coups, 302 avec un changement de maison) il n'y a pas de relation détectable entre les changements de maison et la perte d'avantage (p = 0,41), et le résultat change selon l'heure de début supposée ; il n'est donc pas robuste. De plus, plus un joueur met de temps à jouer, plus il est probable qu'une maison change : il faut conditionner par la pendule.",
     // ── Correcciones de noviembre de 2026: Mercurio–Urano no sobrevive ──
     hero2_estado2: "État des résultats (novembre 2026)",
     hero_estado2: "<b>Aucun résultat n'a survécu aux trois portes.</b> Le cas le plus étudié, Mercure–Uranus dans les séismes M≥6, donnait z = +5,2 et semblait le premier résultat positif, mais l'excès reposait sur les répliques : une fois retirées, il tombe à RR 1,10 (z = +1,3), et il ne se répète ni dans un autre catalogue (GCMT 1976–99, z ≈ +0,9) ni avec 48 000 nouveaux séismes M 5 (RR entre 0,99 et 1,02). <b>Il ne survit pas.</b> C'est le meilleur exemple de la raison d'être des portes : la méthode a détecté son propre faux positif.",
