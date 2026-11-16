@@ -31,7 +31,7 @@
     }
     function curvaY(zz) { return HY + 14 + DEPTH * Math.exp(-zz * zz / 2); }
     function frame(ts) {
-      raf = 0; if (!vis) return; var tot = (ts - t0) / 1000, quieta = tot >= LOOP + FIN, t = quieta ? FIN : tot % LOOP, dt = last ? Math.min((ts - last) / 1000, 0.1) : 0.016; last = ts; var tx = TX[lang()];
+      raf = 0; var EX = window.__BV_EXPORT; if (!vis && !EX) return; var tot = (ts - t0) / 1000, quieta = tot >= LOOP + FIN, t = quieta ? FIN : tot % LOOP, dt = last ? Math.min((ts - last) / 1000, 0.1) : 0.016; last = ts; var tx = TX[lang()];
       // escena
       var g = ctx.createLinearGradient(0, 0, 0, BH); g.addColorStop(0, "#00805f"); g.addColorStop(1, "#006a52"); ctx.fillStyle = g; ctx.fillRect(0, 0, BW, BH);
       STARS.forEach(function (v, i) { if (i % 2) return; var x = v * BW, y = STARS[(i + 31) % 150] * (HY - 20); ctx.globalAlpha = 0.25 + 0.4 * STARS[(i + 7) % 150]; ctx.fillStyle = "#fff"; ctx.fillRect(x, y, 2, 2); }); ctx.globalAlpha = 1;
@@ -65,7 +65,7 @@
       ctx.beginPath(); ctx.moveTo(cur[0][0], HY + 14); cur.forEach(function (c) { ctx.lineTo(c[0], c[1]); }); ctx.lineTo(cur[cur.length - 1][0], HY + 14); ctx.closePath(); ctx.fillStyle = gf; ctx.fill();
       ctx.beginPath(); cur.forEach(function (c, k) { if (k) ctx.lineTo(c[0], c[1]); else ctx.moveTo(c[0], c[1]); }); ctx.strokeStyle = "#fff"; ctx.lineWidth = 5; ctx.lineJoin = "round"; ctx.stroke();
       var ua = sm((t - 8.6) / 0.8) * (t < 13.2 ? 1 : 1 - sm((t - 13.2) / 1.0));
-      if (ua > 0.01) { ctx.globalAlpha = ua; ctx.setLineDash([6, 6]); ctx.strokeStyle = "#ffe28a"; ctx.lineWidth = 2; [-2.6, 2.6].forEach(function (u) { ctx.beginPath(); ctx.moveTo(CX + u * SX, HY + 14); ctx.lineTo(CX + u * SX, curvaY(u) + 28); ctx.stroke(); }); ctx.setLineDash([]); ctx.fillStyle = "#ffe28a"; ctx.font = "600 17px system-ui,sans-serif"; ctx.textAlign = "center"; ctx.fillText(tx.um, CX + 2.6 * SX + 8, HY + 14 + DEPTH * 0.55); ctx.globalAlpha = 1; }
+      if (ua > 0.01) { ctx.globalAlpha = ua; ctx.setLineDash([6, 6]); ctx.strokeStyle = "#ffe28a"; ctx.lineWidth = 2; [-2.6, 2.6].forEach(function (u) { ctx.beginPath(); ctx.moveTo(CX + u * SX, HY + 14); ctx.lineTo(CX + u * SX, curvaY(u) + 28); ctx.stroke(); }); ctx.setLineDash([]); ctx.fillStyle = "#ffe28a"; ctx.font = "600 17px system-ui,sans-serif"; ctx.textAlign = "center"; if (!EX || EX.texto) ctx.fillText(tx.um, CX + 2.6 * SX + 8, HY + 14 + DEPTH * 0.55); ctx.globalAlpha = 1; }
       // rombo
       var k = 1 - Math.exp(-dt * 7); z += (zt - z) * k; var dx = CX + z * SX, dy = curvaY(z), brillo = Math.abs(z) > 1.8 ? 1 : 0;
       if (brillo) { ctx.beginPath(); ctx.arc(dx, dy, 24, 0, 6.2832); ctx.fillStyle = "rgba(240,168,28,.35)"; ctx.fill(); }
@@ -79,17 +79,18 @@
       ctx.save(); ctx.translate(px, py); ctx.rotate(aim); ctx.fillStyle = "#e9f5f1"; ctx.strokeStyle = "#00513f"; ctx.lineWidth = 2; ctx.beginPath(); ctx.rect(-6, -5, 56, 10); ctx.fill(); ctx.stroke(); ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.rect(46, -7.5, 10, 15); ctx.fill(); ctx.stroke(); ctx.restore();
       ctx.beginPath(); ctx.arc(px, py, 5, 0, 6.2832); ctx.fillStyle = "#00513f"; ctx.fill();
       // leyenda
-      var msg = estado === 1 ? tx.t1 : estado === 2 ? tx.t2 : estado === 3 ? tx.t3 : estado === 4 ? tx.t4 : ""; ctx.textAlign = "left"; ctx.font = "600 25px system-ui,sans-serif"; ctx.fillStyle = "rgba(255,255,255," + (msg ? 0.96 : 0) + ")"; ctx.fillText(msg, 36, 48, BW - 72);
+      var msg = estado === 1 ? tx.t1 : estado === 2 ? tx.t2 : estado === 3 ? tx.t3 : estado === 4 ? tx.t4 : ""; ctx.textAlign = "left"; ctx.font = "600 25px system-ui,sans-serif"; ctx.fillStyle = "rgba(255,255,255," + (msg ? 0.96 : 0) + ")"; if (!EX || EX.texto) ctx.fillText(msg, 36, 48, BW - 72);
       if (quieta) { ctx.textAlign = "right"; ctx.font = "600 21px system-ui,sans-serif"; ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillText(tx.rep, BW - 30, BH - 22); if (!fin) fin = ts; if (ts - fin > 900) { raf = 0; return; } } else fin = 0;
-      raf = requestAnimationFrame(frame);
+      if (EX) return; raf = requestAnimationFrame(frame);
     }
+    if (window.__BV_EXPORT) window.__bvFrame = function (ms) { if (!W) size(); t0 = 0; frame(ms); };
     function start() { if (!raf && vis && size()) { if (!inicio) { inicio = true; t0 = performance.now(); } raf = requestAnimationFrame(frame); } }
     window.addEventListener("resize", function () { if (size()) { fin = 0; if (!raf && vis) raf = requestAnimationFrame(frame); } });
     if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { vis = e[0].isIntersecting; if (vis) { last = 0; if (fin) { t0 = performance.now(); z = 0; fin = 0; } start(); } else if (raf) { cancelAnimationFrame(raf); raf = 0; } }).observe(cv);
     cv.addEventListener("click", function () { t0 = performance.now(); z = 0; fin = 0; last = 0; if (!raf) start(); });
     new MutationObserver(function () { if (cap) cap.textContent = TX[lang()].cap; }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
     document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("nav button")) setTimeout(function () { last = 0; fin = 0; if (!raf) start(); }, 80); });
-    start();
+    if (!window.__BV_EXPORT) start();
   }
   function iniciar() { [].forEach.call(document.querySelectorAll(".ay-fig img[src*='boveda_curva'], .hero-fig img[src*='boveda_curva']"), Viva); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();

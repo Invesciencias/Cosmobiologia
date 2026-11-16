@@ -13,6 +13,8 @@ Plataforma de análisis estadístico falseable: carga eventos con fecha, hora y 
 
 > **Este proyecto no afirma que exista un efecto cosmobiológico.** Ofrece un método para ponerlo a prueba con rigor y una plataforma abierta para que otros lo repitan. Los resultados que se muestran son pistas por replicar, no hallazgos confirmados.
 
+<p align="center"><img src="imagenes/boveda_viva.gif" alt="Animación esquemática: un observador apunta un telescopio a pares de planetas; cada cuerda cae en una curva del azar, una parece destacar pero no supera el umbral corregido" width="560"></p>
+
 ---
 
 ## Por dónde empezar
