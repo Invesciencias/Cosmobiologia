@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.plot.ly; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://api.emailjs.com https://raw.githubusercontent.com https://api.github.com https://cdn.plot.ly https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.plot.ly; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://raw.githubusercontent.com https://api.github.com https://cdn.plot.ly https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cosmobiología — Fundación Invesciencias">
@@ -19,8 +19,6 @@
 <link rel="icon" type="image/png" sizes="32x32" href="imagenes/favicon-32.png">
 <link rel="shortcut icon" href="imagenes/favicon.ico">
 <link rel="apple-touch-icon" href="imagenes/apple-touch-icon.png">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous"></script>
-<script>emailjs.init('XBIzr9RsmfE4vp4z6');</script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" integrity="sha384-cCVCZkAjYNxaYKbM8lsArLznDF/SvMFr1jcZrvOpSTCa0W40ZAdLzHCEulnUa5i7" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha384-D/t0ZMqQW31H3az8ktEiNb39wyKnS82iFY52QPACM+IjKW3jDUhyIgh2PApRqJZs" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js" integrity="sha384-CCBm3hUBAkShYN9t8YvBdWM9UMpb5n6I93R+LtL1J0PkQMVkfl4hwB5ja4ykvT3f" crossorigin="anonymous"></script>
@@ -1287,106 +1285,14 @@ details.toc a:hover{color:var(--verde)}
  <p class="small muted">En resumen: usamos el <b>sistema de coordenadas eclíptico</b> que la humanidad ha empleado durante milenios para describir las posiciones planetarias, con datos de precisión sub-arco-segundo de la NASA. El nombre cultural del sistema no cambia la geometría. Un astrónomo que objetara los términos estaría objetando a Ptolomeo, Kepler y al propio manual de la IAU donde "conjunción" sigue siendo una palabra estándar.</p>
  </div>
 
- <!-- ===== REGISTRO INVESCIENCIAS ===== -->
- <div class="card" id="registro_card" style="border-left:4px solid var(--oro)">
- <h2 data-i18n="reg_h2">Accede a los datos de Invesciencias</h2>
- <p data-i18n="reg_p">Llena el formulario y recibirás por correo las instrucciones de descarga, el formato de datos y el protocolo de análisis para tu área de investigación.</p>
-
- <form id="reg_form" style="display:grid;gap:12px;margin-top:16px">
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
- <div>
- <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_nombre_label">Nombre completo *</label>
- <input id="reg_nombre" type="text" required placeholder="Tu nombre" data-i18n-ph="reg_nombre_ph" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
- </div>
- <div>
- <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_inst_label">Institución</label>
- <input id="reg_inst" type="text" placeholder="Universidad / empresa / independiente" data-i18n-ph="reg_inst_ph" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
- </div>
- </div>
-
- <div>
- <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_email_label">Correo electrónico *</label>
- <input id="reg_email" type="email" required placeholder="tu@correo.com" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
- </div>
-
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
- <div>
- <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_area_label">Área de investigación *</label>
- <select id="reg_area" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
- <option value="">— selecciona —</option>
- <option>Geofísica / Sismología</option>
- <option>Meteorología / Climatología</option>
- <option>Epidemiología / Salud pública</option>
- <option>Ecología / Biología</option>
- <option>Medicina / Clínica</option>
- <option>Ciencias sociales</option>
- <option>Astronomía / Física</option>
- <option>Otra</option>
- </select>
- </div>
- <div>
- <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_dominios_label">Datos de interés</label>
- <select id="reg_dominios" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;box-sizing:border-box">
- <option value="">— selecciona —</option>
- <option>Sismos</option>
- <option>Volcanes</option>
- <option>Huracanes / Ciclones</option>
- <option>Tormentas solares</option>
- <option>Desastres naturales (EM-DAT)</option>
- <option>Datos propios</option>
- <option>Varios</option>
- </select>
- </div>
- </div>
-
- <div>
- <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px" data-i18n="reg_pregunta_label">¿Qué fenómeno quieres analizar? <span class="muted">(opcional)</span></label>
- <textarea id="reg_pregunta" rows="2" placeholder="Ej: muertes por infarto agudo según posición lunar, brotes de dengue y ciclos planetarios..." style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel2);color:var(--fg);font-size:13px;resize:vertical;box-sizing:border-box"></textarea>
- </div>
-
- <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
- <button type="submit" id="reg_btn" style="padding:10px 28px;background:var(--oro);color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">
- <span data-i18n="reg_submit">Solicitar acceso</span>
- </button>
- <span id="reg_msg" style="font-size:13px;display:none"></span>
- </div>
- </form>
- </div>
-
- <script>
- document.getElementById('reg_form').addEventListener('submit', function(e){
- e.preventDefault();
- const btn = document.getElementById('reg_btn');
- const msg = document.getElementById('reg_msg');
- btn.disabled = true;
- btn.textContent = 'Enviando…';
- msg.style.display = 'none';
-
- const params = {
- nombre: document.getElementById('reg_nombre').value,
- email: document.getElementById('reg_email').value,
- inst: document.getElementById('reg_inst').value || '—',
- area: document.getElementById('reg_area').value,
- dominios: document.getElementById('reg_dominios').value || '—',
- pregunta: document.getElementById('reg_pregunta').value || '—'
- };
-
- emailjs.send('service_ngngnxg', 'template_pl865sg', params)
- .then(function(){
- msg.style.display = 'inline';
- msg.style.color = 'var(--ok)';
- msg.textContent = '✓ Correo enviado — revisa tu bandeja (y spam si no aparece).';
- btn.textContent = 'Enviado';
- document.getElementById('reg_form').reset();
- }, function(err){
- msg.style.display = 'inline';
- msg.style.color = 'var(--warn)';
- msg.textContent = 'Error al enviar: ' + (err.text || JSON.stringify(err)) + ' — escríbenos a auresy@gmail.com';
- btn.disabled = false;
- btn.textContent = 'Solicitar acceso';
- });
- });
- </script>
+   <!-- ===== COLABORAR / ESCRIBIRNOS (reemplaza el formulario de EmailJS, que no se usaba) ===== -->
+  <div class="card" id="registro_card" style="border-left:4px solid var(--oro)">
+  <h2 data-i18n="colab_h2">¿Tienes datos o una pregunta? Escríbenos</h2>
+  <p data-i18n-html="colab_p">Hoy la plataforma trae datos de <b>sismos, huracanes, tormentas solares, inundaciones y ajedrez</b>, y no pretende cubrir todas las ciencias. Si tu fenómeno es otro, no necesitas permiso: trae tus datos con la guía y pruébalos en tu navegador. Todos los datos y el código son públicos en el repositorio. Si quieres colaborar, compartir resultados o conversar sobre un caso, escríbenos.</p>
+  <p><button type="button" class="act" data-mailto="colaborar" data-i18n="colab_btn">✉ Escribirnos</button>
+  <button type="button" class="ghost act" onclick="document.querySelector('[data-tab=captura]').click();setTimeout(function(){document.getElementById('guiaDatos').scrollIntoView({behavior:'smooth'})},120)" data-i18n="colab_guia">Cómo traer mis datos</button>
+  <a class="ghost act" style="text-decoration:none;display:inline-block" href="https://github.com/Invesciencias/Cosmobiologia" target="_blank" rel="noopener noreferrer" data-i18n="colab_repo">Ver el repositorio</a></p>
+  </div>
 
 </section>
 
@@ -1454,6 +1360,7 @@ details.toc a:hover{color:var(--verde)}
 
  <div class="card">
  <h2 data-i18n="captura_nube_h2">Nube compartida (Supabase)</h2>
+ <p class="small" data-i18n-html="nube_acceso"><b>¿Quieres usar la nube compartida de Invesciencias?</b> Es un espacio para miembros: cualquiera con la clave puede leer y modificar los eventos, por eso no se publica. Escríbenos y te decimos cómo conectarte. <button type="button" class="act" style="font-size:12px;padding:3px 12px" data-mailto="acceso" data-i18n="nube_acceso_btn">✉ Pedir acceso</button></p>
  <p class="small muted" data-i18n-html="captura_nube_p">Supabase <b>no es una fuente de datos</b>: es un almacén en la nube, gratis, donde los investigadores de Invesciencias <b>comparten entre ellos</b> los eventos que cargan. Crea un proyecto en supabase.com y la tabla <code>eventos</code> con el SQL de <code>SETUP_SUPABASE.md</code> (ya encaja con esta página, sin adaptar nada).</p>
  <div class="hint small" data-i18n-html="captura_nube_hint">
  <b>¿De dónde saco estos dos datos?</b>En supabase.com → tu proyecto → <i>Project Settings → API</i>.

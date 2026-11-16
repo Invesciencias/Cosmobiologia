@@ -3,6 +3,13 @@
 // Uso: window.I18N[lang][key]
 window.I18N = {
   es: {
+    colab_h2: "¿Tienes datos o una pregunta? Escríbenos",
+    colab_p: "Hoy la plataforma trae datos de <b>sismos, huracanes, tormentas solares, inundaciones y ajedrez</b>, y no pretende cubrir todas las ciencias. Si tu fenómeno es otro, no necesitas permiso: trae tus datos con la guía y pruébalos en tu navegador. Todos los datos y el código son públicos en el repositorio. Si quieres colaborar, compartir resultados o conversar sobre un caso, escríbenos.",
+    colab_btn: "✉ Escribirnos",
+    colab_guia: "Cómo traer mis datos",
+    colab_repo: "Ver el repositorio",
+    nube_acceso: "<b>¿Quieres usar la nube compartida de Invesciencias?</b> Es un espacio para miembros: cualquiera con la clave puede leer y modificar los eventos, por eso no se publica. Escríbenos y te decimos cómo conectarte.",
+    nube_acceso_btn: "✉ Pedir acceso",
     nq_datos_title: "Subir mis propios datos",
     nq_datos_desc: "De Excel o LibreOffice a la prueba, paso a paso, con plantilla",
     cielo_enlace_datos: "¿Quieres usar tus propios datos (Excel, LibreOffice, CSV)? Mira cómo subirlos, con plantilla, en «Captura de eventos».",
@@ -1074,6 +1081,13 @@ window.I18N = {
   },
 
   en: {
+    colab_h2: "Do you have data or a question? Write to us",
+    colab_p: "Today the platform has data on <b>earthquakes, hurricanes, solar storms, floods and chess</b>, and it does not claim to cover every science. If your phenomenon is another one, you do not need permission: bring your data with the guide and test it in your browser. All the data and code are public in the repository. If you want to collaborate, share results or talk through a case, write to us.",
+    colab_btn: "✉ Write to us",
+    colab_guia: "How to bring my data",
+    colab_repo: "See the repository",
+    nube_acceso: "<b>Do you want to use the shared Invesciencias cloud?</b> It is a space for members: anyone with the key can read and edit the events, which is why it is not published. Write to us and we will tell you how to connect.",
+    nube_acceso_btn: "✉ Ask for access",
     nq_datos_title: "Upload my own data",
     nq_datos_desc: "From Excel or LibreOffice to the test, step by step, with a template",
     cielo_enlace_datos: "Want to use your own data (Excel, LibreOffice, CSV)? See how to load it, with a template, in «Event capture».",
@@ -2149,6 +2163,13 @@ window.I18N = {
   },
 
   fr: {
+    colab_h2: "Vous avez des données ou une question ? Écrivez-nous",
+    colab_p: "Aujourd'hui la plateforme propose des données sur les <b>séismes, ouragans, tempêtes solaires, inondations et échecs</b>, et ne prétend pas couvrir toutes les sciences. Si votre phénomène est autre, vous n'avez pas besoin d'autorisation : apportez vos données avec le guide et testez-les dans votre navigateur. Toutes les données et le code sont publics dans le dépôt. Si vous voulez collaborer, partager des résultats ou discuter d'un cas, écrivez-nous.",
+    colab_btn: "✉ Nous écrire",
+    colab_guia: "Comment apporter mes données",
+    colab_repo: "Voir le dépôt",
+    nube_acceso: "<b>Vous voulez utiliser le nuage partagé d'Invesciencias ?</b> C'est un espace pour les membres : toute personne avec la clé peut lire et modifier les événements, c'est pourquoi elle n'est pas publiée. Écrivez-nous et nous vous dirons comment vous connecter.",
+    nube_acceso_btn: "✉ Demander l'accès",
     nq_datos_title: "Charger mes propres données",
     nq_datos_desc: "D'Excel ou LibreOffice au test, pas à pas, avec un modèle",
     cielo_enlace_datos: "Vous voulez utiliser vos propres données (Excel, LibreOffice, CSV) ? Voyez comment les charger, avec un modèle, dans « Saisie d'événements ».",

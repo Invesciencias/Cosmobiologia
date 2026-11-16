@@ -194,6 +194,19 @@
   }
   function textoBuscador() { var q = $("buscar-q"); if (q) { q.placeholder = L().buscar; q.setAttribute("aria-label", L().buscar); } }
 
+
+  /* ---------- 8) correo prellenado (la dirección no aparece escrita en el HTML) ---------- */
+  var CORREO = { es: { colaborar: ["Cosmobiología: quiero colaborar o consultar un caso", "Hola,\n\nSoy [nombre], de [institución o independiente].\nMi fenómeno o pregunta: [descríbelo en una o dos líneas]\nTengo datos de: [tipo de evento, periodo, cuántos eventos]\nMe gustaría: [probarlos con el método / colaborar / compartir resultados]\n\nGracias."],
+                          acceso: ["Cosmobiología: acceso a la nube compartida", "Hola,\n\nSoy [nombre], de [institución o independiente].\nQuiero conectarme a la nube compartida de Invesciencias para [subir / consultar] eventos de: [tipo de evento].\n\nGracias."] },
+                 en: { colaborar: ["Cosmobiology: I would like to collaborate or discuss a case", "Hello,\n\nI am [name], from [institution or independent].\nMy phenomenon or question: [one or two lines]\nI have data on: [type of event, period, number of events]\nI would like to: [test it with the method / collaborate / share results]\n\nThank you."],
+                          acceso: ["Cosmobiology: access to the shared cloud", "Hello,\n\nI am [name], from [institution or independent].\nI would like to connect to the Invesciencias shared cloud to [upload / consult] events of: [type of event].\n\nThank you."] },
+                 fr: { colaborar: ["Cosmobiologie : je souhaite collaborer ou discuter d'un cas", "Bonjour,\n\nJe suis [nom], de [institution ou indépendant].\nMon phénomène ou ma question : [une ou deux lignes]\nJ'ai des données sur : [type d'événement, période, nombre d'événements]\nJe voudrais : [les tester avec la méthode / collaborer / partager des résultats]\n\nMerci."],
+                          acceso: ["Cosmobiologie : accès au nuage partagé", "Bonjour,\n\nJe suis [nom], de [institution ou indépendant].\nJe voudrais me connecter au nuage partagé d'Invesciencias pour [charger / consulter] des événements de : [type d'événement].\n\nMerci."] } };
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-mailto]"); if (!b) return; var c = (CORREO[document.documentElement.lang] || CORREO.es)[b.getAttribute("data-mailto")];
+    location.href = "mailto:" + ["auresy", "gmail.com"].join("@") + "?subject=" + encodeURIComponent(c[0]) + "&body=" + encodeURIComponent(c[1]);
+  });
+
   function botonesRecorrido() {
     var t = L(); document.querySelectorAll("[data-tour-btn]").forEach(function (b) { b.textContent = "▶ " + t.tourMin; }); document.querySelectorAll("[data-guardar]").forEach(function (b) { b.textContent = "⬇ " + t.guardar; });
   }
