@@ -80,8 +80,8 @@
     var marcador = document.createComment("grupos"); ref.parentNode.insertBefore(marcador, ref);
     GRUPOS.forEach(function (g) {
       var caja = document.createElement("div"); caja.className = "ac-grupo"; caja.id = "grupo_" + g.id; caja.style.setProperty("--gc", g.color);
-      caja.innerHTML = '<div class="ac-grupo-cab"><span class="ac-grupo-ico" aria-hidden="true">' + g.ico + '</span><div class="ac-grupo-txt"><h2 class="ac-grupo-t"></h2><p class="ac-grupo-d"></p></div><span class="ac-grupo-n"></span></div>';
-      marcador.parentNode.insertBefore(caja, marcador); var n = 0;
+      caja.innerHTML = '<div class="ac-grupo-cab"><span class="ac-grupo-ico" aria-hidden="true">' + g.ico + '</span><div class="ac-grupo-txt"><h2 class="ac-grupo-t"></h2><p class="ac-grupo-d"></p></div><span class="ac-grupo-n"></span><span class="ac-grupo-flecha" aria-hidden="true">▾</span></div>';
+      marcador.parentNode.insertBefore(caja, marcador); var n = 0; var cab = caja.firstChild; cab.setAttribute("role", "button"); cab.setAttribute("tabindex", "0"); cab.setAttribute("aria-expanded", "true");
       g.orden.forEach(function (k) { if (det[k]) { caja.appendChild(det[k]); delete det[k]; n++; } }); caja.setAttribute("data-n", n);
     });
     marcador.remove();
@@ -97,10 +97,14 @@
       caja.querySelector(".ac-grupo-t").textContent = t[0]; caja.querySelector(".ac-grupo-d").textContent = t[1]; caja.querySelector(".ac-grupo-n").textContent = caja.getAttribute("data-n") + " " + NSEC[l];
     });
   }
+  function plegarGrupo(cab, cerrar) { var caja = cab.parentNode; var c = cerrar === undefined ? !caja.classList.contains("plegado") : cerrar; caja.classList.toggle("plegado", c); cab.setAttribute("aria-expanded", c ? "false" : "true"); }
+  document.addEventListener("click", function (e) { var cab = e.target.closest && e.target.closest(".ac-grupo-cab"); if (cab) plegarGrupo(cab); });
+  document.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("ac-grupo-cab")) { e.preventDefault(); plegarGrupo(e.target); } });
   /* enlaces internos (#id) que apuntan dentro de una sección plegada: se abre antes de saltar */
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || a.hasAttribute("data-camino") || a.hasAttribute("data-toc")) return;
     var id = a.getAttribute("href").slice(1); if (!id) return; var el = $(id); if (!el) return; var cerrado = false; for (var p = el.parentElement; p; p = p.parentElement) if (p.tagName === "DETAILS" && !p.open) cerrado = true;
+    for (var q = el.parentElement; q; q = q.parentElement) if (q.classList && q.classList.contains("plegado")) cerrado = true;
     if (cerrado) { window.abrirDetalles(el); setTimeout(function () { el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); }
   });
 
@@ -128,7 +132,7 @@
   }
 
   /* abrir las secciones que contienen un elemento (para enlaces, índice y buscador) */
-  window.abrirDetalles = function (el) { for (var p = el; p; p = p.parentElement) if (p.tagName === "DETAILS" && !p.open) p.open = true; };
+  window.abrirDetalles = function (el) { for (var p = el; p; p = p.parentElement) { if (p.tagName === "DETAILS" && !p.open) p.open = true; if (p.classList && p.classList.contains("plegado")) plegarGrupo(p.firstChild, false); } };
   function redibujar(det) {
     setTimeout(function () {
       REDIBUJAR.forEach(function (f) { try { if (typeof window[f] === "function" && det.closest("#ayuda")) window[f](); } catch (e) { /* un gráfico que falla no debe afectar al resto */ } });
@@ -139,7 +143,7 @@
   document.addEventListener("toggle", function (e) { var d = e.target; if (d && d.classList && d.classList.contains("acordeon") && d.open) redibujar(d); }, true);
   document.addEventListener("click", function (e) {
     var b = e.target.closest && e.target.closest("[data-ac]"); if (!b) return; var sec = b.closest("section"), abrir = b.getAttribute("data-ac") === "abrir";
-    sec.querySelectorAll("details.acordeon").forEach(function (d) { d.open = abrir; });
+    sec.querySelectorAll("details.acordeon").forEach(function (d) { d.open = abrir; }); if (abrir) sec.querySelectorAll(".ac-grupo.plegado > .ac-grupo-cab").forEach(function (c) { plegarGrupo(c, false); });
   });
   /* irA(tab, id): abre la sección que contiene el destino */
   var _irA = null;
