@@ -3,6 +3,9 @@
 // Uso: window.I18N[lang][key]
 window.I18N = {
   es: {
+    mc_eclipses_d: "Alinea Sol, Tierra y Luna para ver qué se ve desde aquí.",
+    mc_llona_d: "La curva real de un punto de la corteza, con sus tres casos.",
+    mc_eras_d: "El barrido del eje y su relación con los «diluvios».",
     ay_h: "Entiende el método en un vistazo",
     ay_fig: "Una pregunta sobre el cielo, una curva del azar con la que compararla.",
     ay_g1: "<b>1 · ¿Se podría ver?</b> Antes de mirar los datos, comprobamos si tienen fuerza para mostrar un efecto (el «piso» de detección).",
@@ -1098,6 +1101,9 @@ window.I18N = {
   },
 
   en: {
+    mc_eclipses_d: "Aligns Sun, Earth and Moon to show what is seen from here.",
+    mc_llona_d: "The real curve of a crust point, with its three cases.",
+    mc_eras_d: "The axis sweep and its link to the “floods”.",
     ay_h: "The method at a glance",
     ay_fig: "A question about the sky, and a chance curve to compare it with.",
     ay_g1: "<b>1 · Could it be seen?</b> Before looking, we check whether the data have the power to show an effect (the detection floor).",
@@ -2197,6 +2203,9 @@ window.I18N = {
   },
 
   fr: {
+    mc_eclipses_d: "Aligne Soleil, Terre et Lune pour voir ce que l'on voit d'ici.",
+    mc_llona_d: "La courbe réelle d'un point de l'écorce, avec ses trois cas.",
+    mc_eras_d: "Le balayage de l'axe et son lien avec les « déluges ».",
     ay_h: "La méthode en un coup d'œil",
     ay_fig: "Une question sur le ciel, et une courbe du hasard pour la comparer.",
     ay_g1: "<b>1 · Pourrait-on le voir ?</b> Avant de regarder, nous vérifions si les données ont la puissance de montrer un effet (le seuil de détection).",
