@@ -1096,24 +1096,24 @@ details.acordeon > .ac-cuerpo{padding:14px 20px 20px}
 
  <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid #8bc34a">
  <div style="font-size:26px;margin-bottom:6px">②</div>
- <b>Verificar independencia (Von Neumann)</b>
- <p class="small" style="margin-top:6px">Antes de analizar, se comprueba que los eventos no están agrupados artificialmente en el tiempo — réplicas sísmicas, duración de un aspecto planetario, estacionalidad. Si los hay, se eliminan (<b>declusterización</b>). Método de <span class="glos" data-glos="von neumann">Von Neumann</span>, recomendado por <b>David Ferríz Olivares</b> en la <em>Teoría Científica de la Cosmobiología</em>.</p>
+ <b data-i18n="como_g1_t">¿Se podría ver? · compuerta 1</b>
+ <p class="small" style="margin-top:6px" data-i18n="como_g1_p">Antes de mirar el efecto se calcula el piso de detección: qué tamaño de efecto podría ver este conjunto de datos. Si el piso es demasiado alto, un resultado nulo no refuta nada, y lo decimos.</p>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--oro)">
  <div style="font-size:26px;margin-bottom:6px">③</div>
- <b data-i18n="como_step2_title">Calcular la carta astronómica</b>
- <p class="small" style="margin-top:6px" data-i18n="como_step2_p">Para cada evento real, el programa calcula automáticamente las posiciones de 10 planetas (según la NASA/JPL) y genera 200 "eventos ficticios" en fechas cercanas (±30 días) como referencia del azar.</p>
+ <b data-i18n="como_g2_t">¿Resiste las trampas? · compuerta 2</b>
+ <p class="small" style="margin-top:6px" data-i18n-html="como_g2_p">Se quitan réplicas y agrupaciones (declusterización) y cada evento real se compara con fechas control cercanas y con cielos desplazados. Como se prueban muchas configuraciones a la vez, se corrige por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR Benjamini-Hochberg</span>).</p>
  </div>
 
  <div style="background:var(--fondo-alt);border-radius:8px;padding:14px;border-left:4px solid var(--accent2)">
  <div style="font-size:26px;margin-bottom:6px">④</div>
- <b data-i18n="como_step3_title">Comparar: ¿algo sobresale?</b>
- <p class="small" style="margin-top:6px" data-i18n-html="como_step3_p">Se prueban 398 configuraciones planetarias simultáneamente. Solo se reportan las que aparecen significativamente más (o menos) en los eventos reales que en los ficticios, corregidas por comparaciones múltiples (<span class="glos" data-glos="FDR">FDR Benjamini-Hochberg</span>).</p>
+ <b data-i18n="como_g3_t">¿Otro grupo lo repite? · compuerta 3</b>
+ <p class="small" style="margin-top:6px" data-i18n="como_g3_p">Un patrón solo cuenta si reaparece en datos que no se usaron para encontrarlo. Si no se repite, lo reportamos como resultado nulo.</p>
  </div>
 
  </div>
- <p class="small muted" style="margin-top:12px" data-i18n-html="como_warning"><b>Asociación, no causalidad.</b> Un resultado positivo indica una relación estadística que merece investigarse — no implica que los planetas "causan" los eventos. La física del mecanismo, explorada por la <b>Teoría Cicloidal</b> de Scipión Llona y retomada por David Ferríz Olivares, se aborda ahora con el mismo motor estadístico (ver <a href="#" onclick="return irA('ayuda','met_llona')">Geodinámica de Llona</a>) — pero identificar un mecanismo causal sigue siendo un paso ulterior.</p>
+ <p class="small muted" style="margin-top:12px" data-i18n-html="como_aviso"><b>Una asociación todavía no es una causa.</b> Un patrón que supera las tres compuertas indica dónde buscar: la estadística va por delante, señalando relaciones reproducibles que luego la física debe explicar. La Teoría Cicloidal de Scipión Llona, retomada por David Ferríz Olivares, se aborda con el mismo motor estadístico (ver <a href="#" onclick="return irA('ayuda','met_llona')">Geodinámica de Llona</a>).</p>
  </div>
 
  <!-- AVANCES RECIENTES -->

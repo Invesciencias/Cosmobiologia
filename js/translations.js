@@ -3,6 +3,13 @@
 // Uso: window.I18N[lang][key]
 window.I18N = {
   es: {
+    como_g1_t: "¿Se podría ver? · compuerta 1",
+    como_g1_p: "Antes de mirar el efecto se calcula el piso de detección: qué tamaño de efecto podría ver este conjunto de datos. Si el piso es demasiado alto, un resultado nulo no refuta nada, y lo decimos.",
+    como_g2_t: "¿Resiste las trampas? · compuerta 2",
+    como_g2_p: "Se quitan réplicas y agrupaciones (declusterización) y cada evento real se compara con fechas control cercanas y con cielos desplazados. Como se prueban muchas configuraciones a la vez, se corrige por comparaciones múltiples (<span class=\"glos\" data-glos=\"FDR\">FDR Benjamini-Hochberg</span>).",
+    como_g3_t: "¿Otro grupo lo repite? · compuerta 3",
+    como_g3_p: "Un patrón solo cuenta si reaparece en datos que no se usaron para encontrarlo. Si no se repite, lo reportamos como resultado nulo.",
+    como_aviso: "<b>Una asociación todavía no es una causa.</b> Un patrón que supera las tres compuertas indica dónde buscar: la estadística va por delante, señalando relaciones reproducibles que luego la física debe explicar. La Teoría Cicloidal de Scipión Llona, retomada por David Ferríz Olivares, se aborda con el mismo motor estadístico (ver <a href=\"#\" onclick=\"return irA('ayuda','met_llona')\">Geodinámica de Llona</a>).",
     mc_eclipses_d: "Alinea Sol, Tierra y Luna para ver qué se ve desde aquí.",
     mc_llona_d: "La curva real de un punto de la corteza, con sus tres casos.",
     mc_eras_d: "El barrido del eje y su relación con los «diluvios».",
@@ -1101,6 +1108,13 @@ window.I18N = {
   },
 
   en: {
+    como_g1_t: "Could it be seen? · gate 1",
+    como_g1_p: "Before looking at the effect we compute the detection floor: what effect size this data set could see. If the floor is too high, a null result refutes nothing, and we say so.",
+    como_g2_t: "Does it survive the traps? · gate 2",
+    como_g2_p: "Aftershocks and clusters are removed (declustering) and each real event is compared with nearby control dates and shifted skies. Because many configurations are tested at once, we correct for multiple comparisons (<span class=\"glos\" data-glos=\"FDR\">Benjamini–Hochberg FDR</span>).",
+    como_g3_t: "Does another group repeat it? · gate 3",
+    como_g3_p: "A pattern only counts if it reappears in data not used to find it. If it does not repeat, we report it as a null result.",
+    como_aviso: "<b>An association is not yet a cause.</b> A pattern that passes all three gates shows where to look: statistics goes first, pointing to reproducible relations that physics must then explain. Scipión Llona's Cycloidal Theory, taken up by David Ferríz Olivares, is approached with the same statistical engine (see <a href=\"#\" onclick=\"return irA('ayuda','met_llona')\">Llona's geodynamics</a>).",
     mc_eclipses_d: "Aligns Sun, Earth and Moon to show what is seen from here.",
     mc_llona_d: "The real curve of a crust point, with its three cases.",
     mc_eras_d: "The axis sweep and its link to the “floods”.",
@@ -2203,6 +2217,13 @@ window.I18N = {
   },
 
   fr: {
+    como_g1_t: "Pourrait-on le voir ? · porte 1",
+    como_g1_p: "Avant de regarder l'effet, on calcule le seuil de détection : quelle taille d'effet cet ensemble de données pourrait voir. Si le seuil est trop élevé, un résultat nul ne réfute rien, et nous le disons.",
+    como_g2_t: "Résiste-t-il aux pièges ? · porte 2",
+    como_g2_p: "On retire répliques et regroupements (déclustérisation) et chaque événement réel est comparé à des dates témoins proches et à des ciels décalés. Comme beaucoup de configurations sont testées à la fois, on corrige les comparaisons multiples (<span class=\"glos\" data-glos=\"FDR\">FDR Benjamini-Hochberg</span>).",
+    como_g3_t: "Un autre groupe le reproduit-il ? · porte 3",
+    como_g3_p: "Un motif ne compte que s'il réapparaît dans des données non utilisées pour le trouver. S'il ne se répète pas, nous le déclarons comme résultat nul.",
+    como_aviso: "<b>Une association n'est pas encore une cause.</b> Un motif qui franchit les trois portes indique où chercher : la statistique avance la première, signalant des relations reproductibles que la physique devra ensuite expliquer. La Théorie cycloïdale de Scipión Llona, reprise par David Ferríz Olivares, est abordée avec le même moteur statistique (voir <a href=\"#\" onclick=\"return irA('ayuda','met_llona')\">Géodynamique de Llona</a>).",
     mc_eclipses_d: "Aligne Soleil, Terre et Lune pour voir ce que l'on voit d'ici.",
     mc_llona_d: "La courbe réelle d'un point de l'écorce, avec ses trois cas.",
     mc_eras_d: "Le balayage de l'axe et son lien avec les « déluges ».",
