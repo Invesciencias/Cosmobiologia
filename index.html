@@ -89,6 +89,24 @@ h1{font-family:"Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif;font
 .ruta li a:hover{border-color:var(--brand)}
 .ruta .n{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;font-size:.85rem}
 
+
+.gates{margin:0 0 26px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.gates h2,.nuevo h2{font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+.gates ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none;counter-reset:g}
+.gates li{position:relative;padding:12px 14px 12px 46px;background:var(--soft);border-radius:10px;counter-increment:g}
+.gates li::before{content:counter(g);position:absolute;left:12px;top:12px;width:24px;height:24px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.gates li:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--brand);font-weight:700;z-index:2}
+.gates b{display:block;font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:1.05rem}
+.gates span{font-size:.9rem;color:var(--muted)}
+.gates p{margin:12px 0 0;font-size:.92rem;color:var(--muted)}
+.nuevo{margin:0 0 26px}
+.nuevo ul{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.nuevo a{display:block;height:100%;border:1px solid var(--line);border-left:4px solid var(--brand-2);border-radius:10px;padding:12px 14px;text-decoration:none;color:var(--ink)}
+.nuevo a:hover{border-color:var(--brand);background:var(--soft)}
+.nuevo b{display:block;color:var(--accent)}
+.nuevo span{font-size:.88rem;color:var(--muted)}
+@media (max-width:820px){.gates ol,.nuevo ul{grid-template-columns:1fr}.gates li:not(:last-child)::after{display:none}}
+@media (min-width:821px) and (max-width:1000px){.nuevo ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
 footer{border-top:1px solid var(--line);padding:14px 0 18px;font-size:.9rem;color:var(--muted)}
 footer .wrap{display:flex;gap:10px 22px;flex-wrap:wrap;align-items:center;justify-content:space-between}
 footer .links{display:flex;gap:6px 18px;flex-wrap:wrap}
@@ -140,7 +158,7 @@ footer .links{display:flex;gap:6px 18px;flex-wrap:wrap}
     <li><a class="path p2" href="explorador.html#tablero">
       <span class="ver" data-t="p2k">Explorar datos</span>
       <h2 data-t="p2h">Mira qué dicen los datos</h2>
-      <p data-t="p2p">Más de 24.000 eventos reales de fuentes abiertas (sismos, huracanes, tormentas solares y más), en tablero y mapa, con el modelo nulo al lado.</p>
+      <p data-t="p2p">Más de 20.000 eventos reales de fuentes abiertas (sismos, huracanes, tormentas solares y más), en tablero y mapa, con el modelo nulo al lado.</p>
       <span class="go" data-t="go2">Explorar resultados →</span></a></li>
     <li><a class="path p3" href="laboratorio/index.html">
       <span class="ver" data-t="p3k">Verificar tu hipótesis</span>
@@ -149,8 +167,28 @@ footer .links{display:flex;gap:6px 18px;flex-wrap:wrap}
       <span class="go" data-t="go3">Abrir el Laboratorio →</span></a></li>
   </ul>
 
+  <section class="gates" aria-labelledby="gh">
+    <h2 id="gh" data-t="gh">El método en tres compuertas</h2>
+    <ol>
+      <li><b data-t="g1h">¿Se podría ver?</b><span data-t="g1p">Antes de mirar, ¿tus datos tienen fuerza para mostrar un efecto?</span></li>
+      <li><b data-t="g2h">¿Resiste las trampas?</b><span data-t="g2p">Fechas control, cielos desplazados y corrección por comparaciones múltiples.</span></li>
+      <li><b data-t="g3h">¿Otro grupo lo repite?</b><span data-t="g3p">Replicación en datos que no se usaron para encontrarlo.</span></li>
+    </ol>
+    <p data-t="gp">Si una compuerta no se supera, lo decimos: aquí los resultados nulos se publican igual.</p>
+  </section>
+
+  <section class="nuevo" aria-labelledby="nh">
+    <h2 id="nh" data-t="nh">Para recorrer ahora</h2>
+    <ul>
+      <li><a href="explorador.html#cielo"><b data-t="n1h">Cielo y eventos</b><span data-t="n1p">Pon tus fechas sobre el cielo: aspectos, sectores y su placebo.</span></a></li>
+      <li><a href="explorador.html#recorrido-mapa"><b data-t="n2h">Mapa 3D guiado</b><span data-t="n2p">Siete paradas en un minuto: Tierra, sistema solar, carta y cicloide.</span></a></li>
+      <li><a href="explorador.html#sismos"><b data-t="n3h">Casos con resultado</b><span data-t="n3p">Sismos, ajedrez y más: qué se encontró y qué no.</span></a></li>
+      <li><a href="explorador.html#recorrido"><b data-t="n4h">Recorrido de la página</b><span data-t="n4p">Un tour corto por las secciones para no perderte.</span></a></li>
+    </ul>
+  </section>
+
   <section class="ruta" aria-labelledby="rt">
-    <h3 id="rt" data-t="rt">¿Primera vez? Tres pasos</h3>
+    <h3 id="rt" data-t="rt">Tu primera visita</h3>
     <ol>
       <li><a href="explorador.html#ayuda"><span class="n">1</span><span data-t="s1">Entender</span></a></li>
       <li><a href="laboratorio/index.html"><span class="n">2</span><span data-t="s2">Mirar un ejemplo</span></a></li>
@@ -175,23 +213,23 @@ var D={
 es:{skip:"Saltar al contenido",t1:"Cosmobiología",t2:"Fundación Invesciencias",h1:"¿Cuándo puedo creer en un resultado entre eventos y ciclos astronómicos?",
  lead:"Esta plataforma te enseña a poner la pregunta a prueba: primero comprobar si tus datos <i>podrían</i> mostrar un efecto, luego corregir las trampas estadísticas y al final ver si otro grupo lo repite. <b>No afirmamos que el efecto exista.</b>",
  p1k:"Aprender",p1h:"Entiende el método",p1p:"Los principios de la teoría y la estadística que los pone a prueba, con glosario y ejemplos.",go1:"Empezar a aprender →",
- p2k:"Explorar datos",p2h:"Mira qué dicen los datos",p2p:"Más de 24.000 eventos reales de fuentes abiertas (sismos, huracanes, tormentas solares y más), en tablero y mapa, con el modelo nulo al lado.",go2:"Explorar resultados →",
+ p2k:"Explorar datos",p2h:"Mira qué dicen los datos",p2p:"Más de 20.000 eventos reales de fuentes abiertas (sismos, huracanes, tormentas solares y más), en tablero y mapa, con el modelo nulo al lado.",go2:"Explorar resultados →",
  p3k:"Verificar tu hipótesis",p3h:"Pruébala en tres compuertas",p3p:"Carga tus datos en tu navegador, comprueba si podrían mostrar algo y registra tu hipótesis de forma pública.",go3:"Abrir el Laboratorio →",
- rt:"¿Primera vez? Tres pasos",s1:"Entender",s2:"Mirar un ejemplo",s3:"Probar con tus datos",
+ gh:"El método en tres compuertas",g1h:"¿Se podría ver?",g1p:"Antes de mirar, ¿tus datos tienen fuerza para mostrar un efecto?",g2h:"¿Resiste las trampas?",g2p:"Fechas control, cielos desplazados y corrección por comparaciones múltiples.",g3h:"¿Otro grupo lo repite?",g3p:"Replicación en datos que no se usaron para encontrarlo.",gp:"Si una compuerta no se supera, lo decimos: aquí los resultados nulos se publican igual.",nh:"Para recorrer ahora",n1h:"Cielo y eventos",n1p:"Pon tus fechas sobre el cielo: aspectos, sectores y su placebo.",n2h:"Mapa 3D guiado",n2p:"Siete paradas en un minuto: Tierra, sistema solar, carta y cicloide.",n3h:"Casos con resultado",n3p:"Sismos, ajedrez y más: qué se encontró y qué no.",n4h:"Recorrido de la página",n4p:"Un tour corto por las secciones para no perderte.",rt:"Tu primera visita",s1:"Entender",s2:"Mirar un ejemplo",s3:"Probar con tus datos",
  cap:"Toca para saber más",c1:"Cicloide de Llona",c2:"Esfera de casas",c3:"Precesión",llona_t:"Cicloide de Llona",llona_p:"Es la curva que traza un punto de la corteza terrestre al combinar la rotación diaria con el avance de la Tierra en su órbita (TCC, Parte XIV). Los tres trazos son tres proporciones entre ambas velocidades: normal (verde), cero, con cúspides (dorado) y regresiva, con bucles (verde claro). En la Tierra real ocurre la normal; las otras dos son de referencia. Es un esquema, no una escala.",llona_l:"Ver la cicloide en 3D →",casas_t:"Esfera de casas topocéntrica",casas_p:"Divide el cielo visto desde el lugar y la hora exactos de un evento en 12 casas, con el horizonte y el meridiano como ejes. Permite situar los planetas respecto al sitio donde ocurrió el evento, no solo respecto al centro de la Tierra. Es esquemática: la versión con datos reales está en el explorador.",casas_l:"Ver la esfera en 3D →",prec_t:"Precesión de los equinoccios",prec_p:"El eje de la Tierra describe un círculo muy lento, de unos 25.772 años, y el punto vernal retrocede por el zodiaco. Por eso la «era» de Piscis o Acuario depende de cómo se definan las fronteras entre constelaciones: dos sistemas dan fechas distintas. Aquí se comparan. La animación acelera el proceso para poder verlo.",prec_l:"Comparar las eras precesionales →",cerrar:"Cerrar",dev:"Desarrollo:",foot:"Todo se calcula en tu navegador; tus datos no salen de tu equipo.",l1:"Cuestionario del curso",l2:"Panel del curso",l3:"Código en GitHub"},
 en:{skip:"Skip to content",t1:"Cosmobiology",t2:"Invesciencias Foundation",h1:"When can I believe a result linking events and astronomical cycles?",
  lead:"This platform teaches you to put the question to the test: first check whether your data <i>could</i> show an effect, then correct the statistical traps, and finally see whether another group repeats it. <b>We do not claim the effect exists.</b>",
  p1k:"Learn",p1h:"Understand the method",p1p:"The principles of the theory and the statistics that put them to the test, with glossary and examples.",go1:"Start learning →",
- p2k:"Explore data",p2h:"See what the data say",p2p:"More than 24,000 real events from open sources (earthquakes, hurricanes, solar storms and more), in dashboard and map, with the null model beside them.",go2:"Explore results →",
+ p2k:"Explore data",p2h:"See what the data say",p2p:"More than 20,000 real events from open sources (earthquakes, hurricanes, solar storms and more), in dashboard and map, with the null model beside them.",go2:"Explore results →",
  p3k:"Check your hypothesis",p3h:"Test it through three gates",p3p:"Load your data in your browser, check whether they could show anything, and register your hypothesis publicly.",go3:"Open the Laboratory →",
- rt:"First time? Three steps",s1:"Understand",s2:"Look at an example",s3:"Try your own data",
+ gh:"The method in three gates",g1h:"Could it be seen?",g1p:"Before looking, do your data have the power to show an effect?",g2h:"Does it survive the traps?",g2p:"Control dates, shifted skies and correction for multiple comparisons.",g3h:"Does another group repeat it?",g3p:"Replication on data not used to find it.",gp:"If a gate is not passed, we say so: null results are published here all the same.",nh:"To explore now",n1h:"Sky and events",n1p:"Put your dates on the sky: aspects, sectors and their placebo.",n2h:"Guided 3D map",n2p:"Seven stops in a minute: Earth, solar system, chart and cycloid.",n3h:"Cases with results",n3p:"Earthquakes, chess and more: what was found and what was not.",n4h:"Site tour",n4p:"A short tour of the sections so you do not get lost.",rt:"Your first visit",s1:"Understand",s2:"Look at an example",s3:"Try your own data",
  cap:"Tap to learn more",c1:"Llona cycloid",c2:"House sphere",c3:"Precession",llona_t:"Llona cycloid",llona_p:"This is the curve traced by a point of the Earth's crust when daily rotation is combined with the Earth's advance along its orbit (TCC, Part XIV). The three traces are three ratios between both speeds: normal (green), zero, with cusps (gold), and regressive, with loops (light green). On the real Earth the normal case applies; the other two are for reference. It is a schematic, not to scale.",llona_l:"See the cycloid in 3D →",casas_t:"Topocentric house sphere",casas_p:"It divides the sky seen from the exact place and time of an event into 12 houses, with the horizon and meridian as axes. It places the planets relative to where the event happened, not only relative to the Earth's center. This is schematic: the version with real data is in the explorer.",casas_l:"See the sphere in 3D →",prec_t:"Precession of the equinoxes",prec_p:"The Earth's axis traces a very slow circle of about 25,772 years, and the vernal point moves backward through the zodiac. That is why the 'age' of Pisces or Aquarius depends on how constellation boundaries are defined: two systems give different dates. Here they are compared. The animation speeds the process up so it can be seen.",prec_l:"Compare the precessional ages →",cerrar:"Close",dev:"Developed by",foot:"Everything is computed in your browser; your data never leave your device.",l1:"Course questionnaire",l2:"Course panel",l3:"Code on GitHub"},
 fr:{skip:"Aller au contenu",t1:"Cosmobiologie",t2:"Fondation Invesciencias",h1:"Quand puis-je croire un résultat reliant événements et cycles astronomiques ?",
  lead:"Cette plateforme vous apprend à mettre la question à l'épreuve : vérifier d'abord si vos données <i>pourraient</i> montrer un effet, corriger ensuite les pièges statistiques et voir enfin si un autre groupe le reproduit. <b>Nous n'affirmons pas que l'effet existe.</b>",
  p1k:"Apprendre",p1h:"Comprendre la méthode",p1p:"Les principes de la théorie et la statistique qui les met à l'épreuve, avec glossaire et exemples.",go1:"Commencer à apprendre →",
- p2k:"Explorer les données",p2h:"Voir ce que disent les données",p2p:"Plus de 24 000 événements réels de sources ouvertes (séismes, ouragans, tempêtes solaires et plus), en tableau de bord et carte, avec le modèle nul à côté.",go2:"Explorer les résultats →",
+ p2k:"Explorer les données",p2h:"Voir ce que disent les données",p2p:"Plus de 20 000 événements réels de sources ouvertes (séismes, ouragans, tempêtes solaires et plus), en tableau de bord et carte, avec le modèle nul à côté.",go2:"Explorer les résultats →",
  p3k:"Vérifier votre hypothèse",p3h:"La tester en trois portes",p3p:"Chargez vos données dans votre navigateur, vérifiez si elles pourraient montrer quelque chose et enregistrez publiquement votre hypothèse.",go3:"Ouvrir le Laboratoire →",
- rt:"Première fois ? Trois étapes",s1:"Comprendre",s2:"Voir un exemple",s3:"Essayer avec vos données",
+ gh:"La méthode en trois portes",g1h:"Pourrait-on le voir ?",g1p:"Avant de regarder, vos données ont-elles la puissance de montrer un effet ?",g2h:"Résiste-t-il aux pièges ?",g2p:"Dates témoins, ciels décalés et correction des comparaisons multiples.",g3h:"Un autre groupe le reproduit-il ?",g3p:"Réplication sur des données non utilisées pour le trouver.",gp:"Si une porte n'est pas franchie, nous le disons : les résultats nuls sont publiés ici aussi.",nh:"À parcourir maintenant",n1h:"Ciel et événements",n1p:"Placez vos dates sur le ciel : aspects, secteurs et leur placebo.",n2h:"Carte 3D guidée",n2p:"Sept étapes en une minute : Terre, système solaire, thème et cycloïde.",n3h:"Cas avec résultats",n3p:"Séismes, échecs et plus : ce qui a été trouvé et ce qui ne l'a pas été.",n4h:"Visite du site",n4p:"Une courte visite des sections pour ne pas vous perdre.",rt:"Votre première visite",s1:"Comprendre",s2:"Voir un exemple",s3:"Essayer avec vos données",
  cap:"Touchez pour en savoir plus",c1:"Cycloïde de Llona",c2:"Sphère des maisons",c3:"Précession",llona_t:"Cycloïde de Llona",llona_p:"C'est la courbe tracée par un point de la croûte terrestre en combinant la rotation quotidienne et l'avancée de la Terre sur son orbite (TCC, Partie XIV). Les trois tracés sont trois rapports entre les deux vitesses : normal (vert), zéro, avec points de rebroussement (or), et régressif, avec boucles (vert clair). Sur la Terre réelle, c'est le cas normal ; les deux autres sont de référence. C'est un schéma, pas une échelle.",llona_l:"Voir la cycloïde en 3D →",casas_t:"Sphère des maisons topocentrique",casas_p:"Elle divise le ciel vu depuis le lieu et l'heure exacts d'un événement en 12 maisons, avec l'horizon et le méridien comme axes. Elle situe les planètes par rapport à l'endroit de l'événement, pas seulement par rapport au centre de la Terre. C'est schématique : la version avec données réelles est dans l'explorateur.",casas_l:"Voir la sphère en 3D →",prec_t:"Précession des équinoxes",prec_p:"L'axe de la Terre décrit un cercle très lent, d'environ 25 772 ans, et le point vernal recule dans le zodiaque. C'est pourquoi l'« ère » des Poissons ou du Verseau dépend de la définition des frontières entre constellations : deux systèmes donnent des dates différentes. Ils sont comparés ici. L'animation accélère le processus pour qu'on puisse le voir.",prec_l:"Comparer les ères précessionnelles →",cerrar:"Fermer",dev:"Développé par",foot:"Tout est calculé dans votre navigateur ; vos données ne quittent pas votre appareil.",l1:"Questionnaire du cours",l2:"Tableau du cours",l3:"Code sur GitHub"}};
 window.__DICT=D;
 function set(l){
