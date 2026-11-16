@@ -147,7 +147,7 @@
       var ref = sec.querySelector(":scope > .copiar-enlace") || sec.querySelector(":scope > .tab-lead"); if (ref) ref.insertAdjacentElement("afterend", d); else sec.insertBefore(d, sec.firstChild);
     });
   }
-  document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a[data-toc]"); if (!a) return; e.preventDefault(); var h = $(a.getAttribute("data-toc")); if (h) h.scrollIntoView({ behavior: "smooth", block: "start" }); });
+  document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a[data-toc]"); if (!a) return; e.preventDefault(); var h = $(a.getAttribute("data-toc")); if (h) { if (window.abrirDetalles) window.abrirDetalles(h); h.scrollIntoView({ behavior: "smooth", block: "start" }); } });
 
   /* ---------- 7) buscador ---------- */
   function norm(s) { return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
@@ -179,7 +179,7 @@
     if (!res.length) { ul.innerHTML = '<li style="padding:8px 10px;color:#53696a;font-size:13px">' + L().sinRes + "</li>"; ul.style.display = "block"; return; }
     res.forEach(function (r) {
       var li = document.createElement("li"), b = document.createElement("button"), sm = document.createElement("small"); b.type = "button"; sm.textContent = r.sec; b.appendChild(sm); b.appendChild(document.createTextNode(recorte(r.txt, palabras)));
-      b.addEventListener("click", function () { ul.style.display = "none"; irTab(r.tab); setTimeout(function () { if (r.el) { r.el.scrollIntoView({ behavior: "smooth", block: "center" }); r.el.style.transition = "background .6s"; var f = r.el.style.background; r.el.style.background = "rgba(224,165,38,.35)"; setTimeout(function () { r.el.style.background = f; }, 1800); } else window.scrollTo({ top: 0, behavior: "smooth" }); }, 150); });
+      b.addEventListener("click", function () { ul.style.display = "none"; irTab(r.tab); setTimeout(function () { if (r.el) { if (window.abrirDetalles) window.abrirDetalles(r.el); r.el.scrollIntoView({ behavior: "smooth", block: "center" }); r.el.style.transition = "background .6s"; var f = r.el.style.background; r.el.style.background = "rgba(224,165,38,.35)"; setTimeout(function () { r.el.style.background = f; }, 1800); } else window.scrollTo({ top: 0, behavior: "smooth" }); }, 150); });
       li.appendChild(b); ul.appendChild(li);
     });
     ul.style.display = "block";

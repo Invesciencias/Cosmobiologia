@@ -32,6 +32,7 @@
 <script src="js/navegacion.js"></script>
 <script src="js/guia_datos.js"></script>
 <script src="js/tour_mapa.js"></script>
+<script src="js/acordeon.js"></script>
 <script src="js/features.js"></script>
 <script src="js/translations.js"></script>
 <style>
@@ -318,6 +319,21 @@ details.toc a:hover{color:var(--verde)}
 @keyframes tmPulse{0%,100%{box-shadow:0 0 0 0 rgba(224,165,38,.7)}50%{box-shadow:0 0 0 10px rgba(224,165,38,0)}}
 @media (prefers-reduced-motion:reduce){.tm-pulse{animation:none}}
 @media (max-width:700px){#tourMapa{left:58px;right:8px;width:auto;top:8px;padding:10px 12px}#tourMapa p{font-size:12px}}
+
+/* ── Secciones plegables con resumen ── */
+details.acordeon{padding:0}
+details.acordeon > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;column-gap:14px;row-gap:3px;align-items:center;padding:16px 20px;border-radius:14px}
+details.acordeon > summary::-webkit-details-marker{display:none}
+details.acordeon > summary:hover{background:var(--panel2)}
+details.acordeon > summary:focus-visible{outline:2px solid var(--verde);outline-offset:-2px}
+details.acordeon > summary h2{margin:0;font-size:inherit;grid-column:1}
+details.acordeon > summary .ac-teaser{grid-column:1;font-size:13px;line-height:1.45;color:var(--muted,#53696a);font-weight:400}
+details.acordeon > summary::after{content:"＋";grid-column:2;grid-row:1 / span 2;font-size:22px;line-height:1;color:var(--verde);font-weight:700}
+details.acordeon[open] > summary::after{content:"−"}
+details.acordeon[open] > summary{border-bottom:1px solid var(--line);border-radius:14px 14px 0 0}
+details.acordeon > .ac-cuerpo{padding:14px 20px 20px}
+.ac-ctl{margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ac-ctl button{font-size:12px;padding:4px 12px}
 </style>
 </head>
 <body>
