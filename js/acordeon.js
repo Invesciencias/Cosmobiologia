@@ -81,14 +81,14 @@
     GRUPOS.forEach(function (g) {
       var caja = document.createElement("div"); caja.className = "ac-grupo"; caja.id = "grupo_" + g.id; caja.style.setProperty("--gc", g.color);
       caja.innerHTML = '<div class="ac-grupo-cab"><span class="ac-grupo-ico" aria-hidden="true">' + g.ico + '</span><div class="ac-grupo-txt"><h2 class="ac-grupo-t"></h2><p class="ac-grupo-d"></p></div><span class="ac-grupo-n"></span><span class="ac-grupo-flecha" aria-hidden="true">▾</span></div>';
-      marcador.parentNode.insertBefore(caja, marcador); var n = 0; var cab = caja.firstChild; cab.setAttribute("role", "button"); cab.setAttribute("tabindex", "0"); cab.setAttribute("aria-expanded", "true");
+      marcador.parentNode.insertBefore(caja, marcador); var n = 0; var cab = caja.firstChild; cab.setAttribute("role", "button"); cab.setAttribute("tabindex", "0"); cab.setAttribute("aria-expanded", "false"); caja.classList.add("plegado");
       g.orden.forEach(function (k) { if (det[k]) { caja.appendChild(det[k]); delete det[k]; n++; } }); caja.setAttribute("data-n", n);
     });
     marcador.remove();
     Object.keys(det).forEach(function (k) { var u = ultimoGrupo(sec); if (u) u.appendChild(det[k]); });
     quedan.forEach(function (d) { var u = ultimoGrupo(sec); if (u) u.appendChild(d); });
     /* las tarjetas del índice llevan a su grupo */
-    [["met_marco", "marco"], ["met_principios", "principios"], ["met_nulo", "estadistica"], ["met_duplas", "herramientas"]].forEach(function (par) { sec.querySelectorAll('.navquick-card[onclick*="' + par[0] + '"]').forEach(function (c) { c.setAttribute("onclick", "document.getElementById('grupo_" + par[1] + "').scrollIntoView({behavior:'smooth',block:'start'})"); }); });
+    [["met_marco", "marco"], ["met_principios", "principios"], ["met_nulo", "estadistica"], ["met_duplas", "herramientas"]].forEach(function (par) { sec.querySelectorAll('.navquick-card[onclick*="' + par[0] + '"]').forEach(function (c) { c.setAttribute("onclick", "var g=document.getElementById('grupo_" + par[1] + "');g.classList.remove('plegado');g.firstChild.setAttribute('aria-expanded','true');g.scrollIntoView({behavior:'smooth',block:'start'})"); }); });
   }
   function pintarGrupos() {
     var l = lang();
