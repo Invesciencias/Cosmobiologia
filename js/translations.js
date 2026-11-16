@@ -3,6 +3,9 @@
 // Uso: window.I18N[lang][key]
 window.I18N = {
   es: {
+    nq_datos_title: "Subir mis propios datos",
+    nq_datos_desc: "De Excel o LibreOffice a la prueba, paso a paso, con plantilla",
+    cielo_enlace_datos: "¿Quieres usar tus propios datos (Excel, LibreOffice, CSV)? Mira cómo subirlos, con plantilla, en «Captura de eventos».",
     // ── Cielo y eventos: textos fijos ──
     cielo_intro: "Se usan los eventos cargados en la plataforma (los de ejemplo, o los que hayas cargado en «Captura de eventos»). Cada evento se compara con seis fechas control del mismo lugar y la misma hora (±18, ±24 y ±30 días).",
     cielo_l_dom: "Dominio",
@@ -1071,6 +1074,9 @@ window.I18N = {
   },
 
   en: {
+    nq_datos_title: "Upload my own data",
+    nq_datos_desc: "From Excel or LibreOffice to the test, step by step, with a template",
+    cielo_enlace_datos: "Want to use your own data (Excel, LibreOffice, CSV)? See how to load it, with a template, in «Event capture».",
     // ── Cielo y eventos: textos fijos ──
     cielo_intro: "The events loaded in the platform are used (the sample ones, or those you loaded in «Event capture»). Each event is compared with six control dates at the same place and the same time of day (±18, ±24 and ±30 days).",
     cielo_l_dom: "Domain",
@@ -2143,6 +2149,9 @@ window.I18N = {
   },
 
   fr: {
+    nq_datos_title: "Charger mes propres données",
+    nq_datos_desc: "D'Excel ou LibreOffice au test, pas à pas, avec un modèle",
+    cielo_enlace_datos: "Vous voulez utiliser vos propres données (Excel, LibreOffice, CSV) ? Voyez comment les charger, avec un modèle, dans « Saisie d'événements ».",
     // ── Cielo y eventos: textos fijos ──
     cielo_intro: "Les événements chargés dans la plateforme sont utilisés (ceux d'exemple, ou ceux que vous avez chargés dans « Saisie d'événements »). Chaque événement est comparé à six dates témoins au même lieu et à la même heure (±18, ±24 et ±30 jours).",
     cielo_l_dom: "Domaine",

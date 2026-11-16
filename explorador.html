@@ -32,6 +32,7 @@
 <script src="js/ajedrez_bandas.js"></script>
 <script src="js/accesibilidad.js"></script>
 <script src="js/navegacion.js"></script>
+<script src="js/guia_datos.js"></script>
 <script src="js/features.js"></script>
 <script src="js/translations.js"></script>
 <style>
@@ -290,6 +291,18 @@ details.toc a:hover{color:var(--verde)}
 #buscar li button:hover,#buscar li button:focus{background:var(--panel2)}
 #buscar li small{display:block;color:var(--muted,#53696a);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
 @media (max-width:700px){#buscar{padding:0 12px}#buscar ul{left:12px;right:12px}}
+
+#guiaDatos h2{margin-top:0}
+#guiaDatos h3{margin:18px 0 6px;font-size:15px;color:var(--verde-profundo,#005743)}
+#guiaDatos table{width:100%}
+.gd-codigo{margin:8px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.gd-cab{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;background:var(--panel2);font-size:12px}
+.gd-cab button{font-size:12px;padding:2px 10px}
+.gd-codigo pre{margin:0;padding:10px 12px;font-size:12px;overflow-x:auto;background:#fbfdfc;white-space:pre}
+.gd-ruta{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:8px 0}
+.gd-paso{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel2)}
+.gd-paso p{margin:4px 0 8px;font-size:13px}
+.gd-paso button{font-size:12px;padding:3px 10px}
 </style>
 </head>
 <body>
@@ -408,9 +421,9 @@ details.toc a:hover{color:var(--verde)}
  <div class="nq-title" data-i18n="nav_quick_mapa">Ver los datos en el mapa</div>
  <div class="nq-desc" data-i18n="nav_quick_mapa_desc">Mapa y grilla — filtra por dominio y zona geográfica</div>
  </div>
- <div class="navquick-card" style="border-color:var(--oro)" onclick="document.querySelector('[data-tab=captura]').click()">
+ <div class="navquick-card" style="border-color:var(--oro)" onclick="document.querySelector('[data-tab=captura]').click();setTimeout(function(){document.getElementById('guiaDatos').scrollIntoView({behavior:'smooth'})},120)">
  <div class="nq-title" data-i18n="nav_quick_agregar">Agregar mis datos</div>
- <div class="nq-desc" data-i18n="nav_quick_captura_desc">Captura — ingreso manual, CSV, o nube compartida</div>
+ <div class="nq-desc" data-i18n="nq_datos_desc">De Excel o LibreOffice a la prueba, paso a paso, con plantilla</div>
  </div>
  <div class="navquick-card" style="border-color:var(--accent2)" onclick="document.querySelector('[data-tab=hipotesis]').click()">
  <div class="nq-title" data-i18n="nav_quick_hipotesis">Formular una hipótesis</div>
@@ -1380,6 +1393,7 @@ details.toc a:hover{color:var(--verde)}
 <!-- ===================== CAPTURA ===================== -->
 <section id="captura" style="display:none">
 <p class="tab-lead" data-i18n-html="lead_captura">Puedes registrar eventos propios, a mano, con un CSV o en la nube compartida, para analizarlos con la misma técnica. <b>No puedes concluir</b> nada con uno o unos pocos eventos: ni prueban ni refutan.</p>
+ <div id="guiaDatos" class="card" style="border-left:4px solid var(--oro)"></div>
  <div class="card">
  <h2 data-i18n="captura_h2">Registrar un evento</h2>
  <div class="hint" data-i18n-html="captura_hint">Las longitudes planetarias dependen del <b>instante UTC</b>; las casas, del instante <b>y</b> el lugar. Ingresa fecha/hora en la zona que indiques y se guarda normalizado.</div>
@@ -1766,6 +1780,7 @@ details.toc a:hover{color:var(--verde)}
  <div class="card">
  <h2 data-i18n="cielo_h2">Elige los eventos</h2>
  <div class="hint" style="margin:8px 0;border-left-color:var(--accent2)"><b data-i18n="cielo_ejemplo">Ejemplo guiado en 3 pasos: sismos de M ≥ 6, 2000–2024</b><br><span data-i18n-html="cielo_ejemplo_p"><b>1.</b> Elegimos los sismos de magnitud 6 o más entre 2000 y 2024. <b>2.</b> Quitamos las réplicas (Gardner–Knopoff), para que una secuencia grande no cuente como muchos eventos. <b>3.</b> Calculamos las 225 comparaciones y las ponemos frente a 100 cielos desplazados en el tiempo. Pulsa el botón y compara «la real» con lo que da el azar.</span><br><button class="ghost act" style="margin-top:8px" onclick="cieloEjemplo()" data-i18n="cielo_ejemplo_btn">Probar el ejemplo</button></div>
+ <p class="small"><a href="#captura" onclick="document.querySelector('[data-tab=captura]').click();setTimeout(function(){document.getElementById('guiaDatos').scrollIntoView({behavior:'smooth'})},120);return false" data-i18n="cielo_enlace_datos">¿Quieres usar tus propios datos (Excel, LibreOffice, CSV)? Mira cómo subirlos, con plantilla, en «Captura de eventos».</a></p>
  <p class="small muted" data-i18n="cielo_intro">Se usan los eventos cargados en la plataforma (los de ejemplo, o los que hayas cargado en «Captura de eventos»). Cada evento se compara con seis fechas control del mismo lugar y la misma hora (±18, ±24 y ±30 días).</p>
  <div class="row">
  <div><label for="cielo_dominio" data-i18n="cielo_l_dom">Dominio</label><select id="cielo_dominio" onchange="cieloAlCambiarDominio()"><option value="sismo">sismo</option></select></div>
@@ -4708,16 +4723,49 @@ function importGenerico(ev){
  }});
 }
 function parseCSVText(txt){if(!txt.trim())return;const r=Papa.parse(txt.trim(),{header:true,skipEmptyLines:true});mergeRows(r.data);}
+// Acepta nombres de columna en español o inglés, fechas «2023-04-22 08:23», «22/04/2023 08:23» (día/mes/año; se toman como UTC),
+// comas decimales en latitud, longitud y valor, y dice cuántas filas entran y cuántas se descartan y por qué.
+const ALIAS_COL={datetime_utc:['datetime_utc','datetime','fecha_hora_utc','fecha_utc','fecha_hora','fecha','date','timestamp'],latitude:['latitude','latitud','lat'],longitude:['longitude','longitud','lon','lng','long'],value:['value','valor','magnitud','magnitude','mag','severidad'],domain:['domain','dominio','tipo'],event_id:['event_id','id','evento_id'],place:['place','lugar','ubicacion','ubicación'],subtype:['subtype','subtipo'],value_kind:['value_kind','tipo_valor'],source:['source','fuente'],extra_json:['extra_json']};
+function normFecha(s){
+ s=String(s==null?'':s).trim();if(!s)return null;let m;
+ if((m=s.match(/^(\d{4})-(\d{2})-(\d{2})$/)))return {iso:m[1]+'-'+m[2]+'-'+m[3]+'T12:00:00Z',soloFecha:true};
+ if((m=s.match(/^(\d{4}-\d{2}-\d{2})[T ](\d{2}):(\d{2})(?::(\d{2})(\.\d+)?)?\s*(Z|[+-]\d{2}:?\d{2})?$/))){
+ const z=m[6]||'Z';return {iso:m[1]+'T'+m[2]+':'+m[3]+':'+(m[4]||'00')+(m[5]||'')+(z==='Z'?'Z':z.length===5?z.slice(0,3)+':'+z.slice(3):z)};}
+ if((m=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/))){
+ const p2=n=>String(n).padStart(2,'0');return {iso:m[3]+'-'+p2(m[2])+'-'+p2(m[1])+'T'+p2(m[4]||12)+':'+(m[5]||'00')+':'+(m[6]||'00')+'Z',dmy:true,soloFecha:m[4]===undefined};}
+ return null;
+}
+function numDec(x){if(x===undefined||x===null||x==='')return NaN;let s=String(x).trim();if(/^-?\d+,\d+$/.test(s))s=s.replace(',','.');return parseFloat(s);}
 function mergeRows(rows){
- let added=0;
- rows.forEach(r=>{
- if(!r.datetime_utc||!r.latitude)return;
- const e={};FIELDS.forEach(k=>e[k]=r[k]!==undefined?r[k]:'');
+ if(!rows||!rows.length){alert('El archivo está vacío.');return;}
+ const mapa={};Object.keys(rows[0]).forEach(c=>{const k=c.replace(/^﻿/,'').trim().toLowerCase();for(const f in ALIAS_COL){if(ALIAS_COL[f].includes(k)&&!mapa[f])mapa[f]=c;}});
+ if(!mapa.datetime_utc){alert('No encuentro la columna de fecha y hora. Debe llamarse datetime_utc (o fecha, datetime, date…). Descarga la plantilla en «Cómo traer tus propios datos».');return;}
+ const r={added:0,sinFecha:0,fechaMala:0,sinCoord:0,coordMala:0,soloFecha:0,dmy:0};
+ rows.forEach(row=>{
+ const g=f=>mapa[f]?row[mapa[f]]:undefined;
+ if(g('datetime_utc')===undefined||String(g('datetime_utc')).trim()===''){r.sinFecha++;return;}
+ const nf=normFecha(g('datetime_utc'));if(!nf||isNaN(Date.parse(nf.iso))){r.fechaMala++;return;}
+ const lat=numDec(g('latitude')),lon=numDec(g('longitude'));
+ if(isNaN(lat)||isNaN(lon)){r.sinCoord++;return;}
+ if(Math.abs(lat)>90||Math.abs(lon)>180){r.coordMala++;return;}
+ const e={};FIELDS.forEach(k=>{const v=g(k);e[k]=v!==undefined?v:'';});
+ e.datetime_utc=nf.iso;e.latitude=lat;e.longitude=lon;
+ if(e.value!==''){const v=numDec(e.value);e.value=isNaN(v)?e.value:v;}
  if(!e.event_id)e.event_id='ev'+Date.now()+Math.random().toString(36).slice(2,6);
- e.latitude=parseFloat(e.latitude);e.longitude=parseFloat(e.longitude);
- events.push(e);added++;
+ if(!e.domain)e.domain='otro';
+ if(nf.soloFecha)r.soloFecha++;if(nf.dmy)r.dmy++;
+ events.push(e);r.added++;
  });
- save();alert(added+' eventos importados.');
+ save();
+ const L=[r.added+' eventos importados de '+rows.length+' filas.'];
+ if(r.sinFecha)L.push('· '+r.sinFecha+' sin fecha');
+ if(r.fechaMala)L.push('· '+r.fechaMala+' con fecha ilegible (usa 2023-04-22T08:23:42Z o 22/04/2023 08:23)');
+ if(r.sinCoord)L.push('· '+r.sinCoord+' sin latitud o longitud (si tu fenómeno es global, pon 0 y 0)');
+ if(r.coordMala)L.push('· '+r.coordMala+' con coordenadas fuera de rango (latitud ±90, longitud ±180)');
+ if(r.soloFecha)L.push('Aviso: '+r.soloFecha+' filas solo traen la fecha; se les puso las 12:00 UTC.');
+ if(r.dmy)L.push('Aviso: '+r.dmy+' fechas en formato día/mes/año; se toman como UTC.');
+ if(r.added)L.push('Ahora puedes verlos en «Mapa y grilla» y analizarlos en «Cielo y eventos» (elige tu dominio).');
+ alert(L.join('\n'));
 }
 function exportCSV(){
  if(!events.length){alert('No hay eventos.');return;}
