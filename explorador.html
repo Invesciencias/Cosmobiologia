@@ -19,6 +19,7 @@
 <script src="js/data.js"></script>
 <script src="js/cielo.js"></script>
 <script src="js/cielo_ui.js"></script>
+<script src="js/ajedrez_bandas.js"></script>
 <script src="js/features.js"></script>
 <script src="js/translations.js"></script>
 <style>
@@ -3753,6 +3754,15 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p class="small muted" style="margin-top:10px">Metodología completa (modelo nulo, artefactos de reloj, distinción confusor/mediador): <a href="#" onclick="return irA('ayuda','met_split')">Validación exploratoria + confirmatoria →</a></p>
  </div>
 
+
+ <div class="card" id="ajBandas">
+ <h2>Los cambios de casa durante la partida</h2>
+ <p class="small muted">Cada fila es un planeta. Cada tramo de color es el tiempo que ese planeta pasa en una casa de la carta del instante (casas topocéntricas de Polich y Page, recalculadas cada 2 minutos); el número es la casa. El corte entre dos tramos es un <b>cambio de casa</b>. Las líneas rojas marcan las seis jugadas de mayor pérdida de ventaja. Los planetas casi no se mueven en unas horas: lo que cambia es la carta, porque las casas giran, una cada unas dos horas.</p>
+ <div class="row"><div><label for="ajb_sel">Partida</label><select id="ajb_sel" onchange="ajbDibujar()"><option>Cargando…</option></select></div></div>
+ <p class="small" id="ajb_info" role="status" aria-live="polite"></p>
+ <div id="ajb_fig"></div>
+ <div class="hint" style="margin:10px 0;border-left-color:var(--oro)"><b>Supuesto sin verificar:</b> los archivos de partida traen la fecha y la hora de cada jugada, pero no la hora de inicio. La hora local de inicio y la sede de cada torneo están escritas de memoria y deben cotejarse con el calendario oficial; si el inicio real difiere, las bandas se desplazan. <b>Qué se concluye:</b> con las 20 partidas (2.508 jugadas, 302 con algún cambio de casa) no hay relación detectable entre los cambios de casa y la pérdida de ventaja (p = 0,41), y el resultado cambia según la hora de inicio supuesta, así que no es robusto. Además, cuanto más tarda un jugador en mover, más probable es que cambie alguna casa: hay que condicionar por el reloj.</div>
+ </div>
 </section>
 
 <!-- ===================== SISMOS (Didáctica) ===================== -->
