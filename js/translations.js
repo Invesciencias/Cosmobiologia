@@ -3,6 +3,8 @@
 // Uso: window.I18N[lang][key]
 window.I18N = {
   es: {
+    mc_intro2: "Un mapa 3D que puedes girar con el mouse y acercar con la rueda. Elige una vista en los íconos de la izquierda; el detalle de esa vista aparece debajo del mapa. ¿Primera vez? Haz el recorrido de un minuto.",
+    mc_ref_sum: "Guía de referencia: qué mueve cada barra de tiempo y qué hace el riel de la derecha",
     colab_h2: "¿Tienes datos o una pregunta? Escríbenos",
     colab_p: "Hoy la plataforma trae datos de <b>sismos, huracanes, tormentas solares, inundaciones y ajedrez</b>, y no pretende cubrir todas las ciencias. Si tu fenómeno es otro, no necesitas permiso: trae tus datos con la guía y pruébalos en tu navegador. Todos los datos y el código son públicos en el repositorio. Si quieres colaborar, compartir resultados o conversar sobre un caso, escríbenos.",
     colab_btn: "✉ Escribirnos",
@@ -1081,6 +1083,8 @@ window.I18N = {
   },
 
   en: {
+    mc_intro2: "A 3D map you can rotate with the mouse and zoom with the wheel. Pick a view with the icons on the left; the detail of that view appears below the map. First time? Take the one-minute tour.",
+    mc_ref_sum: "Reference guide: what each time bar moves and what the right rail does",
     colab_h2: "Do you have data or a question? Write to us",
     colab_p: "Today the platform has data on <b>earthquakes, hurricanes, solar storms, floods and chess</b>, and it does not claim to cover every science. If your phenomenon is another one, you do not need permission: bring your data with the guide and test it in your browser. All the data and code are public in the repository. If you want to collaborate, share results or talk through a case, write to us.",
     colab_btn: "✉ Write to us",
@@ -2163,6 +2167,8 @@ window.I18N = {
   },
 
   fr: {
+    mc_intro2: "Une carte 3D que vous pouvez tourner avec la souris et agrandir avec la molette. Choisissez une vue avec les icônes de gauche ; le détail de cette vue apparaît sous la carte. Première fois ? Faites la visite d'une minute.",
+    mc_ref_sum: "Guide de référence : ce que déplace chaque barre de temps et ce que fait le rail de droite",
     colab_h2: "Vous avez des données ou une question ? Écrivez-nous",
     colab_p: "Aujourd'hui la plateforme propose des données sur les <b>séismes, ouragans, tempêtes solaires, inondations et échecs</b>, et ne prétend pas couvrir toutes les sciences. Si votre phénomène est autre, vous n'avez pas besoin d'autorisation : apportez vos données avec le guide et testez-les dans votre navigateur. Toutes les données et le code sont publics dans le dépôt. Si vous voulez collaborer, partager des résultats ou discuter d'un cas, écrivez-nous.",
     colab_btn: "✉ Nous écrire",
