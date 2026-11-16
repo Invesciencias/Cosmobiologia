@@ -21,7 +21,7 @@
   var TX = {
     es: { fases: ["Luna nueva", "Creciente", "Cuarto creciente", "Gibosa creciente", "Luna llena", "Gibosa menguante", "Cuarto menguante", "Menguante"], signos: ["Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo", "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis"], tipo: { fuego: "Fruto", tierra: "Raíz", aire: "Flor", agua: "Hoja" },
       meses: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"], dsem: ["L", "M", "X", "J", "V", "S", "D"],
-      luz: "luz", hoy: "Hoy", cap: "🟡 Sol · 🌙 Luna sobre el anillo. Zodiaco sidéreo (≈24° detrás del tropical). Sol en {s} sidéreo · {t} tropical.", en: "en", dia: "Día de", n: "Se necesitan unas {n} parcelas por grupo (con potencia 80 % y α = 0,05).", nb: "Con ese ruido, un efecto de {e} % es invisible a simple vista: por eso se necesita el piso de detección antes de mirar.",
+      luz: "luz", hoy: "Hoy", trop: "tropical", zod_t: "Ver zodiaco tropical", zod_s: "Ver zodiaco sidéreo", cap_t: "🟡 Sol · 🌙 Luna. Zodiaco tropical, el del horóscopo: aquí no se muestra el tipo de día, porque la tradición biodinámica usa el sidéreo. Sol en {t} tropical.", cap: "🟡 Sol · 🌙 Luna sobre el anillo. Zodiaco sidéreo (≈24° detrás del tropical). Sol en {s} sidéreo · {t} tropical.", en: "en", dia: "Día de", n: "Se necesitan unas {n} parcelas por grupo (con potencia 80 % y α = 0,05).", nb: "Con ese ruido, un efecto de {e} % es invisible a simple vista: por eso se necesita el piso de detección antes de mirar.",
       play: "▶ Ver el mes pasar", pausa: "⏸ Pausa", hoyb: "Hoy", rueda: "Rueda del zodiaco sidéreo con la Luna y el Sol",
       sim_h: "El simulador del azar: ¿cuántas veces «funciona» sin efecto real?", sim_p: "Aquí <b>no hay ningún efecto de la Luna</b>: todas las parcelas rinden igual en promedio, con el ruido que elijas. Se reparten al azar entre días «buenos» y «malos» y se mide la diferencia. Repite miles de veces y verás cuántas veces el azar solo hace que algo <i>parezca</i> funcionar.",
       sim_n: "Parcelas por grupo", sim_cv: "Ruido entre parcelas", sim_e: "Llamamos «parece que funciona» a una diferencia de al menos", sim_uno: "🌱 Sembrar una vez", sim_mil: "🎲 Repetir 1.000 veces",
@@ -33,7 +33,7 @@
       reto_h: "Reto: el experimento del rábano (6 semanas)", reto_p: "Un curso, un colegio o una huerta pueden hacerlo. <b>1.</b> Prepara 40 macetas iguales (mismo suelo, riego y luz) y numéralas. <b>2.</b> Sortea 20 para sembrar en día «bueno» (luna creciente) y 20 en día «malo» (menguante), con fechas cercanas para que la estación sea la misma. <b>3.</b> Anota la fecha de siembra, los días hasta germinar y el peso a la cosecha. <b>4.</b> Descarga el CSV y súbelo. <b>5.</b> Si el resultado se repite en otra huerta, cuéntanoslo; si no se repite, <b>cuéntanoslo también</b>." },
     en: { fases: ["New Moon", "Waxing crescent", "First quarter", "Waxing gibbous", "Full Moon", "Waning gibbous", "Last quarter", "Waning crescent"], signos: ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"], tipo: { fuego: "Fruit", tierra: "Root", aire: "Flower", agua: "Leaf" },
       meses: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], dsem: ["M", "T", "W", "T", "F", "S", "S"],
-      luz: "light", hoy: "Today", cap: "🟡 Sun · 🌙 Moon on the ring. Sidereal zodiac (≈24° behind the tropical one). Sun in {s} sidereal · {t} tropical.", en: "in", dia: "Day of", n: "About {n} plots per group are needed (80 % power, α = 0.05).", nb: "With that noise, a {e} % effect is invisible to the naked eye: that is why the detection floor comes before looking.",
+      luz: "light", hoy: "Today", trop: "tropical", zod_t: "Show tropical zodiac", zod_s: "Show sidereal zodiac", cap_t: "🟡 Sun · 🌙 Moon. Tropical zodiac, the horoscope one: the day type is not shown here, because biodynamic tradition uses the sidereal one. Sun in {t} tropical.", cap: "🟡 Sun · 🌙 Moon on the ring. Sidereal zodiac (≈24° behind the tropical one). Sun in {s} sidereal · {t} tropical.", en: "in", dia: "Day of", n: "About {n} plots per group are needed (80 % power, α = 0.05).", nb: "With that noise, a {e} % effect is invisible to the naked eye: that is why the detection floor comes before looking.",
       play: "▶ Watch the month go by", pausa: "⏸ Pause", hoyb: "Today", rueda: "Sidereal zodiac wheel with the Moon and the Sun",
       sim_h: "The chance simulator: how often does it “work” with no real effect?", sim_p: "Here <b>there is no Moon effect at all</b>: every plot yields the same on average, with the noise you choose. They are split at random between “good” and “bad” days and the difference is measured. Repeat thousands of times and see how often chance alone makes something <i>look</i> like it works.",
       sim_n: "Plots per group", sim_cv: "Noise between plots", sim_e: "We call it “looks like it works” when the difference is at least", sim_uno: "🌱 Sow once", sim_mil: "🎲 Repeat 1,000 times",
@@ -45,7 +45,7 @@
       reto_h: "Challenge: the radish experiment (6 weeks)", reto_p: "A class, a school or a garden can do it. <b>1.</b> Prepare 40 identical pots (same soil, watering and light) and number them. <b>2.</b> Draw 20 at random to sow on a “good” day (waxing Moon) and 20 on a “bad” day (waning), with nearby dates so the season is the same. <b>3.</b> Note the sowing date, days to germination and weight at harvest. <b>4.</b> Download the CSV and upload it. <b>5.</b> If the result repeats in another garden, tell us; if it does not repeat, <b>tell us too</b>." },
     fr: { fases: ["Nouvelle Lune", "Croissant", "Premier quartier", "Gibbeuse croissante", "Pleine Lune", "Gibbeuse décroissante", "Dernier quartier", "Décroissant"], signos: ["Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge", "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poissons"], tipo: { fuego: "Fruit", tierra: "Racine", aire: "Fleur", agua: "Feuille" },
       meses: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"], dsem: ["L", "M", "M", "J", "V", "S", "D"],
-      luz: "lumière", hoy: "Aujourd'hui", cap: "🟡 Soleil · 🌙 Lune sur l'anneau. Zodiaque sidéral (≈24° derrière le tropical). Soleil en {s} sidéral · {t} tropical.", en: "en", dia: "Jour de", n: "Il faut environ {n} parcelles par groupe (puissance 80 %, α = 0,05).", nb: "Avec ce bruit, un effet de {e} % est invisible à l'œil nu : c'est pourquoi le seuil de détection vient avant de regarder.",
+      luz: "lumière", hoy: "Aujourd'hui", trop: "tropical", zod_t: "Voir le zodiaque tropical", zod_s: "Voir le zodiaque sidéral", cap_t: "🟡 Soleil · 🌙 Lune. Zodiaque tropical, celui de l'horoscope : le type de jour n'est pas affiché ici, car la tradition biodynamique utilise le sidéral. Soleil en {t} tropical.", cap: "🟡 Soleil · 🌙 Lune sur l'anneau. Zodiaque sidéral (≈24° derrière le tropical). Soleil en {s} sidéral · {t} tropical.", en: "en", dia: "Jour de", n: "Il faut environ {n} parcelles par groupe (puissance 80 %, α = 0,05).", nb: "Avec ce bruit, un effet de {e} % est invisible à l'œil nu : c'est pourquoi le seuil de détection vient avant de regarder.",
       play: "▶ Voir passer le mois", pausa: "⏸ Pause", hoyb: "Aujourd'hui", rueda: "Roue du zodiaque sidéral avec la Lune et le Soleil",
       sim_h: "Le simulateur du hasard : combien de fois « ça marche » sans effet réel ?", sim_p: "Ici <b>il n'y a aucun effet de la Lune</b> : toutes les parcelles rendent pareil en moyenne, avec le bruit choisi. Elles sont réparties au hasard entre jours « bons » et « mauvais » et l'on mesure la différence. Répétez des milliers de fois et voyez combien de fois le hasard seul fait <i>paraître</i> que ça marche.",
       sim_n: "Parcelles par groupe", sim_cv: "Bruit entre parcelles", sim_e: "On dit « ça semble marcher » quand la différence est d'au moins", sim_uno: "🌱 Semer une fois", sim_mil: "🎲 Répéter 1 000 fois",
@@ -64,12 +64,12 @@
   function enMs(ms) {
     var t = T(ms), ml = lunaLon(t), sl = solLon(t), fase = norm(ml - sl), luz = (1 - Math.cos(fase * R)) / 2, ay = ayanamsa(t);
     var f = Math.floor(((fase + 22.5) % 360) / 45), sgL = norm(ml - ay), sg = Math.floor(sgL / 30);
-    return { f: f, luz: luz, sg: sg, el: ELEM[sg], lonL: sgL, lonS: norm(sl - ay), fase: fase, solT: Math.floor(sl / 30) };
+    return { f: f, luz: luz, sg: sg, el: ELEM[sg], lonL: sgL, lonS: norm(sl - ay), fase: fase, solT: Math.floor(sl / 30), lonLT: ml, lonST: sl, sgT: Math.floor(ml / 30) };
   }
   function pct(x) { return Math.round(x * 100); }
 
   /* ---------- calendario en cuadrícula ---------- */
-  var sel = null;
+  var sel = null, trop = false;
   function pintar() {
     var cont = $("ag_cal"); if (!cont) return; var t = L(), y = +$("ag_anio").value, m = +$("ag_mes").value, nd = new Date(Date.UTC(y, m + 1, 0)).getUTCDate(), h = new Date();
     var esHoy = h.getFullYear() === y && h.getMonth() === m ? h.getDate() : -1, primero = (new Date(Date.UTC(y, m, 1)).getUTCDay() + 6) % 7, html = "";
@@ -109,30 +109,30 @@
     ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.strokeStyle = "rgba(255,255,255,.6)"; ctx.lineWidth = 1.2; ctx.stroke();
   }
   function dibujar() {
-    if (!W) return; var r = enMs(tms), t = L(), cx = W / 2, cy = H / 2, R0 = Math.min(W, H) / 2 - 6, R1 = R0 * 0.72, R2 = R0 * 0.5;
+    if (!W) return; var r = enMs(tms), t = L(), lL = trop ? r.lonLT : r.lonL, lS = trop ? r.lonST : r.lonS, sgM = Math.floor(lL / 30), cx = W / 2, cy = H / 2, R0 = Math.min(W, H) / 2 - 6, R1 = R0 * 0.72, R2 = R0 * 0.5;
     ctx.clearRect(0, 0, W, H);
     for (var i = 0; i < 12; i++) {
-      var a0 = (i * 30 - 90) * R, a1 = ((i + 1) * 30 - 90) * R, hot = i === r.sg;
+      var a0 = (i * 30 - 90) * R, a1 = ((i + 1) * 30 - 90) * R, hot = i === sgM;
       ctx.beginPath(); ctx.arc(cx, cy, R0, a0, a1); ctx.arc(cx, cy, R1, a1, a0, true); ctx.closePath();
       ctx.globalAlpha = hot ? 1 : 0.55; ctx.fillStyle = COL[ELEM[i]]; ctx.fill(); ctx.globalAlpha = 1; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.lineWidth = 2; ctx.stroke();
       var am = (a0 + a1) / 2, gr = (R0 + R1) / 2; ctx.fillStyle = "#fff"; ctx.font = "700 " + Math.round(R0 * 0.11) + "px system-ui,sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(GLIFO[i], cx + gr * Math.cos(am), cy + gr * Math.sin(am));
     }
     ctx.beginPath(); ctx.arc(cx, cy, R1 - 2, 0, 6.2832); ctx.fillStyle = "rgba(20,40,43,.92)"; ctx.fill();
     // Sol
-    var as = (r.lonS - 90) * R, sx = cx + (R1 - 14) * Math.cos(as), sy = cy + (R1 - 14) * Math.sin(as);
+    var as = (lS - 90) * R, sx = cx + (R1 - 14) * Math.cos(as), sy = cy + (R1 - 14) * Math.sin(as);
     var g = ctx.createRadialGradient(sx, sy, 2, sx, sy, 18); g.addColorStop(0, "rgba(255,204,51,.55)"); g.addColorStop(1, "rgba(255,204,51,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(sx, sy, 18, 0, 6.2832); ctx.fill();
     ctx.beginPath(); ctx.arc(sx, sy, 9, 0, 6.2832); ctx.fillStyle = "#ffcc33"; ctx.fill(); ctx.strokeStyle = "#fff6c9"; ctx.lineWidth = 1.5; ctx.stroke();
     ctx.fillStyle = "#7a4a00"; ctx.font = "700 11px system-ui,sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("☉", sx, sy + 0.5);
     // Luna orbitando sobre el anillo
-    var al = (r.lonL - 90) * R, lx = cx + (R1 + (R0 - R1) / 2) * Math.cos(al), ly = cy + (R1 + (R0 - R1) / 2) * Math.sin(al);
+    var al = (lL - 90) * R, lx = cx + (R1 + (R0 - R1) / 2) * Math.cos(al), ly = cy + (R1 + (R0 - R1) / 2) * Math.sin(al);
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(lx, ly); ctx.strokeStyle = "rgba(244,239,217,.35)"; ctx.lineWidth = 1; ctx.stroke();
     luna(lx, ly, Math.max(9, R0 * 0.09), r.fase);
     // centro: fase grande + texto
     luna(cx, cy - R2 * 0.18, R2 * 0.48, r.fase);
     ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
     ctx.font = "700 " + Math.round(R0 * 0.085) + "px system-ui,sans-serif"; ctx.fillText(t.fases[r.f], cx, cy + R2 * 0.62);
-    ctx.font = "600 " + Math.round(R0 * 0.07) + "px system-ui,sans-serif"; ctx.fillStyle = COL[r.el]; ctx.fillText(t.tipo[r.el] + " · " + t.signos[r.sg], cx, cy + R2 * 0.62 + R0 * 0.09);
-    var cp = $("ag_cap"); if (cp) cp.textContent = t.cap.replace("{s}", t.signos[Math.floor(r.lonS / 30)]).replace("{t}", t.signos[r.solT]);
+    ctx.font = "600 " + Math.round(R0 * 0.07) + "px system-ui,sans-serif"; ctx.fillStyle = trop ? "#cfe3de" : COL[r.el]; ctx.fillText(trop ? t.signos[sgM] + " (" + t.trop + ")" : t.tipo[r.el] + " · " + t.signos[r.sg], cx, cy + R2 * 0.62 + R0 * 0.09);
+    var cp = $("ag_cap"); if (cp) cp.textContent = (trop ? t.cap_t : t.cap).replace("{s}", t.signos[Math.floor(r.lonS / 30)]).replace("{t}", t.signos[r.solT]);
     var f = new Date(tms), e = $("ag_show_f"); if (e) e.textContent = f.toLocaleDateString(document.documentElement.lang || "es", { day: "numeric", month: "long", year: "numeric" });
   }
   function bucle(ts) { raf = 0; if (!playing) return; if (!last) last = ts; tms += (ts - last) / 1000 * 86400000 * 3; last = ts; dibujar(); raf = requestAnimationFrame(bucle); }
@@ -140,17 +140,18 @@
   function montarShow() {
     var lead = document.querySelector("#agricultura > .tab-lead"); if (!lead || $("ag_show")) return;
     var d = document.createElement("div"); d.id = "ag_show"; d.className = "ag-show";
-    d.innerHTML = '<div class="ag-show-txt"></div><div class="ag-show-rueda"><canvas id="ag_rueda" role="img"></canvas><div class="ag-show-ctl"><button type="button" class="act" id="ag_play"></button> <button type="button" class="ghost act" id="ag_hoyb"></button><span id="ag_show_f" class="small"></span></div><p id="ag_cap" class="small ag-cap"></p></div>';
+    d.innerHTML = '<div class="ag-show-txt"></div><div class="ag-show-rueda"><canvas id="ag_rueda" role="img"></canvas><div class="ag-show-ctl"><button type="button" class="act" id="ag_play"></button> <button type="button" class="ghost act" id="ag_hoyb"></button> <button type="button" class="ghost act" id="ag_zod"></button><span id="ag_show_f" class="small"></span></div><p id="ag_cap" class="small ag-cap"></p></div>';
     lead.insertAdjacentElement("afterend", d);
     var hero = document.querySelector("#agricultura .ag-hero"); if (hero) d.querySelector(".ag-show-txt").appendChild(hero);
     cv = $("ag_rueda"); ctx = cv.getContext("2d");
     $("ag_play").addEventListener("click", function () { reproducir(!playing); });
+    $("ag_zod").addEventListener("click", function () { trop = !trop; textos(); dibujar(); });
     $("ag_hoyb").addEventListener("click", function () { tms = Date.now(); reproducir(false); dibujar(); });
     window.addEventListener("resize", function () { if (tamano()) dibujar(); });
     if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { if (e[0].isIntersecting && tamano()) dibujar(); else reproducir(false); }).observe(cv);
     textos(); if (tamano()) dibujar();
   }
-  function textos() { var t = L(), b = $("ag_play"); if (b) b.textContent = playing ? t.pausa : t.play; var h = $("ag_hoyb"); if (h) h.textContent = t.hoyb; if (cv) cv.setAttribute("aria-label", t.rueda); }
+  function textos() { var t = L(), b = $("ag_play"); if (b) b.textContent = playing ? t.pausa : t.play; var h = $("ag_hoyb"); if (h) h.textContent = t.hoyb; var z = $("ag_zod"); if (z) z.textContent = trop ? t.zod_s : t.zod_t; if (cv) cv.setAttribute("aria-label", t.rueda); }
 
   /* ---------- simulador del azar ---------- */
   function gauss() { var u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(6.2832 * v); }
