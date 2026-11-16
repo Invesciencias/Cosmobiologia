@@ -24,7 +24,7 @@
   };
   var ABIERTAS = { como_h2: 1 };            // «¿Cómo funciona el método?» arranca abierta
   var OBJETIVOS = { guia: { desde: 3, hasta: 9 }, ayuda: { desde: 2, hasta: 999 } };   // posición entre las tarjetas de la sección
-  var TEXTO_LARGO = { captura: { formularios: true, abierta: /Registrar/i }, fuentes: { todo: true, formularios: true }, hipotesis: { todo: true, formularios: true }, epidemiologia: { todo: true, formularios: true }, historia_social: { todo: true, formularios: true }, sismos: {}, eras_precesionales: {} };
+  var TEXTO_LARGO = { captura: { formularios: true, abierta: /Registrar/i }, fuentes: { todo: true, formularios: true }, hipotesis: { todo: true, formularios: true }, epidemiologia: { todo: true, formularios: true }, historia_social: { todo: true, formularios: true }, agricultura: { todo: true }, sismos: {}, eras_precesionales: {} };
   var REDIBUJAR =["renderDensidadHallazgo", "llonaSimular", "precesionSimular", "actualizarEraPrecesional", "potenciaGrafico"];
 
   function lang() { var l = document.documentElement.lang || "es"; return TX[l] ? l : "es"; }

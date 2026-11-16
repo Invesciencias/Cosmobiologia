@@ -32,6 +32,7 @@
 <script src="js/navegacion.js"></script>
 <script src="js/guia_datos.js"></script>
 <script src="js/tour_mapa.js"></script>
+<script src="js/agricultura.js"></script>
 <script src="js/acordeon.js"></script>
 <script src="js/features.js"></script>
 <script src="js/translations.js"></script>
@@ -90,6 +91,14 @@
 .mcp-t{font-weight:700;font-size:14px;color:var(--verde-oscuro)}.mcp-d{font-size:12.5px;color:var(--muted)}
 .mc-plegable[open] .mcp-d{display:none}
 .mcp-body{padding:2px 16px 14px}
+.ag-hero{background:linear-gradient(135deg,var(--panel2),#eef6e6);border:1px solid var(--line);border-left:6px solid #7cb342;border-radius:14px;padding:18px 20px;margin-bottom:14px}
+ .ag-hero h2{margin:0 0 6px;font-size:21px;color:var(--verde-oscuro)}.ag-hero p{margin:0;font-size:14.5px;line-height:1.5}
+ .ag-tabla{width:100%;border-collapse:collapse;font-size:13px}.ag-tabla th{text-align:left;padding:6px 8px;border-bottom:2px solid var(--line);color:var(--muted);font-size:12px}.ag-tabla td{padding:5px 8px;border-bottom:1px solid var(--line)}
+ .ag-tabla tr.ag-hoy td{font-weight:700;background:rgba(200,168,75,.18)}
+ .ag-tipo{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-weight:700}
+ tr.ag-fuego .ag-tipo{background:#fde3d5;color:#a4400f}tr.ag-tierra .ag-tipo{background:#e8dccb;color:#5d4025}tr.ag-aire .ag-tipo{background:#fdf2c4;color:#7a6208}tr.ag-agua .ag-tipo{background:#d6e9f5;color:#1b5a86}
+ .ag-scroll{max-height:460px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+ .ag-ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0}
  .navquick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:12px}
  .navquick-card{cursor:pointer;background:var(--panel2);border:2px solid var(--line);border-radius:14px;padding:16px;transition:box-shadow .18s,transform .12s,border-color .18s}
  .navquick-card:hover{box-shadow:0 6px 16px rgba(26,74,56,.13);transform:translateY(-2px)}
@@ -443,6 +452,7 @@ details.acordeon > .ac-cuerpo{padding:14px 20px 20px}
 <div class="nav-group-buttons">
 <button data-tab="epidemiologia" data-i18n="nav_epidemiologia">Epidemiología</button>
 <button data-tab="historia_social" data-i18n="nav_historia_social">Casos y estudios históricos</button>
+<button data-tab="agricultura" data-i18n="nav_agricultura">Agricultura</button>
 </div>
 </div>
 </div>
@@ -4072,6 +4082,30 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 </section>
 
 <!-- ===================== ASISTENCIA SOCIAL — Casos y estudios históricos ===================== -->
+<section id="agricultura" style="display:none">
+<p class="tab-lead" data-i18n-html="lead_agricultura">Aquí puedes explorar la tradición de sembrar y cosechar según la Luna y el cielo, y ver cómo se pondría a prueba. <b>No puedes concluir</b> que funcione: es una hipótesis con una tradición enorme y poca evidencia controlada.</p>
+<div class="ag-hero"><h2 data-i18n="ag_hero_h">Del campo al cielo: una hipótesis que cualquiera puede probar</h2><p data-i18n="ag_hero_p">Agricultores de todo el mundo han sembrado «con la Luna» durante siglos. Es la forma más cercana al terreno de la cosmobiología: no hace falta un sismógrafo, basta una libreta con fechas de siembra y de cosecha. Si trabajas la tierra, tienes datos que nadie más tiene.</p></div>
+<div class="card">
+<h2 data-i18n="ag_cal_h">Calendario lunar del mes</h2>
+<p class="small muted" data-i18n-html="ag_cal_p">Fase de la Luna, luz y signo sidéreo de cada día (al mediodía UTC), con el tipo de día que le asigna la tradición biodinámica: Raíz (tierra), Flor (aire), Hoja (agua) y Fruto (fuego). Es una herramienta para <b>registrar y comparar</b>, no una recomendación de siembra.</p>
+<div class="ag-ctl"><select id="ag_mes" aria-label="Mes"></select><select id="ag_anio" aria-label="Año"></select></div>
+<div class="ag-scroll"><table class="ag-tabla" id="ag_cal"></table></div>
+<p class="small muted" style="margin-top:8px" data-i18n="ag_cal_n">Cálculo aproximado (serie de Meeus, error ≈0,3°; zodiaco sidéreo de 12 signos iguales, ayanamsa Fagan–Bradley aproximada). Las fronteras reales de las constelaciones y la hora local pueden mover un día de un tipo a otro.</p>
+</div>
+<div class="card">
+<h2 data-i18n="ag_pot_h">¿Cuántas parcelas harían falta? (compuerta 1)</h2>
+<p class="small muted" data-i18n="ag_pot_p">Los rendimientos varían mucho de una parcela a otra. Mueve las barras: cuanto más ruido y más pequeño el efecto que buscas, más parcelas necesitas antes de que valga la pena mirar.</p>
+<div class="ag-ctl"><label class="small" for="ag_cv" data-i18n="ag_cv">Variación entre parcelas</label><input type="range" id="ag_cv" min="5" max="30" step="1" value="12" style="flex:1;min-width:120px"><span id="ag_cv_v" class="small"></span></div>
+<div class="ag-ctl"><label class="small" for="ag_ef" data-i18n="ag_ef">Efecto que buscas</label><input type="range" id="ag_ef" min="1" max="20" step="1" value="5" style="flex:1;min-width:120px"><span id="ag_ef_v" class="small"></span></div>
+<p id="ag_pot" style="margin:6px 0 0"></p>
+</div>
+<div class="card"><h2 data-i18n="ag_t1_h">Qué dice la tradición</h2><p data-i18n-html="ag_t1_p">En el calendario lunar clásico, se siembra con luna creciente lo que da fruto sobre la tierra y con luna menguante lo que crece bajo ella; la poda y la cosecha también siguen la fase. La agricultura biodinámica añade el signo del zodiaco sidéreo por el que pasa la Luna y reparte los días en Raíz, Flor, Hoja y Fruto según el elemento (los calendarios de Maria Thun† son los más conocidos). Es una tradición viva en muchos países, incluida Colombia.</p></div>
+<div class="card"><h2 data-i18n="ag_t2_h">Qué dice la evidencia, con honestidad</h2><p data-i18n-html="ag_t2_p">La literatura revisada por pares es escasa y de calidad desigual. Existe una revisión que reporta ritmos lunisidéreos en el rendimiento de cultivos†, y críticas que señalan diseños sin aleatorizar, pocas repeticiones y la estación como confusor. Lo que decimos nosotros: <b>no está demostrado ni refutado</b>. Para saberlo hacen falta parcelas pareadas y fechas registradas, y para eso sirve esta plataforma. († referencias citadas de memoria: verifícalas antes de usarlas.)</p></div>
+<div class="card"><h2 data-i18n="ag_t3_h">Cómo se probaría con las tres compuertas</h2><p data-i18n-html="ag_t3_p"><b>1 · ¿Se podría ver?</b> Usa la calculadora para saber cuántas parcelas necesitas. <b>2 · ¿Resiste las trampas?</b> Siembra por parejas de parcelas contiguas, con el mismo suelo y riego, en días «buenos» y «malos» sorteados al azar; la estación es el principal confusor, por eso se comparan fechas cercanas. <b>3 · ¿Otro grupo lo repite?</b> Otra finca, otra cosecha o el año siguiente deben dar lo mismo. Si no se repite, también es un resultado, y se publica.</p></div>
+<div class="card"><h2 data-i18n="ag_t4_h">Proyectos para estudiantes</h2><p data-i18n-html="ag_t4_p">• <b>Tu propia huerta:</b> anota fecha de siembra, cultivo, parcela y rendimiento; luego compara con el calendario de arriba. • <b>Datos públicos:</b> registros de rendimiento y fechas de siembra de servicios agrícolas nacionales o de la FAO. • <b>Una pregunta pequeña:</b> ¿germina distinto el rábano sembrado en luna creciente que en menguante, con parejas de macetas iguales? Cualquier curso puede hacerlo en seis semanas. Trae tus datos con la guía de la pestaña Captura.</p>
+<p><button type="button" class="act" onclick="document.querySelector('[data-tab=captura]').click();setTimeout(function(){document.getElementById('guiaDatos').scrollIntoView({behavior:'smooth'})},120)" data-i18n="ag_btn_datos">Cómo traer mis datos</button> <a class="ghost act" style="text-decoration:none;display:inline-block" href="laboratorio/index.html" data-i18n="ag_btn_lab">Probar en el Laboratorio</a></p></div>
+</section>
+
 <section id="historia_social" style="display:none">
 <p class="tab-lead" data-i18n-html="lead_historia_social">Puedes leer los estudios históricos que cita la TCC, con sus cifras. <b>No puedes concluir</b> que sean resultados de esta plataforma: son antecedentes del libro.</p>
 
@@ -4412,7 +4446,7 @@ document.addEventListener('click',e=>{
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
  b.classList.add('active');
- ['guia','captura','tablero','mapa','cielo','hipotesis','fuentes','ayuda','epidemiologia','historia_social','ajedrez','sismos','eras_precesionales'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
+ ['guia','captura','tablero','mapa','cielo','hipotesis','fuentes','ayuda','epidemiologia','historia_social','agricultura','ajedrez','sismos','eras_precesionales'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
  if(b.dataset.tab==='tablero'&&results.length){renderCharts();renderTable();renderCompare();
  setTimeout(()=>{try{Plotly.Plots.resize('volcano');Plotly.Plots.resize('bar');Plotly.Plots.resize('compare');}catch(e){}},60);}
  if(b.dataset.tab==='mapa'){populateDomainFilter();renderMap();
