@@ -3,6 +3,24 @@
 // Uso: window.I18N[lang][key]
 window.I18N = {
   es: {
+    // ── Correcciones de noviembre de 2026: Mercurio–Urano no sobrevive ──
+    hero2_estado2: "Estado de los resultados (noviembre de 2026)",
+    hero_estado2: "<b>Ningún resultado ha sobrevivido a las tres compuertas.</b> El caso más estudiado, Mercurio–Urano en sismos M≥6, daba z = +5,2 y parecía el primer resultado positivo, pero el exceso se apoyaba en las réplicas: al quitarlas baja a RR 1,10 (z = +1,3), no se repite en otro catálogo (GCMT 1976–99, z ≈ +0,9) ni con 48.000 sismos nuevos de M 5 (RR entre 0,99 y 1,02). <b>No sobrevive.</b> Es el mejor ejemplo de por qué existen las compuertas: el método detectó su propio falso positivo.",
+    mu2_badge: "No sobrevive",
+    mu2_title: "Conjunción Mercurio–Urano en sismos M≥6: el falso positivo que el método detectó",
+    mu2_p1: "En los <b>3.730 terremotos M≥6</b> (USGS 2000–2024, con réplicas), la conjunción Mercurio–Urano (a menos de 8°, ~100 veces en 24 años) coincidía con un <b>31% más de sismos de lo esperado</b> (z = +5,2; RR = 1,31). Parecía pasar los filtros: FDR por 398 pruebas y validación cruzada 50/50 <i>dentro del mismo catálogo</i>. Pero cuatro comprobaciones posteriores lo desmontaron:",
+    mu2_li1: "<b>Quitar las réplicas</b> (Gardner–Knopoff): quedan 2.416 sismos y el exceso baja a RR 1,10, z = +1,3, no significativo. La señal salía de unas pocas secuencias grandes.",
+    mu2_li2: "<b>Otra época y otro catálogo:</b> GCMT 1976–99 (n = 2.731) da z ≈ +0,9 (RR 1,07), con potencia para ver un efecto de RR 1,22.",
+    mu2_li3: "<b>Sismos nuevos de M 5,0–5,9 sin réplicas</b> (n = 17.537, 18.335 y 12.633): RR entre 0,99 y 1,02, con un piso de detección de 1,08 a 1,10.",
+    mu2_li4: "<b>Estado: no sobrevive.</b> Una versión anterior de esta página lo presentaba como «primer resultado positivo». Además, el declusterizado tenía un error de unidades (corregido el 16 de noviembre de 2026) que quitaba demasiados eventos.",
+    mu2_cierre: "Es el mejor ejemplo del curso: la compuerta 2 (controlar las réplicas y la dependencia) y la 3 (datos independientes) existen para detectar exactamente esto. Que una señal salga con z = +5 no la hace real.",
+    hip_ejemplo_h2b: "Ejemplo de hipótesis: cómo se formula, se pone a prueba… y a veces no sobrevive",
+    hip_ejemplo_subtitle2: "Es el caso didáctico del proyecto: una hipótesis formulada y probada con el protocolo completo. No sobrevivió, y por eso enseña. Sirve como modelo para ver cómo se formula, pre-registra y valida (o se descarta) una hipótesis en esta plataforma.",
+    hip_ejemplo_dominio2: "<b>Dominio:</b>Sismos M≥6 (USGS 2000–2024, n=3.730 con réplicas)",
+    hip_ejemplo_res2: "<b>Resultado en el descubrimiento (con réplicas):</b> z=+5,2 · RR=1,31 · FDR q=0,000047",
+    hip_ejemplo_val2: "<b>Quitando las réplicas:</b> n=2.416, RR=1,10, z=+1,3 (no significativo). <b>Con sismos nuevos de M 5 sin réplicas:</b> RR entre 0,99 y 1,02",
+    hip_ejemplo_rep2: "<b>Replicación externa:</b> GCMT 1976–1999 (n=2.731): z≈+0,9, con potencia para ver RR≥1,22 → <b>no se repite</b>",
+    met_estrat_p1b: "Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. Pero estratificar también multiplica las pruebas y puede crear señales falsas: así nació el «hallazgo» de <b>Mercurio–Urano en sismos M≥6</b>, que apareció al estratificar por magnitud y no sobrevivió al quitar las réplicas.",
     // ── HEAD / TITLE ──
     page_title: "Cosmobiología — Invesciencias | Captura y Análisis de Eventos",
 
@@ -1013,6 +1031,24 @@ window.I18N = {
   },
 
   en: {
+    // ── Correcciones de noviembre de 2026: Mercurio–Urano no sobrevive ──
+    hero2_estado2: "Status of the results (November 2026)",
+    hero_estado2: "<b>No result has survived the three gates.</b> The most studied case, Mercury–Uranus in M≥6 earthquakes, gave z = +5.2 and looked like the first positive result, but the excess rested on aftershocks: once they are removed it drops to RR 1.10 (z = +1.3), and it does not repeat in another catalog (GCMT 1976–99, z ≈ +0.9) or with 48,000 new M 5 earthquakes (RR between 0.99 and 1.02). <b>It does not survive.</b> It is the best example of why the gates exist: the method caught its own false positive.",
+    mu2_badge: "Does not survive",
+    mu2_title: "Mercury–Uranus conjunction in M≥6 earthquakes: the false positive the method caught",
+    mu2_p1: "In the <b>3,730 M≥6 earthquakes</b> (USGS 2000–2024, with aftershocks), the Mercury–Uranus conjunction (within 8°, ~100 times in 24 years) coincided with <b>31% more earthquakes than expected</b> (z = +5.2; RR = 1.31). It seemed to pass the filters: FDR over 398 tests and a 50/50 cross-validation <i>inside the same catalog</i>. But four later checks took it apart:",
+    mu2_li1: "<b>Removing aftershocks</b> (Gardner–Knopoff): 2,416 earthquakes remain and the excess drops to RR 1.10, z = +1.3, not significant. The signal came from a few large sequences.",
+    mu2_li2: "<b>Another period and another catalog:</b> GCMT 1976–99 (n = 2,731) gives z ≈ +0.9 (RR 1.07), with power to see an effect of RR 1.22.",
+    mu2_li3: "<b>New M 5.0–5.9 earthquakes without aftershocks</b> (n = 17,537, 18,335 and 12,633): RR between 0.99 and 1.02, with a detection floor of 1.08 to 1.10.",
+    mu2_li4: "<b>Status: it does not survive.</b> An earlier version of this page presented it as the «first positive result». In addition, the declustering had a units error (fixed on 16 November 2026) that removed too many events.",
+    mu2_cierre: "It is the best example in the course: gate 2 (controlling aftershocks and dependence) and gate 3 (independent data) exist to catch exactly this. A signal with z = +5 is not necessarily real.",
+    hip_ejemplo_h2b: "Example of a hypothesis: how it is formulated, tested… and sometimes does not survive",
+    hip_ejemplo_subtitle2: "This is the project's teaching case: a hypothesis formulated and tested with the full protocol. It did not survive, and that is why it teaches. It serves as a model for how a hypothesis is formulated, pre-registered and validated (or discarded) on this platform.",
+    hip_ejemplo_dominio2: "<b>Domain:</b>M≥6 earthquakes (USGS 2000–2024, n=3,730 with aftershocks)",
+    hip_ejemplo_res2: "<b>Result in the discovery (with aftershocks):</b> z=+5.2 · RR=1.31 · FDR q=0.000047",
+    hip_ejemplo_val2: "<b>Removing aftershocks:</b> n=2,416, RR=1.10, z=+1.3 (not significant). <b>With new M 5 earthquakes without aftershocks:</b> RR between 0.99 and 1.02",
+    hip_ejemplo_rep2: "<b>External replication:</b> GCMT 1976–1999 (n=2,731): z≈+0.9, with power to see RR≥1.22 → <b>it does not repeat</b>",
+    met_estrat_p1b: "Pooling all events can hide a real signal present only in a physically coherent subgroup. But stratifying also multiplies the tests and can create false signals: that is how the «finding» of <b>Mercury–Uranus in M≥6 earthquakes</b> was born; it appeared when stratifying by magnitude and did not survive removing aftershocks.",
     // ── HEAD / TITLE ──
     page_title: "Cosmobiology — Invesciencias | Event Capture & Analysis",
 
@@ -2027,6 +2063,24 @@ window.I18N = {
   },
 
   fr: {
+    // ── Correcciones de noviembre de 2026: Mercurio–Urano no sobrevive ──
+    hero2_estado2: "État des résultats (novembre 2026)",
+    hero_estado2: "<b>Aucun résultat n'a survécu aux trois portes.</b> Le cas le plus étudié, Mercure–Uranus dans les séismes M≥6, donnait z = +5,2 et semblait le premier résultat positif, mais l'excès reposait sur les répliques : une fois retirées, il tombe à RR 1,10 (z = +1,3), et il ne se répète ni dans un autre catalogue (GCMT 1976–99, z ≈ +0,9) ni avec 48 000 nouveaux séismes M 5 (RR entre 0,99 et 1,02). <b>Il ne survit pas.</b> C'est le meilleur exemple de la raison d'être des portes : la méthode a détecté son propre faux positif.",
+    mu2_badge: "Ne survit pas",
+    mu2_title: "Conjonction Mercure–Uranus dans les séismes M≥6 : le faux positif que la méthode a détecté",
+    mu2_p1: "Dans les <b>3 730 séismes M≥6</b> (USGS 2000–2024, avec répliques), la conjonction Mercure–Uranus (à moins de 8°, ~100 fois en 24 ans) coïncidait avec <b>31 % de séismes de plus que prévu</b> (z = +5,2 ; RR = 1,31). Elle semblait passer les filtres : FDR sur 398 tests et validation croisée 50/50 <i>dans le même catalogue</i>. Mais quatre vérifications ultérieures l'ont démontée :",
+    mu2_li1: "<b>Retirer les répliques</b> (Gardner–Knopoff) : il reste 2 416 séismes et l'excès tombe à RR 1,10, z = +1,3, non significatif. Le signal venait de quelques grandes séquences.",
+    mu2_li2: "<b>Une autre époque et un autre catalogue :</b> GCMT 1976–99 (n = 2 731) donne z ≈ +0,9 (RR 1,07), avec la puissance pour voir un effet de RR 1,22.",
+    mu2_li3: "<b>Nouveaux séismes M 5,0–5,9 sans répliques</b> (n = 17 537, 18 335 et 12 633) : RR entre 0,99 et 1,02, avec un plancher de détection de 1,08 à 1,10.",
+    mu2_li4: "<b>Statut : il ne survit pas.</b> Une version antérieure de cette page le présentait comme le « premier résultat positif ». De plus, le déclustering avait une erreur d'unités (corrigée le 16 novembre 2026) qui retirait trop d'événements.",
+    mu2_cierre: "C'est le meilleur exemple du cours : la porte 2 (contrôler les répliques et la dépendance) et la porte 3 (données indépendantes) existent pour détecter exactement cela. Un signal avec z = +5 n'est pas forcément réel.",
+    hip_ejemplo_h2b: "Exemple d'hypothèse : comment elle se formule, se teste… et parfois ne survit pas",
+    hip_ejemplo_subtitle2: "C'est le cas pédagogique du projet : une hypothèse formulée et testée avec le protocole complet. Elle n'a pas survécu, et c'est pourquoi elle enseigne. Elle sert de modèle pour voir comment une hypothèse est formulée, pré-enregistrée et validée (ou écartée) sur cette plateforme.",
+    hip_ejemplo_dominio2: "<b>Domaine :</b>Séismes M≥6 (USGS 2000–2024, n=3 730 avec répliques)",
+    hip_ejemplo_res2: "<b>Résultat dans la découverte (avec répliques) :</b> z=+5,2 · RR=1,31 · FDR q=0,000047",
+    hip_ejemplo_val2: "<b>En retirant les répliques :</b> n=2 416, RR=1,10, z=+1,3 (non significatif). <b>Avec de nouveaux séismes M 5 sans répliques :</b> RR entre 0,99 et 1,02",
+    hip_ejemplo_rep2: "<b>Réplication externe :</b> GCMT 1976–1999 (n=2 731) : z≈+0,9, avec la puissance pour voir RR≥1,22 → <b>il ne se répète pas</b>",
+    met_estrat_p1b: "Mélanger tous les événements peut cacher un signal réel présent seulement dans un sous-groupe physiquement cohérent. Mais stratifier multiplie aussi les tests et peut créer de faux signaux : c'est ainsi qu'est né le « résultat » de <b>Mercure–Uranus dans les séismes M≥6</b>, apparu en stratifiant par magnitude et qui n'a pas survécu au retrait des répliques.",
     // ── HEAD / TITLE ──
     page_title: "Cosmobiologie — Invesciencias | Saisie et analyse d'événements",
 

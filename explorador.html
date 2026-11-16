@@ -201,6 +201,26 @@
  button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid #0072B2;outline-offset:2px}
  header button:focus-visible,header a:focus-visible,.hero-new a:focus-visible,.hero-new button:focus-visible{outline-color:#fff}
  nav button.active{outline:0}
+
+/* ── Móvil: nada debe obligar a deslizar de lado (inspección del 16 de nov. de 2026) ── */
+[style*="grid-template-columns"], .aj-layout { min-width: 0; }
+[style*="grid-template-columns"] > *, .aj-layout > * { min-width: 0; }
+code, pre, kbd { overflow-wrap: anywhere; }
+@media (max-width: 700px) {
+  [style*="grid-template-columns:repeat(4"], [style*="grid-template-columns: repeat(4"],
+  [style*="grid-template-columns:repeat(3"], [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns:repeat(5"], [style*="grid-template-columns: repeat(5"],
+  [style*="grid-template-columns:repeat(6"], [style*="grid-template-columns: repeat(6"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  [style*="grid-template-columns:1fr 1fr"], [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: minmax(0, 1fr) !important; }
+  .aj-layout { grid-template-columns: minmax(0, 1fr) !important; }
+  .aj-movelist-wrap { max-width: 100%; overflow-x: auto; }
+  table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  button, .act, .ghost { white-space: normal; }
+  svg, img, canvas { max-width: 100%; height: auto; }
+  pre { white-space: pre-wrap; max-width: 100%; overflow-x: auto; }
+  header { flex-wrap: wrap; gap: 10px; }
+  header > div[style*="margin-left:auto"] { margin-left: 0 !important; flex-wrap: wrap; }
+}
 </style>
 </head>
 <body>
@@ -297,7 +317,7 @@
  <button class="ghost act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="hero_btn_tablero">Explorar resultados</button>
  <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()" data-i18n="hero_btn_mapa">Ver el mapa</button>
  </div>
- <details class="hero-estado"><summary data-i18n="hero2_estado">Estado de los resultados (junio de 2026)</summary><p data-i18n-html="hero_confirmed"><b>Primer resultado positivo (jun 2026):</b> los sismos M≥6 ocurren un <b>32% más</b> de lo esperado cuando Mercurio está en conjunción con Urano. Sobrevive 398 pruebas simultáneas y replica en la validación cruzada 50/50 del catálogo USGS. <b>Todavía no es un resultado confirmado:</b> falta replicarlo en un catálogo externo (GCMT) y estratificarlo por tipo de falla y profundidad focal, como exige el propio diseño que publicamos en la <i>Circular Astronómica RAC</i> 1027 (sept. 2026).</p></details>
+ <details class="hero-estado"><summary data-i18n="hero2_estado2">Estado de los resultados (noviembre de 2026)</summary><p data-i18n-html="hero_estado2"><b>Ningún resultado ha sobrevivido a las tres compuertas.</b> El caso más estudiado, Mercurio–Urano en sismos M≥6, daba z = +5,2 y parecía el primer resultado positivo, pero el exceso se apoyaba en las réplicas: al quitarlas baja a RR 1,10 (z = +1,3), no se repite en otro catálogo (GCMT 1976–99, z ≈ +0,9) ni con 48.000 sismos nuevos de M 5 (RR entre 0,99 y 1,02). <b>No sobrevive.</b> Es el mejor ejemplo de por qué existen las compuertas: el método detectó su propio falso positivo.</p></details>
  </div>
 
  <!-- NAVEGACIÓN RÁPIDA — tarjetas clicables, arriba del todo para que se
@@ -919,9 +939,9 @@
    </div>
 
    <div class="hint" style="margin-top:14px">
-    <b>¿Y dónde cae nuestro propio resultado?</b> La conjunción Mercurio–Urano en sismos M≥6 es una <b>asociación estadística sin mecanismo propuesto</b>.
-    Aspira al <b>Nivel II</b>, pero todavía no llega: la definición de Nivel II exige que la asociación sea <i>reproducible</i>, y hasta ahora solo replicó
-    en una mitad del mismo catálogo (validación cruzada interna), no en un catálogo externo ni con estratificación por tipo de falla.
+    <b>¿Y dónde cae nuestro propio caso?</b> La conjunción Mercurio–Urano en sismos M≥6 era una <b>asociación estadística sin mecanismo propuesto</b>.
+    Aspiraba al <b>Nivel II</b> y <b>no llegó</b>: la definición de Nivel II exige que la asociación sea <i>reproducible</i>, y solo replicó
+    en una mitad del mismo catálogo con réplicas; al quitarlas, y con catálogos y épocas independientes, desaparece.
     Aplicar el criterio a uno mismo es lo que lo hace un criterio y no un adorno.
    </div>
   </div>
@@ -1010,15 +1030,17 @@
  <h2 data-i18n="paper1_h2">Resultados del primer paper</h2>
  <p class="small muted" data-i18n="paper1_subtitle">Análisis sobre 3.730 terremotos M≥6 (USGS, 2000–2024) y 6.169 mainshocks GCMT (1976–2024, declustered Gardner-Knopoff). Metodología: modelo nulo emparejado ±30 días · Von Neumann · FDR Benjamini-Hochberg · validación split 50/50 · pre-registro OSF.</p>
 
- <!-- CONFIRMADO -->
- <div style="background:rgba(100,220,100,0.08);border-radius:10px;padding:14px;margin-top:14px;border-left:4px solid var(--verde)">
- <span class="badge badge-caution" data-i18n="paper1_badge1">Positivo — no confirmado</span><b data-i18n="paper1_title1">Conjunción Mercurio–Urano en sismos M≥6</b>
- <p class="small" style="margin-top:6px" data-i18n-html="paper1_p1">En los <b>3.730 terremotos M≥6</b> (2000–2024), la conjunción Mercurio–Urano (alineación a menos de 8°, ~100 veces en 24 años) coincide con un <b>32% más de sismos de lo esperado por azar</b> (z = +5.27, RR = 1.32, FDR q = 0.000047). Pasó tres filtros de rigor:</p>
+ <!-- MERCURIO-URANO: NO SOBREVIVE -->
+ <div style="background:rgba(180,68,43,0.07);border-radius:10px;padding:14px;margin-top:14px;border-left:4px solid #b4442b">
+ <span class="badge badge-caution" data-i18n="mu2_badge">No sobrevive</span><b data-i18n="mu2_title">Conjunción Mercurio–Urano en sismos M≥6: el falso positivo que el método detectó</b>
+ <p class="small" style="margin-top:6px" data-i18n-html="mu2_p1">En los <b>3.730 terremotos M≥6</b> (USGS 2000–2024, con réplicas), la conjunción Mercurio–Urano (a menos de 8°, ~100 veces en 24 años) coincidía con un <b>31% más de sismos de lo esperado</b> (z = +5,2; RR = 1,31). Parecía pasar los filtros: FDR por 398 pruebas y validación cruzada 50/50 <i>dentro del mismo catálogo</i>. Pero cuatro comprobaciones posteriores lo desmontaron:</p>
  <ol class="small" style="margin:6px 0 6px 18px">
- <li data-i18n-html="paper1_li1"><b>FDR por 398 pruebas simultáneas</b> (q = 0.000047) — descarta suerte entre muchos intentos.</li>
- <li data-i18n-html="paper1_li2"><b>Validación cruzada split 50/50</b> — la señal apareció en ambas mitades independientes con la misma dirección.</li>
- <li data-i18n-html="paper1_li3"><b>Libre del artefacto de planetas lentos</b> — Mercurio se mueve ~1°/día; el modelo nulo ±30 días captura variación real.</li>
+ <li data-i18n-html="mu2_li1"><b>Quitar las réplicas</b> (Gardner–Knopoff): quedan 2.416 sismos y el exceso baja a RR 1,10, z = +1,3, no significativo. La señal salía de unas pocas secuencias grandes.</li>
+ <li data-i18n-html="mu2_li2"><b>Otra época y otro catálogo:</b> GCMT 1976–99 (n = 2.731) da z ≈ +0,9 (RR 1,07), con potencia para ver un efecto de RR 1,22.</li>
+ <li data-i18n-html="mu2_li3"><b>Sismos nuevos de M 5,0–5,9 sin réplicas</b> (n = 17.537, 18.335 y 12.633): RR entre 0,99 y 1,02, con un piso de detección de 1,08 a 1,10.</li>
+ <li data-i18n-html="mu2_li4"><b>Estado: no sobrevive.</b> Una versión anterior de esta página lo presentaba como «primer resultado positivo». Además, el declusterizado tenía un error de unidades (corregido el 16 de noviembre de 2026) que quitaba demasiados eventos.</li>
  </ol>
+ <p class="small" style="margin:6px 0" data-i18n="mu2_cierre">Es el mejor ejemplo del curso: la compuerta 2 (controlar las réplicas y la dependencia) y la 3 (datos independientes) existen para detectar exactamente esto. Que una señal salga con z = +5 no la hace real.</p>
  <div class="hint" style="margin:10px 0;border-left-color:var(--accent2)">
   <span data-i18n-html="paper1_hint_p1"><b>Precisión sobre el origen de esta hipótesis.</b> Este resultado surgió de un <b>rastreo exploratorio</b> de 398 rasgos,
   no de una predicción teórica previa. Conviene distinguirlo de la hipótesis documentada sobre este mismo par planetario:
@@ -1034,7 +1056,7 @@
   independiente no dice nada sobre ella. Y una coincidencia retrospectiva aislada, por precisa que sea, tampoco la confirma:
   probarla exigiría un catálogo fechado de hitos científicos contrastado contra el mismo modelo nulo.</p>
  </div>
- <p class="small" style="margin:8px 0 0;padding:8px 10px;background:rgba(230,126,34,.10);border-left:3px solid #e67e22;border-radius:6px" data-i18n-html="paper1_p2"><b>Estado de la replicación externa:</b> la validación que superó fue el <b>split 50/50 dentro del catálogo USGS</b> (mitad confirmatoria n=1.865: z=+3.88, p_fdr=0.00041). La replicación en el catálogo <b>independiente GCMT 1976–1999</b> se intentó posteriormente y <b>no confirmó la señal</b>: sobre el catálogo corregido Mw≥6 da <b>z=+0,61, RR=1,04</b> (la cifra de z=−1,38 publicada antes procedía del catálogo con el error de magnitud). Aquí sí hay potencia suficiente —n=2.731 y piso de detección RR≥1,25 frente al RR=1,32 del descubrimiento—, de modo que este resultado <b>sí es interpretable</b>: la señal no generaliza. El hallazgo se mantiene como asociación robusta dentro de USGS 2000–2024, pero <b>pendiente de replicación externa exitosa</b>.</p>
+ 
  <span class="small muted" data-i18n="paper1_osf">Pre-registrado en OSF.</span>
  </div>
 
@@ -1090,7 +1112,7 @@
  <table class="small">
  <thead><tr><th>Caso</th><th>Descubrimiento</th><th>Al exigir independencia</th><th>Diagnóstico</th></tr></thead>
  <tbody>
-  <tr><td><b>Mercurio–Urano</b> (sismos M≥6)</td><td>z=+5,27 (USGS 2000–24)</td><td>z=+0,61 (GCMT 1976–99)</td><td>Potencia suficiente en la réplica — <b>la señal no generaliza</b>, no es un problema de datos insuficientes.</td></tr>
+  <tr><td><b>Mercurio–Urano</b> (sismos M≥6)</td><td>z=+5,2 (USGS 2000–24, con réplicas)</td><td>z≈+0,9 (GCMT 1976–99); sin réplicas, RR=1,10 (z=+1,3)</td><td>Potencia suficiente en la réplica — <b>la señal no generaliza</b>, no es un problema de datos insuficientes.</td></tr>
   <tr><td><b>Venus–Júpiter sextil</b> (sismos)</td><td>z=+3,1 (USGS)</td><td>déficit (GCMT)</td><td>Pre-registrado antes de la réplica — el protocolo funcionó como debía.</td></tr>
   <tr><td><b>Marte–Urano trígono</b> (sismos)</td><td>z=+2,8 (USGS)</td><td>déficit (GCMT)</td><td>Mismo patrón — candidato exploratorio que no sobrevive.</td></tr>
   <tr><td><b>5 candidatos GCMT</b> (Venus-Júpiter conj., Luna ASC/DSC/apogeo, Júpiter DSC)</td><td>z hasta +5,86 (catálogo inflado 5,5×)</td><td>z&lt;2,3 (catálogo corregido)</td><td><b>No están refutados, están sin poner a prueba</b> — el piso de detección del catálogo corregido queda por encima del efecto.</td></tr>
@@ -1709,15 +1731,15 @@
 <section id="hipotesis" style="display:none">
 <p class="tab-lead" data-i18n-html="lead_hipotesis">Puedes redactar y registrar una hipótesis antes de mirar los datos. <b>No puedes concluir</b> que registrarla la haga cierta: solo evita cambiarla después de ver el resultado.</p>
  <div class="card" style="border-left:4px solid var(--ok)">
- <h2 data-i18n="hip_ejemplo_h2">Ejemplo de hipótesis confirmada</h2>
- <p class="small muted" data-i18n="hip_ejemplo_subtitle">Esta es la primera hipótesis confirmada del proyecto. Sirve como modelo para entender cómo se formula, pre-registra y valida una hipótesis en esta plataforma.</p>
+ <h2 data-i18n="hip_ejemplo_h2b">Ejemplo de hipótesis: cómo se formula, se pone a prueba… y a veces no sobrevive</h2>
+ <p class="small muted" data-i18n="hip_ejemplo_subtitle2">Es el caso didáctico del proyecto: una hipótesis formulada y probada con el protocolo completo. No sobrevivió, y por eso enseña. Sirve como modelo para ver cómo se formula, pre-registra y valida (o se descarta) una hipótesis en esta plataforma.</p>
  <div style="background:var(--panel2);border-radius:8px;padding:14px 16px;margin:12px 0;font-size:14px;line-height:1.7">
- <span data-i18n-html="hip_ejemplo_dominio"><b>Dominio:</b>Sismos M≥6 (USGS 2000–2024, n=3.730)</span><br>
+ <span data-i18n-html="hip_ejemplo_dominio2"><b>Dominio:</b>Sismos M≥6 (USGS 2000–2024, n=3.730 con réplicas)</span><br>
  <span data-i18n-html="hip_ejemplo_rasgo"><b>Rasgo:</b>Aspecto Mercurio–Urano, conjunción (separación angular ≤8°)</span><br>
  <span data-i18n-html="hip_ejemplo_dir"><b>Dirección:</b>Exceso (más sismos de lo esperado durante la conjunción)</span><br>
- <span data-i18n-html="hip_ejemplo_res"><b>Resultado:</b> z=+5.27 · RR=1.32 (32% más sismos) · FDR q=0,000047</span><br>
- <span data-i18n-html="hip_ejemplo_val"><b>Validación cruzada interna:</b> replica en mitad independiente (z=+3.88, q=0,00041) — falta replicación externa y estratificación por tipo de falla </span><br>
- <span data-i18n-html="hip_ejemplo_rep"><b>Replicación pendiente:</b> catálogo GCMT 1976–1999 (pre-registrado en OSF)</span>
+ <span data-i18n-html="hip_ejemplo_res2"><b>Resultado en el descubrimiento (con réplicas):</b> z=+5,2 · RR=1,31 · FDR q=0,000047</span><br>
+ <span data-i18n-html="hip_ejemplo_val2"><b>Quitando las réplicas:</b> n=2.416, RR=1,10, z=+1,3 (no significativo). <b>Con sismos nuevos de M 5 sin réplicas:</b> RR entre 0,99 y 1,02</span><br>
+ <span data-i18n-html="hip_ejemplo_rep2"><b>Replicación externa:</b> GCMT 1976–1999 (n=2.731): z≈+0,9, con potencia para ver RR≥1,22 → <b>no se repite</b></span>
  </div>
  <p class="small muted" data-i18n-html="hip_ejemplo_tip"> <b>Para formular tu propia hipótesis:</b> elige un dominio de eventos de tu ciencia, un rasgo astronómico con justificación teórica, y pre-regístrala en OSF <i>antes</i> de mirar los datos. El constructor de abajo te genera el enunciado listo para registrar.</p>
  </div>
@@ -1885,9 +1907,9 @@
  <table>
  <thead><tr><th data-i18n="fuentes_th_dominio">Dominio</th><th data-i18n="fuentes_th_eventos">Eventos</th><th data-i18n="fuentes_th_fuente">Fuente</th><th data-i18n="fuentes_th_estado">Estado análisis</th><th data-i18n="fuentes_th_rasgos">Tipo de rasgos válidos</th></tr></thead>
  <tbody>
- <tr style="background:rgba(255,200,0,0.07)"><td> <b>Sismos M≥6</b> <span class="pill" style="background:var(--oro);color:#3a2f10"> positivo, no confirmado</span></td><td>3.730</td><td>USGS FDSN</td><td>Mercurio–Urano conjunción: z=+5.27, RR=1.32, split </td><td>Aspectos + casas</td></tr>
- <tr><td> <b>Sismos M≥6 — exploratoria</b></td><td>1.865</td><td>USGS FDSN</td><td>4 candidatos FDR&lt;0.05</td><td>Aspectos + casas</td></tr>
- <tr><td> <b>Sismos M≥6 — confirmatoria</b></td><td>1.865</td><td>USGS FDSN</td><td>1 confirmado (Mercurio–Urano)</td><td>Aspectos + casas</td></tr>
+ <tr style="background:rgba(255,200,0,0.07)"><td> <b>Sismos M≥6</b> <span class="pill" style="background:#b4442b;color:#fff"> no sobrevive</span></td><td>3.730 (2.416 sin réplicas)</td><td>USGS FDSN</td><td>Mercurio–Urano conjunción: z=+5,2 con réplicas; sin réplicas RR=1,10 (z=+1,3)</td><td>Aspectos + casas</td></tr>
+ <tr><td> <b>Sismos M≥6 — mitad exploratoria</b></td><td>1.865</td><td>USGS FDSN</td><td>4 candidatos FDR&lt;0.05 (con réplicas)</td><td>Aspectos + casas</td></tr>
+ <tr><td> <b>Sismos M≥6 — mitad confirmatoria</b></td><td>1.865</td><td>USGS FDSN</td><td>Mercurio–Urano replicó solo dentro del mismo catálogo y con réplicas; no sobrevive</td><td>Aspectos + casas</td></tr>
  <tr><td> <b>Sismos M≥5</b></td><td>44.390</td><td>USGS FDSN</td><td>73 sig. FDR&lt;0.05 — exploratoria, pendiente confirmación</td><td>Aspectos + casas</td></tr>
  <tr><td> <b>Huracanes</b></td><td>2.494</td><td>NOAA HURDAT2</td><td>Análisis pendiente</td><td>Solo aspectos (hora sinóptica)</td></tr>
  <tr><td> <b>Tormentas solares</b></td><td>3.469</td><td>NASA DONKI</td><td>Pendiente de-duplicación</td><td>Solo aspectos </td></tr>
@@ -3199,7 +3221,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
  <div class="card">
  <h2 id="met_estrat" data-i18n-html="met_estrat_h2"> <span class="glos" data-glos="estratificación">Estratificación</span>: cuándo el global da negativo y el subgrupo da positivo</h2>
- <p data-i18n-html="met_estrat_p1">Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. El primer resultado positivo de este proyecto (<b>Mercurio–Urano en sismos M≥6</b>, aún no confirmado) no apareció en el análisis global M≥5 — apareció al estratificar por magnitud.</p>
+ <p data-i18n-html="met_estrat_p1b">Mezclar todos los eventos puede ocultar una señal real presente solo en un subgrupo físicamente coherente. Pero estratificar también multiplica las pruebas y puede crear señales falsas: así nació el «hallazgo» de <b>Mercurio–Urano en sismos M≥6</b>, que apareció al estratificar por magnitud y no sobrevivió al quitar las réplicas.</p>
  <table>
  <thead><tr><th data-i18n="met_estrat_th1">Dimensión</th><th data-i18n="met_estrat_th2">Estratos útiles</th><th data-i18n="met_estrat_th3">Justificación física</th></tr></thead>
  <tbody>
@@ -3545,9 +3567,7 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 
   <h3>Qué implica esto — y por qué cambia la lectura de los resultados</h3>
   <ul class="small" style="line-height:1.8">
-   <li><b>El primer resultado (Mercurio–Urano) no era ruido de las 398 pruebas.</b> Su z=5,27 supera el techo de ruido
-   medido (máximo 3,97). Que no haya replicado en un catálogo independiente significa que <b>no generaliza</b>, no que
-   fuera un artefacto trivial del método. La distinción importa.</li>
+   <li><b>El primer resultado (Mercurio–Urano) superaba el techo de ruido de las 398 pruebas</b> (z=5,27 frente a un máximo de 3,97), pero ese techo no incluye las réplicas: al quitarlas, el exceso desaparece. Pasar el techo de ruido no basta; hay que pasar las tres compuertas.</li>
    <li><b>El resultado negativo sobre mareas no vale como refutación de Tanaka.</b> Su efecto reportado es de ~1-2%; con
    los 2.262 sismos del estrato correspondiente, ese tamaño daría <b>z ≈ 0,23</b>. La prueba <b>nunca pudo salir
    positiva</b>. Reportarla como si zanjara algo sería exactamente el error que advierte la literatura: un nulo que no
