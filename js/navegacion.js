@@ -140,7 +140,7 @@
     document.querySelectorAll("main > section[id]").forEach(function (sec) {
       var hs = [].filter.call(sec.querySelectorAll("h2"), function (h) { return !h.closest("details") && h.textContent.trim().length > 3; });
       var viejo = sec.querySelector(":scope > details.toc"); if (viejo) viejo.remove();
-      if (hs.length < 6) return;
+      if (hs.length < 6 || sec.id === "guia") return;
       var d = document.createElement("details"); d.className = "toc"; var ul = "";
       hs.forEach(function (h) { if (!h.id) h.id = "sec_" + (++idN); ul += '<li><a href="#' + h.id + '" data-toc="' + h.id + '">' + h.textContent.replace(/\s+/g, " ").trim().replace(/</g, "&lt;") + "</a></li>"; });
       d.innerHTML = "<summary>" + t.toc + " (" + hs.length + " " + t.secs + ")</summary><ul>" + ul + "</ul>";

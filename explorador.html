@@ -413,8 +413,6 @@ details.toc a:hover{color:var(--verde)}
  <div class="row">
  <a class="act hero-main" href="laboratorio/index.html" data-i18n="hero2_lab">Probar mi hipótesis en el Laboratorio</a>
  <button class="ghost act" type="button" onclick="iniciarRecorrido()" data-tour-btn>▶ Recorrido guiado (3 min)</button>
- <button class="ghost act" onclick="document.querySelector('[data-tab=tablero]').click()" data-i18n="hero_btn_tablero">Explorar resultados</button>
- <button class="ghost act" onclick="document.querySelector('[data-tab=mapa]').click()" data-i18n="hero_btn_mapa">Ver el mapa</button>
  </div>
  <details class="hero-estado"><summary data-i18n="hero2_estado2">Estado de los resultados (noviembre de 2026)</summary><p data-i18n-html="hero_estado2"><b>Ningún resultado ha sobrevivido a las tres compuertas.</b> El caso más estudiado, Mercurio–Urano en sismos M≥6, daba z = +5,2 y parecía el primer resultado positivo, pero el exceso se apoyaba en las réplicas: al quitarlas baja a RR 1,10 (z = +1,3), no se repite en otro catálogo (GCMT 1976–99, z ≈ +0,9) ni con 48.000 sismos nuevos de M 5 (RR entre 0,99 y 1,02). <b>No sobrevive.</b> Es el mejor ejemplo de por qué existen las compuertas: el método detectó su propio falso positivo.</p></details>
  </div>
@@ -424,25 +422,36 @@ details.toc a:hover{color:var(--verde)}
  <div class="card">
  <h2 data-i18n="nav_quick_h2">¿Por dónde quieres empezar, según tu perfil?</h2>
  <div class="navquick-grid">
- <div class="navquick-card" style="border-color:var(--accent2)" onclick="document.querySelector('[data-tab=tablero]').click()">
- <div class="nq-title" data-i18n="nav_quick_ver">Ver resultados</div>
- <div class="nq-desc" data-i18n="nav_quick_tablero_desc">Tablero — elige un dominio, explora el volcano plot</div>
+ <div class="navquick-card" style="border-color:var(--verde);background:var(--panel)" onclick="iniciarRecorrido()">
+ <div class="nq-icon">▶</div>
+ <div class="nq-title" data-i18n="nq_tour_title">Recorrido guiado (3 min)</div>
+ <div class="nq-desc" data-i18n="nq_tour_desc">El camino más corto: del cielo de miles de eventos al caso que no sobrevivió</div>
  </div>
  <div class="navquick-card" style="border-color:var(--oro)" onclick="document.querySelector('[data-tab=cielo]').click()">
+ <div class="nq-icon">🌌</div>
  <div class="nq-title" data-i18n="nq_cielo_title">Ver el cielo de los eventos</div>
  <div class="nq-desc" data-i18n="nq_cielo_desc">Cielo y eventos — una carta por evento en una sola rueda y las 225 comparaciones frente al azar</div>
  </div>
- <div class="navquick-card" style="border-color:var(--verde)" onclick="document.querySelector('[data-tab=mapa]').click()">
- <div class="nq-title" data-i18n="nav_quick_mapa">Ver los datos en el mapa</div>
- <div class="nq-desc" data-i18n="nav_quick_mapa_desc">Mapa y grilla — filtra por dominio y zona geográfica</div>
- </div>
  <div class="navquick-card" style="border-color:var(--oro)" onclick="document.querySelector('[data-tab=captura]').click();setTimeout(function(){document.getElementById('guiaDatos').scrollIntoView({behavior:'smooth'})},120)">
+ <div class="nq-icon">📥</div>
  <div class="nq-title" data-i18n="nav_quick_agregar">Agregar mis datos</div>
  <div class="nq-desc" data-i18n="nq_datos_desc">De Excel o LibreOffice a la prueba, paso a paso, con plantilla</div>
  </div>
  <div class="navquick-card" style="border-color:var(--accent2)" onclick="document.querySelector('[data-tab=hipotesis]').click()">
+ <div class="nq-icon">🧪</div>
  <div class="nq-title" data-i18n="nav_quick_hipotesis">Formular una hipótesis</div>
  <div class="nq-desc" data-i18n="nav_quick_hip_desc">Hipótesis — redacta, guarda y pre-registra en OSF</div>
+ </div>
+ </div>
+ <details class="mas-caminos" style="margin-top:14px"><summary style="cursor:pointer;font-weight:700;color:var(--verde-profundo,#005743)" data-i18n="nq_mas_sum">Más caminos: resultados, mapa, carta astral, estadística, datos y eras</summary>
+ <div class="navquick-grid" style="margin-top:12px">
+ <div class="navquick-card" style="border-color:var(--accent2)" onclick="document.querySelector('[data-tab=tablero]').click()">
+ <div class="nq-title" data-i18n="nav_quick_ver">Ver resultados</div>
+ <div class="nq-desc" data-i18n="nav_quick_tablero_desc">Tablero — elige un dominio, explora el volcano plot</div>
+ </div>
+ <div class="navquick-card" style="border-color:var(--verde)" onclick="document.querySelector('[data-tab=mapa]').click()">
+ <div class="nq-title" data-i18n="nav_quick_mapa">Ver los datos en el mapa</div>
+ <div class="nq-desc" data-i18n="nav_quick_mapa_desc">Mapa y grilla — filtra por dominio y zona geográfica</div>
  </div>
  <div class="navquick-card" style="border-color:#8e44ad" onclick="threeIrACartaAstral()">
  <div class="nq-title" data-i18n="nq_carta_title">Carta astral</div>
@@ -461,6 +470,7 @@ details.toc a:hover{color:var(--verde)}
  <div class="nq-desc" data-i18n="nq_eras_desc">IAU/Newcomb y el Dr. Raynaud de la Ferrière, comparados, con estrellas y culturas del cielo en vivo</div>
  </div>
  </div>
+ </details>
  </div>
 
  <!-- ═══ MAPA CÓSMICO — un solo escenario, un HUD lateral corto, un panel

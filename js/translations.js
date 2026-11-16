@@ -3,6 +3,9 @@
 // Uso: window.I18N[lang][key]
 window.I18N = {
   es: {
+    nq_tour_title: "Recorrido guiado (3 min)",
+    nq_tour_desc: "El camino más corto: del cielo de miles de eventos al caso que no sobrevivió",
+    nq_mas_sum: "Más caminos: resultados, mapa, carta astral, estadística, datos y eras",
     mc_intro2: "Un mapa 3D que puedes girar con el mouse y acercar con la rueda. Elige una vista en los íconos de la izquierda; el detalle de esa vista aparece debajo del mapa. ¿Primera vez? Haz el recorrido de un minuto.",
     mc_ref_sum: "Guía de referencia: qué mueve cada barra de tiempo y qué hace el riel de la derecha",
     colab_h2: "¿Tienes datos o una pregunta? Escríbenos",
@@ -1083,6 +1086,9 @@ window.I18N = {
   },
 
   en: {
+    nq_tour_title: "Guided tour (3 min)",
+    nq_tour_desc: "The shortest path: from the sky of thousands of events to the case that did not survive",
+    nq_mas_sum: "More paths: results, map, birth chart, statistics, data and eras",
     mc_intro2: "A 3D map you can rotate with the mouse and zoom with the wheel. Pick a view with the icons on the left; the detail of that view appears below the map. First time? Take the one-minute tour.",
     mc_ref_sum: "Reference guide: what each time bar moves and what the right rail does",
     colab_h2: "Do you have data or a question? Write to us",
@@ -2167,6 +2173,9 @@ window.I18N = {
   },
 
   fr: {
+    nq_tour_title: "Visite guidée (3 min)",
+    nq_tour_desc: "Le chemin le plus court : du ciel de milliers d'événements au cas qui n'a pas survécu",
+    nq_mas_sum: "Plus de chemins : résultats, carte, thème astral, statistiques, données et ères",
     mc_intro2: "Une carte 3D que vous pouvez tourner avec la souris et agrandir avec la molette. Choisissez une vue avec les icônes de gauche ; le détail de cette vue apparaît sous la carte. Première fois ? Faites la visite d'une minute.",
     mc_ref_sum: "Guide de référence : ce que déplace chaque barre de temps et ce que fait le rail de droite",
     colab_h2: "Vous avez des données ou une question ? Écrivez-nous",
