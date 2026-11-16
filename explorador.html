@@ -31,6 +31,7 @@
 <script src="js/accesibilidad.js"></script>
 <script src="js/navegacion.js"></script>
 <script src="js/guia_datos.js"></script>
+<script src="js/tour_mapa.js"></script>
 <script src="js/features.js"></script>
 <script src="js/translations.js"></script>
 <style>
@@ -301,6 +302,22 @@ details.toc a:hover{color:var(--verde)}
 .gd-paso{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel2)}
 .gd-paso p{margin:4px 0 8px;font-size:13px}
 .gd-paso button{font-size:12px;padding:3px 10px}
+
+/* ── Recorrido por el Mapa Cósmico 3D (el panel vive dentro de #map_shell) ── */
+#tourMapa{display:none;position:absolute;z-index:60;top:12px;left:76px;width:min(430px,calc(100% - 160px));background:rgba(255,255,255,.97);color:#14282b;border:2px solid #007a60;border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,.45);padding:12px 14px;font-family:inherit}
+#tourMapa h3{margin:4px 0 6px;font-size:16px;color:#005743}
+#tourMapa p{margin:0 0 10px;font-size:13px;line-height:1.5}
+#tourMapa .tm-cab{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#53696a}
+#tourMapa .tm-x{background:transparent;border:0;font-size:16px;cursor:pointer;color:#53696a}
+#tourMapa .tm-act{display:block;width:100%;margin:0 0 10px}
+#tourMapa .tm-pie{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+#tourMapa .tm-punto{display:inline-block;width:8px;height:8px;border-radius:50%;background:#d3e0db;margin-right:5px}
+#tourMapa .tm-punto.on{background:#007a60}
+#tourMapa button:disabled{opacity:.45;cursor:default}
+.tm-pulse{outline:3px solid #e0a526!important;outline-offset:3px;border-radius:10px;animation:tmPulse 1.3s ease-in-out infinite;position:relative;z-index:61}
+@keyframes tmPulse{0%,100%{box-shadow:0 0 0 0 rgba(224,165,38,.7)}50%{box-shadow:0 0 0 10px rgba(224,165,38,0)}}
+@media (prefers-reduced-motion:reduce){.tm-pulse{animation:none}}
+@media (max-width:700px){#tourMapa{left:58px;right:8px;width:auto;top:8px;padding:10px 12px}#tourMapa p{font-size:12px}}
 </style>
 </head>
 <body>
@@ -450,6 +467,7 @@ details.toc a:hover{color:var(--verde)}
  de detalle abajo que cambia según lo que elijas. ═══ -->
  <div class="card">
  <h2 data-i18n="mc_h2">Mapa Cósmico</h2>
+ <p style="margin:4px 0 10px"><button type="button" class="act" data-mapa-tour>▶ Recorrido por el mapa 3D (1 min)</button></p>
  <p class="small muted" style="margin-bottom:12px" data-i18n="mc_p_intro">Así está organizado el mapa de abajo — mismo esquema, con lo que hace cada parte. Rota con el mouse, haz zoom con la rueda.</p>
 
  <!-- Diagrama esquemático: misma forma que el mapa real (riel izq. / canvas /
