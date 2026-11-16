@@ -1666,6 +1666,7 @@
  <div><label for="cielo_y0">Año desde</label><input id="cielo_y0" type="number" placeholder="1970" style="width:90px"></div>
  <div><label for="cielo_y1">Año hasta</label><input id="cielo_y1" type="number" placeholder="2032" style="width:90px"></div>
  <div><label for="cielo_declust">Réplicas</label><select id="cielo_declust"><option value="simetrica">Quitar réplicas (Gardner–Knopoff)</option><option value="despues">Quitar solo posteriores</option><option value="no">No quitar</option></select></div>
+ <div><label for="cielo_modo">Desplazar los eventos</label><select id="cielo_modo"><option value="dias">entre 200 y 2.000 días (sismos)</option><option value="anios">años enteros (conserva la estación)</option></select></div>
  <div><label for="cielo_placebos">Cielos desplazados</label><select id="cielo_placebos"><option value="100">100 (rápido)</option><option value="300" selected>300</option><option value="1000">1.000 (lento)</option></select></div>
  </div>
  <p class="small muted" id="cielo_nota_dom"></p>
@@ -1676,6 +1677,7 @@
  </div>
  <div id="cielo_res" style="display:none">
  <p class="small muted" id="cielo_resumen"></p>
+ <div id="cielo_aviso" class="hint" style="display:none;margin:10px 0;border-left-color:var(--oro)" role="alert"></div>
  <div class="card">
  <h2>Muchas cartas en una rueda</h2>
  <div id="cielo_rueda"></div>

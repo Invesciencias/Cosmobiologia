@@ -21,8 +21,8 @@
   }
   function alCambiarDominio() {
     var esSismo = $("cielo_dominio").value === "sismo";
-    $("cielo_vmin").value = esSismo ? 6 : ""; $("cielo_declust").disabled = !esSismo; if (!esSismo) $("cielo_declust").value = "no";
-    $("cielo_nota_dom").textContent = esSismo ? "" : "El declusterizado de Gardner–Knopoff solo se aplica a sismos.";
+    $("cielo_vmin").value = esSismo ? 6 : ""; $("cielo_declust").disabled = !esSismo; if (!esSismo) $("cielo_declust").value = "no"; $("cielo_modo").value = esSismo ? "dias" : "anios";
+    $("cielo_nota_dom").textContent = esSismo ? "" : "Este dominio puede tener estacionalidad o varios registros por evento (por ejemplo, una tormenta con muchas lecturas). Las fechas control de ±18 a 30 días caen en otra estación, así que muchas comparaciones salen «significativas» solo por la estación: es un control positivo del método, no un hallazgo. El declusterizado de Gardner–Knopoff solo se aplica a sismos.";
   }
 
   function seleccionar() {
@@ -52,20 +52,24 @@
       return new Promise(function (r) { setTimeout(function () { r(); }, 20); }).then(function () {
         var asp = Cielo.tablaAspectos(tiempos, 0), sec = Cielo.tablaSectores(tiempos, 36), N = parseInt($("cielo_placebos").value, 10);
         barra.style.display = "block"; barra.max = N; barra.value = 0; msg.textContent = "Cielos desplazados (azar): 0 de " + N;
-        return Cielo.placebos(tiempos, N, 2026, function (k) { barra.value = k; msg.textContent = "Cielos desplazados (azar): " + k + " de " + N; }).then(function (pl) {
-          ultimo = { n: asp.n, bruto: bruto, modo: modo, asp: asp, sec: sec, pl: pl, N: N }; dibujar(ultimo);
+        return Cielo.placebos(tiempos, N, 2026, function (k) { barra.value = k; msg.textContent = "Cielos desplazados (azar): " + k + " de " + N; }, $("cielo_modo").value).then(function (pl) {
+          ultimo = { n: asp.n, bruto: bruto, modo: modo, asp: asp, sec: sec, pl: pl, N: N, dom: $("cielo_dominio").value, desp: $("cielo_modo").value }; dibujar(ultimo);
         });
       });
     }).catch(function (e) { msg.textContent = "No se pudo calcular: " + (e && e.message ? e.message : e); })
       .then(function () { corriendo = false; $("cielo_ir").disabled = false; barra.style.display = "none"; });
   }
 
+  function pct(p, n) { return p === 0 ? "menos del " + (100 / n < 1 ? "1" : Math.round(100 / n)) + " %" : "el " + Math.round(p * 100) + " %"; }
   function dibujar(u) {
     $("cielo_msg").textContent = ""; $("cielo_res").style.display = "block";
     var ch = Cielo.cuerdas(u.asp.z), cnt = u.pl.cnt, media = cnt.reduce(function (s, x) { return s + x; }, 0) / cnt.length, p25 = Cielo.percentil(cnt, 0.025), p975 = Cielo.percentil(cnt, 0.975);
     var Pcu = cnt.filter(function (x) { return x >= ch.length; }).length / cnt.length, zmax = 0; for (var m = 0; m < 225; m++) zmax = Math.max(zmax, Math.abs(u.asp.z[m]));
     var Pmx = u.pl.mx.filter(function (x) { return x >= zmax; }).length / u.pl.mx.length;
     var modoTxt = u.modo === "simetrica" ? "sin réplicas (Gardner–Knopoff, ventana simétrica)" : (u.modo === "despues" ? "sin réplicas (solo posteriores)" : "sin declusterizar");
+    var av = $("cielo_aviso"); av.style.display = "none"; av.textContent = "";
+    if (u.dom !== "sismo") { av.style.display = "block"; av.textContent = "Ojo: este dominio tiene estacionalidad (por ejemplo, los huracanes se concentran de agosto a octubre) y a veces varios registros por evento. Las fechas control caen en otra estación, así que el Sol y los planetas cercanos salen «significativos» solo por la estación. Por eso los cielos desplazados se hicieron con años enteros (conservan la estación). Si aun así la real queda muy por encima del azar, sospecha del diseño antes que del cielo: para concluir hace falta un nulo que conserve la estación y contar una tormenta como un solo evento."; }
+    else if (ch.length > p975 + 3 && Pcu < 0.05) { av.style.display = "block"; av.textContent = "La real queda por encima del 95 % del azar. Antes de creerlo: comprueba que quitaste las réplicas, que el catálogo es independiente, y repite el cálculo en otro periodo o catálogo (compuerta 3)."; }
     $("cielo_resumen").textContent = fmt(u.n) + " eventos usados de " + fmt(u.bruto) + " seleccionados · " + modoTxt + " · efemérides de 1970 a 2033: los eventos fuera de ese rango se omiten.";
     // rueda de cartas
     var cont = $("cielo_rueda"); cont.innerHTML = ""; var W = 740, H = 560, cx = 250, cy = 280, r0 = 56, dr = 16.5, vmax = 2.6, svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img", "aria-label": "Rueda de cartas: un anillo por planeta, 36 sectores de 10 grados, coloreados por z" }); svg.style.maxWidth = "740px";
@@ -99,17 +103,17 @@
     pts.forEach(function (P, i) { sv2.appendChild(el("circle", { cx: P[0], cy: P[1], r: 6, fill: "#005743" })); var a = (-90 + 36 * i) * Math.PI / 180; sv2.appendChild(el("text", { x: cx2 + (R + 26) * Math.cos(a), y: cy2 + (R + 26) * Math.sin(a), "text-anchor": "middle", "dominant-baseline": "central", "font-size": "11", fill: "#005743" }, Cielo.GLIFOS[i] + " " + Cielo.PLAN[i])); });
     c2.appendChild(sv2);
     // histograma de placebos
-    var c3 = $("cielo_hist"); c3.innerHTML = ""; var mxv = Math.max(Math.max.apply(null, cnt), ch.length) + 2, h = new Array(mxv + 1).fill(0); cnt.forEach(function (x) { h[x]++; }); var hm = Math.max.apply(null, h), sv3 = el("svg", { viewBox: "0 0 420 250", width: "100%", role: "img", "aria-label": "Cuántas cuerdas da el azar" }); sv3.style.maxWidth = "420px";
+    var c3 = $("cielo_hist"); c3.innerHTML = ""; var topeP = Math.max.apply(null, cnt), fuera_escala = ch.length > topeP + 4, mxv = (fuera_escala ? topeP : Math.max(topeP, ch.length)) + 2, h = new Array(mxv + 1).fill(0); cnt.forEach(function (x) { h[x]++; }); var hm = Math.max.apply(null, h), sv3 = el("svg", { viewBox: "0 0 420 250", width: "100%", role: "img", "aria-label": "Cuántas cuerdas da el azar" }); sv3.style.maxWidth = "420px";
     var bw = 380 / (mxv + 1);
     for (var i2 = 0; i2 <= mxv; i2++) { var hh = 150 * h[i2] / hm, dentro = i2 >= p25 && i2 <= p975; sv3.appendChild(el("rect", { x: 20 + i2 * bw + 1, y: 190 - hh, width: bw - 2, height: hh, fill: dentro ? "#9fb9b2" : "#cfd9d6" })); if (i2 % 2 === 0 || mxv < 12) sv3.appendChild(el("text", { x: 20 + i2 * bw + bw / 2, y: 206, "text-anchor": "middle", "font-size": "10", fill: MUT }, String(i2))); }
-    sv3.appendChild(el("line", { x1: 20 + ch.length * bw + bw / 2, x2: 20 + ch.length * bw + bw / 2, y1: 24, y2: 190, stroke: AZUL, "stroke-width": "3" })); sv3.appendChild(el("text", { x: 24 + ch.length * bw + bw / 2, y: 34, "font-size": "12", fill: AZUL, "font-weight": "700" }, "la real: " + ch.length));
+    if (fuera_escala) { sv3.appendChild(el("text", { x: 400, y: 60, "text-anchor": "end", "font-size": "12", fill: AZUL, "font-weight": "700" }, "la real: " + ch.length + " →")); sv3.appendChild(el("text", { x: 400, y: 76, "text-anchor": "end", "font-size": "10", fill: AZUL }, "(fuera de escala, muy por encima del azar)")); } else { sv3.appendChild(el("line", { x1: 20 + ch.length * bw + bw / 2, x2: 20 + ch.length * bw + bw / 2, y1: 24, y2: 190, stroke: AZUL, "stroke-width": "3" })); sv3.appendChild(el("text", { x: 24 + ch.length * bw + bw / 2, y: 34, "font-size": "12", fill: AZUL, "font-weight": "700" }, "la real: " + ch.length)); }
     sv3.appendChild(el("text", { x: 210, y: 232, "text-anchor": "middle", "font-size": "11", fill: MUT }, "cuerdas fuera de ±1,96 en cada cielo desplazado"));
     c3.appendChild(sv3);
     $("cielo_aspectos_txt").innerHTML = ""; var t = $("cielo_aspectos_txt");
-    var l1 = document.createElement("p"); l1.innerHTML = "<b></b>"; l1.firstChild.textContent = ch.length + " cuerdas fuera de ±1,96; el azar da " + media.toFixed(1).replace(".", ",") + " (95 % entre " + Math.round(p25) + " y " + Math.round(p975) + "). Ese número o más lo da el azar el " + Math.round(Pcu * 100) + " % de las veces; el z más alto (" + zmax.toFixed(2).replace(".", ",") + ") lo iguala el " + Math.round(Pmx * 100) + " %."; t.appendChild(l1);
+    var l1 = document.createElement("p"); l1.innerHTML = "<b></b>"; l1.firstChild.textContent = ch.length + " cuerdas fuera de ±1,96; el azar da " + media.toFixed(1).replace(".", ",") + " (95 % entre " + Math.round(p25) + " y " + Math.round(p975) + "). Ese número o más lo da el azar " + pct(Pcu, cnt.length) + " de las veces; el z más alto (" + zmax.toFixed(2).replace(".", ",") + ") lo iguala " + pct(Pmx, cnt.length) + "."; t.appendChild(l1);
     var l2 = document.createElement("p"); l2.className = "small muted"; l2.textContent = "Con " + fmt(u.n) + " eventos y una frecuencia base de 10 %, el piso de detección es RR ≈ " + Cielo.piso(u.n, 0.1).toFixed(2).replace(".", ",") + ": un efecto menor no se distingue del azar. Las 225 comparaciones no son independientes; el p-valor global sale de " + fmt(u.N) + " cielos desplazados (cada evento corrido entre 200 y 2.000 días, misma hora y lugar)."; t.appendChild(l2);
     var tb = $("cielo_tabla").tBodies[0]; tb.innerHTML = "";
-    ch.forEach(function (c) { var m2 = c.q * 5 + c.a, tr = tb.insertRow(), vals = [Cielo.PLAN[c.i] + " " + Cielo.ASP_GLIFO[c.a] + " " + Cielo.PLAN[c.j], Cielo.ASP[c.a][0], fmt(u.asp.obs[m2]), fmt(u.asp.esp[m2], 1), (c.z > 0 ? "+" : "") + c.z.toFixed(2)]; vals.forEach(function (v) { tr.insertCell().textContent = v; }); });
+    ch.forEach(function (c) { var m2 = c.q * 5 + c.a, tr = tb.insertRow(), vals = [Cielo.PLAN[c.i] + " " + Cielo.ASP_GLIFO[c.a] + " " + Cielo.PLAN[c.j], Cielo.ASP[c.a][0], fmt(u.asp.obs[m2]), fmt(u.asp.esp[m2], 1), (c.z > 0 ? "+" : "") + c.z.toFixed(2).replace(".", ",")]; vals.forEach(function (v) { tr.insertCell().textContent = v; }); });
     if (!ch.length) { var tr0 = tb.insertRow(), cc = tr0.insertCell(); cc.colSpan = 5; cc.textContent = "Ninguna comparación pasa ±1,96."; }
   }
 

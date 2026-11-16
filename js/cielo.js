@@ -86,13 +86,13 @@
 
   /* Cielos desplazados: cada evento se corre entre 200 y 2000 días, con signo al azar. Devuelve el número de cuerdas (|z| > 1,96) y el máximo |z|
      de cada placebo. Asíncrono por tandas para no congelar la página; alPaso(k, N) informa el avance. */
-  function placebos(tiempos, N, semilla, alPaso) {
+  function placebos(tiempos, N, semilla, alPaso, modo) {
     var R = rng(semilla || 2026), cnt = [], mx = [], k = 0;
     return new Promise(function (resolve) {
       function tanda() {
         var fin = Math.min(N, k + 5);
         for (; k < fin; k++) {
-          var desp = tiempos.map(function () { return Math.round((200 + R() * 1800)) * (R() < 0.5 ? -1 : 1) * DIA; });
+          var desp = tiempos.map(function () { return modo === "anios" ? Math.round((1 + Math.floor(R() * 8)) * 365.25) * (R() < 0.5 ? -1 : 1) * DIA : Math.round((200 + R() * 1800)) * (R() < 0.5 ? -1 : 1) * DIA; });  /* "anios": años enteros, conserva la estación */
           var tt = tiempos.map(function (t, e) { return t + desp[e]; });
           var r = tablaAspectos(tt, 0), c = 0, m = 0; for (var q = 0; q < 225; q++) { var a = Math.abs(r.z[q]); if (a > 1.96) c++; if (a > m) m = a; }
           cnt.push(c); mx.push(m);
