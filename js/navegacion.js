@@ -39,6 +39,9 @@
         { t: "Un cas qui n'a pas survécu", d: "Mercure–Uranus donnait z = +5,2 et semblait le premier résultat positif. En retirant les répliques, il est tombé à z = +1,3, et avec 48 000 nouveaux séismes de magnitude 5 il a disparu. La méthode a détecté son propre faux positif.", a: "Voir le cas complet" },
         { t: "À vous", d: "Testez votre propre hypothèse : le Laboratoire vous guide à travers les trois portes, ou construisez un énoncé à pré-enregistrer avant de regarder les données.", a: "Aller au Laboratoire" }] }
   };
+  T.es.buscar = "¿Qué buscas? (marea, réplicas, piso de detección…)"; T.es.toc = "En esta pestaña"; T.es.secs = "secciones"; T.es.sinRes = "Sin resultados. Prueba con otra palabra."; T.es.pestana = "Pestaña";
+  T.en.buscar = "What are you looking for? (tide, aftershocks, detection floor…)"; T.en.toc = "In this tab"; T.en.secs = "sections"; T.en.sinRes = "No results. Try another word."; T.en.pestana = "Tab";
+  T.fr.buscar = "Que cherchez-vous ? (marée, répliques, plancher de détection…)"; T.fr.toc = "Dans cet onglet"; T.fr.secs = "sections"; T.fr.sinRes = "Aucun résultat. Essayez un autre mot."; T.fr.pestana = "Onglet";
   function L() { var l = document.documentElement.lang || "es"; return T[l] || T.es; }
   function irTab(t) { var b = document.querySelector('nav button[data-tab="' + t + '"]'); if (b) b.click(); }
 
@@ -129,13 +132,75 @@
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && panel && panel.style.display !== "none") panel.style.display = "none"; });
 
+
+  /* ---------- 6) índice de las pestañas largas ---------- */
+  var idN = 0;
+  function pintarToc() {
+    var t = L();
+    document.querySelectorAll("main > section[id]").forEach(function (sec) {
+      var hs = [].filter.call(sec.querySelectorAll("h2"), function (h) { return !h.closest("details") && h.textContent.trim().length > 3; });
+      var viejo = sec.querySelector(":scope > details.toc"); if (viejo) viejo.remove();
+      if (hs.length < 6) return;
+      var d = document.createElement("details"); d.className = "toc"; var ul = "";
+      hs.forEach(function (h) { if (!h.id) h.id = "sec_" + (++idN); ul += '<li><a href="#' + h.id + '" data-toc="' + h.id + '">' + h.textContent.replace(/\s+/g, " ").trim().replace(/</g, "&lt;") + "</a></li>"; });
+      d.innerHTML = "<summary>" + t.toc + " (" + hs.length + " " + t.secs + ")</summary><ul>" + ul + "</ul>";
+      var ref = sec.querySelector(":scope > .copiar-enlace") || sec.querySelector(":scope > .tab-lead"); if (ref) ref.insertAdjacentElement("afterend", d); else sec.insertBefore(d, sec.firstChild);
+    });
+  }
+  document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a[data-toc]"); if (!a) return; e.preventDefault(); var h = $(a.getAttribute("data-toc")); if (h) h.scrollIntoView({ behavior: "smooth", block: "start" }); });
+
+  /* ---------- 7) buscador ---------- */
+  function norm(s) { return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+  var _indice = null, _indiceLang = "";
+  function indice() {
+    var l = document.documentElement.lang || "es"; if (_indice && _indiceLang === l) return _indice;
+    var out = [];
+    document.querySelectorAll("nav button[data-tab]").forEach(function (b) { out.push({ txt: b.textContent.trim(), tab: b.dataset.tab, el: null, sec: L().pestana, rango: 0 }); });
+    document.querySelectorAll("main > section[id]").forEach(function (sec) {
+      var nombre = ((document.querySelector('nav button[data-tab="' + sec.id + '"]') || {}).textContent || sec.id).trim();
+      sec.querySelectorAll("h2,h3,summary,p,li,td,.hint,b.title").forEach(function (h) {
+        if (h.closest(".camino,.toc,#buscar,script,style")) return;
+        var tx = h.textContent.replace(/\s+/g, " ").trim(), tit = /^(H2|H3|SUMMARY)$/.test(h.tagName);
+        if (tit ? (tx.length < 4 || tx.length > 140) : (tx.length < 25 || tx.length > 700)) return;
+        out.push({ txt: tx, tab: sec.id, el: h, sec: nombre, rango: tit ? 1 : 2 });
+      });
+    });
+    _indice = out; _indiceLang = l; return out;
+  }
+  function recorte(tx, ps) {
+    if (tx.length <= 110) return tx; var n = norm(tx), i = -1; ps.forEach(function (p) { var k = n.indexOf(p); if (k >= 0 && (i < 0 || k < i)) i = k; });
+    var ini = Math.max(0, i - 40); return (ini > 0 ? "… " : "") + tx.slice(ini, ini + 110) + (ini + 110 < tx.length ? " …" : "");
+  }
+  function buscar(q) {
+    var ul = $("buscar-res"); ul.innerHTML = ""; q = norm(q).trim(); if (q.length < 2) { ul.style.display = "none"; return; }
+    var palabras = q.split(/\s+/), vistos = {}, res = indice().filter(function (r) { if (!r.n) r.n = norm(r.txt + " " + r.sec); return palabras.every(function (p) { return r.n.indexOf(p) >= 0; }); })
+      .sort(function (a, b) { return a.rango - b.rango; })
+      .filter(function (r) { var k = r.tab + "|" + r.txt.slice(0, 60); if (vistos[k]) return false; vistos[k] = 1; return true; }).slice(0, 9);
+    if (!res.length) { ul.innerHTML = '<li style="padding:8px 10px;color:#53696a;font-size:13px">' + L().sinRes + "</li>"; ul.style.display = "block"; return; }
+    res.forEach(function (r) {
+      var li = document.createElement("li"), b = document.createElement("button"), sm = document.createElement("small"); b.type = "button"; sm.textContent = r.sec; b.appendChild(sm); b.appendChild(document.createTextNode(recorte(r.txt, palabras)));
+      b.addEventListener("click", function () { ul.style.display = "none"; irTab(r.tab); setTimeout(function () { if (r.el) { r.el.scrollIntoView({ behavior: "smooth", block: "center" }); r.el.style.transition = "background .6s"; var f = r.el.style.background; r.el.style.background = "rgba(224,165,38,.35)"; setTimeout(function () { r.el.style.background = f; }, 1800); } else window.scrollTo({ top: 0, behavior: "smooth" }); }, 150); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    ul.style.display = "block";
+  }
+  function crearBuscador() {
+    var nav = document.querySelector("nav"); if (!nav || $("buscar")) return;
+    var d = document.createElement("div"); d.id = "buscar"; d.setAttribute("role", "search"); d.innerHTML = '<input type="search" id="buscar-q" autocomplete="off" aria-controls="buscar-res"><ul id="buscar-res" role="listbox"></ul>';
+    nav.insertAdjacentElement("afterend", d); var q = $("buscar-q"); q.placeholder = L().buscar; q.setAttribute("aria-label", L().buscar);
+    q.addEventListener("input", function () { buscar(q.value); });
+    q.addEventListener("keydown", function (e) { if (e.key === "Escape") { q.value = ""; $("buscar-res").style.display = "none"; } else if (e.key === "Enter") { var b = document.querySelector("#buscar-res button"); if (b) b.click(); } });
+    document.addEventListener("click", function (e) { if (!e.target.closest("#buscar")) $("buscar-res").style.display = "none"; });
+  }
+  function textoBuscador() { var q = $("buscar-q"); if (q) { q.placeholder = L().buscar; q.setAttribute("aria-label", L().buscar); } }
+
   function botonesRecorrido() {
     var t = L(); document.querySelectorAll("[data-tour-btn]").forEach(function (b) { b.textContent = "▶ " + t.tourMin; }); document.querySelectorAll("[data-guardar]").forEach(function (b) { b.textContent = "⬇ " + t.guardar; });
   }
   function iniciar() {
     document.querySelectorAll("#lang-sel button").forEach(function (b) { b.addEventListener("click", function () { ponerIdioma(b.getAttribute("data-l")); botonesRecorrido(); }); });
-    sincronizarIdioma(); pintarCamino(); pintarCopiar(); botonesRecorrido();
-    new MutationObserver(function () { sincronizarIdioma(); pintarCamino(); pintarCopiar(); botonesRecorrido(); if (panel) pintarParada(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+    sincronizarIdioma(); pintarCamino(); pintarCopiar(); botonesRecorrido(); crearBuscador(); setTimeout(pintarToc, 400);
+    new MutationObserver(function () { sincronizarIdioma(); pintarCamino(); pintarCopiar(); botonesRecorrido(); textoBuscador(); pintarToc(); if (panel) pintarParada(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
     if (location.hash === "#recorrido") setTimeout(function () { window.iniciarRecorrido(0); }, 600);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();

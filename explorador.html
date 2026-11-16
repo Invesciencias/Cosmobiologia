@@ -271,6 +271,25 @@ code, pre, kbd { overflow-wrap: anywhere; }
   nav .nav-sep{margin:8px 2px}
   nav button,nav a.nav-lab{white-space:nowrap}
 }
+
+/* ── Portada con imagen, índice de pestañas largas y buscador ── */
+.hero-fig{float:right;width:min(360px,38%);margin:2px 0 12px 22px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.25);box-shadow:0 8px 24px rgba(0,40,30,.25)}
+.hero-fig img{display:block;width:100%;height:auto}
+.hero-new::after{content:"";display:block;clear:both}
+@media (max-width:700px){.hero-fig{float:none;width:100%;margin:6px 0 12px}}
+details.toc{margin:0 0 14px;padding:8px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;font-size:13px}
+details.toc summary{cursor:pointer;font-weight:700;color:var(--verde-profundo,#005743)}
+details.toc ul{margin:8px 0 2px 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:4px 16px}
+details.toc a{color:var(--ink);text-decoration:none;display:block;padding:3px 0;border-bottom:1px dotted var(--line)}
+details.toc a:hover{color:var(--verde)}
+#buscar{position:relative;max-width:1200px;margin:10px auto 0;padding:0 28px}
+#buscar input{width:100%;box-sizing:border-box;padding:10px 14px 10px 38px;border:1.5px solid var(--line);border-radius:24px;font-size:14px;background:var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2353696a' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E") no-repeat 13px center}
+#buscar input:focus{outline:2px solid var(--verde);border-color:var(--verde)}
+#buscar ul{position:absolute;left:28px;right:28px;top:100%;z-index:900;margin:4px 0 0;padding:6px;list-style:none;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 28px rgba(0,60,45,.18);max-height:340px;overflow:auto;display:none}
+#buscar li button{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:8px;padding:8px 10px;cursor:pointer;font-size:13px;color:var(--ink)}
+#buscar li button:hover,#buscar li button:focus{background:var(--panel2)}
+#buscar li small{display:block;color:var(--muted,#53696a);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+@media (max-width:700px){#buscar{padding:0 12px}#buscar ul{left:12px;right:12px}}
 </style>
 </head>
 <body>
@@ -361,6 +380,7 @@ code, pre, kbd { overflow-wrap: anywhere; }
  <!-- HERO -->
  <div class="card hero-new">
  <h2 data-i18n="hero2_h2">¿Cuándo puedo creer en un resultado entre eventos y ciclos astronómicos?</h2>
+ <div class="hero-fig"><img src="imagenes/boveda_curva.png" width="900" height="703" alt="La bóveda celeste con cuerdas entre planetas, el observador en el horizonte y, debajo, la curva del azar" decoding="async"></div>
  <p data-i18n-html="hero2_p">Esta plataforma te ayuda a responder con rigor: primero comprueba si tus datos <i>podrían</i> mostrar un efecto, luego corrige las trampas estadísticas y al final mira si otro grupo lo repite. Usa más de <b>24.000</b> eventos reales de <b>5</b> dominios de fuentes abiertas, comparados contra un modelo nulo emparejado. <b>No afirmamos que el efecto exista:</b> enseñamos a ponerlo a prueba.</p>
  <div class="row">
  <a class="act hero-main" href="laboratorio/index.html" data-i18n="hero2_lab">Probar mi hipótesis en el Laboratorio</a>
@@ -1746,15 +1766,15 @@ code, pre, kbd { overflow-wrap: anywhere; }
  <div class="card">
  <h2 data-i18n="cielo_h2">Elige los eventos</h2>
  <div class="hint" style="margin:8px 0;border-left-color:var(--accent2)"><b data-i18n="cielo_ejemplo">Ejemplo guiado en 3 pasos: sismos de M ≥ 6, 2000–2024</b><br><span data-i18n-html="cielo_ejemplo_p"><b>1.</b> Elegimos los sismos de magnitud 6 o más entre 2000 y 2024. <b>2.</b> Quitamos las réplicas (Gardner–Knopoff), para que una secuencia grande no cuente como muchos eventos. <b>3.</b> Calculamos las 225 comparaciones y las ponemos frente a 100 cielos desplazados en el tiempo. Pulsa el botón y compara «la real» con lo que da el azar.</span><br><button class="ghost act" style="margin-top:8px" onclick="cieloEjemplo()" data-i18n="cielo_ejemplo_btn">Probar el ejemplo</button></div>
- <p class="small muted">Se usan los eventos cargados en la plataforma (los de ejemplo, o los que hayas cargado en «Captura de eventos»). Cada evento se compara con seis fechas control del mismo lugar y la misma hora (±18, ±24 y ±30 días).</p>
+ <p class="small muted" data-i18n="cielo_intro">Se usan los eventos cargados en la plataforma (los de ejemplo, o los que hayas cargado en «Captura de eventos»). Cada evento se compara con seis fechas control del mismo lugar y la misma hora (±18, ±24 y ±30 días).</p>
  <div class="row">
- <div><label for="cielo_dominio">Dominio</label><select id="cielo_dominio" onchange="cieloAlCambiarDominio()"><option value="sismo">sismo</option></select></div>
- <div><label for="cielo_vmin">Valor mínimo (magnitud)</label><input id="cielo_vmin" type="number" step="0.1" value="6" style="width:90px"></div>
- <div><label for="cielo_y0">Año desde</label><input id="cielo_y0" type="number" placeholder="1970" style="width:90px"></div>
- <div><label for="cielo_y1">Año hasta</label><input id="cielo_y1" type="number" placeholder="2032" style="width:90px"></div>
- <div><label for="cielo_declust">Réplicas</label><select id="cielo_declust"><option value="simetrica">Quitar réplicas (Gardner–Knopoff)</option><option value="despues">Quitar solo posteriores</option><option value="no">No quitar</option></select></div>
- <div><label for="cielo_modo">Desplazar los eventos</label><select id="cielo_modo"><option value="dias">entre 200 y 2.000 días (sismos)</option><option value="anios">años enteros (conserva la estación)</option></select></div>
- <div><label for="cielo_placebos">Cielos desplazados</label><select id="cielo_placebos"><option value="100">100 (rápido)</option><option value="300" selected>300</option><option value="1000">1.000 (lento)</option></select></div>
+ <div><label for="cielo_dominio" data-i18n="cielo_l_dom">Dominio</label><select id="cielo_dominio" onchange="cieloAlCambiarDominio()"><option value="sismo">sismo</option></select></div>
+ <div><label for="cielo_vmin" data-i18n="cielo_l_vmin">Valor mínimo (magnitud)</label><input id="cielo_vmin" type="number" step="0.1" value="6" style="width:90px"></div>
+ <div><label for="cielo_y0" data-i18n="cielo_l_y0">Año desde</label><input id="cielo_y0" type="number" placeholder="1970" style="width:90px"></div>
+ <div><label for="cielo_y1" data-i18n="cielo_l_y1">Año hasta</label><input id="cielo_y1" type="number" placeholder="2032" style="width:90px"></div>
+ <div><label for="cielo_declust" data-i18n="cielo_l_rep">Réplicas</label><select id="cielo_declust"><option data-i18n="cielo_o_sim" value="simetrica">Quitar réplicas (Gardner–Knopoff)</option><option data-i18n="cielo_o_des" value="despues">Quitar solo posteriores</option><option data-i18n="cielo_o_no" value="no">No quitar</option></select></div>
+ <div><label for="cielo_modo" data-i18n="cielo_l_modo">Desplazar los eventos</label><select id="cielo_modo"><option data-i18n="cielo_o_dias" value="dias">entre 200 y 2.000 días (sismos)</option><option data-i18n="cielo_o_anios" value="anios">años enteros (conserva la estación)</option></select></div>
+ <div><label for="cielo_placebos" data-i18n="cielo_l_pl">Cielos desplazados</label><select id="cielo_placebos"><option data-i18n="cielo_o_p100" value="100">100 (rápido)</option><option data-i18n="cielo_o_p300" value="300" selected>300</option><option data-i18n="cielo_o_p1000" value="1000">1.000 (lento)</option></select></div>
  </div>
  <p class="small muted" id="cielo_nota_dom"></p>
  <div class="hint" style="margin:10px 0;border-left-color:var(--oro)" data-i18n-html="cielo_aviso_react"><b>Importante:</b> sin quitar las réplicas, unas pocas secuencias grandes pueden crear señales falsas (así nació el «hallazgo» de Mercurio–Urano, que no sobrevivió). Déjalo activado para sismos.</div>
@@ -1773,15 +1793,15 @@ code, pre, kbd { overflow-wrap: anywhere; }
  </div>
  <div class="card">
  <h2 data-i18n="cielo_h2_asp">Los aspectos entre planetas: ¿se salen del azar?</h2>
- <button type="button" class="ghost act" style="font-size:12px;padding:3px 10px;margin:0 0 8px" onclick="guardarImagen('cielo_aspectos','rueda_de_aspectos');guardarImagen('cielo_hist','azar_cielos_desplazados')" data-guardar>⬇ Guardar imagen</button>
+ <button type="button" class="ghost act" style="font-size:12px;padding:3px 10px;margin:0 0 8px" onclick="guardarImagen('cielo_aspectos','rueda_de_aspectos');guardarImagen('cielo_hist','azar_cielos_desplazados')" data-guardar>⬇ Guardar imagen</button> <button type="button" class="ghost act" style="font-size:12px;padding:3px 10px;margin:0 0 8px" onclick="cieloCSV()" data-i18n="cielo_csv">⬇ Descargar las 225 comparaciones (CSV)</button>
  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
  <div style="flex:1 1 340px"><div id="cielo_aspectos"></div></div>
  <div style="flex:1 1 340px"><div id="cielo_hist"></div></div>
  </div>
  <div id="cielo_aspectos_txt"></div>
- <div style="overflow:auto"><table id="cielo_tabla"><thead><tr><th>Cuerda</th><th>Aspecto</th><th>Eventos</th><th>Esperados</th><th>z</th></tr></thead><tbody></tbody></table></div>
+ <div style="overflow:auto"><table id="cielo_tabla"><thead><tr><th data-i18n="cielo_th_cuerda">Cuerda</th><th data-i18n="cielo_th_aspecto">Aspecto</th><th data-i18n="cielo_th_eventos">Eventos</th><th data-i18n="cielo_th_esperados">Esperados</th><th>z</th></tr></thead><tbody></tbody></table></div>
  <p class="small"><a href="#tablero" onclick="document.querySelector('[data-tab=tablero]').click();return false" data-i18n="cielo_enlace_dup">¿Y las combinaciones de dos o tres condiciones (dupletas y tripletas)? Mira la figura y la calculadora en el Tablero estadístico.</a></p>
- <p class="small muted">Azul: más eventos que en fechas control. Naranja: menos. Cada cuerda une dos planetas; con 10 planetas, 45 pares y 5 aspectos hay 225 comparaciones, y el azar da varias cuerdas por sí solo.</p>
+ <p class="small muted" data-i18n="cielo_leyenda">Azul: más eventos que en fechas control. Naranja: menos. Cada cuerda une dos planetas; con 10 planetas, 45 pares y 5 aspectos hay 225 comparaciones, y el azar da varias cuerdas por sí solo.</p>
  </div>
  </div>
 </section>
