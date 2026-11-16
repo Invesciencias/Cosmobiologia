@@ -74,6 +74,16 @@
     { id: "g_usalo", color: "#8e44ad", ico: "🧪", orden: ["ciencia_h2", "__registro"],
       es: ["Úsalo con tus datos", "Si tu ciencia produce eventos fechados, esta herramienta es tuya; y cómo escribirnos."], en: ["Use it with your data", "If your science produces dated events, this tool is yours; and how to write to us."], fr: ["Utilisez-le avec vos données", "Si votre science produit des événements datés, cet outil est le vôtre ; et comment nous écrire."] }
   ];
+  var GRUPOS_FUENTES = [
+    { id: "f_proyecto", color: "var(--verde)", ico: "📦", abierto: true, orden: ["p0", "p1"],
+      es: ["El proyecto y lo que ya tiene", "Dónde vive el código y qué datos vienen cargados por defecto."], en: ["The project and what it already holds", "Where the code lives and which data come loaded by default."], fr: ["Le projet et ce qu'il contient déjà", "Où vit le code et quelles données sont chargées par défaut."] },
+    { id: "f_tierra", color: "#3f8fc6", ico: "🌍", orden: ["p2", "p3", "p4", "p6"],
+      es: ["Planeta y clima", "Inundaciones, sequías, desastres con impacto, huracanes y volcanes."], en: ["Planet and climate", "Floods, droughts, disasters with impact, hurricanes and volcanoes."], fr: ["Planète et climat", "Inondations, sécheresses, catastrophes avec impact, ouragans et volcans."] },
+    { id: "f_sol", color: "var(--oro)", ico: "☀️", orden: ["p5", "p8"],
+      es: ["Sol, vida y cuerpo", "Tormentas solares y el estudio de natalidad de Gauquelin."], en: ["Sun, life and body", "Solar storms and Gauquelin's birth study."], fr: ["Soleil, vie et corps", "Tempêtes solaires et étude de natalité de Gauquelin."] },
+    { id: "f_tuyos", color: "#8e44ad", ico: "🧰", orden: ["p7", "p9"],
+      es: ["Trae tus propios datos", "Convierte un CSV externo y mira qué fuentes están planificadas."], en: ["Bring your own data", "Convert an external CSV and see which sources are planned."], fr: ["Apportez vos données", "Convertissez un CSV externe et voyez quelles sources sont prévues."] }
+  ];
   var NSEC = { es: "secciones", en: "sections", fr: "sections" };
   function claveGrupo(d) {
     var h = d.querySelector("summary h2"); if (d.id) return d.id;
@@ -83,8 +93,8 @@
   function ultimoGrupo(sec) { var g = sec.querySelectorAll(":scope > .ac-grupo"); return g.length ? g[g.length - 1] : null; }
   function agrupar(sec, GR, porPos) {
     GR = GR || GRUPOS; if (sec.querySelector(":scope > .ac-grupo")) return; var det = {}, quedan = [];
-    [].forEach.call(sec.querySelectorAll(":scope > details.acordeon"), function (d) { var k = claveGrupo(d); if (porPos && /^Avances recientes/i.test((d.querySelector("summary h2") || {}).textContent || "")) k = "__avances"; if (k && !det[k]) det[k] = d; else quedan.push(d); });
-    var reg = $("registro_card"); if (porPos && reg) det.__registro = reg;
+    [].forEach.call(sec.querySelectorAll(":scope > details.acordeon"), function (d, ix) { var k = porPos === "idx" ? "p" + ix : claveGrupo(d); if (porPos === true && /^Avances recientes/i.test((d.querySelector("summary h2") || {}).textContent || "")) k = "__avances"; if (k && !det[k]) det[k] = d; else quedan.push(d); });
+    var reg = $("registro_card"); if (porPos === true && reg) det.__registro = reg;
     var ref = sec.querySelector(":scope > details.acordeon"); if (!ref) return;
     var marcador = document.createComment("grupos"); ref.parentNode.insertBefore(marcador, ref);
     GR.forEach(function (g) {
@@ -101,7 +111,7 @@
   }
   function pintarGrupos() {
     var l = lang();
-    GRUPOS.concat(GRUPOS_GUIA).forEach(function (g) {
+    GRUPOS.concat(GRUPOS_GUIA, GRUPOS_FUENTES).forEach(function (g) {
       var caja = $("grupo_" + g.id); if (!caja) return; var t = g[l] || g.es;
       caja.querySelector(".ac-grupo-t").textContent = t[0]; caja.querySelector(".ac-grupo-d").textContent = t[1]; caja.querySelector(".ac-grupo-n").textContent = caja.getAttribute("data-n") + " " + NSEC[l];
     });
@@ -135,6 +145,7 @@
         if (!f.formularios && c.querySelector("input,select,textarea")) return;
         var d = convertir(c); if (d && f.abierta && f.abierta.test(d.querySelector("summary h2").textContent)) d.open = true; if (d) n++;
       });
+      if (id === "fuentes") agrupar(sec, GRUPOS_FUENTES, "idx");
       if (n > 1) controles(sec);
     });
     pintarTeasers(); textoControles(); pintarGrupos();
