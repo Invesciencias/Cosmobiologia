@@ -66,6 +66,14 @@
     { id: "herramientas", color: "var(--oro)", ico: "🧮", orden: ["__antes_de_calcular", "met_duplas"],
       es: ["Herramientas interactivas", "Calculadoras reales, no solo lectura."], en: ["Interactive tools", "Real calculators, not just reading."], fr: ["Outils interactifs", "De vrais calculateurs, pas seulement de la lecture."] }
   ];
+  var GRUPOS_GUIA = [
+    { id: "g_entender", color: "var(--verde)", ico: "🧭", abierto: true, orden: ["como_h2", "niveles_evidencia", "faq_h2"],
+      es: ["Entender el método", "Cómo funciona, cómo leer lo que afirmamos y las dudas más comunes."], en: ["Understand the method", "How it works, how to read what we claim and the most common questions."], fr: ["Comprendre la méthode", "Comment ça marche, comment lire ce que nous affirmons et les questions fréquentes."] },
+    { id: "g_hallazgos", color: "var(--oro)", ico: "📊", orden: ["paper1_h2", "__avances", "publicacion_rac"],
+      es: ["Lo que hemos encontrado", "Resultados del primer paper, avances de la plataforma y dónde se publicó el diseño."], en: ["What we have found", "Results of the first paper, platform advances and where the design was published."], fr: ["Ce que nous avons trouvé", "Résultats du premier article, avancées de la plateforme et lieu de publication du plan."] },
+    { id: "g_usalo", color: "#8e44ad", ico: "🧪", orden: ["ciencia_h2", "__registro"],
+      es: ["Úsalo con tus datos", "Si tu ciencia produce eventos fechados, esta herramienta es tuya; y cómo escribirnos."], en: ["Use it with your data", "If your science produces dated events, this tool is yours; and how to write to us."], fr: ["Utilisez-le avec vos données", "Si votre science produit des événements datés, cet outil est le vôtre ; et comment nous écrire."] }
+  ];
   var NSEC = { es: "secciones", en: "sections", fr: "sections" };
   function claveGrupo(d) {
     var h = d.querySelector("summary h2"); if (d.id) return d.id;
@@ -73,26 +81,27 @@
     return (h && (h.id || h.getAttribute("data-i18n") || h.getAttribute("data-i18n-html"))) || "";
   }
   function ultimoGrupo(sec) { var g = sec.querySelectorAll(":scope > .ac-grupo"); return g.length ? g[g.length - 1] : null; }
-  function agrupar(sec) {
-    if (sec.querySelector(":scope > .ac-grupo")) return; var det = {}, quedan = [];
-    [].forEach.call(sec.querySelectorAll(":scope > details.acordeon"), function (d) { var k = claveGrupo(d); if (k && !det[k]) det[k] = d; else quedan.push(d); });
+  function agrupar(sec, GR, porPos) {
+    GR = GR || GRUPOS; if (sec.querySelector(":scope > .ac-grupo")) return; var det = {}, quedan = [];
+    [].forEach.call(sec.querySelectorAll(":scope > details.acordeon"), function (d) { var k = claveGrupo(d); if (porPos && /^Avances recientes/i.test((d.querySelector("summary h2") || {}).textContent || "")) k = "__avances"; if (k && !det[k]) det[k] = d; else quedan.push(d); });
+    var reg = $("registro_card"); if (porPos && reg) det.__registro = reg;
     var ref = sec.querySelector(":scope > details.acordeon"); if (!ref) return;
     var marcador = document.createComment("grupos"); ref.parentNode.insertBefore(marcador, ref);
-    GRUPOS.forEach(function (g) {
+    GR.forEach(function (g) {
       var caja = document.createElement("div"); caja.className = "ac-grupo"; caja.id = "grupo_" + g.id; caja.style.setProperty("--gc", g.color);
       caja.innerHTML = '<div class="ac-grupo-cab"><span class="ac-grupo-ico" aria-hidden="true">' + g.ico + '</span><div class="ac-grupo-txt"><h2 class="ac-grupo-t"></h2><p class="ac-grupo-d"></p></div><span class="ac-grupo-n"></span><span class="ac-grupo-flecha" aria-hidden="true">▾</span></div>';
-      marcador.parentNode.insertBefore(caja, marcador); var n = 0; var cab = caja.firstChild; cab.setAttribute("role", "button"); cab.setAttribute("tabindex", "0"); cab.setAttribute("aria-expanded", "false"); caja.classList.add("plegado");
+      marcador.parentNode.insertBefore(caja, marcador); var n = 0; var cab = caja.firstChild; cab.setAttribute("role", "button"); cab.setAttribute("tabindex", "0"); if (g.abierto) cab.setAttribute("aria-expanded", "true"); else { cab.setAttribute("aria-expanded", "false"); caja.classList.add("plegado"); }
       g.orden.forEach(function (k) { if (det[k]) { caja.appendChild(det[k]); delete det[k]; n++; } }); caja.setAttribute("data-n", n);
     });
     marcador.remove();
     Object.keys(det).forEach(function (k) { var u = ultimoGrupo(sec); if (u) u.appendChild(det[k]); });
     quedan.forEach(function (d) { var u = ultimoGrupo(sec); if (u) u.appendChild(d); });
     /* las tarjetas del índice llevan a su grupo */
-    [["met_marco", "marco"], ["met_principios", "principios"], ["met_nulo", "estadistica"], ["met_duplas", "herramientas"]].forEach(function (par) { sec.querySelectorAll('.navquick-card[onclick*="' + par[0] + '"]').forEach(function (c) { c.setAttribute("onclick", "var g=document.getElementById('grupo_" + par[1] + "');g.classList.remove('plegado');g.firstChild.setAttribute('aria-expanded','true');g.scrollIntoView({behavior:'smooth',block:'start'})"); }); });
+    if (!porPos) [["met_marco", "marco"], ["met_principios", "principios"], ["met_nulo", "estadistica"], ["met_duplas", "herramientas"]].forEach(function (par) { sec.querySelectorAll('.navquick-card[onclick*="' + par[0] + '"]').forEach(function (c) { c.setAttribute("onclick", "var g=document.getElementById('grupo_" + par[1] + "');g.classList.remove('plegado');g.firstChild.setAttribute('aria-expanded','true');g.scrollIntoView({behavior:'smooth',block:'start'})"); }); });
   }
   function pintarGrupos() {
     var l = lang();
-    GRUPOS.forEach(function (g) {
+    GRUPOS.concat(GRUPOS_GUIA).forEach(function (g) {
       var caja = $("grupo_" + g.id); if (!caja) return; var t = g[l] || g.es;
       caja.querySelector(".ac-grupo-t").textContent = t[0]; caja.querySelector(".ac-grupo-d").textContent = t[1]; caja.querySelector(".ac-grupo-n").textContent = caja.getAttribute("data-n") + " " + NSEC[l];
     });
@@ -113,7 +122,7 @@
       var sec = $(id); if (!sec) return; var o = OBJETIVOS[id];
       var tarjetas = [].filter.call(sec.children, function (c) { return c.classList && c.classList.contains("card"); });
       tarjetas.forEach(function (c, i) { if (i >= o.desde && i <= o.hasta && c.id !== "registro_card" && c.id !== "guiaDatos" && c.querySelector(":scope > h2")) convertir(c); });
-      if (id === "ayuda") agrupar(sec);
+      if (id === "ayuda") agrupar(sec); if (id === "guia") agrupar(sec, GRUPOS_GUIA, true);
       controles(sec);
     });
     /* otras pestañas con texto largo: se pliegan las tarjetas de lectura; las que tienen gráficos o tablas se dejan abiertas */
