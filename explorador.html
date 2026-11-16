@@ -17,6 +17,8 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/controls/OrbitControls.js" integrity="sha384-agDUL1zphbxZzcozmoJHZxjXk9CemsDjK/8FSI+6CJm3C9NoU8vJic8jiGz7qW8y" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha384-aH7F59TKSh8OEAivbclch9UUnWn/Uy8AQlYYKzpVaQkAp8W6IF2VocW/knEeRwT0" crossorigin="anonymous"></script>
 <script src="js/data.js"></script>
+<script src="js/cielo.js"></script>
+<script src="js/cielo_ui.js"></script>
 <script src="js/features.js"></script>
 <script src="js/translations.js"></script>
 <style>
@@ -257,6 +259,7 @@
 <div class="nav-group-buttons">
 <button data-tab="tablero" data-i18n="nav_tablero">Tablero estadístico</button>
 <button data-tab="mapa" data-i18n="nav_mapa">Mapa y grilla</button>
+<button data-tab="cielo">Cielo y eventos</button>
 <button data-tab="captura" data-i18n="nav_captura">Captura de eventos</button>
 <button data-tab="fuentes" data-i18n="nav_fuentes">Fuentes de datos</button>
 </div>
@@ -1652,6 +1655,45 @@
 </section>
 
 <!-- ===================== HIPÓTESIS Y EXPANSIÓN ===================== -->
+<section id="cielo" style="display:none">
+<p class="tab-lead">Puedes ver el cielo de un conjunto de eventos (una carta por evento, en una sola rueda) y comparar cuántas relaciones entre planetas salen fuera de lo esperado con las que daría el azar. <b>No puedes concluir</b> que una casilla o una cuerda destacada sea un hallazgo: con cientos de comparaciones, algunas salen solas. Todo se calcula en tu navegador con efemérides de 1970 a 2033.</p>
+ <div class="card">
+ <h2>Elige los eventos</h2>
+ <p class="small muted">Se usan los eventos cargados en la plataforma (los de ejemplo, o los que hayas cargado en «Captura de eventos»). Cada evento se compara con seis fechas control del mismo lugar y la misma hora (±18, ±24 y ±30 días).</p>
+ <div class="row">
+ <div><label for="cielo_dominio">Dominio</label><select id="cielo_dominio" onchange="cieloAlCambiarDominio()"><option value="sismo">sismo</option></select></div>
+ <div><label for="cielo_vmin">Valor mínimo (magnitud)</label><input id="cielo_vmin" type="number" step="0.1" value="6" style="width:90px"></div>
+ <div><label for="cielo_y0">Año desde</label><input id="cielo_y0" type="number" placeholder="1970" style="width:90px"></div>
+ <div><label for="cielo_y1">Año hasta</label><input id="cielo_y1" type="number" placeholder="2032" style="width:90px"></div>
+ <div><label for="cielo_declust">Réplicas</label><select id="cielo_declust"><option value="simetrica">Quitar réplicas (Gardner–Knopoff)</option><option value="despues">Quitar solo posteriores</option><option value="no">No quitar</option></select></div>
+ <div><label for="cielo_placebos">Cielos desplazados</label><select id="cielo_placebos"><option value="100">100 (rápido)</option><option value="300" selected>300</option><option value="1000">1.000 (lento)</option></select></div>
+ </div>
+ <p class="small muted" id="cielo_nota_dom"></p>
+ <div class="hint" style="margin:10px 0;border-left-color:var(--oro)"><b>Importante:</b> sin quitar las réplicas, unas pocas secuencias grandes pueden crear señales falsas (así nació el «hallazgo» de Mercurio–Urano, que no sobrevivió). Déjalo activado para sismos.</div>
+ <button id="cielo_ir" class="act" onclick="cieloCalcular()">Calcular</button>
+ <progress id="cielo_barra" value="0" max="100" style="display:none;width:100%;margin-top:10px"></progress>
+ <p class="small" id="cielo_msg" role="status" aria-live="polite"></p>
+ </div>
+ <div id="cielo_res" style="display:none">
+ <p class="small muted" id="cielo_resumen"></p>
+ <div class="card">
+ <h2>Muchas cartas en una rueda</h2>
+ <div id="cielo_rueda"></div>
+ <p class="small" id="cielo_rueda_txt"></p>
+ </div>
+ <div class="card">
+ <h2>Los aspectos entre planetas: ¿se salen del azar?</h2>
+ <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+ <div style="flex:1 1 340px"><div id="cielo_aspectos"></div></div>
+ <div style="flex:1 1 340px"><div id="cielo_hist"></div></div>
+ </div>
+ <div id="cielo_aspectos_txt"></div>
+ <div style="overflow:auto"><table id="cielo_tabla"><thead><tr><th>Cuerda</th><th>Aspecto</th><th>Eventos</th><th>Esperados</th><th>z</th></tr></thead><tbody></tbody></table></div>
+ <p class="small muted">Azul: más eventos que en fechas control. Naranja: menos. Cada cuerda une dos planetas; con 10 planetas, 45 pares y 5 aspectos hay 225 comparaciones, y el azar da varias cuerdas por sí solo.</p>
+ </div>
+ </div>
+</section>
+
 <section id="hipotesis" style="display:none">
 <p class="tab-lead" data-i18n-html="lead_hipotesis">Puedes redactar y registrar una hipótesis antes de mirar los datos. <b>No puedes concluir</b> que registrarla la haga cierta: solo evita cambiarla después de ver el resultado.</p>
  <div class="card" style="border-left:4px solid var(--ok)">
@@ -4251,13 +4293,14 @@ document.addEventListener('click',e=>{
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
  b.classList.add('active');
- ['guia','captura','tablero','mapa','hipotesis','fuentes','ayuda','epidemiologia','historia_social','ajedrez','sismos','eras_precesionales'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
+ ['guia','captura','tablero','mapa','cielo','hipotesis','fuentes','ayuda','epidemiologia','historia_social','ajedrez','sismos','eras_precesionales'].forEach(t=>document.getElementById(t).style.display=t===b.dataset.tab?'block':'none');
  if(b.dataset.tab==='tablero'&&results.length){renderCharts();renderTable();renderCompare();
  setTimeout(()=>{try{Plotly.Plots.resize('volcano');Plotly.Plots.resize('bar');Plotly.Plots.resize('compare');}catch(e){}},60);}
  if(b.dataset.tab==='mapa'){populateDomainFilter();renderMap();
  setTimeout(()=>{try{Plotly.Plots.resize('geomap');Plotly.Plots.resize('grid');Plotly.Plots.resize('timehist');Plotly.Plots.resize('lunarrose');}catch(e){}},60);}
  if(b.dataset.tab==='tablero'){populateDomainResults();}
  if(b.dataset.tab==='ayuda'){setTimeout(renderDensidadHallazgo,50);setTimeout(llonaSimular,50);setTimeout(precesionSimular,50);setTimeout(actualizarEraPrecesional,50);setTimeout(potenciaGrafico,60);setTimeout(potenciaCalcular,60);}
+ if(b.dataset.tab==='cielo'){setTimeout(function(){if(window.cieloInit)cieloInit();},30);}
  if(b.dataset.tab==='ajedrez'){setTimeout(ajedrezInit,30);}
  if(b.dataset.tab==='sismos'){setTimeout(sismosInit,30);}
  if(b.dataset.tab==='eras_precesionales'){setTimeout(erasPrecesionalesInit,30);}
