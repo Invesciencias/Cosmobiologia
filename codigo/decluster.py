@@ -72,7 +72,7 @@ def decluster_gardner_knopoff(events: pd.DataFrame,
     mags = df[mag_col].to_numpy(float)
     lats = df["latitude"].to_numpy(float)
     lons = df["longitude"].to_numpy(float)
-    times_days = (df["_dt"].astype("int64") / 1e9 / 86400).to_numpy(float)
+    times_days = (df["_dt"].dt.tz_convert("UTC").dt.tz_localize(None).astype("datetime64[ns]").astype("int64") / 1e9 / 86400).to_numpy(float)  # fija la unidad: con pandas >= 3 astype("int64") da microsegundos
 
     # Procesar de mayor a menor magnitud
     order = np.argsort(-mags)
