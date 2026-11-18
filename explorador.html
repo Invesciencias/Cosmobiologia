@@ -4309,7 +4309,13 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
 <script src="js/agricultura.js"></script>
 <script src="js/boveda_viva.js"></script>
 <script src="js/acordeon.js"></script>
-<script src="js/features.js"></script>
+<script>
+/* features.js (≈0,85 MB comprimido) solo hace falta para las calculadoras de duplas y la tabla astronómica del mapa: se carga al terminar la página, sin bloquearla. */
+(function(){
+  function cargar(){ var s=document.createElement("script"); s.src="js/features.js"; s.onload=function(){ try{ var e=document.getElementById("astro_summary"); if(e&&e.textContent.indexOf("no cargado")>=0&&typeof renderAstro==="function") renderAstro(); }catch(x){} }; document.body.appendChild(s); }
+  if(document.readyState==="complete") setTimeout(cargar,0); else window.addEventListener("load",function(){ setTimeout(cargar,0); });
+})();
+</script>
 <script src="js/translations.js"></script>
 <script>
 // ---------- Glosario interactivo ----------
