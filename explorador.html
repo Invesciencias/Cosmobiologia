@@ -19,24 +19,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="imagenes/favicon-32.png">
 <link rel="shortcut icon" href="imagenes/favicon.ico">
 <link rel="apple-touch-icon" href="imagenes/apple-touch-icon.png">
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" integrity="sha384-cCVCZkAjYNxaYKbM8lsArLznDF/SvMFr1jcZrvOpSTCa0W40ZAdLzHCEulnUa5i7" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha384-D/t0ZMqQW31H3az8ktEiNb39wyKnS82iFY52QPACM+IjKW3jDUhyIgh2PApRqJZs" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js" integrity="sha384-CCBm3hUBAkShYN9t8YvBdWM9UMpb5n6I93R+LtL1J0PkQMVkfl4hwB5ja4ykvT3f" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/controls/OrbitControls.js" integrity="sha384-agDUL1zphbxZzcozmoJHZxjXk9CemsDjK/8FSI+6CJm3C9NoU8vJic8jiGz7qW8y" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha384-aH7F59TKSh8OEAivbclch9UUnWn/Uy8AQlYYKzpVaQkAp8W6IF2VocW/knEeRwT0" crossorigin="anonymous"></script>
-<script src="js/data.js"></script>
-<script src="js/cielo.js"></script>
-<script src="js/cielo_ui.js"></script>
-<script src="js/ajedrez_bandas.js"></script>
-<script src="js/accesibilidad.js"></script>
-<script src="js/navegacion.js"></script>
-<script src="js/guia_datos.js"></script>
-<script src="js/tour_mapa.js"></script>
-<script src="js/agricultura.js"></script>
-<script src="js/boveda_viva.js"></script>
-<script src="js/acordeon.js"></script>
-<script src="js/features.js"></script>
-<script src="js/translations.js"></script>
+<link rel="preconnect" href="https://cdn.plot.ly" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <style>
  :root{
  /* Paleta Fundación Invesciencias */
@@ -4307,6 +4292,25 @@ python nullmodel.py eventos_natal_atletismo.csv 200 --include-angles</pre>
  <p id="glosBody"></p>
 </div>
 
+<!-- Los scripts pesados van al final del cuerpo: la página se pinta primero y los datos se cargan después -->
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" integrity="sha384-cCVCZkAjYNxaYKbM8lsArLznDF/SvMFr1jcZrvOpSTCa0W40ZAdLzHCEulnUa5i7" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha384-D/t0ZMqQW31H3az8ktEiNb39wyKnS82iFY52QPACM+IjKW3jDUhyIgh2PApRqJZs" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js" integrity="sha384-CCBm3hUBAkShYN9t8YvBdWM9UMpb5n6I93R+LtL1J0PkQMVkfl4hwB5ja4ykvT3f" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/controls/OrbitControls.js" integrity="sha384-agDUL1zphbxZzcozmoJHZxjXk9CemsDjK/8FSI+6CJm3C9NoU8vJic8jiGz7qW8y" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha384-aH7F59TKSh8OEAivbclch9UUnWn/Uy8AQlYYKzpVaQkAp8W6IF2VocW/knEeRwT0" crossorigin="anonymous"></script>
+<script src="js/data.js"></script>
+<script src="js/cielo.js"></script>
+<script src="js/cielo_ui.js"></script>
+<script src="js/ajedrez_bandas.js"></script>
+<script src="js/accesibilidad.js"></script>
+<script src="js/navegacion.js"></script>
+<script src="js/guia_datos.js"></script>
+<script src="js/tour_mapa.js"></script>
+<script src="js/agricultura.js"></script>
+<script src="js/boveda_viva.js"></script>
+<script src="js/acordeon.js"></script>
+<script src="js/features.js"></script>
+<script src="js/translations.js"></script>
 <script>
 // ---------- Glosario interactivo ----------
 const GLOSARIO = {
